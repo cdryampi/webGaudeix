@@ -1,17 +1,19 @@
 from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
+from django.utils.safestring import mark_safe
 from .models import PaginaLegal
+
 
 def privacitat(request):
     pagina = PaginaLegal.objects.get(tipo='privacitat')
-    return render(request, 'legal/privacitat.html', {'pagina': pagina})
+    print(pagina.imagen)  # Imprimir el objeto pagina en la consola
+    return render(request, 'legal/privacitat.html', {'legal': pagina})
 
 def avis_legal(request):
     pagina = PaginaLegal.objects.get(tipo='avis_legal')
-    return render(request, 'legal/avis_legal.html', {'pagina': pagina})
+    print(pagina)  # Imprimir el objeto pagina en la consola
+    return render(request, 'legal/avis_legal.html', {'legal': pagina})
 
 def politica_cookies(request):
     pagina = PaginaLegal.objects.get(tipo='cookies')
-    return render(request, 'legal/politica_cookies.html', {'pagina': pagina})
+    print(pagina)  # Imprimir el objeto pagina en la consola
+    return render(request, 'legal/politica_cookies.html', {'legal': pagina})

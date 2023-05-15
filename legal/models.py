@@ -14,7 +14,7 @@ class PaginaLegal(models.Model):
 
     tipo = models.CharField(max_length=20, choices=TIPOS, unique=True) # Campo para almacenar el tipo de página legal
     encabezado = models.CharField(max_length=200) # Campo para el encabezado de la página
-    imagen = models.ImageField(upload_to='legal_images/') # Campo para la imagen asociada a la página
+    imagen = models.ImageField(upload_to='legal_images/', null=True, blank=True) # Campo para la imagen asociada a la página
     contenido = RichTextField() # Campo para el contenido de la página
 
     def __str__(self):
