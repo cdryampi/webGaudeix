@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'legal',
-    'core'
+    'core',
+    'bootstrap4',
+    'blog',
+    'redes_sociales',
+    'topbar'
 ]
 
 MIDDLEWARE = [
@@ -137,16 +141,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Ckeditor
 
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink']
-        ]
-    }
-}
 CKEDITOR_UPLOAD_PATH = "media/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'

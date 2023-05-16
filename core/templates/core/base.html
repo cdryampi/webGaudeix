@@ -1,9 +1,13 @@
+{% load bootstrap4 %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Cabrera de Mar</title>
     <!-- Agrega aquí tus etiquetas de estilo CSS, enlaces a archivos estáticos, etc. -->
     {% load static %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" type="text/css" href="{% static 'core/css/sample.css' %}">
 </head>
 <body>
     <!-- Agrega aquí el contenido común a todas las páginas -->
@@ -26,5 +30,6 @@
     </footer>
 
     <!-- Agrega aquí tus scripts JavaScript u otros recursos -->
+    <script src="{% static 'core/js/main.js' %}"></script>
 </body>
 </html>
