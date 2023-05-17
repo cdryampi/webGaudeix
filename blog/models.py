@@ -11,8 +11,6 @@ class SubBlog(models.Model):
     imagen = models.ImageField(upload_to='blog/subblogs/', help_text="Imagen del subblog")
     color = models.CharField(max_length=7, help_text="Color en formato hexadecimal (ejemplo: #FF0000)")
     link = models.CharField(max_length=200, help_text="Enlace del subblog")
-    abrir_en_nueva_ventana = models.BooleanField(default=False, help_text="Abrir enlace en una nueva ventana")
-    abrir_en_pespana = models.BooleanField(default=False, help_text="Abrir enlace en la misma ventana con rel='noopener noreferrer'")
     metatitulo = models.CharField(max_length=255, help_text="Metatítulo para SEO")
     metadescripcion = models.TextField(help_text="Metadescripción para SEO")
 

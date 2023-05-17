@@ -21,7 +21,7 @@ class GaleriaImagenPostInline(admin.TabularInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    inlines = [GaleriaImagenPostInline]
+    inlines = [GaleriaImagenPostInline, FicheroInline]
 
 admin.site.register(Categoria, CategoriaAdmin)
 admin.site.register(SubBlog, SubBlogAdmin)

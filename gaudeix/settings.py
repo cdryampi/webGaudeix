@@ -43,7 +43,11 @@ INSTALLED_APPS = [
     'bootstrap4',
     'blog',
     'redes_sociales',
-    'topbar'
+    'topbar',
+    'header',
+    'api',
+    'footer',
+    'personalizacion'
 ]
 
 MIDDLEWARE = [
