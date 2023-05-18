@@ -1,21 +1,46 @@
 from django.db import models
 from ckeditor.fields import RichTextField
-
-# Create your models here.
+from core.models import MetadataModel, BaseModel
+from django.utils import timezone
+from multimedia_manager.models import Imagen
 from django.db import models
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
-class SubBlog(models.Model):
+
+
+
+class SubBlog(MetadataModel, BaseModel):
     titulo = models.CharField(max_length=100, help_text="Título del subblog")
-    slug = models.SlugField(unique=True, help_text="Slug del subblog")
-    contenido = RichTextField(help_text="Contenido del subblog")
-    imagen = models.ImageField(upload_to='blog/subblogs/', help_text="Imagen del subblog")
-    color = models.CharField(max_length=7, help_text="Color en formato hexadecimal (ejemplo: #FF0000)")
-    link = models.CharField(max_length=200, help_text="Enlace del subblog")
-    metatitulo = models.CharField(max_length=255, help_text="Metatítulo para SEO")
-    metadescripcion = models.TextField(help_text="Metadescripción para SEO")
+    slug = models.SlugField(unique=True, editable=False, max_length=100)
+    contenido = models.TextField(help_text="Contenido del subblog")
+    publicado = models.BooleanField(default=False, help_text="Indica si el subblog está publicado")
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Si es un nuevo objeto, se establece la fecha de creación y el usuario actual
+            self.fecha_creacion = timezone.now()
+            self.creado_por = get_user_model().objects.first()
+        else:
+            if not self.creado_por:
+                self.creado_por = get_user_model().objects.first()
+        # Siempre se actualiza la fecha de modificación y el usuario que modifica
+        self.modificado_por = get_user_model().objects.first()
+        self.fecha_modificacion = timezone.now()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.titulo
+
+
+
+class SubBlogImagen(models.Model):
+    subblog = models.OneToOneField(SubBlog, on_delete=models.CASCADE)
+    imagen = models.OneToOneField(Imagen, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"SubBlog: {self.subblog} - Imagen: {self.imagen}"
+
 
 
 class Categoria(models.Model):

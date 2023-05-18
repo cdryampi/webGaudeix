@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'header',
     'api',
     'footer',
-    'personalizacion'
+    'personalizacion',
+    'multimedia_manager'
 ]
 
 MIDDLEWARE = [
