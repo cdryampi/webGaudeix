@@ -3,7 +3,12 @@ from ckeditor.fields import RichTextField
 from core.models import MetadataModel, BaseModel
 from django.utils import timezone
 from multimedia_manager.models import Imagen
-from django.db import models
+
+from django.core.validators import RegexValidator
+from django.utils.translation import gettext_lazy as _
+from colorfield.fields import ColorField
+from django.core.validators import MinLengthValidator, RegexValidator
+
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 
@@ -11,10 +16,11 @@ User = get_user_model()
 
 
 class SubBlog(MetadataModel, BaseModel):
-    titulo = models.CharField(max_length=100, help_text="Título del subblog")
+    titulo = models.CharField(max_length=100, help_text="Títol del subblog")
     slug = models.SlugField(unique=True, editable=False, max_length=100)
-    contenido = models.TextField(help_text="Contenido del subblog")
-    publicado = models.BooleanField(default=False, help_text="Indica si el subblog está publicado")
+    contenido = models.TextField(help_text="Contingut del subblog")
+    publicado = models.BooleanField(
+        default=False, help_text="Indica si el subblog està publicat")
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -28,20 +34,21 @@ class SubBlog(MetadataModel, BaseModel):
         # Siempre se actualiza la fecha de modificación y el usuario que modifica
         self.modificado_por = get_user_model().objects.first()
         self.fecha_modificacion = timezone.now()
-        
+
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.titulo
 
 
-
 class SubBlogImagen(models.Model):
-    subblog = models.OneToOneField(SubBlog, on_delete=models.CASCADE, null=True)
+    subblog = models.OneToOneField(
+        SubBlog, on_delete=models.CASCADE, null=True)
     imagen = models.OneToOneField(Imagen, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"SubBlog: {self.subblog} - Imagen: {self.imagen}"
+
     def delete(self, *args, **kwargs):
         # Eliminar la imagen asociada antes de eliminar el objeto SubBlogImagen
         self.imagen.delete()
@@ -49,10 +56,20 @@ class SubBlogImagen(models.Model):
 
 
 class Categoria(MetadataModel, BaseModel):
-    titulo = models.CharField(max_length=255)
-    subtitulo = models.CharField(max_length=255)
-    descripcion = RichTextField()
-    subblog = models.ForeignKey(SubBlog, on_delete=models.CASCADE, null=True, blank=True)
+
+    titulo = models.CharField(max_length=255, help_text="Títol de categoría")
+    subtitulo = models.CharField(
+        max_length=255, help_text="Subtítol de categoria")
+    descripcion = RichTextField(help_text="Descripció de categoría")
+    subblog = models.ForeignKey(
+        SubBlog, on_delete=models.SET_NULL, null=True, blank=True)
+    ESPECIAL_CHOICES = (
+        (False, _('No')),
+        (True, _('Sí')),
+    )
+    especial = models.BooleanField(
+        _('Categoría Especial'), choices=ESPECIAL_CHOICES, default=False)
+    color = ColorField(default='#FFFFFF')
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -69,24 +86,31 @@ class Categoria(MetadataModel, BaseModel):
 
     def __str__(self):
         return self.titulo
-    
 
 
 class CategoriaBannerImagen(models.Model):
-    categoria = models.OneToOneField(Categoria, on_delete=models.CASCADE)
+    categoria = models.OneToOneField(Categoria, on_delete=models.CASCADE,null=True)
     imagen = models.OneToOneField(Imagen, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Categoría: {self.categoria} - Imagen: {self.imagen}"
+        return f"Categoria: {self.categoria} - Imagen: {self.imagen}"
+
+    def delete(self, *args, **kwargs):
+        # Eliminar la imagen asociada antes de eliminar el objeto CategoriaBannerImagen
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+
+
+
 
 class CategoriaGaleriaImagen(models.Model):
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, default=None)
+    categoria = models.ForeignKey(
+        Categoria, on_delete=models.CASCADE, default=None)
     imagen = models.OneToOneField(Imagen, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Categoría: {self.categoria.titulo} - Imagen: {self.imagen}"
-
-
 
 
 class Post(models.Model):
@@ -104,13 +128,10 @@ class Post(models.Model):
         return self.titulo
 
 
-
-
-
-
 class GaleriaImagenPost(models.Model):
     # modelo que representa una Galería de fotos de un Post
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='galeria_imagenes', default=1)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='galeria_imagenes', default=1)
     imagen = models.ImageField(upload_to='blog/galerias/')
 
     def __str__(self):
@@ -120,5 +141,5 @@ class GaleriaImagenPost(models.Model):
 class Fichero(models.Model):
     # modelo que representa un Fichero de Categoría
     archivo = models.FileField(upload_to='categoria/ficheros/')
-    categoria = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='ficheros', default=1)
-    
+    categoria = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='ficheros', default=1)

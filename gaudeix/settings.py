@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'footer',
     'personalizacion',
     'multimedia_manager',
+    'colorfield'
     #'filters'
 ]
 
