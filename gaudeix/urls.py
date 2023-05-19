@@ -15,14 +15,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+#from multimedia_manager.urls import urlpatterns as url_media
+#from multimedia_manager.filters import ImagenAutocomplete
+from django.urls import re_path
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('legal/', include('legal.urls')),
     path('', include('core.urls')),
+    # re_path(
+    #     r'^imagen-autocomplete/$',
+    #     ImagenAutocomplete.as_view(),
+    #     name='imagen-autocomplete',
+    # ),
 
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

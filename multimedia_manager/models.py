@@ -3,7 +3,14 @@ from .utils import upload_to_imagen, validar_tamanio_archivo
 from functools import partial
 from django.core.exceptions import ValidationError
 from .errors import TamanioArchivoExcedidoError
+from core.models import BaseModel
 import os
+from django.db.models.deletion import ProtectedError
+from .utils import validar_tamanio_archivo, delete_file
+
+
+
+
 
 
 TIPOS_ARCHIVO = (
@@ -25,7 +32,7 @@ class MediaManager(models.Manager):
 
 
 
-class Imagen(models.Model):
+class Imagen(BaseModel):
     titulo = models.CharField(max_length=100, blank=True)
     archivo = models.ImageField(
         upload_to=upload_to_imagen,
@@ -37,6 +44,18 @@ class Imagen(models.Model):
     tipo = models.CharField(max_length=50, choices=TIPOS_ARCHIVO, default='imagen', editable=False)
 
     objects = MediaManager()
+
+    def delete(self, *args, **kwargs):
+        try:
+            super().delete(*args, **kwargs)
+        except ProtectedError:
+            # La imagen está relacionada con otros elementos de la aplicación
+            # Puedes realizar aquí la lógica que desees, como generar un mensaje de error o realizar alguna acción alternativa
+            pass
+        else:
+            # La imagen se ha eliminado exitosamente
+            # Aquí puedes realizar cualquier otra acción después de eliminar la imagen, como eliminar el archivo asociado
+            delete_file(self.archivo)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -53,6 +72,6 @@ class Imagen(models.Model):
             raise ValidationError(str(e))
     def __str__(self) -> str:
         return self.titulo
-        
+
 
 

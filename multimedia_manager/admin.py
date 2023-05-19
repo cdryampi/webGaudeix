@@ -1,3 +1,12 @@
 from django.contrib import admin
+from .models import Imagen
 
-# Register your models here.
+
+
+class ImagenAdmin(admin.ModelAdmin):
+
+    model = Imagen
+
+
+admin.site.register(Imagen, ImagenAdmin)
+

@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
+    'dal',
+    'dal_select2',
     'legal',
     'core',
     'bootstrap4',
@@ -48,7 +50,8 @@ INSTALLED_APPS = [
     'api',
     'footer',
     'personalizacion',
-    'multimedia_manager'
+    'multimedia_manager',
+    #'filters'
 ]
 
 MIDDLEWARE = [
