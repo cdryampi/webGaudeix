@@ -2,7 +2,7 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from core.models import MetadataModel, BaseModel
 from django.utils import timezone
-from multimedia_manager.models import Imagen
+from multimedia_manager.models import Imagen, Fichero
 
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
@@ -107,7 +107,7 @@ class CategoriaBannerImagen(models.Model):
 class CategoriaGaleriaImagen(models.Model):
     categoria = models.ForeignKey(
         Categoria, on_delete=models.CASCADE, default=None)
-    imagen = models.OneToOneField(Imagen, on_delete=models.CASCADE)
+    imagen = models.ForeignKey(Imagen, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Categoría: {self.categoria.titulo} - Imagen: {self.imagen}"
@@ -116,7 +116,6 @@ class CategoriaGaleriaImagen(models.Model):
 class Post(models.Model):
     titulo = models.CharField(max_length=200)
     descripcion = models.TextField()
-    imagen_interior = models.ImageField(upload_to='blog/imagenes/')
     color = models.CharField(max_length=7)
     meta_titulo = models.CharField(max_length=200)
     meta_descripcion = models.TextField()
@@ -128,18 +127,39 @@ class Post(models.Model):
         return self.titulo
 
 
-class GaleriaImagenPost(models.Model):
-    # modelo que representa una Galería de fotos de un Post
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='galeria_imagenes', default=1)
-    imagen = models.ImageField(upload_to='blog/galerias/')
+class PostImagen(models.Model):
+    post = models.OneToOneField(
+        Post, on_delete=models.CASCADE, null=True)
+    imagen = models.OneToOneField(Imagen, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.imagen.name
+        return f"Post: {self.post} - Imagen: {self.imagen}"
+
+    def delete(self, *args, **kwargs):
+        # Eliminar la imagen asociada antes de eliminar el objeto SubBlogImagen
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
 
 
-class Fichero(models.Model):
-    # modelo que representa un Fichero de Categoría
-    archivo = models.FileField(upload_to='categoria/ficheros/')
-    categoria = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='ficheros', default=1)
+
+class PostGaleriaImagen(models.Model):
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, default=None)
+    imagen = models.ForeignKey(Imagen, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Post: {self.post.titulo} - Imagen: {self.imagen}"
+
+
+class PostFichero(models.Model):
+    post = models.OneToOneField(
+        Post, on_delete=models.CASCADE, null=True)
+    fichero = models.OneToOneField(Fichero, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Post: {self.post} - Fichero: {self.fichero}"
+
+    def delete(self, *args, **kwargs):
+        # Eliminar la imagen asociada antes de eliminar el objeto SubBlogImagen
+        self.imagen.delete()
+        super().delete(*args, **kwargs)

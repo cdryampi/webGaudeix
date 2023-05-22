@@ -28,6 +28,9 @@ def upload_to_imagen(instance, filename):
     return generar_nombre_archivo(filename, tipo='imagen')
 
 
+def upload_to_fichero(instance, filename):
+    return generar_nombre_archivo(filename, tipo='fichero')
+
 
 def delete_file(file):
     # Verificar si el archivo existe antes de eliminarlo

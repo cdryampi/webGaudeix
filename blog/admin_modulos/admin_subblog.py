@@ -25,11 +25,16 @@ class SubBlogImagenInline(admin.TabularInline):
             kwargs['queryset'] = Imagen.objects.filter(
                 Q(subblogimagen__isnull=True) | Q(subblogimagen__subblog_id=subblog_id),
                 categoriabannerimagen__isnull=True,
-                categoriagaleriaimagen__isnull=True
+                categoriagaleriaimagen__isnull=True,
+                postimagen__isnull=True,
+                postgaleriaimagen__isnull = True
             )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    
+
+
+
+
 # Resto del código del admin de SubBlog
 class SubBlogAdmin(admin.ModelAdmin):
     # Personalización del modelo en el administrador
