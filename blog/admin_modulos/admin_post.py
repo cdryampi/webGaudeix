@@ -64,4 +64,4 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ('categoria',)
     search_fields = ('titulo', 'descripcion')
     inlines = [PostImagenInline, PostGaleriaImagenInline]
-    fields = ['titulo', 'descripcion', 'color', 'meta_titulo', 'meta_descripcion', 'fecha', 'hora', 'categoria']
+    fields = ['titulo', 'descripcion', 'fecha', 'hora', 'categoria']

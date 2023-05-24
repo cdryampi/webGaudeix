@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Bienvenido a mi sitio web</h1>
+
+        <h2>Categorías populares</h2>
+        <ul>
+            {% for categoria in categorias %}
+                <li>{{ categoria.titulo }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Últimos posts</h2>
+        <ul>
+            {% for post in posts %}
+                <li>{{ post.titulo }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

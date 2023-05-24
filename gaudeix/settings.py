@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'gaudeix.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gaudeix',
+        'NAME': 'test_gaudeix',
         'USER': 'gaudeix',
         'PASSWORD': 'wRskNkm',
         'HOST': 'localhost',

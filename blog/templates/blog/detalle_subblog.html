@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>{{ subblog.titulo }}</h2>
+      {% if subblog.subblogimagen.imagen %}
+        <img src="{{ subblog.subblogimagen.imagen.archivo.url }}" class="img-fluid" alt="Imagen">
+      {% endif %}
+      <p>{{ subblog.contenido | safe }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

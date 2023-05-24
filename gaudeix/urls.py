@@ -26,7 +26,8 @@ from django.urls import re_path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('legal/', include('legal.urls')),
-    path('', include('core.urls')),
+    path('', include(('core.urls', 'core'), namespace='core')),
+    path('blog/',include('blog.urls'))
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),

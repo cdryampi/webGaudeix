@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="blog-box">
+        <h2>Últimos artículos</h2>
+        {% for post in posts %}
+            <div class="blog-post">
+                <h3>{{ post.titulo }}</h3>
+                <p>{{ post.descripcion }}</p>
+                <p>Fecha: {{ post.fecha }}</p>
+                <p>Categoría: {{ post.categoria }}</p>
+            </div>
+        {% empty %}
+            <p>No hay artículos disponibles.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

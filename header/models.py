@@ -3,6 +3,9 @@ from singleton_model import SingletonModel
 from blog.models import Post, Categoria, SubBlog
 from django.core.exceptions import ValidationError
 
+
+
+
 class Header(SingletonModel):
     logo = models.ImageField(upload_to='logo/')
 
@@ -22,11 +25,25 @@ class Referencia(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, blank=True, null=True)
     subblog = models.ForeignKey(SubBlog, on_delete=models.CASCADE, blank=True, null=True)
-    enlace = models.URLField(blank=True, null=True)
     header = models.ForeignKey(Header, on_delete=models.CASCADE, null=True, blank=True, default=1)
-
+    
     def __str__(self):
-        return self.tipo
+        tipo = self.get_tipo_display()
+        titulo = ""
+
+        # Comprueba cada atributo en el orden deseado para encontrar el título
+        if self.post:
+            titulo = self.post.titulo
+        elif self.categoria:
+            titulo = self.categoria.titulo
+        elif self.subblog:
+            titulo = self.subblog.titulo
+        elif self.enlace_externo:
+            titulo = self.enlace_externo.titulo
+            pass
+
+        return f"{tipo}: {titulo}"
+
 
     def save(self, *args, **kwargs):
         if self.tipo == 'post':
@@ -48,3 +65,10 @@ class Referencia(models.Model):
 
         super().save(*args, **kwargs)
 
+class EnlaceExterno(models.Model):
+    titulo = models.CharField(max_length=15, help_text="Títol de l'enllaç")
+    enlace = models.URLField(blank=True, null=True, help_text="Enllaç extern")
+    referencia = models.ForeignKey(Referencia, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.titulo

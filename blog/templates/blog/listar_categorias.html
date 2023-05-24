@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Categorías</h1>
+
+        <div class="row">
+            {% for categoria in categorias %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        {% if categoria.banner_imagen %}
+                            <img src="{{ categoria.banner_imagen.url }}" class="card-img-top" alt="Banner">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ categoria.titulo }}</h5>
+                            <p class="card-text">{{ categoria.descripcion |safe | truncatewords:20 }}</p>
+                            <a href="#" class="btn btn-primary">Ver más</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

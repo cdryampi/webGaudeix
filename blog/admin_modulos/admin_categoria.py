@@ -62,5 +62,5 @@ class CategoriaAdmin(admin.ModelAdmin):
     list_filter = ['especial']
     search_fields = ['titulo']
     inlines = [CategoriaBannerImagenInline,CategoriaGaleriaImagenInline]
-    fields = ['titulo', 'especial', 'color', 'descripcion']
+    fields = ['titulo', 'especial', 'color', 'descripcion','publicado']
     # readonly_fields = ['color']
