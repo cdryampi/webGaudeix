@@ -17,6 +17,10 @@ class HeaderAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(Referencia)
-class ReferenciaAdminWeb(admin.ModelAdmin):
-    inlines = [EnlaceExternoInline]
+# @admin.register(Referencia)
+# class ReferenciaAdminWeb(admin.ModelAdmin):
+#      pass
+
+@admin.register(EnlaceExterno)
+class EnlaceExternoAdminWeb(admin.ModelAdmin):
+     pass

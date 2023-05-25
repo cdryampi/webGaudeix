@@ -12,6 +12,13 @@ class Header(SingletonModel):
     def __str__(self):
         return "Menú de navegación"
 
+class EnlaceExterno(models.Model):
+    titulo = models.CharField(max_length=15, help_text="Títol de l'enllaç")
+    enlace = models.URLField(blank=True, null=True, help_text="Enllaç extern")
+
+
+    def __str__(self):
+        return self.titulo
 
 class Referencia(models.Model):
     TIPOS_REFERENCIA = (
@@ -25,6 +32,7 @@ class Referencia(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, blank=True, null=True)
     subblog = models.ForeignKey(SubBlog, on_delete=models.CASCADE, blank=True, null=True)
+    externo = models.ForeignKey(EnlaceExterno, on_delete=models.CASCADE, blank=True, null=True)
     header = models.ForeignKey(Header, on_delete=models.CASCADE, null=True, blank=True, default=1)
     
     def __str__(self):
@@ -38,8 +46,8 @@ class Referencia(models.Model):
             titulo = self.categoria.titulo
         elif self.subblog:
             titulo = self.subblog.titulo
-        elif self.enlace_externo:
-            titulo = self.enlace_externo.titulo
+        elif self.externo:
+            titulo = self.externo.titulo
             pass
 
         return f"{tipo}: {titulo}"
@@ -65,10 +73,3 @@ class Referencia(models.Model):
 
         super().save(*args, **kwargs)
 
-class EnlaceExterno(models.Model):
-    titulo = models.CharField(max_length=15, help_text="Títol de l'enllaç")
-    enlace = models.URLField(blank=True, null=True, help_text="Enllaç extern")
-    referencia = models.ForeignKey(Referencia, on_delete=models.CASCADE, null=True)
-
-    def __str__(self):
-        return self.titulo

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import render
 from blog.models import Categoria, Post
 from header.models import Header, Referencia
+from topbar.models import Topbar
+
 
 app_name = 'core'
 # Create your views here.
@@ -20,7 +22,9 @@ def home(request):
     header = Header.objects.first()
     #Obtén las referencias de header
     referencias = Referencia.objects.filter(header = header)
+    topbar = Topbar.objects.filter(publicado =True).last()
+
     print("HI")
 
-    return render(request, 'core/home/home.html', {'categorias': categorias, 'posts': posts, 'header': header,'referencias':referencias})
+    return render(request, 'core/home/home.html', {'categorias': categorias, 'posts': posts, 'header': header, 'referencias':referencias, 'topbar':topbar})
 

@@ -18,7 +18,7 @@
                 {% comment %} {% if referencia %}{% endcomment %}
                     {% for referencia in referencias %}
                         {% if referencia.tipo == 'externo' %}
-                        <li class="nav-item"><a class="nav-link" href="{{ referencia.enlace_externo.enlace }}">{{ referencia.enlace_externo.titulo }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ referencia.externo.enlace }}" target="_blank">{{ referencia.externo.titulo }}</a></li>
                         {% elif referencia.tipo == 'post' %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}">{{ referencia.post.titulo }}</a></li>
                         {% elif referencia.tipo == 'categoria' %}
