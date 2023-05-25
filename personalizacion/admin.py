@@ -1,10 +1,24 @@
 from django.contrib import admin
-from .models import Personalizacion
+from .models import Carrusel, Slide, InternalLink
+from django.contrib.admin.widgets import FilteredSelectMultiple
+from .forms import CarruselForm
+from django.core.exceptions import ValidationError
 
-@admin.register(Personalizacion)
-class PersonalizacionAdmin(admin.ModelAdmin):
-    list_display = ['id']
-    fieldsets = [
-        ('Configuración General', {'fields': []}),
-        ('Favicon', {'fields': ['favicon']}),
-    ]
+
+
+class InternalLinkInline(admin.StackedInline):
+    model = InternalLink
+    extra = 1
+
+class SlideAdmin(admin.ModelAdmin):
+    inlines = [InternalLinkInline]
+
+
+
+
+class CarruselAdmin(admin.ModelAdmin):
+    form = CarruselForm
+
+admin.site.register(Carrusel, CarruselAdmin)
+admin.site.register(Slide,SlideAdmin)
+

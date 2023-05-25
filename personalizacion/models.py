@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from blog.models import Post, Categoria, SubBlog
 
 # Create your models here.
 class PersonalizacionManager(models.Manager):
@@ -11,6 +13,9 @@ class PersonalizacionManager(models.Manager):
         # Si no existe, crear una nueva instancia de Personalizacion y guardarla
         personalizacion = self.create()
         return personalizacion
+
+
+
 
 class Favicon(models.Model):
     image = models.ImageField(upload_to='favicons/', blank=True, null=True)
@@ -26,6 +31,80 @@ class Favicon(models.Model):
     @property
     def description(self):
         return "Este favicon se utiliza como icono de la pestaña del navegador para identificar tu sitio web."
+
+
+
+
+class Slide(models.Model):
+    imagen = models.ImageField(upload_to='slides/')
+    titulo = models.CharField(max_length=100)
+    descripcion = models.TextField(max_length=100,help_text="Texto que aparecerá en el centro del carrusel", null=True, blank=True)
+
+    def __str__(self):
+        return self.titulo
+
+
+
+class InternalLink(models.Model):
+    TIPOS_REFERENCIA = (
+        ('post', 'Post'),
+        ('categoria', 'Categoría'),
+        ('subblog', 'SubBlog')
+    )
+
+    tipo = models.CharField(max_length=10, choices=TIPOS_REFERENCIA)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, blank=True, null=True)
+    subblog = models.ForeignKey(SubBlog, on_delete=models.CASCADE, blank=True, null=True)
+    slide = models.OneToOneField(Slide, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        tipo = self.get_tipo_display()
+        titulo = ""
+
+        # Comprueba cada atributo en el orden deseado para encontrar el título
+        if self.post:
+            titulo = self.post.titulo
+        elif self.categoria:
+            titulo = self.categoria.titulo
+        elif self.subblog:
+            titulo = self.subblog.titulo
+
+        return f"{tipo}: {titulo}"
+
+
+    def save(self, *args, **kwargs):
+        if self.tipo == 'post':
+            self.categoria = None
+            self.subblog = None
+        elif self.tipo == 'categoria':
+            self.post = None
+            self.subblog = None
+        elif self.tipo == 'subblog':
+            self.post = None
+            self.categoria = None
+
+
+        super().save(*args, **kwargs)
+
+
+
+
+class Carrusel(models.Model):
+    nombre = models.CharField(max_length=100)
+    publicado = models.BooleanField(default=False)
+    slides = models.ManyToManyField(Slide, related_name='carruseles', blank=True)
+
+    class Meta:
+        verbose_name = 'Carrusel'
+        verbose_name_plural = 'Carruseles'
+
+    def __str__(self):
+        return self.nombre
+
+
+
+
 
 
 class Personalizacion(models.Model):
