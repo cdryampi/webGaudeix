@@ -1,0 +1,12 @@
+{% load static %}
+<div class="parallax-container">
+    <div class="parallax" style="background-image: url('{{ parallax.imagen.url }}');"></div>
+    <div class="parallax-content">
+        <h2>{{ parallax.descripcion_corta | safe }}</h2>
+    </div>
+    <div class="parallax-flecha">
+        <a href="#">
+            <img src="{% static "core/img/parallax/down-arrow.svg"%}"/>
+        </a>
+    </div>
+</div>

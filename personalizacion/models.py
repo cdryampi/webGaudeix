@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from blog.models import Post, Categoria, SubBlog
+from .utils import get_parallax_image_path
+
 
 # Create your models here.
 class PersonalizacionManager(models.Manager):
@@ -104,6 +106,15 @@ class Carrusel(models.Model):
 
 
 
+class Parallax(models.Model):
+    
+    titulo = models.CharField(max_length=100)
+    descripcion_corta = models.CharField(max_length=200)
+    imagen = models.ImageField(upload_to=get_parallax_image_path)
+    publicado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.titulo
 
 
 

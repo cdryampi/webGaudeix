@@ -1,6 +1,6 @@
 {% load static %}
 <div class="container-fluid p-0">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="{% url 'core:home' %}">
             {% if header.logo %}
                 <img src="{{ header.logo.url }}" alt="Logo" class="logo-img">
@@ -13,25 +13,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-
-                {% comment %} {% debug %} {% endcomment %}
-                {% comment %} {% if referencia %}{% endcomment %}
-                    {% for referencia in referencias %}
-                        {% if referencia.tipo == 'externo' %}
-                        <li class="nav-item"><a class="nav-link" href="{{ referencia.externo.enlace }}" target="_blank">{{ referencia.externo.titulo }}</a></li>
-                        {% elif referencia.tipo == 'post' %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}">{{ referencia.post.titulo }}</a></li>
-                        {% elif referencia.tipo == 'categoria' %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'blog:lista_por_categoria' categoria_id=referencia.categoria.id %}">{{ referencia.categoria.nombre }}</a></li>
-                        {% elif referencia.tipo == 'subblog' %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'blog:detalle_subblog' subblog_id=referencia.subblog.id %}">{{ referencia.subblog.titulo }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                {% comment %}{% endif %} {% endcomment %}
-                {% comment %} {% for referencia in referencias %}
-                    {{ referencia.tipo }}
-                {% endfor %} {% endcomment %}
-
+                {% for referencia in referencias %}
+                    {% if referencia.tipo == 'externo' %}
+                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{{ referencia.externo.enlace }}" target="_blank">{{ referencia.externo.titulo }}</a></li>
+                    {% elif referencia.tipo == 'post' %}
+                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}">{{ referencia.post.titulo }}</a></li>
+                    {% elif referencia.tipo == 'categoria' %}
+                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:lista_por_categoria' categoria_id=referencia.categoria.id %}">{{ referencia.categoria.nombre }}</a></li>
+                    {% elif referencia.tipo == 'subblog' %}
+                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_subblog' subblog_id=referencia.subblog.id %}">{{ referencia.subblog.titulo }}</a></li>
+                    {% endif %}
+                {% endfor %}
             </ul>
         </div>
     </nav>

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from blog.models import Categoria, Post
 from header.models import Header, Referencia
 from topbar.models import Topbar
-
+from personalizacion.models import Parallax
 
 app_name = 'core'
 # Create your views here.
@@ -23,8 +23,10 @@ def home(request):
     #Obtén las referencias de header
     referencias = Referencia.objects.filter(header = header)
     topbar = Topbar.objects.filter(publicado =True).last()
-
+    portada = True
+    # obtener el último parallax publicado
+    parallax = Parallax.objects.filter(publicado=True).last()
     print("HI")
 
-    return render(request, 'core/home/home.html', {'categorias': categorias, 'posts': posts, 'header': header, 'referencias':referencias, 'topbar':topbar})
+    return render(request, 'core/home/home.html', {'categorias': categorias, 'posts': posts, 'header': header, 'referencias':referencias, 'topbar':topbar, 'portada':portada, 'parallax':parallax})
 

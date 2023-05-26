@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carrusel, Slide, InternalLink
+from .models import Carrusel, Slide, InternalLink, Parallax
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from .forms import CarruselForm
 from django.core.exceptions import ValidationError
@@ -21,4 +21,4 @@ class CarruselAdmin(admin.ModelAdmin):
 
 admin.site.register(Carrusel, CarruselAdmin)
 admin.site.register(Slide,SlideAdmin)
-
+admin.site.register(Parallax)
