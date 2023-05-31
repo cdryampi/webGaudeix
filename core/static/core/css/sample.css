@@ -1,11 +1,23 @@
+/* default styles */
+a {
+    text-decoration: none !important;
+    color: inherit !important;
+    cursor: pointer !important;
+}
+/* end default */
+/* Header inicio */
 header .container-fluid nav {
     background-color: #000000 !important;
 }
-
+header nav .navbar-brand img{
+    height: 2.5rem;
+}
+/* fin header */
+/* Parallax */
 .parallax-container {
     position: relative;
     overflow: hidden;
-    height: 85vh; /* Ajusta la altura según tus necesidades */
+    height: 90vh; /* Ajusta la altura según tus necesidades */
 }
 
 .parallax {
@@ -31,7 +43,7 @@ header .container-fluid nav {
 }
 
 .parallax-content h2 {
-    font-size: 32px;
+    font-size: 3rem !important;
     font-weight: bold;
 }
 
@@ -60,8 +72,8 @@ header .container-fluid nav {
     animation: bounce 2s infinite;
 }
 .parallax-flecha img{
-    height: 90px;
-    width: 90px;
+    height: 64px;
+    width: 64px;
 }
 
 @keyframes bounce {
@@ -82,3 +94,116 @@ header .container-fluid nav {
     }
 }
 
+/* End parallax */
+
+/* Redes sociales */
+
+.container-social{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-flow: wrap;
+    width: 190px;
+    justify-content: space-around;
+    padding: 20px;
+    background: #000000;
+    border-top-left-radius: 20px;
+}
+.list-group{
+    display: flex;
+    flex-direction: row;
+}
+
+.container-social .list-group .list-group-item{
+    background-color: unset;
+    border: none;
+}
+.container-social .list-group .list-group-item a{
+    border: none;
+}
+
+/* end redes sociales */
+
+
+
+/* inicio subBlog especiales */
+section.categoria-especial-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 250px));
+    justify-content: center;
+    align-items: center;
+    align-items: stretch;
+    grid-auto-rows: 150px;
+    padding: 0;
+    margin: 0;
+   
+}
+
+.categoria-especial {
+    text-align: center;
+    padding: 1rem;
+    height: 100%; /* Asegura que los elementos ocupen toda la altura del contenedor */
+    box-sizing: border-box; /* Incluye el relleno en el tamaño total del elemento */
+}
+
+.categoria-especial img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.categoria-especial h3 {
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+}
+
+section.categoria-especial-container .col-especial-subBlog{
+    width: 100%;
+}
+
+
+.categoria-especial .img-fluid.align-middle{
+    height: 75px;
+}
+
+
+
+/* fin subBlog especiales */
+
+
+/* Inicio footer */
+.footer-images{
+    justify-content: center;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: row;
+    place-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.footer-container .footer-item{
+    padding: 0 5px 0px 5px;
+}
+
+.footer-container .footer-item a{
+    color: #d1e5e6;
+    margin: 0;
+    padding: 0;
+}
+.footer-container .footer-item a:hover {
+    color: #e0ecec;
+}
+
+.footer-container .footer-item p{
+    color: #d1e5e6;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* fin footer */

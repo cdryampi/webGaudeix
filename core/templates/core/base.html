@@ -22,6 +22,7 @@
         </header>
         {% if portada  %}
             {% include 'parallax/parallax.html' %}
+            {% include 'blog/categoria_especial.html' %}
         {% endif %}
     <main>
         <!-- Contenido específico de cada página se insertará aquí -->
@@ -31,6 +32,7 @@
 
     <footer>
         <!-- Pie de página -->
+        {% include 'footer/footer.html' %}
     </footer>
 
     <!-- Agrega aquí tus scripts JavaScript u otros recursos -->

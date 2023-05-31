@@ -11,6 +11,19 @@ class Header(SingletonModel):
 
     def __str__(self):
         return "Menú de navegación"
+    def save(self, *args, **kwargs):
+        # Eliminar referencias sin vínculos
+        Referencia.objects.filter(
+            header=self,
+            post=None,
+            categoria=None,
+            subblog=None,
+            externo=None
+        ).delete()
+
+        super().save(*args, **kwargs)
+
+
 
 class EnlaceExterno(models.Model):
     titulo = models.CharField(max_length=15, help_text="Títol de l'enllaç")
@@ -70,6 +83,9 @@ class Referencia(models.Model):
             self.post = None
             self.categoria = None
             self.subblog = None
+            # Si todas las referencias están vacías, no se crea la instancia
+        if not self.post and not self.categoria and not self.subblog and not self.externo:
+            return
 
         super().save(*args, **kwargs)
 

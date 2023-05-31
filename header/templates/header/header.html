@@ -19,7 +19,7 @@
                     {% elif referencia.tipo == 'post' %}
                         <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}">{{ referencia.post.titulo }}</a></li>
                     {% elif referencia.tipo == 'categoria' %}
-                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:lista_por_categoria' categoria_id=referencia.categoria.id %}">{{ referencia.categoria.nombre }}</a></li>
+                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' categoria_id=referencia.categoria.id %}">{{ referencia.categoria.titulo }}</a></li>
                     {% elif referencia.tipo == 'subblog' %}
                         <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_subblog' subblog_id=referencia.subblog.id %}">{{ referencia.subblog.titulo }}</a></li>
                     {% endif %}

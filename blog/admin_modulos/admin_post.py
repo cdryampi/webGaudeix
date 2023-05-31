@@ -27,6 +27,7 @@ class PostImagenInline(admin.TabularInline):
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id),
                     Q(postgaleriaimagen__isnull=True),
+                    Q(galeriaagenda__isnull=True)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
             
@@ -50,7 +51,7 @@ class PostGaleriaImagenInline(admin.TabularInline):
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True),
-                    Q(postgaleriaimagen__isnull=True) | Q(postgaleriaimagen__post__id=post_id),
+                    Q(postgaleriaimagen__isnull=True), Q(galeriaagenda__isnull=True) | Q(postgaleriaimagen__post__id=post_id),
                 )
             kwargs['empty_label'] = 'Sin imagen asociada'
         

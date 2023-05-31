@@ -5,26 +5,38 @@
         <div class="row justify-content-center align-items-center text-center">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="topbar-description">
-                    <p class="hidden-lg hidden-md">
-                        {{ topbar.descripcion_corta_movil }} 
-                        {% if topbar.enlace_externo %}
-                            {% if topbar.titulo_externo %}
-                                <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">{{ topbar.titulo_externo }}</a>
-                            {% else %}
-                                <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">Fes click</a>
+                    {% if topbar %}
+                        <p class="hidden-lg hidden-md">
+                            {{ topbar.descripcion_corta_movil }} 
+                            {% if topbar.enlace_externo %}
+                                {% if topbar.titulo_externo %}
+                                    <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">{{ topbar.titulo_externo }}</a>
+                                {% else %}
+                                    <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">Fes click</a>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    </p>
-                    <p class="hidden-xs d-none">
-                        {{ topbar.descripcion }} 
-                        {% if topbar.enlace_externo %}
-                            {% if topbar.titulo_externo %}
-                                <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">{{ topbar.titulo_externo }}</a>
-                            {% else %}
-                                <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">Fes click</a>
+                        </p>
+                        <p class="hidden-xs d-none">
+                            {{ topbar.descripcion }} 
+                            {% if topbar.enlace_externo %}
+                                {% if topbar.titulo_externo %}
+                                    <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">{{ topbar.titulo_externo }}</a>
+                                {% else %}
+                                    <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">Fes click</a>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    </p>
+                        </p>
+                    {% else %}
+                        <!-- Contenido estático relacionado con el clima -->
+                        <p class="hidden-lg hidden-md">
+                            ¡Consulta el clima actual en nuestra ubicación!
+                            <a class="topbar-link" href="#">Ver clima</a>
+                        </p>
+                        <p class="hidden-xs d-none">
+                            ¡Consulta el clima actual en nuestra ubicación!
+                            <a class="topbar-link" href="#">Ver clima</a>
+                        </p>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -37,7 +37,11 @@ class DetalleSubBlogView(BaseContextMixin, DetailView):
     context_object_name = 'subblog'
     pk_url_kwarg = 'subblog_id'
 
-
+class CategoriaDetailView(BaseContextMixin, DetailView):
+    model = Categoria
+    template_name = 'blog/detalle_categoria.html'
+    context_object_name = 'categoria'
+    pk_url_kwarg = 'categoria_id'
 
 class ListarCategoria(ListView):
     model = Categoria

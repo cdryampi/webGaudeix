@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Categoria
-from .models import  Categoria, SubBlog, Post
+from .models import  Categoria, SubBlog, Post, Tag
 from .admin_modulos.admin_subblog import SubBlogAdmin
 from .admin_modulos.admin_categoria import CategoriaAdmin
 from .admin_modulos.admin_post import PostAdmin
@@ -18,3 +18,5 @@ admin.site.register(SubBlog, SubBlogAdmin)
 
 #se registra el modelo Imagen en el admin con su configuración
 admin.site.register(Post, PostAdmin)
+
+admin.site.register(Tag)

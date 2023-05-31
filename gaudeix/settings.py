@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #'adminlteui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'dal',
     'dal_select2',
+    #'taggit',
     'legal',
     'core',
     'bootstrap4',
@@ -51,7 +53,9 @@ INSTALLED_APPS = [
     'footer',
     'personalizacion',
     'multimedia_manager',
-    'colorfield'
+    'colorfield',
+    'agenda'
+    #'admin_tree'
     #'filters'
 ]
 
@@ -156,3 +160,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = "media/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+

@@ -1,0 +1,12 @@
+{% load  static  %}
+<div class="container-social" style="background-color: {{ color_red_social }}" >
+    <ul class="list-group">
+        {% for red_social in redes_sociales %}
+        <li class="list-group-item">
+            <a href="{{ red_social.link }}" target="_blank">
+                <img src="{{ red_social.imagen.url }}" alt="{{ red_social.titulo }}">
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

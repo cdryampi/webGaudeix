@@ -1,19 +1,30 @@
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from .models import PaginaLegal
+from django.views.generic import TemplateView
+from core.mixin.base import BaseContextMixin
 
 
-def privacitat(request):
-    pagina = PaginaLegal.objects.get(tipo='privacitat')
-    print(pagina.imagen)  # Imprimir el objeto pagina en la consola
-    return render(request, 'legal/privacitat.html', {'legal': pagina})
+class PrivacitatView(BaseContextMixin, TemplateView):
+    template_name = 'legal/privacitat.html'
 
-def avis_legal(request):
-    pagina = PaginaLegal.objects.get(tipo='avis_legal')
-    print(pagina)  # Imprimir el objeto pagina en la consola
-    return render(request, 'legal/avis_legal.html', {'legal': pagina})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['legal'] = PaginaLegal.objects.get(tipo='privacitat')
+        return context
 
-def politica_cookies(request):
-    pagina = PaginaLegal.objects.get(tipo='cookies')
-    print(pagina)  # Imprimir el objeto pagina en la consola
-    return render(request, 'legal/politica_cookies.html', {'legal': pagina})
+class AvisLegalView(BaseContextMixin, TemplateView):
+    template_name = 'legal/avis_legal.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['legal'] = PaginaLegal.objects.get(tipo='avis_legal')
+        return context
+
+class PoliticaCookiesView(BaseContextMixin, TemplateView):
+    template_name = 'legal/politica_cookies.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['legal'] = PaginaLegal.objects.get(tipo='cookies')
+        return context

@@ -50,9 +50,16 @@ class SubBlogImagen(models.Model):
         return f"SubBlog: {self.subblog} - Imagen: {self.imagen}"
 
     def delete(self, *args, **kwargs):
-        # Eliminar la imagen asociada antes de eliminar el objeto SubBlogImagen
         self.imagen.delete()
         super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = SubBlogImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
 
 
 class Categoria(MetadataModel, BaseModel):
@@ -97,9 +104,16 @@ class CategoriaBannerImagen(models.Model):
         return f"Categoria: {self.categoria} - Imagen: {self.imagen}"
 
     def delete(self, *args, **kwargs):
-        # Eliminar la imagen asociada antes de eliminar el objeto CategoriaBannerImagen
         self.imagen.delete()
         super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = CategoriaBannerImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
 
 
 
@@ -112,6 +126,18 @@ class CategoriaGaleriaImagen(models.Model):
 
     def __str__(self):
         return f"Categoría: {self.categoria.titulo} - Imagen: {self.imagen}"
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = CategoriaGaleriaImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
+
 
 
 class Post(MetadataModel, BaseModel):
@@ -152,9 +178,16 @@ class PostImagen(models.Model):
         return f"Post: {self.post} - Imagen: {self.imagen}"
 
     def delete(self, *args, **kwargs):
-        # Eliminar la imagen asociada antes de eliminar el objeto SubBlogImagen
         self.imagen.delete()
         super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = PostImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
 
 
 
@@ -165,6 +198,18 @@ class PostGaleriaImagen(models.Model):
 
     def __str__(self):
         return f"Post: {self.post.titulo} - Imagen: {self.imagen}"
+    
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = PostImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
 
 
 class PostFichero(models.Model):
@@ -179,3 +224,15 @@ class PostFichero(models.Model):
         # Eliminar la imagen asociada antes de eliminar el objeto SubBlogImagen
         self.imagen.delete()
         super().delete(*args, **kwargs)
+
+
+
+class Tag(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
+    def __str__(self):
+        return self.nombre

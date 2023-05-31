@@ -21,13 +21,14 @@ from django.conf.urls.static import static
 #from multimedia_manager.urls import urlpatterns as url_media
 #from multimedia_manager.filters import ImagenAutocomplete
 from django.urls import re_path
-
+from django_select2 import urls as select2_urls
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('legal/', include('legal.urls')),
     path('', include(('core.urls', 'core'), namespace='core')),
-    path('blog/',include('blog.urls'))
+    path('blog/',include('blog.urls')),
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),

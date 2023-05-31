@@ -7,6 +7,9 @@ class ImagenAdmin(admin.ModelAdmin):
     model = Imagen
     readonly_fields = ['modelo_asociado']
 
+
+    
+
     def modelo_asociado(self, instance):
         if instance.subblogimagen:
             return instance.subblogimagen.subblog._meta.verbose_name
@@ -38,7 +41,10 @@ class ImagenAdmin(admin.ModelAdmin):
 class FicheroAdmin(admin.ModelAdmin):
     model = Fichero
 
+
 admin.site.register(Fichero, FicheroAdmin)
 
 admin.site.register(Imagen, ImagenAdmin)
+
+
 
