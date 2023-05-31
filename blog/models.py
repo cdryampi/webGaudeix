@@ -14,6 +14,17 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+class Tag(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
+    def __str__(self):
+        return self.nombre
+
+
 
 class SubBlog(MetadataModel, BaseModel):
     titulo = models.CharField(max_length=100, help_text="Títol del subblog")
@@ -148,6 +159,7 @@ class Post(MetadataModel, BaseModel):
     hora = models.TimeField(null=True, blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     publicado = models.BooleanField(default=False)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -227,12 +239,3 @@ class PostFichero(models.Model):
 
 
 
-class Tag(models.Model):
-    nombre = models.CharField(max_length=255)
-
-    class Meta:
-        verbose_name = "Tag"
-        verbose_name_plural = "Tags"
-
-    def __str__(self):
-        return self.nombre
