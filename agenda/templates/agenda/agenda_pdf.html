@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .header table td {
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #31C6F8;
+        }
+        
+        .header img {
+            max-width: 200px;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        .anys {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        tr.odd {
+            background-color: #fff;
+        }
+        
+        tr.even {
+            background-color: #f9f9f9;
+        }
+
+        .anys h2 {
+            width: 100%;
+            color: #E76500;
+            font-size: 26px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        
+        .calendar h3 {
+            width: 100%;
+            color: #24135F;
+            font-size: 22px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        
+        .calendar p {
+            margin: 2px;
+            padding: 2px;
+        }
+
+        .calendar .titulo {
+            font-size: 17px;
+            font-weight: bold;
+            color: #119193;
+        }
+        
+        .calendar .description {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000000;
+        }
+        
+        .dia {
+            width: 100%;
+            margin: auto;
+            padding: 20px;
+            background-color: #343a40;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #ffffff;
+            font-size: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .fecha {
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .tag {
+            color: #E76500;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .evento-diferente {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <table>
+            <tr>
+                <td>
+                    <h1>Agenda cultural Cabrera de Mar</h1>
+                </td>
+                <td>
+                    <img src="http://127.0.0.1:8080/static/core/img/logos/logo-cabrera-main.png" alt="Logo de la Agenda Cultural">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="anys">
+        <h2>{{ mes_actual }} {{ anio_actual }}</h2>
+    </div>
+    <div class="calendar">
+        {% for fecha, agendas in agendas.items %}
+        <h3>{{ fecha }}</h3>
+        <table>
+            {% for fecha, agenda in agendas.items %}
+            <tr class="dia">
+                <td>
+                    <p class="fecha">{{ fecha }}</p>
+                </td>
+            </tr>
+            {% for a in agenda %}
+            <tr class="agenda {% if forloop.counter > 2 %}evento-diferente{% endif %}">
+                <td>
+                    <p class="titulo">{{ a.titulo }}</p>
+                </td>
+                <td>
+                    <p class="description">{{ a.descripcion_corta | safe }}</p>
+                    <p class="ubicacion">{{ a.ubicacion | safe }}</p>
+                    <p class="hora">{{ a.hora | time:"h:i A" }}</p>
+                    <p class="tag">
+                        {% for b in a.tags.all|slice:":5" %}
+                        <span class="tag">{{ b.nombre }}</span>
+                        {% endfor %}
+                    </p>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </table>
+        {% endfor %}
+    </div>
+</body>
+</html>

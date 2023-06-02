@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'personalizacion',
     'multimedia_manager',
     'colorfield',
-    'agenda'
+    'agenda',
+    'paginas_estaticas'
     #'admin_tree'
     #'filters'
 ]

@@ -29,6 +29,7 @@ urlpatterns = [
     path('legal/', include('legal.urls')),
     path('', include(('core.urls', 'core'), namespace='core')),
     path('blog/',include('blog.urls')),
+    path('agenda/',include('agenda.urls')),
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),
