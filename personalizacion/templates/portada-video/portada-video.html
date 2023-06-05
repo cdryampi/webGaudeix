@@ -1,0 +1,98 @@
+{% block extra_css %}
+    <style>
+        #videos-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #video-player {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            height: auto;
+            min-width: 100%;
+            min-height: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="videos-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var videosContainer = document.getElementById('videos-container');
+            var videoLinks = {{ videos|safe }};
+            var currentVideoIndex = 0;
+            var videoElement;
+
+            function cargarVideo(index) {
+                if (index >= videoLinks.length) {
+                    index = 0; // Vuelve al primer video cuando se haya reproducido el último
+                }
+
+                videoElement = document.createElement('video');
+                videoElement.src = videoLinks[index];
+                videoElement.controls = false;
+                videoElement.loop = false;
+                videoElement.style.objectFit = 'cover';
+                videoElement.id = 'video-player';
+                videoElement.muted = true;
+                videoElement.play();
+
+                videoElement.addEventListener('timeupdate', function() {
+                    var currentTime = videoElement.currentTime;
+                    var duration = videoElement.duration;
+
+                    // Calcula el tiempo restante hasta el final del video actual
+                    var remainingTime = duration - currentTime;
+
+                    // Si queda menos de 0.1 segundos, superpone el siguiente video
+                    if (remainingTime <= 0.1) {
+                        superponerVideo(index + 1);
+                    }
+                });
+
+                videosContainer.appendChild(videoElement);
+            }
+
+            function superponerVideo(index) {
+                if (index >= videoLinks.length) {
+                    index = 0; // Vuelve al primer video cuando se haya reproducido el último
+                }
+
+                var videoElement = document.createElement('video');
+                videoElement.src = videoLinks[index];
+                videoElement.controls = false;
+                videoElement.loop = false;
+                videoElement.style.objectFit = 'cover';
+                videoElement.id = 'video-player';
+                videoElement.style.opacity = 0;
+                videoElement.muted = true;
+                videoElement.play();
+
+                videoElement.addEventListener('ended', function() {
+                    videosContainer.removeChild(videoElement);
+                    cargarVideo(index + 1);
+                });
+
+                videosContainer.appendChild(videoElement);
+
+                // Hace una pequeña pausa y luego muestra el siguiente video
+                setTimeout(function() {
+                    videoElement.style.opacity = 1;
+                }, 100);
+            }
+
+            cargarVideo(currentVideoIndex);
+
+            // Desactivar los controles de reproducción
+            videosContainer.addEventListener('click', function() {
+                videoElement.controls = false;
+            });
+        });
+    </script>
+{% endblock %}

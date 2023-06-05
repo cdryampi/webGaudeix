@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from blog.models import Post, Categoria, SubBlog
+from multimedia_manager.models import Video
+
 from .utils import get_parallax_image_path
 
 
@@ -116,6 +118,28 @@ class Parallax(models.Model):
     def __str__(self):
         return self.titulo
 
+
+class PortadaVideo(models.Model):
+    titulo = titulo = models.CharField(max_length=100)
+    publicado = models.BooleanField(default=False)
+    def __str__(self):
+        return self.titulo
+        
+
+
+
+class VideosPortada(models.Model):
+    portadavideo = models.OneToOneField(
+        PortadaVideo, on_delete=models.CASCADE, null=True)
+    videos = models.ManyToManyField(Video)
+    orden = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Portada de video: {self.portadavideo}"
+
+    def delete(self, *args, **kwargs):
+        self.videos.clear()
+        super().delete(*args, **kwargs)
 
 
 class Personalizacion(models.Model):

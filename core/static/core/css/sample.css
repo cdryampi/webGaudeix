@@ -173,6 +173,37 @@ section.categoria-especial-container .col-especial-subBlog{
 /* fin subBlog especiales */
 
 
+
+
+/* Mapa portada */
+.info-window {
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+
+  .info-window-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .info-window-text {
+    flex: 1;
+  }
+
+  .info-window h4 {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .info-window p {
+    margin: 0;
+    font-size: 14px;
+  }
+/* fin mapa portada */
 /* Inicio footer */
 .footer-images{
     justify-content: center;

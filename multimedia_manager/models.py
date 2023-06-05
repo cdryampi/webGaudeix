@@ -1,5 +1,5 @@
 from django.db import models
-from .utils import upload_to_imagen, validar_tamanio_archivo, upload_to_fichero
+from .utils import upload_to_imagen, validar_tamanio_archivo, upload_to_fichero,upload_to_video
 from functools import partial
 from django.core.exceptions import ValidationError
 from .errors import TamanioArchivoExcedidoError
@@ -29,6 +29,57 @@ class MediaManager(models.Manager):
 
     def pdfs(self):
         return self.filter(tipo='fichero')
+
+
+class Video(BaseModel):
+    titulo = models.CharField(max_length=100, blank=True)
+    archivo = models.FileField(
+        upload_to=upload_to_video,
+        help_text="Extensiones permitidas: .mp4, .webm, .ogg",
+        default=None
+    )
+    tipo = models.CharField(max_length=50, choices=TIPOS_ARCHIVO, default='video', editable=False)
+
+    objects = MediaManager()
+
+    def delete(self, *args, **kwargs):
+        try:
+            super().delete(*args, **kwargs)
+        except ProtectedError:
+            # El video está relacionado con otros elementos de la aplicación
+            # Puedes realizar aquí la lógica que desees, como generar un mensaje de error o realizar alguna acción alternativa
+            pass
+        else:
+            # El video se ha eliminado exitosamente
+            # Aquí puedes realizar cualquier otra acción después de eliminar el video, como eliminar el archivo asociado
+            delete_file(self.archivo)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Obtener el nombre original sin extensión
+            nombre_original = os.path.splitext(self.archivo.name)[0]
+            self.titulo = nombre_original
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        super().clean()
+        try:
+            validar_tamanio_archivo(self.archivo)
+        except TamanioArchivoExcedidoError as e:
+            raise ValidationError(str(e))
+
+    def __str__(self):
+        return self.titulo
+
+
+
+
+
+
+
+
+
+
 
 class Fichero(BaseModel):
     archivo = models.FileField(

@@ -1,0 +1,55 @@
+{% load static %}
+<div class="container">
+    <div class="row">
+        <h3>Com arribar</h3>
+      <div class="col-md-12 align-items-center justify-content-center">
+
+        <div id="map" style="height: 400px;"></div>
+      </div>
+    </div>
+</div>
+
+<script>
+    function initMap() {
+      fetch('map/api/coordenadas-ayuntamiento/')
+        .then(response => response.json())
+        .then(data => {
+          var ayuntamiento = {
+            lat: data.latitud,
+            lng: data.longitud
+          };
+  
+          var mapOptions = {
+            center: ayuntamiento,
+            zoom: 15
+          };
+  
+          var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+  
+          var marker = new google.maps.Marker({
+            position: ayuntamiento,
+            map: map,
+            title: 'Ajuntament Cabrera de Mar'
+          });
+
+          var infoWindowContent = '<div class="info-window">' +
+            '<img src="{% static "core/img/icon/ajuntament.png" %}" alt="ajuntament" class="info-window-icon">' +
+            '<div class="info-window-text">' +
+            '<h4>Ajuntament Cabrera de Mar</h4>' +
+            '<p>Descripción del Ayuntamiento</p>' +
+            '</div>' +
+            '</div>';
+
+
+          var infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent
+          });
+          marker.addListener('click', function() {
+            infoWindow.open(map, marker);
+          });
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+}
+</script>

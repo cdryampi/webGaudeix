@@ -22,7 +22,9 @@
             {% include 'header/header.html' %}
         </header>
         {% if portada  %}
-            {% include 'parallax/parallax.html' %}
+            {% comment %} {% include 'parallax/parallax.html' %} {% endcomment %}
+            {% include 'portada-video/portada-video.html' %}
+            
             {% include 'blog/categoria_especial.html' %}
         {% endif %}
     <main>
@@ -31,14 +33,19 @@
         {% endblock %}
     </main>
 
+    {% if portada %}
+        {% include 'map/map.html' %}
+    {% endif %}
+
     <footer>
         <!-- Pie de página -->
         {% include 'footer/footer.html' %}
     </footer>
 
     <!-- Agrega aquí tus scripts JavaScript u otros recursos -->
-    <script src="{% static 'core/js/main.js' %}">
-    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
+    <script src="{% static 'core/js/main.js' %}"></script>
+
 
 </body>
 </html>

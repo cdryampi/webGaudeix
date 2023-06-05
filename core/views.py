@@ -7,7 +7,8 @@ from personalizacion.models import Parallax
 from redes_sociales.models import RedSocial
 from footer.models import Footer
 from redes_sociales.utils import obtener_color_mas_repetido
-
+from map.models import MapPoint
+from personalizacion.models import PortadaVideo
 
 app_name = 'core'
 # Create your views here.
@@ -53,6 +54,33 @@ def home(request):
 
     footer = Footer.objects.all().first()
 
+
+    coordenadas_ayuntamiento = []
+
+    ayuntamiento_coordenadas = MapPoint.objects.filter(icono="town-hall").first()
+
+    if ayuntamiento_coordenadas:
+        coordenadas_ayuntamiento.append({
+            'latitud': ayuntamiento_coordenadas.latitud,
+            'longitud': ayuntamiento_coordenadas.longitud
+        })
+    else:
+        coordenadas_ayuntamiento.append({
+            'latitud': 41.123456,
+            'longitud': 2.987654
+        })
+
+
+
+    portada_video = PortadaVideo.objects.all().first()
+    videos = []
+
+    if portada_video:
+        videos_portada = portada_video.videosportada.videos.all()
+        for item in videos_portada:
+            videos.append(item.archivo.url)
+            
+
     return render(
         request,
         'core/home/home.html',
@@ -67,7 +95,9 @@ def home(request):
             'redes_sociales':redes_sociales,
             'color_red_social':redes_color,
             'categorias_especiales': categorias_especiales,
-            'footer': footer
+            'footer': footer,
+            'coordenadas_ayuntamiento': coordenadas_ayuntamiento,
+            'videos': videos
         }
     )
 

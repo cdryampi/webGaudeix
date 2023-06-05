@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Imagen, Fichero
+from .models import Imagen, Fichero, Video
 
 
 
@@ -41,10 +41,13 @@ class ImagenAdmin(admin.ModelAdmin):
 class FicheroAdmin(admin.ModelAdmin):
     model = Fichero
 
+class VideoAdmin(admin.ModelAdmin):
+    model = Video
 
 admin.site.register(Fichero, FicheroAdmin)
 
 admin.site.register(Imagen, ImagenAdmin)
+admin.site.register(Video, VideoAdmin)
 
 
 

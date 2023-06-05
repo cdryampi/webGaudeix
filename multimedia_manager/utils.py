@@ -8,7 +8,7 @@ ALLOWED_EXTENSIONS = {
     'video': ['.mp4', '.avi', '.mov', '.mkv'],
     'fichero': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx']
 }
-MAX_TAMANIO_ARCHIVO = 10485760  # 10 MB
+MAX_TAMANIO_ARCHIVO = 33485760  # 30 MB
 
 
 def generar_nombre_archivo(filename, tipo):
@@ -31,7 +31,8 @@ def upload_to_imagen(instance, filename):
 def upload_to_fichero(instance, filename):
     return generar_nombre_archivo(filename, tipo='fichero')
 
-
+def upload_to_video(instance, filename):
+    return generar_nombre_archivo(filename, tipo='video')
 def delete_file(file):
     # Verificar si el archivo existe antes de eliminarlo
     if file and file.storage.exists(file.name):
