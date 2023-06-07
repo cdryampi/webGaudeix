@@ -9,6 +9,10 @@ ICON_CHOICES = (
     ('hotel', 'Hotel'),
     ('town-hall', 'Ajuntament'),
     ('theater', 'Centre Cultural'),
+    ('sport', 'Esports'),
+    ('serveis','Serveis'),
+    ('transports','Transports'),
+    ('aparcaments','Aparcaments')
     # Agrega más opciones según tus necesidades
 )
 
@@ -24,6 +28,7 @@ class MapPoint(models.Model):
     titulo = models.CharField(max_length=100)
     latitud = models.FloatField(help_text='Introduïu la latitud (copiada de Google Maps)')
     longitud = models.FloatField(help_text='Introduïu la longitud (copiada de Google Maps)')
+    publicado = models.BooleanField(default=False, help_text="publicat?")
     icono = models.CharField(max_length=100, choices=ICON_CHOICES)
     objects = MapPointManager()
 

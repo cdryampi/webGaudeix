@@ -17,15 +17,36 @@ class SingletonModel(MetadataModel):
     def delete(self, *args, **kwargs):
         pass
 
+
+class PaginaLegal(models.Model):
+    TIPOS = (
+        ('privacitat', 'Política de privacitat'),
+        ('avis_legal', 'Avís legal'),
+        ('cookies', 'Política de cookies'),
+    )
+
+    tipo = models.CharField(max_length=20, choices=TIPOS, unique=True)
+    titulo = models.CharField(max_length=255)
+    encabezado = models.CharField(max_length=200) # Campo para el encabezado de la página
+    imagen = models.ImageField(upload_to='legal_images/', null=True, blank=True) # Campo para la imagen asociada a la página
+    contenido = RichTextField()
+    # Otros campos necesarios para tu modelo
+    def clean(self):
+        # Verificar si ya existe una instancia con el mismo tipo
+        if PaginaLegal.objects.exclude(pk=self.pk).filter(tipo=self.tipo).exists():
+            raise ValidationError("Ya existe una instancia con el mismo tipo.")
+        
+    def __str__(self):
+        return self.titulo
+
 class PaginaEstatica(SingletonModel):
     titulo = models.CharField(max_length=255)
 
     def __str__(self):
         return self.titulo
 
-class Agenda(PaginaEstatica):
-    banner = models.ImageField(upload_to='agenda_banners')
-    # otros campos específicos de la agenda
+
+
 
 class PuntoInformacion(PaginaEstatica):
     telefono = models.CharField(max_length=20, help_text="Telèfon de contacte")

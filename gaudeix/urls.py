@@ -26,12 +26,12 @@ from django_select2 import urls as select2_urls
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path('legal/', include('legal.urls')),
     path('', include(('core.urls', 'core'), namespace='core')),
     path('blog/',include('blog.urls')),
     path('agenda/',include('agenda.urls')),
     path('map/',include('map.urls')),
-    path('personalizacion/',include('personalizacion.urls'))
+    path('personalizacion/',include('personalizacion.urls')),
+    path('paginas_estaticas/', include('paginas_estaticas.urls'))
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),

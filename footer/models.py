@@ -1,5 +1,5 @@
 from django.db import models
-from legal.models import PaginaLegal
+from paginas_estaticas.models import PaginaLegal
 
 # Create your models here.
 class FooterManager(models.Manager):

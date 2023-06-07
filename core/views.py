@@ -54,32 +54,14 @@ def home(request):
 
     footer = Footer.objects.all().first()
 
-
-    coordenadas_ayuntamiento = []
-
-    ayuntamiento_coordenadas = MapPoint.objects.filter(icono="town-hall").first()
-
-    if ayuntamiento_coordenadas:
-        coordenadas_ayuntamiento.append({
-            'latitud': ayuntamiento_coordenadas.latitud,
-            'longitud': ayuntamiento_coordenadas.longitud
-        })
-    else:
-        coordenadas_ayuntamiento.append({
-            'latitud': 41.123456,
-            'longitud': 2.987654
-        })
-
-
-
-    portada_video = PortadaVideo.objects.all().first()
+    portada_video = PortadaVideo.objects.filter(publicado=True).first()
     videos = []
-
     if portada_video:
-        videos_portada = portada_video.videosportada.videos.all()
-        for item in videos_portada:
-            videos.append(item.archivo.url)
-            
+        if portada_video:
+            videos_portada = portada_video.videosportada.videos.all()
+            for item in videos_portada:
+                videos.append(item.archivo.url)
+                
 
     return render(
         request,
@@ -96,7 +78,6 @@ def home(request):
             'color_red_social':redes_color,
             'categorias_especiales': categorias_especiales,
             'footer': footer,
-            'coordenadas_ayuntamiento': coordenadas_ayuntamiento,
             'videos': videos
         }
     )

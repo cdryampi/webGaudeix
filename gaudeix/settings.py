@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'dal',
     'dal_select2',
     #'taggit',
-    'legal',
     'core',
     'bootstrap4',
     'blog',
@@ -164,5 +163,5 @@ CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-GOOGLE_MAPS_API_KEY = 'kAIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ'
+#GOOGLE_MAPS_API_KEY = 'kAIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ'
 

@@ -16,3 +16,9 @@ class CoordenadasAyuntamientoAPI(View):
                 'longitud': 2.987654
             }
         return JsonResponse(data)
+    
+
+class MapPointAPI(View):
+    def get(self, request):
+        puntos = MapPoint.objects.all().values('titulo', 'latitud', 'longitud', 'icono')
+        return JsonResponse(list(puntos), safe=False)

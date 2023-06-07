@@ -29,11 +29,11 @@
             {% for legal in footer.footerinformacion.paginas_legales.all %}
                 <div class="footer-item">
                     {% if legal.tipo == 'privacitat' %}
-                    <p class="mb-1"><a href="{% url 'legal:privacitat' %}">{{ legal.tipo }}</a></p>
+                    <p class="mb-1"><a href="{% url 'paginas_estaticas:privacitat' %}">{{ legal.tipo }}</a></p>
                     {% elif legal.tipo == 'avis_legal' %}
-                    <p class="mb-1"><a href="{% url 'legal:avis_legal' %}">{{ legal.tipo }}</a></p>
+                    <p class="mb-1"><a href="{% url 'paginas_estaticas:avis_legal' %}">{{ legal.tipo }}</a></p>
                     {% elif legal.tipo == 'cookies' %}
-                    <p class="mb-1"><a href="{% url 'legal:politica_cookies' %}">{{ legal.tipo }}</a></p>
+                    <p class="mb-1"><a href="{% url 'paginas_estaticas:politica_cookies' %}">{{ legal.tipo }}</a></p>
                     {% endif %}
                 </div>
             {% endfor %}
