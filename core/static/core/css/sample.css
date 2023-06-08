@@ -12,7 +12,68 @@ header .container-fluid nav {
 header nav .navbar-brand img{
     height: 2.5rem;
 }
+#navbar {
+    transition: top 0.3s ease-in-out;
+  }
+
 /* fin header */
+/* banner  */
+.banner {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: #3EBFAB;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  .main-title {
+    font-size: 5rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  
+  .sub-title {
+    font-size: 3rem;
+    margin: 0;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  
+  .banner-highlight {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #E76500;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  @media (max-width: 768px) {
+    .main-title {
+      font-size: 24px;
+    }
+    .sub-title {
+      font-size: 18px;
+    }
+    .banner-highlight {
+      font-size: 36px;
+    }
+  }
+  
+/* fin de banner */
+
+
 /* Parallax */
 .parallax-container {
     position: relative;
@@ -168,12 +229,109 @@ section.categoria-especial-container .col-especial-subBlog{
     height: 75px;
 }
 
-
+.agenda-special-category .especial-agenda{
+    max-height: 35px;
+}
+.agenda-special-category {
+    background-color: #fff;
+}
+.content-agenda-detail-container{
+    background-color: rgba(0,0,0,0.01);
+}
 
 /* fin subBlog especiales */
 
+/* agenda ultimos */
+
+aside .image-container {
+    height: 200px; /* Ajusta la altura deseada */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  aside .img-fluid {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: cover !important;
+  }
+  
+  aside .image-container .img-fluid {
+    max-height: 200px !important;
+    object-fit: cover !important;
+    width: 100% !important;
+  }
+  .image-container {
+    position: relative;
+  }
+  
+  .card-inline {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card-inline .event-details {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #E76500;
+    color: #FFF;
+    text-align: center;
+    padding: 5px;
+  }
+  
+  .card-inline .event-datetime {
+    font-weight: bold;
+    line-height: 1;
+  }
+  
+  
+
+/* fin de agenda ultimos */
+
+/* aside entradas */
+aside.bg-yellow {
+    background-color: #FFB516; /* Color corporativo amarillo */
+}
+
+aside .card {
+    border-radius: 10px;
+}
+
+aside .card h4 {
+    font-size: 24px;
+}
+
+aside .card p {
+    font-size: 16px;
+}
+
+aside .card a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-radius: 5px;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+aside .card a i {
+    margin-right: 5px;
+}
+
+/* fin aside entradas */
 
 
+
+/* agenda detalle */
+
+.agenda-pdf-link {
+    background-color: #31C6F8 !important;
+}
+/* fin de agenda detalle */
 
 /* Mapa portada */
 .loading-spinner {

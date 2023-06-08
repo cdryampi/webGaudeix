@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+{% include 'parallax/parallax.html' %}
+
+<section class="p-5">
+  <div class="container">
+    <div class="row">
+      {% for agenda in agendas %}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          {% with imagen=agenda.agendagaleriaimagen_set.first %}
+            {% if imagen %}
+            <img src="{{ imagen.imagen.archivo.url }}" class="card-img-top" alt="{{ agenda.titulo }}" style="height: 200px; object-fit: cover;">
+            {% endif %}
+          {% endwith %}
+          
+          <div class="card-body">
+            <h5 class="card-title">{{ agenda.titulo }}</h5>
+            <p class="card-text">{{ agenda.descripcion_corta }}</p>
+            <a href="{% url 'agenda:detalle_agenda' slug=agenda.slug %}" class="btn btn-primary">Ver detalle</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

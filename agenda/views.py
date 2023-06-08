@@ -1,24 +1,45 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView,TemplateView
-from .models import Agenda
-from core.mixin.base import BaseContextMixin
 
-from django.shortcuts import render
+from .models import Agenda
+
 from django.views import View
 from django.http import HttpResponse
-
+from django.shortcuts import get_object_or_404
+from django.views.generic import DetailView
 from xhtml2pdf import pisa
 from django.template.loader import get_template
 from io import BytesIO
 from django.db.models import Q
 from datetime import datetime,timedelta
+from core.mixin.base import BaseContextMixin
+from blog.models import Categoria
 
 
 # Create your views here.
-class AgendaListView(BaseContextMixin,ListView):
+
+class AgendaDetailView(BaseContextMixin, DetailView):
     model = Agenda
     template_name = 'agenda/agenda.html'
-    context_object_name = 'agendas'
+    context_object_name = 'agenda'
+
+    def get_object(self, queryset=None):
+        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
+        slug = self.kwargs.get('slug')
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, slug=slug)
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Obtener el objeto actual
+        current_object = self.get_object()
+        # Obtener los últimos objetos publicados, excluyendo el objeto actual
+        ultimos = Agenda.objects.filter(publicado=True).exclude(Q(pk=current_object.pk))
+        context['ultimos'] = ultimos
+        return context
+
+
+
 
 class PDFView(View):
     def get(self, request):

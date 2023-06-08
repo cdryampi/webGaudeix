@@ -11,7 +11,27 @@ User = get_user_model()
 
 class Agenda(Post):
     ubicacion = models.CharField(max_length=255)
-    descripcion_corta = models.CharField(max_length=255)    
+    descripcion_corta = models.CharField(max_length=255)
+    TIPO_EVENTO_CHOICES = (
+        ('musica', 'Música'),
+        ('teatre', 'Teatre'),
+        ('exposicio', 'Exposició'),
+        ('festes','festes'),
+        ('cinema', 'Cinema'),
+        ('dansa', 'Dansa'),
+        ('visites_guiades','Visites guiades'),
+        ('activitats_turistiques','Activitats turístiques'),
+        ('altres', 'Altres (Otros)'),
+    )
+
+    # Resto de campos de Agenda
+
+    tipo_evento = models.CharField(
+        max_length=30,
+        choices=TIPO_EVENTO_CHOICES,
+        help_text="Selecciona el tipo de evento",
+        default='altres',
+    )   
 
     class Meta:
         verbose_name = "Agenda"

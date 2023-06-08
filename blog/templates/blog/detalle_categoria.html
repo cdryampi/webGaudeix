@@ -1,0 +1,7 @@
+{% if categoria.tipo == 'normal' %}
+    {% include 'blog/normal.html' %}
+{% elif categoria.tipo == 'agenda' %}
+    {% include 'blog/agenda_portada.html' %}
+{% elif categoria.tipo == 'visitas_guiadas' %}
+    {% include 'blog/visitas_guiadas.html' %}
+{% endif %}

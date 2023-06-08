@@ -5,7 +5,7 @@
     <title>Cabrera de Mar</title>
     <!-- Agrega aquí tus etiquetas de estilo CSS, enlaces a archivos estáticos, etc. -->
     {% load static %}
-
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -18,7 +18,7 @@
     <!-- Agrega aquí el contenido común a todas las páginas -->
 
         <header>
-            {% include 'topbar/topbar.html' %}
+            
             {% include 'header/header.html' %}
         </header>
         {% if portada  %}
@@ -27,24 +27,26 @@
             
             {% include 'blog/categoria_especial.html' %}
         {% endif %}
-    <main>
+    <main class="container-fluid p-0 m-0">
         <!-- Contenido específico de cada página se insertará aquí -->
         {% block content %}
         {% endblock %}
     </main>
 
     {% if portada %}
-    
         {% include 'map/map.html' %}
     {% endif %}
 
-    <footer>
+    <footer class= "container-fluid">
         <!-- Pie de página -->
         {% include 'footer/footer.html' %}
     </footer>
 
     <!-- Agrega aquí tus scripts JavaScript u otros recursos -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
+    {% if portada %}
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
+    {% endif %}
+
     <script src="{% static 'core/js/main.js' %}"></script>
 
 

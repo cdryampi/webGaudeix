@@ -87,6 +87,15 @@ class Categoria(MetadataModel, BaseModel):
     )
     especial = models.BooleanField(
         _('Categoría Especial'), choices=ESPECIAL_CHOICES, default=False)
+    TIPOS = (
+        ('normal', 'normal'),
+        ('agenda', 'agenda'),
+        ('visitas_guiadas', 'visitas guiadas'),
+        # Agrega más tipos según tus necesidades
+    )
+
+    tipo = models.CharField(max_length=20, choices=TIPOS, default='normal')
+
     color = ColorField(default='#FFFFFF')
     publicado = models.BooleanField(default=False,help_text="Indica si la categoria està publicada o no. Si està publicada, es mostrarà en la llista de categories disponibles.")
 
@@ -155,6 +164,7 @@ class Post(MetadataModel, BaseModel):
     titulo = models.CharField(max_length=200)
     descripcion = RichTextField(help_text="Descripció de Post")
     entradas = models.BooleanField(default=False, help_text="Hi ha entrades?")
+    slug = models.SlugField(unique=True, editable=False)
     fecha = models.DateField(null=True, blank=True)
     hora = models.TimeField(null=True, blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
@@ -162,6 +172,10 @@ class Post(MetadataModel, BaseModel):
     tags = models.ManyToManyField(Tag, blank=True)
 
     def save(self, *args, **kwargs):
+        if not self.slug:
+            # Generar el slug basado en el título
+            self.slug = slugify(self.titulo)
+            super().save(*args, **kwargs)
         if not self.id:
             # Si es un nuevo objeto, se establece la fecha de creación y el usuario actual
             self.fecha_creacion = timezone.now()

@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'colorfield',
     'agenda',
     'paginas_estaticas',
-    'map'
+    'map',
+    'fontawesomefree'
     #'admin_tree'
     #'filters'
 ]
