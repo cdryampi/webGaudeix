@@ -56,12 +56,14 @@ INSTALLED_APPS = [
     'agenda',
     'paginas_estaticas',
     'map',
-    'fontawesomefree'
+    'fontawesomefree',
+    'corsheaders',
     #'admin_tree'
     #'filters'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

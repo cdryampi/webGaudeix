@@ -1,15 +1,17 @@
-from typing import Any
-from django.db.models.query import QuerySet
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from .models import Post,SubBlog,Categoria, CategoriaBannerImagen
 from agenda.models import Agenda
 from django.http import JsonResponse
 from django.views.generic import View
-from header.models import Referencia, Header
 from core.mixin.base import BaseContextMixin
 from personalizacion.models import Parallax
 from redes_sociales.models import RedSocial
+from .utils import agrupar_eventos_por_dia
+from django.db.models import Q
+import json
+from django.shortcuts import get_object_or_404
+
+
 
 class ListarPostsView(ListView):
     model = Post
@@ -46,6 +48,15 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
     template_name = 'blog/detalle_categoria.html'
     context_object_name = 'categoria'
     pk_url_kwarg = 'categoria_id'
+
+    def get_object(self, queryset=None):
+        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
+        slug = self.kwargs.get('slug')
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, slug=slug)
+        return obj
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Obtener el objeto de la categoría actual
@@ -64,24 +75,41 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         return context
 
 
-class FiltrarAgendaAPI(View):
-    def get(self, request):
-        # Obtener el parámetro de filtrado desde la URL
-        tipo_evento = request.GET.get('tipo_evento')
+
+from django.views import View
+from django.http import JsonResponse
+from django.db.models import Q
+import json
+
+class FiltrarAgendaView(View):
+    def post(self, request, *args, **kwargs):
+        # Obtener el parámetro de filtrado desde la solicitud POST
+        tipo_evento = request.POST.get('tipo_evento')
+        year_str = request.POST.get('year')
+        month_str = request.POST.get('month')
+
+        # Convertir los valores de año y mes a enteros
+        year = int(year_str)
+        month = int(month_str)
 
         # Filtrar las agendas según el tipo de evento
-        agendas = Agenda.objects.filter(publicado=True, tipo_evento=tipo_evento)
+        agendas = Agenda.objects.filter(publicado=True)
+        agendas = agendas.filter(
+            Q(fecha__year=year, fecha__month=month + 1) |
+            Q(fecha__isnull=True)
+        )
 
-        # Serializar los resultados del filtro como JSON
-        data = []
-        for agenda in agendas:
-            data.append({
-                'id': agenda.id,
-                'titulo': agenda.titulo,
-                'ubicacion': agenda.ubicacion,
-                'descripcion_corta': agenda.descripcion_corta,
-                # Agrega más campos según tus necesidades
-            })
+        if tipo_evento:
+            agendas = agendas.filter(tipo_evento=tipo_evento)
+
+        # Serializar los resultados del filtro
+        eventos_agrupados = agrupar_eventos_por_dia(agendas)
+        serialized_agendas = json.dumps(eventos_agrupados)
+
+        # Crear el diccionario de respuesta JSON
+        data = {
+            'agendas': serialized_agendas,
+        }
 
         # Devolver la respuesta JSON con los resultados del filtro
         return JsonResponse(data, safe=False)

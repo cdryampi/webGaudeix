@@ -73,7 +73,47 @@ header nav .navbar-brand img{
   
 /* fin de banner */
 
+/* calendar  */
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
+.calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  margin: 0.25rem;
+  cursor: pointer;
+}
+
+.event-day {
+  background-color: blue;
+  color: white;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: #f8f9fa;
+}
+
+.calendar-header button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #000;
+}
+/* end calendar */
 /* Parallax */
 .parallax-container {
     position: relative;

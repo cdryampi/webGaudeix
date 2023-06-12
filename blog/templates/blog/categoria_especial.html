@@ -3,7 +3,7 @@
     {% for categoria in categorias_especiales %}
     <div class="col-especial-subBlog">
         <div class="categoria-especial mx-auto text-center" style="background-color: {{ categoria.color }}">
-            <a href="{% url 'blog:categoria' categoria_id=categoria.id %}" class="text-white d-block">
+            <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="text-white d-block">
                 <img src="{{ categoria.categoriabannerimagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid align-middle">
                 <div class="caption">
                     <h3>{{ categoria.titulo }}</h3>

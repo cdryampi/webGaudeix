@@ -79,6 +79,9 @@ class Categoria(MetadataModel, BaseModel):
     subtitulo = models.CharField(
         max_length=255, help_text="Subtítol de categoria")
     descripcion = RichTextField(help_text="Descripció de categoría")
+
+    slug = models.SlugField(max_length=255, unique=True, editable=False)
+
     subblog = models.ForeignKey(
         SubBlog, on_delete=models.SET_NULL, null=True, blank=True)
     ESPECIAL_CHOICES = (
@@ -97,6 +100,7 @@ class Categoria(MetadataModel, BaseModel):
     tipo = models.CharField(max_length=20, choices=TIPOS, default='normal')
 
     color = ColorField(default='#FFFFFF')
+
     publicado = models.BooleanField(default=False,help_text="Indica si la categoria està publicada o no. Si està publicada, es mostrarà en la llista de categories disponibles.")
 
     def save(self, *args, **kwargs):
@@ -107,6 +111,8 @@ class Categoria(MetadataModel, BaseModel):
         else:
             if not self.creado_por:
                 self.creado_por = get_user_model().objects.first()
+        if not self.slug:
+            self.slug = slugify(self.titulo)
         # Siempre se actualiza la fecha de modificación y el usuario que modifica
         self.modificado_por = get_user_model().objects.first()
         self.fecha_modificacion = timezone.now()

@@ -1,0 +1,303 @@
+<div id="calendar" class="row"></div>
+
+<form id="filtro-agenda-form">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="tipo-evento">Tipo de Evento:</label>
+    <div id="tipo-evento" class="tipo-evento-buttons">
+      <button type="button" class="btn btn-light" value="">Todos</button>
+      <button type="button" class="btn btn-light" value="musica">Música</button>
+      <button type="button" class="btn btn-light" value="teatre">Teatre</button>
+      <button type="button" class="btn btn-light" value="exposicio">Exposició</button>
+      <button type="button" class="btn btn-light" value="festes">Festes</button>
+      <button type="button" class="btn btn-light" value="cinema">Cinema</button>
+      <button type="button" class="btn btn-light" value="dansa">Dansa</button>
+      <button type="button" class="btn btn-light" value="visites_guiades">Visites guiades</button>
+      <button type="button" class="btn btn-light" value="activitats_turistiques">Activitats turístiques</button>
+      <button type="button" class="btn btn-light" value="altres">Altres (Otros)</button>
+    </div>
+    <input type="hidden" id="tipo_evento" name="tipo_evento" value="">
+  </div>
+</form>
+
+<aside class="container-fluid">
+  <div class="container mt-5 p-3">
+    <div class="row row-inline-cards justify-content-center" id="agenda-section">
+      <div id="agenda-resultados">
+        <!-- Aquí se mostrarán los resultados del filtro -->
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  // Obtén los elementos HTML necesarios
+  const tipoEventoButtons = document.querySelectorAll('.tipo-evento-buttons button');
+  const tipoEventoInput = document.getElementById('tipo_evento');
+  const filtroForm = document.getElementById('filtro-agenda-form');
+  const resultadosContainer = document.getElementById('agenda-resultados');
+  const calendarElement = document.getElementById('calendar');
+
+  // Agrega event listeners a los botones
+  tipoEventoButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const valor = button.value;
+      tipoEventoInput.value = valor;
+
+      // Realiza la acción de filtro
+      filtrarAgenda();
+    });
+  });
+
+  // Agrega event listener al formulario de filtro
+  filtroForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    // Realiza la acción de filtro
+    filtrarAgenda();
+  });
+
+  function filtrarAgenda() {
+    // Obtén los valores de los filtros seleccionados
+    const tipoEvento = tipoEventoInput.value;
+    const form = document.getElementById('filtro-agenda-form');
+    const formData = new FormData(form);
+    const csrfToken = formData.get('csrfmiddlewaretoken');
+
+    // Obtén la fecha seleccionada en el calendario
+    const currentYear = calendarElement.dataset.year;
+    const currentMonth = calendarElement.dataset.month;
+
+    // Agrega la fecha al formulario
+    formData.set('year', currentYear);
+    formData.set('month', currentMonth);
+
+    // Realiza la llamada a la API para obtener los resultados filtrados
+    fetch('/blog/api/filtrar-agenda/', {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrfToken,
+      },
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error en la llamada a la API');
+        }
+      })
+      .then((data) => {
+        // Muestra los resultados en la página
+        mostrarResultados(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function obtenerEventosPorDia(agendas) {
+    const eventosPorDia = {};
+  
+    for (const dia in agendas) {
+      const eventos = agendas[dia];
+      eventosPorDia[dia] = eventos.map(function (evento) {
+        const agenda = evento.agenda;
+        const post = evento.post;
+        const eventoFusionado = Object.assign({}, agenda, post); // Fusionar campos de agenda y post
+        return eventoFusionado;
+      });
+    }
+  
+    return eventosPorDia;
+  }
+  
+  function mostrarResultados(resultados) {
+    if (resultadosContainer) {
+      resultadosContainer.innerHTML = '';
+  
+      const agendas = JSON.parse(resultados.agendas);
+  
+      const eventosPorDia = obtenerEventosPorDia(agendas);
+  
+      const currentYear = calendarElement.dataset.year;
+      const currentMonth = calendarElement.dataset.month;
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  
+      const eventosEnElMes = Object.keys(eventosPorDia).filter(function (dia) {
+        return parseInt(dia) <= daysInMonth;
+      });
+  
+      generarCalendario(currentYear, currentMonth, eventosEnElMes);
+  
+      eventosEnElMes.forEach(function (dia) {
+        const dayElement = document.querySelector(`.calendar-day:nth-child(${dia})`);
+        dayElement.classList.add('event-day');
+      });
+  
+      const rowElement = document.createElement('div');
+      rowElement.classList.add('row');
+  
+      for (const dia in eventosPorDia) {
+        const agendasDia = eventosPorDia[dia];
+        console.log(agendasDia);
+        agendasDia.forEach(function (agenda) {
+          const colElement = document.createElement('div');
+          colElement.classList.add('col-md-4', 'col-lg-3', 'col-6');
+  
+          const cardElement = document.createElement('div');
+          cardElement.classList.add('card', 'mb-3', 'card-inline', 'flex-fill', 'h-100');
+  
+          const imageContainer = document.createElement('div');
+          imageContainer.classList.add('image-container');
+  
+          const imagen = agenda.imagen;
+          if (imagen) {
+            const image = document.createElement('img');
+            image.src = agenda.imagen;
+            image.alt = agenda.titulo;
+            image.classList.add('card-img-top');
+            imageContainer.appendChild(image);
+          }
+  
+          const cardBody = document.createElement('div');
+          cardBody.classList.add('card-body');
+  
+          const cardTitle = document.createElement('h5');
+          cardTitle.classList.add('card-title');
+          cardTitle.textContent = agenda.titulo;
+          cardBody.appendChild(cardTitle);
+  
+          const cardText = document.createElement('p');
+          cardText.classList.add('card-text');
+          const descripcionCorta = agenda.descripcion_corta || 'Descripción no disponible';
+          cardText.textContent = descripcionCorta
+          cardBody.appendChild(cardText);
+  
+          const eventDetails = document.createElement('div');
+          eventDetails.classList.add('event-details');
+  
+          const eventDateTime = document.createElement('p');
+          eventDateTime.classList.add('event-date-time');
+  
+          const calendarIcon = document.createElement('i');
+          calendarIcon.classList.add('fas', 'fa-calendar-alt');
+          eventDateTime.appendChild(calendarIcon);
+  
+          const eventDate = document.createElement('span');
+          eventDate.classList.add('event-date');
+          eventDate.textContent = agenda.fecha || 'Fecha no disponible';
+          eventDateTime.appendChild(eventDate);
+  
+          const clockIcon = document.createElement('i');
+          clockIcon.classList.add('fas', 'fa-clock');
+          eventDateTime.appendChild(clockIcon);
+  
+          const eventTime = document.createElement('span');
+          eventTime.classList.add('event-time');
+          eventTime.textContent = agenda.hora || 'Hora no disponible';
+          eventDateTime.appendChild(eventTime);
+  
+          eventDetails.appendChild(eventDateTime);
+          cardBody.appendChild(eventDetails);
+  
+          const detallesLink = document.createElement('a');
+          detallesLink.href = '/agenda/' + agenda.slug + '/'; // Combina la URL base con el slug de la agenda
+          detallesLink.classList.add('btn', 'btn-primary');
+          detallesLink.textContent = 'Detalles';
+          cardBody.appendChild(detallesLink);
+          
+  
+          cardElement.appendChild(imageContainer);
+          cardElement.appendChild(cardBody);
+  
+          colElement.appendChild(cardElement);
+  
+          rowElement.appendChild(colElement);
+        });
+      }
+  
+      resultadosContainer.appendChild(rowElement);
+    } else {
+      console.log('El contenedor de resultados no se encuentra en el HTML');
+    }
+  }
+  
+  
+  
+
+  // Código para inicializar el calendario
+  function generarCalendario(year, month, eventos) {
+    // Convierte los valores de año y mes a enteros
+    year = parseInt(year);
+    month = parseInt(month);
+  
+    // Crea una nueva instancia de Date para el primer día del mes
+    const firstDay = new Date(year, month, 1);
+  
+    // Obtén el número de días en el mes
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+  
+    // Crea los días del calendario utilizando las clases de Bootstrap
+    let calendarDays = '';
+    for (let i = 1; i <= daysInMonth; i++) {
+      let dayClass = 'calendar-day';
+      if (eventos.includes(i.toString())) {
+        dayClass += ' event-day';
+      }
+      calendarDays += `<div class="${dayClass}">${i}</div>`;
+    }
+  
+    // Combina los días del calendario
+    const calendarHTML = `
+      <div class="col-12">
+        <div class="calendar">
+          <div class="calendar-header">
+            <button class="btn btn-link" onclick="mostrarCalendario(${year}, ${month - 1})"><i class="fas fa-chevron-left"></i></button>
+            <h4>${new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' })}</h4>
+            <button class="btn btn-link" onclick="mostrarCalendario(${year}, ${month + 1})"><i class="fas fa-chevron-right"></i></button>
+          </div>
+          <div class="w-100 d-block"></div>
+          <div class="row">
+            ${calendarDays}
+          </div>
+        </div>
+      </div>
+    `;
+  
+    // Asigna el HTML generado al elemento del calendario
+    calendarElement.innerHTML = calendarHTML;
+  
+    // Establece los atributos "data-year" y "data-month" en el elemento del calendario
+    calendarElement.dataset.year = year;
+    calendarElement.dataset.month = month;
+  }
+  
+
+  // Función para mostrar el calendario de un mes específico
+  function mostrarCalendario(year, month) {
+    generarCalendario(year, month, []);
+
+    // Llamada inicial para mostrar los eventos del mes actual
+    filtrarAgenda();
+
+    // Actualizar los eventos cuando se cambie de mes
+    calendarElement.addEventListener('click', (event) => {
+        if (event.target.classList.contains('fa-chevron-left') || event.target.classList.contains('fa-chevron-right')) {
+        const currentYear = calendarElement.dataset.year;
+        const currentMonth = calendarElement.dataset.month;
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const eventosEnElMes = Object.keys(eventosPorDia).filter(function (dia) {
+            return parseInt(dia) <= daysInMonth;
+        });
+        mostrarResultados(eventosPorDia);
+        }
+    });
+  }
+
+  // Llamar a la función para generar el calendario inicial
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  mostrarCalendario(currentYear, currentMonth);
+</script>
