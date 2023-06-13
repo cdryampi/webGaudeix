@@ -43,6 +43,7 @@ class PostImagenInline(admin.TabularInline):
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
                     Q(agendagaleriaimagen__isnull=True),
+                    Q(visitaguidadagaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -68,7 +69,8 @@ class PostGaleriaImagenInline(admin.TabularInline):
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True),
-                    Q(postgaleriaimagen__isnull=True)
+                    Q(postgaleriaimagen__isnull=True),
+                    Q(visitaguidadagaleriaimagen__isnull=True)
                     | Q(postgaleriaimagen__post__id=post_id),
                 )
             kwargs['empty_label'] = 'Sin imagen asociada'
@@ -91,6 +93,6 @@ class PostAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         
         # Filtrar los objetos de tipo Agenda
-        queryset = queryset.exclude(agenda__isnull=False)
+        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguidada__isnull=False)
         
         return queryset

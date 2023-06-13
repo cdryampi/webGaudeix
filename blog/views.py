@@ -4,7 +4,7 @@ from agenda.models import Agenda
 from django.http import JsonResponse
 from django.views.generic import View
 from core.mixin.base import BaseContextMixin
-from personalizacion.models import Parallax
+from personalizacion.models import Parallax, CarruselSubBlog, Carrusel
 from redes_sociales.models import RedSocial
 from .utils import agrupar_eventos_por_dia
 from django.db.models import Q
@@ -36,12 +36,30 @@ class ListarSubBlogView(ListView):
         # Implementa aquí tu lógica personalizada para filtrar o manipular la queryset
         queryset = super().get_queryset().filter(publicado=True)
         return queryset
+    
+
+    
 
 class DetalleSubBlogView(BaseContextMixin, DetailView):
     model = SubBlog
     template_name = 'blog/detalle_subblog.html'
     context_object_name = 'subblog'
     pk_url_kwarg = 'subblog_id'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        subblog_actual = self.object
+        cr = CarruselSubBlog.objects.filter(subblog=subblog_actual).first()
+        cc = Carrusel.objects.filter(pk=cr.carrusel.pk).first() if cr else None
+        ultimas_agendas = Agenda.objects.filter(Q(categoria__subblog=subblog_actual) | Q(categoria__subblog__isnull=True)).order_by('-fecha_creacion')[:3]
+        
+
+
+        context['categorias'] = Categoria.objects.filter(subblog=subblog_actual)
+        context['ultimos'] = ultimas_agendas if ultimas_agendas else None
+        context['carrusel'] = cc
+        
+        return context
 
 class CategoriaDetailView(BaseContextMixin, DetailView):
     model = Categoria

@@ -3,14 +3,15 @@ from ckeditor.fields import RichTextField
 from core.models import MetadataModel, BaseModel
 from django.utils import timezone
 from multimedia_manager.models import Imagen, Fichero
-
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 from colorfield.fields import ColorField
 from django.core.validators import MinLengthValidator, RegexValidator
+from django.urls import reverse
 
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
+
 
 User = get_user_model()
 
@@ -33,6 +34,7 @@ class SubBlog(MetadataModel, BaseModel):
     publicado = models.BooleanField(
         default=False, help_text="Indica si el subblog està publicat")
 
+
     def save(self, *args, **kwargs):
         if not self.id:
             # Si es un nuevo objeto, se establece la fecha de creación y el usuario actual
@@ -42,14 +44,28 @@ class SubBlog(MetadataModel, BaseModel):
         else:
             if not self.creado_por:
                 self.creado_por = get_user_model().objects.first()
+            # Verificar si el slug ha cambiado
+            if self.slug != slugify(self.titulo):
+                base_slug = slugify(self.titulo)
+                slug = base_slug
+                suffix = 1
+                while SubBlog.objects.filter(slug=slug).exists():
+                    slug = f"{base_slug}-{suffix}"
+                    suffix += 1
+                self.slug = slug
+
         # Siempre se actualiza la fecha de modificación y el usuario que modifica
         self.modificado_por = get_user_model().objects.first()
         self.fecha_modificacion = timezone.now()
 
         super().save(*args, **kwargs)
-
+        
+    def get_absolute_url(self):
+        return reverse('blog:detalle-subblog', kwargs={'slug': self.slug})
+    
     def __str__(self):
         return self.titulo
+
 
 
 class SubBlogImagen(models.Model):
@@ -104,6 +120,7 @@ class Categoria(MetadataModel, BaseModel):
     publicado = models.BooleanField(default=False,help_text="Indica si la categoria està publicada o no. Si està publicada, es mostrarà en la llista de categories disponibles.")
 
     def save(self, *args, **kwargs):
+        
         if not self.id:
             # Si es un nuevo objeto, se establece la fecha de creación y el usuario actual
             self.fecha_creacion = timezone.now()
@@ -152,6 +169,8 @@ class CategoriaGaleriaImagen(models.Model):
 
     def __str__(self):
         return f"Categoría: {self.categoria.titulo} - Imagen: {self.imagen}"
+    
+
     def delete(self, *args, **kwargs):
         self.imagen.delete()
         super().delete(*args, **kwargs)
@@ -181,7 +200,14 @@ class Post(MetadataModel, BaseModel):
         if not self.slug:
             # Generar el slug basado en el título
             self.slug = slugify(self.titulo)
-            super().save(*args, **kwargs)
+        else:
+            original_slug = self.slug
+            counter = 1
+            while Post.objects.filter(slug=self.slug).exists():
+                # Si ya existe un Post con el mismo slug, añadir un contador al final del slug
+                self.slug = f"{original_slug}-{counter}"
+                counter += 1
+
         if not self.id:
             # Si es un nuevo objeto, se establece la fecha de creación y el usuario actual
             self.fecha_creacion = timezone.now()
@@ -196,6 +222,9 @@ class Post(MetadataModel, BaseModel):
             self.entradas = False
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('blog:detalle-post', kwargs={'slug': self.slug})
+    
 
     def __str__(self):
         return self.titulo

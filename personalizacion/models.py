@@ -43,7 +43,6 @@ class Slide(models.Model):
     imagen = models.ImageField(upload_to='slides/')
     titulo = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=100,help_text="Texto que aparecerá en el centro del carrusel", null=True, blank=True)
-
     def __str__(self):
         return self.titulo
 
@@ -140,6 +139,19 @@ class VideosPortada(models.Model):
     def delete(self, *args, **kwargs):
         self.videos.clear()
         super().delete(*args, **kwargs)
+
+
+class CarruselSubBlog(models.Model):
+    carrusel = models.ForeignKey(Carrusel, on_delete=models.CASCADE)
+    subblog = models.ForeignKey(SubBlog, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Carrusel de SubBlog'
+        verbose_name_plural = 'Carruseles de SubBlogs'
+
+    def __str__(self):
+        return f"Carrusel: {self.carrusel.nombre} - SubBlog: {self.subblog.titulo}"
+
 
 
 class Personalizacion(models.Model):

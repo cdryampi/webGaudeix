@@ -28,7 +28,8 @@ class CategoriaBannerImagenInline(admin.TabularInline):
                 categoriagaleriaimagen__isnull=True,
                 postimagen__isnull=True,
                 postgaleriaimagen__isnull = True,
-                agendagaleriaimagen__isnull=True
+                agendagaleriaimagen__isnull=True,
+                visitaguidadagaleriaimagen__isnull=True
             )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -52,7 +53,8 @@ class CategoriaGaleriaImagenInline(admin.TabularInline):
                     Q(categoriagaleriaimagen__isnull=True) | Q(categoriagaleriaimagen__categoria_id=categoria_id),
                     Q(postimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
-                    Q(agendagaleriaimagen__isnull=True)
+                    Q(agendagaleriaimagen__isnull=True),
+                    Q(visitaguidadagaleriaimagen__isnull=True)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)

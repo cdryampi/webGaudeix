@@ -1,4 +1,5 @@
 {% load static %}
+{% if header %}
 <div class="container-fluid p-0 header-container">
     {% include 'topbar/topbar.html' %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark  menu-fijo" id="navbar">
@@ -21,15 +22,18 @@
                     {% elif referencia.tipo == 'post' %}
                         <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}">{{ referencia.post.titulo }}</a></li>
                     {% elif referencia.tipo == 'categoria' %}
-                    <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{{ referencia.categoria.titulo }}</a></li>
-
+                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{{ referencia.categoria.titulo }}</a></li>
                     {% elif referencia.tipo == 'subblog' %}
-                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_subblog' subblog_id=referencia.subblog.id %}">{{ referencia.subblog.titulo }}</a></li>
+                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_subblog' slug=referencia.subblog.slug %}">{{ referencia.subblog.titulo }}</a></li>
                     {% endif %}
                 {% endfor %}
+            
             </ul>
         </div>
     </div>
     </nav>
 
 </div>
+{% else %}
+    {% include 'header/header_default.html' %}
+{% endif %}

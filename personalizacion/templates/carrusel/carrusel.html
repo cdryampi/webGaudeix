@@ -1,0 +1,144 @@
+{% block extra_css %}
+    <style>
+        /* Estils per al carrusel */
+        .carousel {
+          height: 100vh;
+          position: relative;
+        }
+        
+        .carousel-inner {
+          height: 100%;
+        }
+        
+        .carousel-caption {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          text-align: center;
+          color: #fff;
+          z-index: 10;
+        }
+        
+        .carousel-caption h3 {
+          font-size: 24px;
+        }
+        
+        .carousel-caption p {
+          font-size: 16px;
+        }
+        
+        .carousel-indicators {
+          position: absolute;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 15;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        
+        .carousel-indicators li {
+          background-color: #fff;
+          border: 1px solid #777;
+          border-radius: 50%;
+          width: 12px;
+          height: 12px;
+          margin: 0 6px;
+        }
+        
+        .carousel-indicators .active {
+          background-color: #777;
+        }
+        
+        /* Estils per als controls */
+        .carousel-control-prev,
+        .carousel-control-next {
+          width: 30px;
+          height: 30px;
+          font-size: 40px;
+          text-align: center;
+          background-color: rgba(0, 0, 0, 0.5);
+          opacity: 0.8;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10;
+        }
+        
+        .carousel-control-prev {
+          left: 10px;
+        }
+        
+        .carousel-control-next {
+          right: 10px;
+        }
+        
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+          color: #fff;
+        }
+        
+        .carousel-caption h3 {
+            font-size: 4rem;
+            font-weight: bold;
+          }
+          
+        .carousel-caption p {
+            font-size: 2rem;
+        }
+          
+        .carousel-item img {
+            animation: zoomIn 15s ease-in-out forwards;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.5);
+            }
+        }  
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<div id="carouselExample" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        {% for slide in carrusel.slides.all %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ slide.imagen.url }}" class="d-block w-100" alt="Slide">
+            {% if slide.slide_link %}
+                <a href="{{ slide.slide_link }}" class="carousel-caption">
+                    <h3>{{ slide.titulo }}</h3>
+                    <p>{{ slide.descripcion }}</p>
+                </a>
+            {% else %}
+                <span class="carousel-caption">
+                    <h3>{{ slide.titulo }}</h3>
+                    <p>{{ slide.descripcion }}</p>
+                </span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+  
+    <ol class="carousel-indicators">
+      {% for slide in carrusel.slides.all %}
+      <li data-target="#carouselExample" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+      {% endfor %}
+    </ol>
+  
+    <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Següent</span>
+    </a>
+</div>
+{% endblock %}
