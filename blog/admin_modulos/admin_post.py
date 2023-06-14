@@ -42,8 +42,6 @@ class PostImagenInline(admin.TabularInline):
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
-                    Q(agendagaleriaimagen__isnull=True),
-                    Q(visitaguidadagaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -64,13 +62,11 @@ class PostGaleriaImagenInline(admin.TabularInline):
             
             # Filtrar las imágenes disponibles para seleccionar
                 kwargs['queryset'] = Imagen.objects.filter(
-                    Q(agendagaleriaimagen__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True),
-                    Q(postgaleriaimagen__isnull=True),
-                    Q(visitaguidadagaleriaimagen__isnull=True)
+                    Q(postgaleriaimagen__isnull=True)
                     | Q(postgaleriaimagen__post__id=post_id),
                 )
             kwargs['empty_label'] = 'Sin imagen asociada'

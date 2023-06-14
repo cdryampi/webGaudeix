@@ -1,4 +1,16 @@
-<div id="calendar" class="row"></div>
+{% block extra_css %}
+
+  <style>
+  .tipo-evento-buttons .btn.active {
+    background-color: #F00; /* Cambia el color a tu elección */
+    color: #FFF; /* Cambia el color a tu elección */
+  }
+  </style>
+
+{% endblock extra_css %}
+
+<div id="calendar" cl
+ass="row"></div>
 
 <form id="filtro-agenda-form">
   {% csrf_token %}
@@ -14,6 +26,7 @@
       <button type="button" class="btn btn-light" value="dansa">Dansa</button>
       <button type="button" class="btn btn-light" value="visites_guiades">Visites guiades</button>
       <button type="button" class="btn btn-light" value="activitats_turistiques">Activitats turístiques</button>
+      <button type="button" class="btn btn-light" value="xarrades">Xarrades</button>
       <button type="button" class="btn btn-light" value="altres">Altres (Otros)</button>
     </div>
     <input type="hidden" id="tipo_evento" name="tipo_evento" value="">
@@ -44,10 +57,17 @@
       const valor = button.value;
       tipoEventoInput.value = valor;
 
+      // Cambia el color de los botones
+      tipoEventoButtons.forEach((btn) => {
+        btn.classList.remove('active');
+      });
+      button.classList.add('active');
+
       // Realiza la acción de filtro
       filtrarAgenda();
     });
   });
+
 
   // Agrega event listener al formulario de filtro
   filtroForm.addEventListener('submit', (event) => {

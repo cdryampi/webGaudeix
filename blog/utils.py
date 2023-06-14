@@ -58,7 +58,7 @@ def agrupar_eventos_por_dia(eventos):
                         'hora': post.hora.strftime('%H:%M') if post.hora else '',
                         'categoria': post.categoria.titulo if post.categoria else '',
                         'slug': post.slug if post.slug else '',
-                        'imagen':agenda.agendagaleriaimagen_set.all().first().imagen.archivo.url if agenda.agendagaleriaimagen_set.all() else '',
+                        'imagen':agenda.postgaleriaimagen_set.all().first().imagen.archivo.url if agenda.postgaleriaimagen_set.all() else '',
                         'tags': [tag.nombre for tag in post.tags.all()],
                         # Agrega otros campos de Post que necesites
                     }

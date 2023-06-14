@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from .models import Post,SubBlog,Categoria, CategoriaBannerImagen
-from agenda.models import Agenda
+from agenda.models import Agenda, VisitaGuidada
 from django.http import JsonResponse
 from django.views.generic import View
 from core.mixin.base import BaseContextMixin
@@ -10,6 +10,7 @@ from .utils import agrupar_eventos_por_dia
 from django.db.models import Q
 import json
 from django.shortcuts import get_object_or_404
+
 
 
 
@@ -89,15 +90,14 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             context['redes_sociales'] = redes_sociales
             context['parallax'] = parallax
             context['agendas'] = agendas
-
+        elif categoria.tipo == 'visitas_guiadas':
+            visitas_guiadas = VisitaGuidada.objects.filter(publicado=True, categoria = categoria).all()
+            context['visitas_guiadas'] = visitas_guiadas
         return context
 
 
 
-from django.views import View
-from django.http import JsonResponse
-from django.db.models import Q
-import json
+
 
 class FiltrarAgendaView(View):
     def post(self, request, *args, **kwargs):

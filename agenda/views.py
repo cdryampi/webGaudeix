@@ -1,5 +1,5 @@
 
-from .models import Agenda
+from .models import Agenda, VisitaGuidada
 
 from django.views import View
 from django.http import HttpResponse
@@ -15,6 +15,35 @@ from blog.models import Categoria
 
 
 # Create your views here.
+class VisitaGuiadaView(BaseContextMixin, DetailView):
+    model = VisitaGuidada
+    template_name = 'agenda/visita_guiada.html'
+    context_object_name = 'visites'
+
+
+
+    def get_object(self, queryset=None):
+        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
+        
+        slug = self.kwargs.get('slug')
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, slug=slug)
+        return obj
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_object = self.get_object()
+
+        print("Current Object:", current_object)
+
+        agendas_relacionadas = Agenda.objects.filter(visitas_guiadas=current_object, publicado=True).exclude(pk=current_object.pk)[:3]
+        print("Agendas Relacionadas:", agendas_relacionadas)
+
+        context['agendas_relacionadas'] = agendas_relacionadas
+        return context
+
+
 
 class AgendaDetailView(BaseContextMixin, DetailView):
     model = Agenda

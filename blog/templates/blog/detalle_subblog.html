@@ -116,7 +116,7 @@
         {% for objeto in ultimos %}
         <div class="col-12">
             <div class="card mb-3 card-inline flex-fill h-100">
-                {% with imagen=objeto.agendagaleriaimagen_set.first %}
+                {% with imagen=objeto.postgaleriaimagen_set.first %}
                     {% if imagen %}
                     <div class="image-container">
                         <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid img-inline">

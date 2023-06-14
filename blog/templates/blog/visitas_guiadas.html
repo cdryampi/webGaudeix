@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+
+{% block extra_css %}
+<style>
+    .visita-guiada-card {
+        margin-bottom: 20px;
+    }
+    
+    .visita-guiada-card .tipo-visita {
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .visita-guiada-card .tipo-visita-agenda {
+        background-color: #17a2b8;
+    }
+
+    .visita-guiada-card .tipo-visita-guiada {
+        background-color: #28a745;
+    }
+
+    .visita-guiada-card .tipo-visita-otro {
+        background-color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ categoria.titulo }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">{{ categoria.descripcion | safe }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            {% if categoria.tipo == 'visitas_guiadas' %}
+                {% for visita in visitas_guiadas %}
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card visita-guiada-card">
+                            <div class="tipo-visita {% if visita.publico_recomendado == 'nens' %}tipo-visita-agenda{% elif visita.publico_recomendado == 'adults' %}tipo-visita-guiada{% else %}tipo-visita-otro{% endif %}">
+                                {% if visita.publico_recomendado == 'nens' %}
+                                    <i class="fas fa-child"></i>
+                                {% elif visita.publico_recomendado == 'adults' %}
+                                    <i class="fas fa-user"></i>
+                                {% else %}
+                                    <i class="fas fa-users"></i>
+                                {% endif %}
+                                {{ visita.get_publico_recomendado_display }}
+                            </div>
+                            {% if visita.postgaleriaimagen_set.exists %}
+                                {% with imagen=visita.postgaleriaimagen_set.first %}
+                                    {% if imagen %}
+                                        <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita" class="img-fluid">
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                            <div class="card-body">
+                                <h2 class="card-title">{{ visita.titulo }}</h2>
+                                <div class="card-text">{{ visita.descripcion | safe }}</div>
+                                <p class="card-text">Data: {{ visita.fecha }}</p>
+                                <p class="card-text">Durada: {{ visita.duracion }} hores</p>
+                                <p class="card-text">Lloc: {{ visita.punto_inicio.titulo }}</p>
+                                <!-- Afegeix aquí altres detalls rellevants per a la carta -->
+                                <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="visita-guiada-link">Veure més</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

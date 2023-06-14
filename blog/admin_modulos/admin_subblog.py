@@ -30,8 +30,6 @@ class SubBlogImagenInline(admin.TabularInline):
                 categoriagaleriaimagen__isnull=True,
                 postimagen__isnull=True,
                 postgaleriaimagen__isnull=True,
-                agendagaleriaimagen__isnull=True,
-                visitaguidadagaleriaimagen__isnull=True
             )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
