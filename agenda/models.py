@@ -99,7 +99,7 @@ class VisitaGuidada(Post):
 
 
     def get_absolute_url(self):
-        return reverse('visites-guiades', kwargs={'slug': self.slug})
+        return reverse('agenda:visites-guiades', kwargs={'slug': self.slug})
 
 
     def __str__(self):

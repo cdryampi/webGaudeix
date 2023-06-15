@@ -27,11 +27,12 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('', include(('core.urls', 'core'), namespace='core')),
-    path('blog/',include('blog.urls')),
+    path('',include('blog.urls')),
     path('agenda/',include('agenda.urls')),
     path('map/',include('map.urls')),
-    path('personalizacion/',include('personalizacion.urls')),
-    path('paginas_estaticas/', include('paginas_estaticas.urls'))
+    path('',include('personalizacion.urls')),
+    path('', include('paginas_estaticas.urls')),
+    path('api/', include('api.urls'))
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),

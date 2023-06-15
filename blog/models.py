@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from colorfield.fields import ColorField
 from django.core.validators import MinLengthValidator, RegexValidator
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
@@ -59,7 +60,11 @@ class SubBlog(MetadataModel, BaseModel):
         self.fecha_modificacion = timezone.now()
 
         super().save(*args, **kwargs)
-        
+    def view_on_site(self, obj):
+        url = obj.get_absolute_url()
+        if url:
+            return mark_safe(f'<a href="{url}" target="_blank">Veure al lloc</a>')
+        return None    
     def get_absolute_url(self):
         return reverse('blog:detalle-subblog', kwargs={'slug': self.slug})
     

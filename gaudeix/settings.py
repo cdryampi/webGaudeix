@@ -57,13 +57,13 @@ INSTALLED_APPS = [
     'paginas_estaticas',
     'map',
     'fontawesomefree',
-    'corsheaders',
+    #'corsheaders',
     #'admin_tree'
     #'filters'
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    #'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -168,3 +168,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 #GOOGLE_MAPS_API_KEY = 'kAIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ'
 
+# Correo electrónico auxiliar
+AUXILIARY_EMAIL = 'ysanchez@cabrerademar.cat'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ysanchez@cabrerademar.cat'  # Reemplaza con tu dirección de correo Gmail
+EMAIL_HOST_PASSWORD = 'Cabrera@2023'  # Reemplaza con tu contraseña de Gmail

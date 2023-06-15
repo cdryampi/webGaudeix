@@ -1,0 +1,87 @@
+<!-- HTML -->
+<aside>
+    <h2>Butlletí electrònic</h2>
+    <form id="newsletter-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="email">Correu electrònic:</label>
+        <input type="email" class="form-control" id="email" placeholder="Introduïu el vostre correu electrònic" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Subscriure's</button>
+    </form>
+    <div id="notification-messages"></div>
+</aside>
+  
+  
+  <script>
+    // JavaScript
+    document.getElementById('newsletter-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+  
+      var emailInput = document.getElementById('email');
+      var email = emailInput.value;
+  
+      // Validar el correo electrónico
+      if (!validateEmail(email)) {
+        displayNotification('error', 'Direcció de correu electrònic invàlida');
+        return;
+      }
+  
+      // Obtener el token CSRF del formulario
+      var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+  
+      // Crear un objeto FormData y agregar el correo electrónico
+      var formData = new FormData();
+      formData.append('email', email);
+  
+      // Realizar la petición al servidor utilizando fetch
+      fetch('/api/newsletter/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrfToken
+        },
+        body: formData
+      })
+      .then(function(response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error en la petició');
+        }
+      })
+      .then(function(data) {
+        if (data.success) {
+          displayNotification('success', 'Subscripció exitosa');
+        } else {
+          displayNotification('error', 'Error en la petició');
+        }
+      })
+      .catch(function(error) {
+        displayNotification('error', error.message);
+      });
+  
+      // Limpiar el campo de correo electrónico
+      emailInput.value = '';
+    });
+  
+    function validateEmail(email) {
+      // Validar el formato del correo electrónico
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+  
+    function displayNotification(type, message) {
+      var notificationDiv = document.createElement('div');
+      notificationDiv.className = 'notification ' + type;
+      notificationDiv.innerText = message;
+  
+      var notificationContainer = document.getElementById('notification-messages');
+      notificationContainer.appendChild(notificationDiv);
+  
+      // Eliminar el mensaje después de unos segundos
+      setTimeout(function() {
+        notificationDiv.remove();
+      }, 3000);
+    }
+  </script>
+  

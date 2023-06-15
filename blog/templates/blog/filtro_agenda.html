@@ -93,7 +93,7 @@ ass="row"></div>
     formData.set('month', currentMonth);
 
     // Realiza la llamada a la API para obtener los resultados filtrados
-    fetch('/blog/api/filtrar-agenda/', {
+    fetch('/api/filtrar-agenda/', {
       method: 'POST',
       headers: {
         'X-CSRFToken': csrfToken,

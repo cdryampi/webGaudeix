@@ -10,7 +10,8 @@ from .utils import agrupar_eventos_por_dia
 from django.db.models import Q
 import json
 from django.shortcuts import get_object_or_404
-
+from django.http import Http404
+from django.contrib import messages
 
 
 
@@ -165,3 +166,6 @@ class SeleccionDestacadosCategoria(ListView):
     model = Categoria
     template_name = 'blog/listar_categoria_destacados.html'
     context_object_name = 'categorias'
+
+
+# vistas previas del admin
