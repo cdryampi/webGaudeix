@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %}
+{% block extra_css %}
+
+  <style>
+    .banner {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+    }
+    
+    .banner-title {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .banner-subtitle {
+      font-size: 18px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+      }
+      
+      label {
+        font-weight: bold;
+      }
+      
+      .form-control {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100%;
+      }
+      
+      textarea.form-control {
+        resize: vertical;
+      }
+      
+      .form-check-label {
+        font-weight: normal;
+      }
+      
+      .disclaimer {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #888;
+      }
+      
+      .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+      
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }      
+  </style>
+
+{% endblock extra_css %}
+
+{% block content %}
+<section class="contact-section">
+  {% if contacto.banner %}
+    <div class="banner" style="background-image: url('{{ contacto.banner.url }}');">
+      <h3 class="banner-title">{{ contacto.titulo }}</h3>
+    </div>
+  {% endif %}
+  <div class="container-fluid">
+  <!-- Mostrar la imagen del banner -->
+    <div class="row py-5">
+      <div class="col-lg-8 mx-auto">
+        <div class="contact-form">
+
+
+          <h2>Contacto</h2>
+          <p>{{ contacto.descripcion }}</p>
+          <!-- Incluir el formulario de Teenvío -->
+          {% include 'api/teenvio_contacto.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

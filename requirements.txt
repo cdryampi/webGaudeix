@@ -13,13 +13,14 @@ colorama==0.4.6
 cryptography==41.0.0
 cssselect2==0.7.0
 decorator==5.1.1
-Django==3.2.19
+Django==4.2.2
 django-adminlte-ui==1.7.2
 django-appconf==1.0.5
 django-autocomplete-light==3.9.7
 django-bootstrap4==23.1
 django-ckeditor==6.5.1
 django-colorfield==0.8.0
+django-cors-headers==4.0.0
 django-js-asset==2.0.0
 django-select2==8.1.1
 django-singleton-model==0.2.3
@@ -60,6 +61,7 @@ qrcode==7.4.2
 reportlab==3.6.13
 requests==2.31.0
 rlPyCairo==0.2.0
+secure-smtplib==0.1.1
 six==1.16.0
 soupsieve==2.4.1
 sqlparse==0.4.4

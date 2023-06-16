@@ -69,7 +69,7 @@ class Contacto(PaginaEstatica):
     # Atributos específicos del contacto
     banner = models.ImageField(upload_to='contacto/', null=True, blank=True, help_text="Banner del contacto")
     subtitulo = models.CharField(max_length=100, blank=True, help_text="Subtítulo del contacto")
-    descripcion = models.TextField(blank=True, help_text="Descripción del contacto")
+    descripcion = RichTextField(help_text="Descripción del contacto")
 
     def clean(self):
         if Contacto.objects.exclude(pk=self.pk).exists():

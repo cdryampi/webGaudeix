@@ -1,0 +1,186 @@
+<form method="POST" id="contactForm">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-6 col-12">
+      <div class="form-group">
+        <label for="name">Nom:</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Introduïu el vostre nom" required>
+      </div>
+      <div class="form-group">
+        <label for="name">Cognoms:</label>
+        <input type="text" class="form-control" id="surname" name="surname" placeholder="Introduïu el vostre cognom" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Introduïu el vostre email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Telèfon:</label>
+        <input type="text" class="form-control" id="phone" name="phone" placeholder="Introduïu el vostre telèfon" required>
+      </div>
+      <div class="form-group">
+        <label for="address">Adreça:</label>
+        <input type="text" class="form-control" id="address" name="address" placeholder="Introduïu la vostra adreça">
+      </div>
+    </div>
+    <div class="col-lg-6 col-12">
+      <div class="form-group">
+        <label for="postal_code">Codi Postal:</label>
+        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Introduïu el codi postal">
+      </div>
+      <div class="form-group">
+        <label for="city">Població:</label>
+        <input type="text" class="form-control" id="city" name="city" placeholder="Introduïu la població" required>
+      </div>
+      <div class="form-group">
+        <label for="country">País:</label>
+        <input type="text" class="form-control" id="country" name="country" placeholder="Introduïu el país">
+      </div>
+      <div class="form-group">
+        <label for="message">Missatge:</label>
+        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Introduïu el vostre missatge" required></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="privacy_policy" name="privacy_policy" required>
+    <label class="form-check-label" for="privacy_policy">
+      He llegit i accepto la política de privacitat.
+    </label>
+  </div>
+  <div class="disclaimer">
+    <small>
+      De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD),
+      l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Vilassar de Dalt amb la finalitat
+      de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos.
+      Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de la Vila, 1,
+      08339 Vilassar de Dalt, Barcelona, Ref. Protecció de dades.
+    </small>
+  </div>
+  <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+<div id="formMessage" class="mt-3"></div>
+
+<script>
+  document.getElementById('formMessage').style.display = 'none';
+
+  document.getElementById('name').addEventListener('input', clearFormMessage);
+  document.getElementById('surname').addEventListener('input', clearFormMessage);
+  document.getElementById('email').addEventListener('input', clearFormMessage);
+  document.getElementById('phone').addEventListener('input', clearFormMessage);
+  document.getElementById('address').addEventListener('input', clearFormMessage);
+  document.getElementById('postal_code').addEventListener('input', clearFormMessage);
+  document.getElementById('city').addEventListener('input', clearFormMessage);
+  document.getElementById('country').addEventListener('input', clearFormMessage);
+  document.getElementById('message').addEventListener('input', clearFormMessage);
+  document.getElementById('privacy_policy').addEventListener('change', clearFormMessage);
+  
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    var nameInput = document.getElementById('name');
+    var surnameInput = document.getElementById('surname');
+    var emailInput = document.getElementById('email');
+    var phoneInput = document.getElementById('phone');
+    var addressInput = document.getElementById('address');
+    var postalCodeInput = document.getElementById('postal_code');
+    var cityInput = document.getElementById('city');
+    var countryInput = document.getElementById('country');
+    var messageInput = document.getElementById('message');
+    var privacyPolicyInput = document.getElementById('privacy_policy');
+  
+    var name = nameInput.value.trim();
+    var surname = surnameInput.value.trim();
+    var email = emailInput.value.trim();
+    var phone = phoneInput.value.trim();
+    var address = addressInput.value.trim();
+    var postalCode = postalCodeInput.value.trim();
+    var city = cityInput.value.trim();
+    var country = countryInput.value.trim();
+    var message = messageInput.value.trim();
+    var privacyPolicy = privacyPolicyInput.checked;
+  
+    if (!name || !surname || !email || !phone || !address || !city || !message || !privacyPolicy) {
+      displayFormMessage('error', 'Els camps marcats amb * són obligatoris.');
+      return;
+    }
+  
+    // Validar el correo electrónico
+    if (!validateEmail(email)) {
+      displayFormMessage('error', 'Introduïu una adreça de correu electrònic vàlida.');
+      return;
+    }
+  
+    // Crear un objeto FormData y agregar los campos y sus valores
+    var formData = new FormData();
+    formData.append('name', name);
+    formData.append('surname', surname);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('address', address);
+    formData.append('postal_code', postalCode);
+    formData.append('city', city);
+    formData.append('country', country);
+    formData.append('message', message);
+    formData.append('privacy_policy', privacyPolicy);
+  
+    // Obtener el token CSRF del formulario
+    var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+  
+    // Realizar la petición POST utilizando fetch
+    fetch('/contacto/', {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrfToken
+      },
+      body: formData
+    })
+    .then(function(response) {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Error en la petició');
+      }
+    })
+    .then(function(data) {
+      if (data.success) {
+        displayFormMessage('success', 'Formulari enviat amb èxit.');
+        // Restablecer los valores del formulario
+        nameInput.value = '';
+        surnameInput.value = '';
+        emailInput.value = '';
+        phoneInput.value = '';
+        addressInput.value = '';
+        postalCodeInput.value = '';
+        cityInput.value = '';
+        countryInput.value = '';
+        messageInput.value = '';
+        privacyPolicyInput.checked = false;
+      } else {
+        displayFormMessage('error', 'S\'ha produït un error en l\'enviament del formulari. Si us plau, torneu-ho a intentar.');
+      }
+    })
+    .catch(function(error) {
+      displayFormMessage('error', error.message);
+    });
+  });
+  
+  function clearFormMessage() {
+    document.getElementById('formMessage').innerHTML = '';
+    document.getElementById('formMessage').style.display = 'none';
+  }
+  
+  function displayFormMessage(type, message) {
+    var formMessageDiv = document.getElementById('formMessage');
+    formMessageDiv.innerHTML = message;
+    formMessageDiv.className = 'alert alert-' + type;
+    formMessageDiv.style.display = 'block';
+  }
+  
+  function validateEmail(email) {
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  
+  
+</script>

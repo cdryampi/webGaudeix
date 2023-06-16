@@ -1,45 +1,45 @@
-<div class="container p-0 m-0 pt-5">
-    {% include 'api/teenvio_form.html' %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="footer-images row">
-                {% for empresa in footer.empresas.all %}
-                    <div class="footer-image px-2 py-1">
-                        <img src="{{ empresa.imagen.url }}" alt="{{ empresa.titulo }}">
-                    </div>
-                {% endfor %}
+<div class="container-fluid p-0 m-0">
+    <div class"row justify-content-center">
+        {% include 'api/teenvio_form.html' %}
+        <div class="row p-0 m-0">
+            <div class="col-md-12">
+                <div class="footer-images row justify-content-around p-0 m-0 py-3">
+                    {% for empresa in footer.empresas.all %}
+                        <div class="footer-image px-2 py-1">
+                            <img src="{{ empresa.imagen.url }}" alt="{{ empresa.titulo }}">
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="container-fluid p-0 m-0 pt-3" style="background-color: #3EBFAB;">
-    <div class="container">
-        <div class="footer-container">
+    <div class="container-fluid p-0 m-0 py-3" style="background-color: #3EBFAB;">
+        <div class="row m-0 p-0 justify-content-around">
+          <div class="footer-container">
             <div class="footer-item">
-                <img src="{{ footer.footerinformacion.imagen.url }}" alt="{{ Gaudeix }}" width="157" height="57">
+              <img src="{{ footer.footerinformacion.imagen.url }}" alt="{{ Gaudeix }}" width="157" height="57">
             </div>
             <div class="footer-item pb-1">
-                <p>{{ footer.footerinformacion.direccion }}</p>
+              <p>{{ footer.footerinformacion.direccion }}</p>
             </div>
             <div class="footer-item">
-                <p class="mb-1"><a href="tel:{{ footer.footerinformacion.telefono }}">{{ footer.footerinformacion.telefono }}</a></p>
+              <p class="mb-1"><a href="tel:{{ footer.footerinformacion.telefono }}">{{ footer.footerinformacion.telefono }}</a></p>
             </div>
             <div class="footer-item">
-                <p class="mb-1"><a href="mailto:{{ footer.footerinformacion.correo_contacto }}">{{ footer.footerinformacion.correo_contacto }}</a></p>
+              <p class="mb-1"><a href="mailto:{{ footer.footerinformacion.correo_contacto }}">{{ footer.footerinformacion.correo_contacto }}</a></p>
             </div>
             {% for legal in footer.footerinformacion.paginas_legales.all %}
-                <div class="footer-item">
-                    {% if legal.tipo == 'privacitat' %}
-                    <p class="mb-1"><a href="{% url 'paginas_estaticas:privacitat' %}">{{ legal.tipo }}</a></p>
-                    {% elif legal.tipo == 'avis_legal' %}
-                    <p class="mb-1"><a href="{% url 'paginas_estaticas:avis_legal' %}">{{ legal.tipo }}</a></p>
-                    {% elif legal.tipo == 'cookies' %}
-                    <p class="mb-1"><a href="{% url 'paginas_estaticas:politica_cookies' %}">{{ legal.tipo }}</a></p>
-                    {% endif %}
-                </div>
+            <div class="footer-item">
+              {% if legal.tipo == 'privacitat' %}
+              <p class="mb-1"><a href="{% url 'paginas_estaticas:privacitat' %}">{{ legal.tipo }}</a></p>
+              {% elif legal.tipo == 'avis_legal' %}
+              <p class="mb-1"><a href="{% url 'paginas_estaticas:avis_legal' %}">{{ legal.tipo }}</a></p>
+              {% elif legal.tipo == 'cookies' %}
+              <p class="mb-1"><a href="{% url 'paginas_estaticas:politica_cookies' %}">{{ legal.tipo }}</a></p>
+              {% endif %}
+            </div>
             {% endfor %}
-        
-        
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+      </div>

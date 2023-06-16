@@ -1,6 +1,7 @@
 from django.db import models
 from singleton_model import SingletonModel
 from blog.models import Post, Categoria, SubBlog
+from paginas_estaticas.models import Contacto
 from django.core.exceptions import ValidationError
 
 
@@ -39,6 +40,7 @@ class Referencia(models.Model):
         ('categoria', 'Categoría'),
         ('subblog', 'SubBlog'),
         ('externo', 'Enlace Externo'),
+        ('contacto','Contacto')
     )
 
     tipo = models.CharField(max_length=10, choices=TIPOS_REFERENCIA)
@@ -46,6 +48,7 @@ class Referencia(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, blank=True, null=True)
     subblog = models.ForeignKey(SubBlog, on_delete=models.CASCADE, blank=True, null=True)
     externo = models.ForeignKey(EnlaceExterno, on_delete=models.CASCADE, blank=True, null=True)
+    contacto = models.ForeignKey(Contacto, on_delete=models.CASCADE, blank=True, null=True)
     header = models.ForeignKey(Header, on_delete=models.CASCADE, null=True, blank=True, default=1)
     
     def __str__(self):
@@ -62,7 +65,9 @@ class Referencia(models.Model):
         elif self.externo:
             titulo = self.externo.titulo
             pass
-
+        elif self.contacto:
+            titulo = self.contacto.titulo
+            pass
         return f"{tipo}: {titulo}"
 
 
@@ -70,22 +75,32 @@ class Referencia(models.Model):
         if self.tipo == 'post':
             self.categoria = None
             self.subblog = None
-            self.enlace = None
+            self.externo = None
+            self.contacto = None  # Nueva línea: Limpiar el campo 'contacto'
         elif self.tipo == 'categoria':
             self.post = None
             self.subblog = None
-            self.enlace = None
+            self.externo = None
+            self.contacto = None  # Nueva línea: Limpiar el campo 'contacto'
         elif self.tipo == 'subblog':
             self.post = None
             self.categoria = None
-            self.enlace = None
+            self.externo = None
+            self.contacto = None  # Nueva línea: Limpiar el campo 'contacto'
         elif self.tipo == 'externo':
             self.post = None
             self.categoria = None
             self.subblog = None
-            # Si todas las referencias están vacías, no se crea la instancia
-        if not self.post and not self.categoria and not self.subblog and not self.externo:
+            self.contacto = None  # Nueva línea: Limpiar el campo 'contacto'
+        elif self.tipo == 'contacto':  # Nueva condición para el tipo 'contacto'
+            self.post = None
+            self.categoria = None
+            self.subblog = None
+            self.externo = None
+        
+        if not self.post and not self.categoria and not self.subblog and not self.externo and not self.contacto:
             return
-
+        
         super().save(*args, **kwargs)
+
 

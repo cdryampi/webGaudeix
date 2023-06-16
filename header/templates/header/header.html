@@ -27,8 +27,11 @@
                         {% if referencia.subblog.publicado %}
                             <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">{{ referencia.subblog.titulo }}</a></li>
                         {% endif %}
+                    {% elif referencia.tipo == 'contacto' %}
+                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'paginas_estaticas:contacto' %}">{{ referencia.contacto.titulo }}</a></li>
                     {% endif %}
                 {% endfor %}
+            
             </ul>
         </div>
     </div>

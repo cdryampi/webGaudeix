@@ -440,36 +440,47 @@ aside .card a i {
 
 
 /* Inicio footer */
-.footer-images{
-    justify-content: center;
-}
-
-.footer-container {
+  .footer-container {
     display: flex;
     flex-direction: row;
-    place-content: center;
+    justify-content: center;
     align-items: center;
     font-size: 1.1rem;
-}
+    gap: 1.5rem;
+  }
 
-.footer-container .footer-item{
+  .footer-container .footer-item {
     padding: 0 5px 0px 5px;
-}
+  }
 
-.footer-container .footer-item a{
+  .footer-container .footer-item a {
     color: #d1e5e6;
     margin: 0;
     padding: 0;
-}
-.footer-container .footer-item a:hover {
+  }
+
+  .footer-container .footer-item a:hover {
     color: #e0ecec;
-}
+  }
 
-.footer-container .footer-item p{
+  .footer-container .footer-item p {
     color: #d1e5e6;
     margin: 0;
     padding: 0;
-}
+  }
+  footer .input-group{
+    text-align: center;
+    justify-content: center;
+  }
+  footer input#email {
+    max-width: 25rem;
+  }
+  /* Media query para tablets pequeñas */
 
-
+  @media (max-width: 767px) {
+    .footer-container {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+    }
+  }
 /* fin footer */
