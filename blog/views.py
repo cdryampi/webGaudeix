@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from .models import Post,SubBlog,Categoria, CategoriaBannerImagen
+from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia
 from agenda.models import Agenda, VisitaGuidada
 from django.http import JsonResponse
 from django.views.generic import View
@@ -94,6 +94,9 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         elif categoria.tipo == 'visitas_guiadas':
             visitas_guiadas = VisitaGuidada.objects.filter(publicado=True, categoria = categoria).all()
             context['visitas_guiadas'] = visitas_guiadas
+        elif categoria.tipo == 'noticies':
+            noticias = Noticia.objects.filter(publicado=True, categoria=categoria).all()
+            context['noticias'] = noticias
         return context
 
 
@@ -169,3 +172,7 @@ class SeleccionDestacadosCategoria(ListView):
 
 
 # vistas previas del admin
+class DetalleNoticiaView(BaseContextMixin, DetailView):
+    model = Noticia
+    template_name = 'blog/noticia.html'
+    context_object_name = 'noticia'

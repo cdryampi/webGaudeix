@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+<!-- CSS personalizado -->
+{% block extra_css %}
+<style>
+  .noticia-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+
+  .noticia-titulo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .noticia-fecha {
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .noticia-contenido {
+    margin-bottom: 20px;
+  }
+</style>
+{% endblock extra_css %}
+{% block content %}
+<section class="mx-0 px-0 pb-5 container-fluid">
+    <div class="text-center">
+        <div class="banner m-0 p-0">
+            <div class="banner-text">
+              <h1 class="main-title">Noticies</h1>
+              <h2 class="sub-title">Descobreix l'ultim de Cabrera de Mar</h2>
+            </div>
+            <div class="banner-highlight">#visitesculturals</div>
+          </div>
+    </div>
+<div class="container pt-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="noticia-container">
+        <h2 class="noticia-titulo">{{ noticia.titulo }}</h2>
+        <p class="noticia-fecha">Fecha: {{ noticia.fecha }}</p>
+        <p class="noticia-contenido">{{ noticia.contenido }}</p>
+        {% if noticia.imagen_url %}
+          <img src="{{ noticia.imagen_url }}" alt="Imagen de la noticia" class="img-fluid">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+{% endblock content %}

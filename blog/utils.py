@@ -3,9 +3,14 @@ from django.utils.text import slugify
 from blog.models import Post
 from collections import defaultdict
 from django.core.serializers import serialize
-from .models import Post
+from .models import Post, Noticia
 from agenda.models import Agenda
+from django.http import JsonResponse
+from django.http import HttpResponse
+from datetime import datetime
+import requests
 
+import feedparser
 import json
 
 
@@ -72,3 +77,53 @@ def agrupar_eventos_por_dia(eventos):
 
     return serialized_eventos_por_dia
 
+
+def sincronizar_noticias():
+    # URL del feed RSS
+    feed_url = 'https://www.cabrerademar.cat/feeds/noticies'
+
+    # Configurar los encabezados para solicitar XML
+    headers = {
+        'Accept': 'application/html',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+    }
+
+    # Realizar la solicitud al feed con los encabezados personalizados
+    response = requests.get(feed_url, headers=headers)
+
+    # Obtener y analizar el feed
+    feed = feedparser.parse(response.content)
+
+
+    for entry in feed.entries:
+        try:
+            # Obtener los datos relevantes de cada entrada del feed
+            titulo = entry.title
+            descripcion = entry.summary
+            fecha = datetime.strptime(entry.published, '%a, %d %b %Y %H:%M:%S %z').date()
+            imagen_url = entry.media_content[0]['url'] if 'media_content' in entry else None
+
+            # Verificar si la noticia ya existe por título
+            noticia_existente = Noticia.objects.filter(titulo=titulo).first()
+            if noticia_existente:
+                # Actualizar las propiedades de la noticia existente
+                noticia_existente.contenido = descripcion
+                noticia_existente.fecha = fecha
+                noticia_existente.imagen_url = imagen_url
+                noticia_existente.save()
+            else:
+                # Crear la noticia si no existe
+                noticia = Noticia(
+                    titulo=titulo,
+                    contenido=descripcion,
+                    fecha=fecha,
+                    imagen_url=imagen_url,
+                    publicado=True,
+                    metatitulo=titulo,
+                    metadescripcion=descripcion
+                )
+                noticia.save()
+
+        except Exception as e:
+            # Manejar el error en caso de que ocurra durante el proceso de sincronización
+            print(f"Error al sincronizar noticia: {str(e)}")

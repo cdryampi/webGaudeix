@@ -115,6 +115,7 @@ class Categoria(MetadataModel, BaseModel):
         ('normal', 'normal'),
         ('agenda', 'agenda'),
         ('visitas_guiadas', 'visitas guiadas'),
+        ('noticies','noticies')
         # Agrega más tipos según tus necesidades
     )
 
@@ -293,3 +294,27 @@ class PostFichero(models.Model):
 
 
 
+class Noticia(MetadataModel):
+    titulo = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, editable=False)
+    contenido = models.TextField()
+    fecha = models.DateField(default=timezone.now)
+    imagen_url = models.URLField(blank=True, null=True)
+    categoria = models.ForeignKey('blog.Categoria', on_delete=models.CASCADE, null=True, blank=True)
+    publicado = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Generar el slug basado en el título
+            self.slug = slugify(self.titulo)
+        else:
+            original_slug = self.slug
+            counter = 1
+            while Noticia.objects.filter(slug=self.slug).exists():
+                # Si ya existe una Noticia con el mismo slug, añadir un contador al final del slug
+                self.slug = f"{original_slug}-{counter}"
+                counter += 1
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.titulo
