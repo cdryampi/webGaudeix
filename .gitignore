@@ -1,0 +1,26 @@
+# Ignorar directorio de archivos estáticos generados por collectstatic
+/static/
+
+# Ignorar directorio de archivos estáticos generados por whitenoise
+/staticfiles/
+
+# Ignorar archivo .webassets-cache/ generado por django-webassets
+.webassets-cache/
+
+# Ignorar archivo .sass-cache/ generado por django-compressor
+.sass-cache/
+
+# Ignorar archivo .webassets/ generado por django-compressor
+.webassets/
+
+# Ignorar archivo .coverage generado por coverage.py
+.coverage
+
+# Ignorar archivos .pyc generados por Python
+*.pyc
+
+# Ignorar archivos .pyo generados por Python
+*.pyo
+
+# Ignorar archivos .log generados por Django
+*.log

@@ -39,7 +39,7 @@
 
 
 
-    <footer class= "container-fluid p-0 m-0">
+    <footer class= "container-fluid p-0 m-0 pt-5">
         <!-- Pie de página -->
         
         {% include 'footer/footer.html' %}
@@ -47,6 +47,7 @@
 
     <!-- Agrega aquí tus scripts JavaScript u otros recursos -->
     {% if portada %}
+        <script src="{% static 'core/js/mapa.js' %}"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
     {% endif %}
 

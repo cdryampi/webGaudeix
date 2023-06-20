@@ -12,7 +12,11 @@ ICON_CHOICES = (
     ('sport', 'Esports'),
     ('serveis','Serveis'),
     ('transports','Transports'),
-    ('aparcaments','Aparcaments')
+    ('aparcaments','Aparcaments'),
+    ('platges','Platges'),
+    ('informació',"Punt d'informació"),
+    ('jaciments', 'Jaciments arqueològics'),
+    ('patrimoni', 'Patrimoni cultural')
     # Agrega más opciones según tus necesidades
 )
 

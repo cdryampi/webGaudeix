@@ -405,14 +405,14 @@ aside .card a i {
   }
   .map-legend {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    bottom: 1rem !important;
+    left: 3rem !important;
     background-color: #ffffff;
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     z-index: 100;
-  }
+}
   
   .legend-item {
     display: flex;
@@ -428,6 +428,9 @@ aside .card a i {
   
   .legend-label {
     font-size: 14px;
+  }
+  #accordion .btn:focus {
+    outline: none;
   }
   
 

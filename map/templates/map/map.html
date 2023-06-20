@@ -1,44 +1,57 @@
-<aside class="p-5">
+<aside class="py-5" style="position: relative; height: 60vh;">
   <h3>Título del Mapa</h3>
-  <div id="map-container" class="my-4" style="height: 60vh; position: relative;">
-    <div id="legend-container" class="map-legend">
-      <h4>Leyenda</h4>
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: #FF0000;"></div>
-        <span class="legend-label">Restaurantes</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: #00FF00;"></div>
-        <span class="legend-label">Hoteles</span>
-      </div>
-      <!-- Agrega más categorías según tus necesidades -->
+  <div id="map-container" class="m-5" style="height: 50vh;"></div>
+  <div id="legend-container" class="map-legend">
+    <h4>Leyenda</h4>
+
+    <div class="legend-item">
+      <div class="legend-color bg-primary"></div>
+      <span class="legend-label">Platges</span>
     </div>
+    <div class="legend-item">
+      <div class="legend-color bg-info"></div>
+      <span class="legend-label">Punt d'informació</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color bg-warning"></div>
+      <span class="legend-label">Jaciments arqueològics</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color bg-secondary"></div>
+      <span class="legend-label">Patrimoni cultural</span>
+    </div>
+  </div>
+</aside>
+<aside class="container py-5">
+  <div id="accordion">
+    {% for icono, puntos in map_points.items %}
+    <div class="card">
+      <div class="card-header" id="heading_{{ forloop.counter }}" style="background-color: {% if icono == 'platges' %}#007BFF{% elif icono == 'informació' %}#17A2B8{% elif icono == 'jaciments' %}#FFC107{% elif icono == 'patrimoni' %}#6C757D{% else %}#000000{% endif %}">
+        <h5 class="mb-0">
+          <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapse_{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse_{{ forloop.counter }}">
+            <strong>{{ icono }}</strong>
+          </button>
+        </h5>
+      </div>
+
+      <div id="collapse_{{ forloop.counter }}" class="collapse" aria-labelledby="heading_{{ forloop.counter }}" data-parent="#accordion">
+        <div class="card-body">
+          {% for point in puntos %}
+          <div>
+            <h6>{{ point.titulo }}</h6>
+            <p>Latitud: {{ point.latitud }}</p>
+            <p>Longitud: {{ point.longitud }}</p>
+            <p>Icono: {{ point.icono }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
   </div>
 </aside>
 
 
-<script>
-  const mapContainer = document.getElementById('map-container');
 
-  fetch('/map/api/map-points/')
-    .then(response => response.json())
-    .then(data => {
-      const map = new google.maps.Map(mapContainer, {
-        center: { lat: 41.123456, lng: 2.987654 },
-        zoom: 10
-      });
 
-      // Agregar marcadores y categorías
-      data.forEach(point => {
-        const marker = new google.maps.Marker({
-          position: { lat: point.latitud, lng: point.longitud },
-          map: map,
-          title: point.titulo
-        });
-      });
-    })
-    .catch(() => {
-      // Mostrar mensaje de error
-      mapContainer.innerHTML = '<div class="alert alert-danger">No se pudo cargar el mapa.</div>';
-    });
-</script>
+

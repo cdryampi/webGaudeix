@@ -54,6 +54,18 @@ def home(request):
 
     footer = Footer.objects.all().first()
 
+    categorias_filtradas = ['platges', "informació", 'jaciments', 'patrimoni']
+    # Obtén los puntos del mapa
+    map_points = MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas).values('titulo', 'latitud', 'longitud', 'icono')
+
+    # Agrupa los puntos de mapa por icono
+    grouped_points = {}
+    for point in map_points:
+        icono = point['icono']
+        if icono not in grouped_points:
+            grouped_points[icono] = []
+        grouped_points[icono].append(point)
+    print(grouped_points)
     portada_video = PortadaVideo.objects.filter(publicado=True).first()
     videos = []
     if portada_video:
@@ -78,7 +90,8 @@ def home(request):
             'color_red_social':redes_color,
             'categorias_especiales': categorias_especiales,
             'footer': footer,
-            'videos': videos
+            'videos': videos,
+            'map_points': grouped_points
         }
     )
 

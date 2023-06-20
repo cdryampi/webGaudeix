@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
-from multimedia_manager.models import Imagen
+from multimedia_manager.models import Imagen, Fichero
 from .models import Agenda, VisitaGuidada
 from map.models import MapPoint
 from django.forms import DurationField
-from blog.models import PostImagen, PostGaleriaImagen
+from blog.models import PostImagen, PostGaleriaImagen, PostFichero
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
@@ -105,9 +105,26 @@ class VisitaGuidadaGaleriaImagenInline(admin.TabularInline):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+class PostFicheroImagenInline(admin.TabularInline):
+    model = PostFichero
+    extra = 1
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'fichero':
+            agenda_id = None
+            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
+                agenda_id = request.resolver_match.kwargs['object_id']
+
+            kwargs['queryset'] = Fichero.objects.filter(
+                Q(postfichero__isnull=True) | Q(postfichero__post__id=agenda_id),
+            )
+            kwargs['empty_label'] = 'Sin fichero asociado'
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 class VisitaGuidadaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm
-    inlines = [VisitaGuidadaGaleriaImagenInline]
+    inlines = [VisitaGuidadaGaleriaImagenInline, PostFicheroImagenInline]
     filter_horizontal = ('agendas',)
     raw_id_fields = ('mapa','punto_inicio')
     exclude = ['duracion']  # Excluir el campo duracion en el administrador

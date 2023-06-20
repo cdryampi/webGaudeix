@@ -1,3 +1,10 @@
+/* default styles */
+a {
+    text-decoration: none !important;
+    color: inherit !important;
+    cursor: pointer !important;
+}
+/* end default */
 /* Header inicio */
 header .container-fluid nav {
     background-color: #000000 !important;
@@ -5,12 +12,113 @@ header .container-fluid nav {
 header nav .navbar-brand img{
     height: 2.5rem;
 }
+#navbar {
+    transition: top 0.3s ease-in-out;
+  }
+
 /* fin header */
+/* banner  */
+.banner {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: #3EBFAB;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  .main-title {
+    font-size: 5rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  
+  .sub-title {
+    font-size: 3rem;
+    margin: 0;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  
+  .banner-highlight {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #E76500;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  @media (max-width: 768px) {
+    .main-title {
+      font-size: 24px;
+    }
+    .sub-title {
+      font-size: 18px;
+    }
+    .banner-highlight {
+      font-size: 36px;
+    }
+  }
+  
+/* fin de banner */
+
+/* calendar  */
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  margin: 0.25rem;
+  cursor: pointer;
+}
+
+.event-day {
+  background-color: blue;
+  color: white;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: #f8f9fa;
+}
+
+.calendar-header button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #000;
+}
+/* end calendar */
 /* Parallax */
 .parallax-container {
     position: relative;
     overflow: hidden;
-    height: 85vh; /* Ajusta la altura según tus necesidades */
+    height: 90vh; /* Ajusta la altura según tus necesidades */
 }
 
 .parallax {
@@ -161,6 +269,218 @@ section.categoria-especial-container .col-especial-subBlog{
     height: 75px;
 }
 
-
+.agenda-special-category .especial-agenda{
+    max-height: 35px;
+}
+.agenda-special-category {
+    background-color: #fff;
+}
+.content-agenda-detail-container{
+    background-color: rgba(0,0,0,0.01);
+}
 
 /* fin subBlog especiales */
+
+/* agenda ultimos */
+
+aside .image-container {
+    height: 200px; /* Ajusta la altura deseada */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  aside .img-fluid {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: cover !important;
+  }
+  
+  aside .image-container .img-fluid {
+    max-height: 200px !important;
+    object-fit: cover !important;
+    width: 100% !important;
+  }
+  .image-container {
+    position: relative;
+  }
+  
+  .card-inline {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card-inline .event-details {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #E76500;
+    color: #FFF;
+    text-align: center;
+    padding: 5px;
+  }
+  
+  .card-inline .event-datetime {
+    font-weight: bold;
+    line-height: 1;
+  }
+  
+  
+
+/* fin de agenda ultimos */
+
+/* aside entradas */
+aside.bg-yellow {
+    background-color: #FFB516; /* Color corporativo amarillo */
+}
+
+aside .card {
+    border-radius: 10px;
+}
+
+aside .card h4 {
+    font-size: 24px;
+}
+
+aside .card p {
+    font-size: 16px;
+}
+
+aside .card a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-radius: 5px;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+aside .card a i {
+    margin-right: 5px;
+}
+
+/* fin aside entradas */
+
+
+
+/* agenda detalle */
+
+.agenda-pdf-link {
+    background-color: #31C6F8 !important;
+}
+/* fin de agenda detalle */
+
+/* Mapa portada */
+.loading-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .map-legend {
+    position: absolute;
+    bottom: 1rem !important;
+    left: 3rem !important;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  
+  .legend-label {
+    font-size: 14px;
+  }
+  
+
+
+/* fin mapa portada */
+
+
+
+
+
+
+/* Inicio footer */
+  .footer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    gap: 1.5rem;
+  }
+
+  .footer-container .footer-item {
+    padding: 0 5px 0px 5px;
+  }
+
+  .footer-container .footer-item a {
+    color: #d1e5e6;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-container .footer-item a:hover {
+    color: #e0ecec;
+  }
+
+  .footer-container .footer-item p {
+    color: #d1e5e6;
+    margin: 0;
+    padding: 0;
+  }
+  footer .input-group{
+    text-align: center;
+    justify-content: center;
+  }
+  footer input#email {
+    max-width: 25rem;
+  }
+  /* Media query para tablets pequeñas */
+
+  @media (max-width: 767px) {
+    .footer-container {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+    }
+  }
+/* fin footer */
