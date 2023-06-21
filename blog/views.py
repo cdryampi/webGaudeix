@@ -25,7 +25,7 @@ class ListarPostsView(ListView):
         queryset = super().get_queryset().filter(publicado=True)
         return queryset
 
-class DetallePostView(DetailView):
+class DetallePostView(BaseContextMixin,DetailView):
     model = Post
     template_name = 'blog/detalle_post.html'
     context_object_name = 'post'
@@ -101,7 +101,10 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             context['noticias'] = noticias
         elif categoria.tipo == 'normal':
             posts = Post.objects.filter(publicado = True, categoria = categoria)
-            context['posts'] = posts 
+            context['posts'] = posts
+            categorias_hermanas = Categoria.objects.filter(subblog=categoria.subblog).exclude(id=categoria.id)
+
+            context['categorias'] = categorias_hermanas
         return context
 
 
