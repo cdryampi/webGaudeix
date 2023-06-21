@@ -9,6 +9,8 @@ class BaseContextMixin:
         # Agrega aquí las variables de contexto que deseas pasar a la plantilla
         #context['categorias'] = Categoria.objects.filter(publicado=True)
         context['header'] = Header.objects.first()
+        categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
+        context['categorias_header'] = categorias_con_subblog
         context['referencias'] = Referencia.objects.filter(header=context['header'])
         context['topbar'] = Topbar.objects.filter(publicado=True).last()
         context['footer'] = Footer.objects.filter().first()

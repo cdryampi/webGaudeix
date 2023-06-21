@@ -2,39 +2,50 @@
 {% if header %}
 <div class="container-fluid p-0 header-container">
     {% include 'topbar/topbar.html' %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark  menu-fijo" id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar">
         <div class="container">
-        <a class="navbar-brand" href="{% url 'core:home' %}">
-            {% if header.logo %}
-                <img src="{{ header.logo.url }}" alt="Logo" class="logo-img">
-            {% else %}
-                <span class="logo-text">Cabrera de Mar</span>
-            {% endif %}
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                {% for referencia in referencias %}
-                    {% if referencia.tipo == 'externo' %}
-                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{{ referencia.externo.enlace }}" target="_blank">{{ referencia.externo.titulo }}</a></li>
-                    {% elif referencia.tipo == 'post' %}
-                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}">{{ referencia.post.titulo }}</a></li>
-                    {% elif referencia.tipo == 'categoria' %}
-                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{{ referencia.categoria.titulo }}</a></li>
-                    {% elif referencia.tipo == 'subblog' %}
-                        {% if referencia.subblog.publicado %}
-                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">{{ referencia.subblog.titulo }}</a></li>
+            <a class="navbar-brand" href="{% url 'core:home' %}">
+                {% if header.logo %}
+                    <img src="{{ header.logo.url }}" alt="Logo" class="logo-img">
+                {% else %}
+                    <span class="logo-text">Cabrera de Mar</span>
+                {% endif %}
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    {% for referencia in referencias %}
+                        {% if referencia.tipo == 'externo' %}
+                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{{ referencia.externo.enlace }}" target="_blank">{{ referencia.externo.titulo }}</a></li>
+                        {% elif referencia.tipo == 'post' %}
+                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}">{{ referencia.post.titulo }}</a></li>
+                        {% elif referencia.tipo == 'categoria' %}
+                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{{ referencia.categoria.titulo }}</a></li>
+                        {% elif referencia.tipo == 'subblog' %}
+                            {% if referencia.subblog.publicado %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="navbarDropdownSubblog{{ referencia.subblog.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ referencia.subblog.titulo }}
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownSubblog{{ referencia.subblog.id }}">
+                                        {% for categoria in categorias_header %}
+                                            {% if categoria.subblog == referencia.subblog %}
+                                                <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">{{ categoria.titulo }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <a class="dropdown-item" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">Veure-ho Tot</a>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% elif referencia.tipo == 'contacto' %}
+                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'paginas_estaticas:contacto' %}">{{ referencia.contacto.titulo }}</a></li>
                         {% endif %}
-                    {% elif referencia.tipo == 'contacto' %}
-                        <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'paginas_estaticas:contacto' %}">{{ referencia.contacto.titulo }}</a></li>
-                    {% endif %}
-                {% endfor %}
-            
-            </ul>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-    </div>
     </nav>
 </div>
 {% else %}

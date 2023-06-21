@@ -74,6 +74,7 @@ def home(request):
             for item in videos_portada:
                 videos.append(item.archivo.url)
                 
+    categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
 
     return render(
         request,
@@ -82,16 +83,17 @@ def home(request):
             'categorias': categorias,
             'posts': posts,
             'header': header,
-            'referencias':referencias,
-            'topbar':topbar,
-            'portada':portada,
-            'parallax':parallax,
-            'redes_sociales':redes_sociales,
-            'color_red_social':redes_color,
+            'referencias': referencias,
+            'topbar': topbar,
+            'portada': portada,
+            'parallax': parallax,
+            'redes_sociales': redes_sociales,
+            'color_red_social': redes_color,
             'categorias_especiales': categorias_especiales,
             'footer': footer,
             'videos': videos,
-            'map_points': grouped_points
+            'map_points': grouped_points,
+            'categorias_header': categorias_con_subblog
         }
     )
 

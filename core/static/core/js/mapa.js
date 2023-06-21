@@ -95,6 +95,6 @@ function redirectToCarousel(icono) {
       carousel.classList.add('show'); // Mostrar el carrusel
       carousel.scrollIntoView({ behavior: 'smooth' }); // Desplazarse hacia el carrusel
     }
-    print(carousel)
+    
   }
 window.initMap = initMap;

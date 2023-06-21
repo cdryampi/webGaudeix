@@ -16,6 +16,35 @@ header nav .navbar-brand img{
     transition: top 0.3s ease-in-out;
   }
 
+header ul.navbar-nav.ml-auto {
+    text-transform: capitalize;
+}
+  /* Estilo para el menú desplegable */
+.dropdown-menu {
+  background-color: #ffffff; /* Color de fondo */
+  border: none; /* Borde */
+  border-radius: 0; /* Bordes redondeados */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+.dropdown-menu a {
+  color: #000000; /* Color del texto */
+  font-weight: bold; /* Grosor de la fuente */
+  padding: 10px 20px; /* Espaciado interno */
+  display: block; /* Mostrar como bloque */
+  text-decoration: none; /* Sin subrayado */
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.dropdown-menu a:hover {
+  background-color: #f8f8f8; /* Color de fondo al pasar el ratón */
+}
+/* Estilo para el último elemento del menú desplegable */
+.dropdown-menu .last-item {
+  font-weight: bold;
+  color: #3EBFAB !important; /* Color de texto personalizado */
+}
+
 /* fin header */
 /* banner  */
 .banner {
