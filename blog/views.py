@@ -30,6 +30,8 @@ class DetallePostView(DetailView):
     template_name = 'blog/detalle_post.html'
     context_object_name = 'post'
 
+
+
 class ListarSubBlogView(ListView):
     model = SubBlog
     template_name = 'blog/listar_subblog.html'
@@ -97,6 +99,9 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         elif categoria.tipo == 'noticies':
             noticias = Noticia.objects.filter(publicado=True, categoria=categoria).all()
             context['noticias'] = noticias
+        elif categoria.tipo == 'normal':
+            posts = Post.objects.filter(publicado = True, categoria = categoria)
+            context['posts'] = posts 
         return context
 
 

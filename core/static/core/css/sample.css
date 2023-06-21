@@ -12,6 +12,9 @@ header .container-fluid nav {
 header nav .navbar-brand img{
     height: 2.5rem;
 }
+header a {
+  font-size: 1.2rem;
+}
 #navbar {
     transition: top 0.3s ease-in-out;
   }
@@ -58,7 +61,7 @@ header ul.navbar-nav.ml-auto {
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   }
   

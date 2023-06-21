@@ -82,7 +82,7 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ('categoria',)
     search_fields = ('titulo', 'descripcion')
     inlines = [PostImagenInline, PostGaleriaImagenInline]
-    fields = ['titulo', 'descripcion', 'fecha', 'hora', 'categoria']
+    fields = ['titulo', 'descripcion', 'fecha', 'hora', 'categoria','publicado']
     
     def get_queryset(self, request):
         # Obtener el queryset original

@@ -1,0 +1,126 @@
+{% extends 'core/base.html' %}
+
+{% block extra_css %}
+<style>
+    .categoria-container {
+        padding: 20px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+
+    .categoria-titulo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .categoria-subtitulo {
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .categoria-descripcion {
+        margin-bottom: 20px;
+    }
+
+    .categoria-carrusel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .categoria-carrusel img {
+        object-fit: cover;
+        max-height: 500px;
+    }
+
+    .carousel-control-prev{
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+
+
+    .carousel-inner.text-center {
+        text-align: center;
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<section class="mx-0 px-0 pb-5 container-fluid">
+    <div class="text-center">
+        <div class="banner m-0 p-0">
+            <div class="banner-text">
+                <h1 class="main-title">{{ categoria.titulo }}</h1>
+                <h2 class="sub-title">{{ categoria.subtitulo }}</h2>
+            </div>
+            <div class="banner-highlight">#gaudeixCabrera</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="categoria-container">
+            <h2 class="categoria-titulo">{{ categoria.titulo }}</h2>
+            {% if categoria.categoriagaleriaimagen_set.count > 1 %}
+                <div id="categoria-carrusel-{{ categoria.slug }}" class="carousel slide categoria-carrusel" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for imagen in categoria.categoriagaleriaimagen_set.all %}
+                            <li data-target="#categoria-carrusel-{{ categoria.slug }}" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner text-center">
+                        {% for imagen in categoria.categoriagaleriaimagen_set.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#categoria-carrusel-{{ categoria.slug }}" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#categoria-carrusel-{{ categoria.slug }}" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            {% else %}
+                <div class="text-center">
+                    <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.url }}" alt="{{ categoria.titulo }}" class="img-fluid">
+                </div>
+            {% endif %}
+            <p class="categoria-subtitulo">{{ categoria.subtitulo }}</p>
+            <p class="categoria-descripcion">{{ categoria.descripcion | safe }}</p>
+            <h3>Posts vinculados:</h3>
+            <ul class="categoria-posts">
+                {% for post in posts %}
+                    <li class="categoria-post-item">
+                        <h4 class="categoria-post-titulo">{{ post.titulo }}</h4>
+                        <p>{{ post.descripcion | safe }}</p>
+                    </li>
+                {% empty %}
+                    <li>No hay posts disponibles.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

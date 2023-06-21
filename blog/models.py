@@ -192,7 +192,7 @@ class CategoriaGaleriaImagen(models.Model):
 
 
 class Post(MetadataModel, BaseModel):
-    titulo = models.CharField(max_length=200)
+    titulo = models.CharField(max_length=200, help_text="Aquest camp està limitat per un màxim de 50 caràcters")
     descripcion = RichTextField(help_text="Descripció de Post")
     entradas = models.BooleanField(default=False, help_text="Hi ha entrades?")
     slug = models.SlugField(unique=True, editable=False)
