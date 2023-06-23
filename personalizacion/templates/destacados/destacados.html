@@ -1,0 +1,89 @@
+{% block extra_css %}
+<style>
+    .destacats_colecio .image-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .destacats_colecio .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .destacats_colecio .card:hover .image-overlay {
+        opacity: 1;
+    }
+    
+    .destacats_colecio .card-img-top {
+        width: 100%;
+        height: auto;
+        transition: filter 0.3s ease;
+    }
+    
+    .destacats_colecio .card:hover .card-img-top {
+        filter: brightness(70%);
+    }
+
+    .destacats_colecio .card:hover .url-link {
+        font-weight: bold;
+    }
+    
+    .destacats_colecio .card {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .destacats_colecio .card::before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 5px;
+        width: 101%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -100;
+    }
+    .destacats_colecio .card:hover::before {
+        opacity: 0.3;
+    }
+
+    /* Colores de fondo para cada categoría */
+    {% for post in coleccion_posts.coleccion.all %}
+    .destacats_colecio .col-md-4:nth-child({{ forloop.counter }}) .card::before {
+        background-color: {{ post.categoria.color }} !important; /* Color de fondo para la categoría actual */
+    }
+    {% endfor %}
+</style>
+{% endblock extra_css %}
+
+<aside class="container py-5 destacats_colecio">
+    <h3>Contingut Destacat</h3>
+    <div class="row">
+        {% for post in coleccion_posts.coleccion.all %}
+        <div class="col-md-4">
+            <div class="card mb-3 h-100">
+                <div class="image-container">
+                    {% if post.postgaleriaimagen_set.first %}
+                        <img src="{{ post.postgaleriaimagen_set.first.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}">
+                    {% endif %}
+                    <div class="image-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.titulo }}</h5>
+                    <p class="card-text"><div>{{ post.descripcion | truncatechars_html:200  |safe  }}</div></p>
+                    {% if post.visitaguidada %}
+                        <a href="{% url 'agenda:visites-guiades' slug=post.slug %}" class="text-primary url-link">Veure més</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</aside>

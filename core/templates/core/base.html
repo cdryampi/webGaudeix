@@ -34,11 +34,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/fonts.css' %}">
-
-    {% block extra_css %}
-    {% endblock %}
-
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/sample.css' %}">
+    {% block extra_css %}
+        
+    {% endblock extra_css %}
+
+    
 </head>
 <body>
     <!-- Agrega aquí el contenido común a todas las páginas -->
@@ -58,6 +59,11 @@
         {% block content %}
         {% endblock %}
     </main>
+    {% if coleccion_posts  %}
+
+        {% include 'destacados/destacados.html' %}
+
+    {% endif %}
 
     {% if portada %}
         {% include 'map/map.html' %}
@@ -75,10 +81,14 @@
     {% if portada %}
         <script src="{% static 'core/js/mapa.js' %}"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
+        <script src="{% static 'core/js/video-home.js' %}"></script>
     {% endif %}
 
     <script src="{% static 'core/js/main.js' %}"></script>
 
+    {% block extra_script %}
+
+    {% endblock extra_script %}
 
 </body>
 </html>

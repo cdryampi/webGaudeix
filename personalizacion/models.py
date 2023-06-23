@@ -39,6 +39,14 @@ class Favicon(models.Model):
 
 
 
+class SeleccionDestacados(models.Model):
+    titulo = models.CharField(max_length=100, help_text="Escriu un nom únic")
+    publicado = models.BooleanField(default=False, help_text="Marca si quieres que sea despublicado.")
+    coleccion = models.ManyToManyField(Post, related_name='seleccions', blank=True)
+
+    def __str__(self):
+        return self.titulo
+
 class Slide(models.Model):
     imagen = models.ImageField(upload_to='slides/')
     titulo = models.CharField(max_length=100)

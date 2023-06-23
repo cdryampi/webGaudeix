@@ -49,6 +49,44 @@ header ul.navbar-nav.ml-auto {
 }
 
 /* fin header */
+
+/* video home */
+#videos-container-home {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000; 
+}
+#video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#videos-container-home  video{
+  width: 100%;
+}
+
+#videos-container-home.video-ended video {
+  display: none;
+}
+
+#videos-container-home .video-fade {
+  opacity: 0;
+  background-color: black;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#videos-container-home .video-fade.active {
+  opacity: 1;
+}
+
+/* end video home */
 /* banner  */
 .banner {
     position: relative;

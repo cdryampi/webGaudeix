@@ -27,6 +27,7 @@ class PortadaVideoView(TemplateView):
             videos = [vp.video for vp in videos_portada]
 
         context['videos'] = videos
+        print(videos)
         return context
 
 
