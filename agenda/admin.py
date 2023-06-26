@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
 from multimedia_manager.models import Imagen, Fichero
-from .models import Agenda, VisitaGuidada
+from .models import Agenda, VisitaGuiada
 from map.models import MapPoint
 from django.forms import DurationField
 from blog.models import PostImagen, PostGaleriaImagen, PostFichero
@@ -44,7 +44,7 @@ class VisitaGuidadaForm(forms.ModelForm):
     duracion_horas = forms.IntegerField(help_text="Duració en hores")
 
     class Meta:
-        model = VisitaGuidada
+        model = VisitaGuiada
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -89,12 +89,12 @@ class VisitaGuidadaGaleriaImagenInline(admin.TabularInline):
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'imagen':
-            visita_guidada_id = None
+            visita_guiada_id = None
             if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
-                visita_guidada_id = request.resolver_match.kwargs['object_id']
+                visita_guiada_id = request.resolver_match.kwargs['object_id']
 
             kwargs['queryset'] = Imagen.objects.filter(
-                Q(postgaleriaimagen__isnull=True) | Q(postgaleriaimagen__post__id=visita_guidada_id),
+                Q(postgaleriaimagen__isnull=True) | Q(postgaleriaimagen__post__id=visita_guiada_id),
                 Q(categoriabannerimagen__isnull=True),
                 Q(subblogimagen__isnull=True),
                 Q(categoriagaleriaimagen__isnull=True),
@@ -131,4 +131,4 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
     
 
 admin.site.register(Agenda, AgendaAdmin)
-admin.site.register(VisitaGuidada, VisitaGuidadaAdmin)
+admin.site.register(VisitaGuiada, VisitaGuidadaAdmin)

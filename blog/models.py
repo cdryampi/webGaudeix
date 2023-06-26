@@ -229,7 +229,7 @@ class Post(MetadataModel, BaseModel):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('blog:detalle-post', kwargs={'slug': self.slug})
+        return reverse('blog:detalle_post', kwargs={'slug': self.slug})
     
 
     def __str__(self):

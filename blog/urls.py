@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import ListarPostsView, DetallePostView, ListarCategoria, ListarSubBlogView,DetalleSubBlogView, CategoriaDetailView, FiltrarAgendaView, DetalleNoticiaView
 
+
 app_name = 'blog'
 
 urlpatterns = [

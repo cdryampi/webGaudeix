@@ -401,23 +401,23 @@ aside .image-container {
 /* fin de agenda ultimos */
 
 /* aside entradas */
-aside.bg-yellow {
+aside.entrades.bg-yellow {
     background-color: #FFB516; /* Color corporativo amarillo */
 }
 
-aside .card {
+aside.entrades .card {
     border-radius: 10px;
 }
 
-aside .card h4 {
+aside.entrades .card h4 {
     font-size: 24px;
 }
 
-aside .card p {
+aside.entrades .card p {
     font-size: 16px;
 }
 
-aside .card a {
+aside.entrades .card a {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 10px;
@@ -428,9 +428,13 @@ aside .card a {
     text-decoration: none;
 }
 
-aside .card a i {
+aside.entrades .card a i {
     margin-right: 5px;
 }
+
+
+
+
 
 /* fin aside entradas */
 

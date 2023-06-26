@@ -48,7 +48,7 @@ class Agenda(Post):
             return reverse('agenda:detalle_agenda', kwargs={'slug': self.slug})
 
 
-class VisitaGuidada(Post):
+class VisitaGuiada(Post):
     precio = models.DecimalField(max_digits=8, decimal_places=2, help_text="Preu de la visita (en euros)")
     duracion = models.DurationField(default=timedelta(days=2), help_text="Duració de la visita (en format DD HH:MM:SS)")
 

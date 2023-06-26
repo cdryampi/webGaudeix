@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia
-from agenda.models import Agenda, VisitaGuidada
+from agenda.models import Agenda, VisitaGuiada
 from django.http import JsonResponse
 from django.views.generic import View
 from core.mixin.base import BaseContextMixin
@@ -29,7 +29,14 @@ class DetallePostView(BaseContextMixin,DetailView):
     model = Post
     template_name = 'blog/detalle_post.html'
     context_object_name = 'post'
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = self.object
+        ultimas_agendas = Agenda.objects.filter(Q(categoria=post.categoria) | Q(categoria__subblog=post.categoria.subblog)).order_by('-fecha_creacion')[:3]
+        context['ultimos'] = ultimas_agendas if ultimas_agendas else None
+        posts = Post.objects.filter(publicado=True).exclude(Q(agenda__isnull=False) | Q(visitaguiada__isnull=False)).exclude(pk=post.pk)[:3]
+        context['posts'] = posts
+        return context
 
 
 class ListarSubBlogView(ListView):
@@ -94,7 +101,7 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             context['parallax'] = parallax
             context['agendas'] = agendas
         elif categoria.tipo == 'visitas_guiadas':
-            visitas_guiadas = VisitaGuidada.objects.filter(publicado=True, categoria = categoria).all()
+            visitas_guiadas = VisitaGuiada.objects.filter(publicado=True, categoria = categoria).all()
             context['visitas_guiadas'] = visitas_guiadas
         elif categoria.tipo == 'noticies':
             noticias = Noticia.objects.filter(publicado=True, categoria=categoria).all()

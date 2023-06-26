@@ -31,7 +31,7 @@ feedparser==6.0.10
 fontawesomefree==6.4.0
 fonttools==4.39.4
 freetype-py==2.3.0
-GDAL==3.6.2
+#GDAL==3.6.2
 html5lib==1.1
 idna==3.4
 ipython==8.13.2

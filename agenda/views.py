@@ -1,5 +1,5 @@
 
-from .models import Agenda, VisitaGuidada
+from .models import Agenda, VisitaGuiada
 
 from django.views import View
 from django.http import HttpResponse
@@ -16,7 +16,7 @@ from blog.models import Categoria
 
 # Create your views here.
 class VisitaGuiadaView(BaseContextMixin, DetailView):
-    model = VisitaGuidada
+    model = VisitaGuiada
     template_name = 'agenda/visita_guiada.html'
     context_object_name = 'visites'
 

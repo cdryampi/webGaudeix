@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% block content %}
-<section class="pb-5 container-fluid">
+<section class="pb-5 px-0 container-fluid">
     <div class="text-center">
         <div class="banner">
             <div class="banner-text">
@@ -103,9 +103,11 @@
         </div>
     </div>
 </aside>
-<aside class="container-fluid bg-yellow pt-0 mt-0">
+
+{% if agenda.entradas %}
+<aside class="container-fluid bg-yellow pt-0 mt-0 entrades">
     <div class="container mt-5 p-3 pt-0">
-        {% if agenda.entradas %}
+
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
                 <div class="card bg-primary text-white text-center p-3 pt-0">
@@ -119,10 +121,10 @@
                 </div>
             </div>
         </div>
-        {% endif %}
+
     </div>
 </aside>
-
+{% endif %}
 
 
 <aside class="container-fluid">

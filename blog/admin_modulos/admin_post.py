@@ -89,6 +89,6 @@ class PostAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         
         # Filtrar los objetos de tipo Agenda
-        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguidada__isnull=False)
+        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguiada__isnull=False)
         
         return queryset
