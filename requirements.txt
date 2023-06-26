@@ -38,7 +38,7 @@ ipython==8.13.2
 jedi==0.18.2
 lxml==4.9.2
 matplotlib-inline==0.1.6
-numpy @ file:///D:/bld/numpy_1651020773031/work
+#numpy @ file:///D:/bld/numpy_1651020773031/work
 oscrypto==1.3.0
 parso==0.8.3
 pickleshare==0.7.5
