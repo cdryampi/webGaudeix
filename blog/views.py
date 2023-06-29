@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia
-from agenda.models import Agenda, VisitaGuiada
+from agenda.models import Agenda, VisitaGuiada, Ruta
 from django.http import JsonResponse
 from django.views.generic import View
 from core.mixin.base import BaseContextMixin
@@ -90,7 +90,8 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         context = super().get_context_data(**kwargs)
         # Obtener el objeto de la categoría actual
         categoria = context['categoria']
-
+        categorias_hermanas = Categoria.objects.filter(subblog=categoria.subblog).exclude(id=categoria.id)
+        context['categorias'] = categorias_hermanas
         # Verificar si el tipo de categoría es "agenda"
         if categoria.tipo == 'agenda':
             # Obtener la lista de agendas relacionadas
@@ -106,12 +107,12 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         elif categoria.tipo == 'noticies':
             noticias = Noticia.objects.filter(publicado=True, categoria=categoria).all()
             context['noticias'] = noticias
+        elif categoria.tipo == 'senderisme':
+            rutes  = Ruta.objects.filter(publicado=True).all()
+            context['rutes'] = rutes
         elif categoria.tipo == 'normal':
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
-            categorias_hermanas = Categoria.objects.filter(subblog=categoria.subblog).exclude(id=categoria.id)
-
-            context['categorias'] = categorias_hermanas
         return context
 
 

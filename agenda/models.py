@@ -48,6 +48,96 @@ class Agenda(Post):
             return reverse('agenda:detalle_agenda', kwargs={'slug': self.slug})
 
 
+
+class Ruta(Post):
+    
+    TIPOLOGIA_CHOICES = (
+        ('circular', 'Circular'),
+        ('antihorario', 'Antihorari'),
+        # Agrega más opciones según tus necesidades
+    )
+
+    DIFICULTAD_CHOICES = (
+        ('facil', 'Fàcil'),
+        ('media', 'Mitjana'),
+        ('dificil', 'Difícil'),
+        # Agrega más opciones según tus necesidades
+    )
+
+    duracion = models.DurationField(
+        help_text="Durada de la ruta",
+        null=True,
+        blank=True
+    )
+    pendiente = models.FloatField(
+        help_text="Pendent de la ruta (en metres)",
+        null=True,
+        blank=True
+    )
+    distancia = models.FloatField(
+        help_text="Distància de la ruta (en quilòmetres)",
+        null=True,
+        blank=True
+    )
+    tema = models.CharField(
+        max_length=255,
+        help_text="Tema de la ruta",
+        null=True,
+        blank=True
+    )
+    actividad = models.CharField(
+        max_length=255,
+        help_text="Activitat de la ruta",
+        null=True,
+        blank=True
+    )
+    valoracion = models.FloatField(
+        help_text="Valoració de la ruta",
+        null=True,
+        blank=True
+    )
+
+    tipologia = models.CharField(
+        max_length=20,
+        choices=TIPOLOGIA_CHOICES,
+        default='circular',
+        help_text="Tipologia de la ruta",
+        verbose_name="Tipologia"
+    )
+
+    dificultad = models.CharField(
+        max_length=20,
+        choices=DIFICULTAD_CHOICES,
+        default='facil',
+        help_text="Dificultat de la ruta",
+        verbose_name="Dificultat"
+    )
+
+    punto_inicio = models.ForeignKey(
+        MapPoint,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='rutas_punto_inicio',
+        help_text="Punt d'inici de la ruta",
+        verbose_name="Punt d'inici"
+    )
+
+    mapas_itinerario = models.ManyToManyField(
+        MapPoint,
+        related_name='rutas_itinerario',
+        blank=True,
+        help_text="Mapes que formen part de l'itinerari"
+    )
+
+    enlace_natura_local = models.URLField(
+        default= "https://naturalocal.net/ca/destins/barcelona/cabrera-de-mar#rutes",
+        help_text= "Afegeix l'enllaç exacte cap a Natura Local."
+    )
+
+    def __str__(self):
+        return f"Ruta: {self.titulo}"
+
 class VisitaGuiada(Post):
     precio = models.DecimalField(max_digits=8, decimal_places=2, help_text="Preu de la visita (en euros)")
     duracion = models.DurationField(default=timedelta(days=2), help_text="Duració de la visita (en format DD HH:MM:SS)")

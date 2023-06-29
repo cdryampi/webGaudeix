@@ -1,0 +1,189 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    div#map {
+        height: 500px;
+    }
+
+
+</style>
+{% endblock extra_css %}
+
+
+{% block content %}
+<section class="pb-5 px-0 container-fluid">
+    <div class="text-center">
+        <div class="banner">
+            <div class="banner-text">
+                <h1 class="main-title">{{ map.titulo | truncatewords_html:5 | safe }}</h1>
+                <h2 class="sub-title">{{ map.descripcion | truncatewords_html:10 | safe }}</h2>
+            </div>
+            <div class="banner-highlight">#gaudeixCabrera</div>
+        </div>
+    </div>
+
+    <div class="container content-agenda-detail-container pt-5">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="container p-2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pb-5">
+                                <h1 class="text-center p-3 display-2">{{ map.titulo }}</h1>
+                            </div>
+                            <p>{{ map.descripcion | safe }}</p>
+                        </div>
+                        <div class="col-md-12">
+                            {% with imagen=map.postimagen %}
+                            {% if imagen %}
+                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="col-md-12 pt-3">
+                            <div class="social-share-buttons">
+                                <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+                                    <i class="fab fa-facebook-f fa-2x px-2"></i>
+                                </a>
+                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ agenda.titulo }}" target="_blank">
+                                    <i class="fab fa-twitter fa-2x px-2"></i>
+                                </a>
+                                <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
+                                    <i class="fab fa-instagram fa-2x px-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 map-container">
+                <div class="row justify-content-center align-content-center" style="height: 100%%;">
+                    <div id="map" style="width: 100%; height: 500px;"></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</section>
+
+<aside class="container-fuild agenda-pdf-link pb-0 mb-0">
+    <div class="col-md-12 col-lg-12 agenda-special-categories p-5 mt-5">
+        <div class="text-center  m-0 p-2 bg-light agenda-pdf-link">
+            <i class="fas fa-file-download fa-2x text-white mr-2"></i>
+            <a href="{% url 'agenda:calendario_pdf' %}" class="btn btn-light">Descargar PDF de la Agenda</a>
+        </div>
+    </div>
+</aside>
+
+{% if ultimos %}
+<aside class="container-fluid">
+    <div class="container mt-5 p-3">
+        <h4>També et pot interessar...</h4>
+        <div class="row row-inline-cards justify-content-center">
+            {% for objeto in ultimos %}
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="card mb-3 card-inline flex-fill h-100">
+                    {% with imagen=objeto.postgaleriaimagen_set.first %}
+                    {% if imagen %}
+                    <div class="image-container">
+                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid img-inline">
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ objeto.titulo }}</h5>
+                        <p class="card-text">{% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}{% else %}{{ objeto.descripcion_corta }}{% endif %}</p>
+                        <div class="event-details">
+                            <p class="event-date-time">
+                                <i class="fas fa-calendar-alt"></i> <span class="event-date">{{ objeto.fecha }}</span> - <i class="fas fa-clock"></i> <span class="event-time">{{ objeto.hora }}</span>
+                            </p>
+                        </div>
+                        <a href="{{ objeto.get_absolute_url }}" class="btn btn-primary">Detalles</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</aside>
+{% endif %}
+
+{% if posts %}
+<aside class="container-fluid">
+    <div class="container mt-5 p-3">
+        <h4>Últimes entrades:</h4>
+        <div class="row row-inline-cards justify-content-center">
+            {% for objeto in posts %}
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="card mb-3 card-inline flex-fill h-100">
+                    {% if objeto.postimagen %}
+                    <div class="image-container">
+                        <img src="{{ objeto.postimagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid img-inline">
+                    </div>
+                    {% else %}
+                    {% with imagen=objeto.postgaleriaimagen_set.first %}
+                    {% if imagen %}
+                    <div class="image-container">
+                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid img-inline">
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ objeto.titulo }}</h5>
+                        <p class="card-text">{% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}{% else %}{{ objeto.descripcion_corta }}{% endif %}</p>
+                        <a href="{{ objeto.get_absolute_url }}" class="btn btn-primary">Detalles</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</aside>
+{% endif %}
+
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script>
+    function initMap() {
+        const mapContainer = document.getElementById('map');
+        const latitudInicio = parseFloat('{{ map.latitud|stringformat:".6f" }}'.replace(',', '.'));
+        const longitudInicio = parseFloat('{{ map.longitud|stringformat:".6f" }}'.replace(',', '.'));
+    
+        const map = new google.maps.Map(mapContainer, {
+            center: { lat: latitudInicio, lng: longitudInicio },
+            zoom: 14
+        });
+    
+        const marker = new google.maps.Marker({
+            position: { lat: latitudInicio, lng: longitudInicio },
+            map: map,
+            title: '{{ map.titulo }}'
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+            content: '<h3>{{ map.titulo }}</h3>'
+        });
+
+        marker.addListener('click', function() {
+            infoWindow.open(map, marker);
+        });
+    }
+    
+    function loadGoogleMapsAPI(callback) {
+        var script = document.createElement('script');
+        script.src = 'https://maps.googleapis.com/maps/api/js?AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=' + callback;
+        script.defer = true;
+        script.async = true;
+        document.head.appendChild(script);
+      }
+    
+      loadGoogleMapsAPI('initMap');
+    </script>
+{% endblock extra_script %}

@@ -115,7 +115,9 @@ class Categoria(MetadataModel, BaseModel):
         ('normal', 'normal'),
         ('agenda', 'agenda'),
         ('visitas_guiadas', 'visitas guiadas'),
-        ('noticies','noticies')
+        ('senderisme','senderisme'),
+        ('noticies','noticies'),
+        
         # Agrega más tipos según tus necesidades
     )
 
@@ -207,12 +209,15 @@ class Post(MetadataModel, BaseModel):
             # Generar el slug basado en el título
             self.slug = slugify(self.titulo)
         else:
-            original_slug = self.slug
-            counter = 1
-            while Post.objects.filter(slug=self.slug).exists():
-                # Si ya existe un Post con el mismo slug, añadir un contador al final del slug
-                self.slug = f"{original_slug}-{counter}"
-                counter += 1
+            # Comprobar si el slug ha cambiado y si existe otro objeto con el nuevo slug
+            new_slug = slugify(self.titulo)
+            if self.slug != new_slug and Post.objects.filter(slug=new_slug).exists():
+                # El nuevo slug ya está en uso, no se modifica
+                pass
+            else:
+                # El nuevo slug es único, se actualiza
+                self.slug = new_slug
+
 
         if not self.id:
             # Si es un nuevo objeto, se establece la fecha de creación y el usuario actual

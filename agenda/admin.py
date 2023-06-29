@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
 from multimedia_manager.models import Imagen, Fichero
-from .models import Agenda, VisitaGuiada
+from .models import Agenda, VisitaGuiada, Ruta
 from map.models import MapPoint
 from django.forms import DurationField
 from blog.models import PostImagen, PostGaleriaImagen, PostFichero
@@ -31,6 +31,10 @@ class PostGaleriaImagenInline(admin.TabularInline):
             kwargs['empty_label'] = 'Sin imagen asociada'
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
+
 
 
 class AgendaAdmin(admin.ModelAdmin):
@@ -130,5 +134,44 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
     exclude = ['duracion']  # Excluir el campo duracion en el administrador
     
 
+
+
+
+class PostImagenInlineRuta(admin.TabularInline):
+    model = PostImagen
+    extra = 1
+    readonly_fields = ['imagen_preview']
+
+    def imagen_preview(self, instance):
+        if instance.imagen:
+            return instance.imagen.imagen_thumbnail()
+        return '(Cap imatge associada)'
+
+    imagen_preview.short_description = 'Imatge associada'
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'imagen':
+            post_id = None
+            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
+                post_id = request.resolver_match.kwargs['object_id']
+                kwargs['queryset'] = Imagen.objects.filter(
+                    Q(categoriabannerimagen__isnull=True),
+                    Q(subblogimagen__isnull=True),
+                    Q(categoriagaleriaimagen__isnull=True),
+                    Q(postgaleriaimagen__isnull=True),
+                    Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
+                )
+            kwargs['empty_label'] = 'Sense imatge associada'
+            
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+class RutaAdmin(admin.ModelAdmin):
+    form = VisitaGuidadaForm
+    inlines = [VisitaGuidadaGaleriaImagenInline, PostFicheroImagenInline, PostImagenInlineRuta]
+    exclude = ['duracion']  # Excluir el campo duracion en el administrador
+
+
+admin.site.register(Ruta, RutaAdmin)
 admin.site.register(Agenda, AgendaAdmin)
 admin.site.register(VisitaGuiada, VisitaGuidadaAdmin)

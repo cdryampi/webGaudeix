@@ -1,4 +1,6 @@
 from django.db import models
+from blog.models import Post
+from django.utils.translation import gettext_lazy as _
 #from django.contrib.gis.db import models as gis_models
 
 ICON_CHOICES = (
@@ -27,12 +29,9 @@ class MapPointManager(models.Manager):
         return self.get(titulo='Punto de Referencia')
 
 
-class MapPoint(models.Model):
-
-    titulo = models.CharField(max_length=100)
+class MapPoint(Post):
     latitud = models.FloatField(help_text='Introduïu la latitud (copiada de Google Maps)')
     longitud = models.FloatField(help_text='Introduïu la longitud (copiada de Google Maps)')
-    publicado = models.BooleanField(default=False, help_text="publicat?")
     icono = models.CharField(max_length=100, choices=ICON_CHOICES)
     objects = MapPointManager()
 

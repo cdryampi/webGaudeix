@@ -1,5 +1,5 @@
 
-from .models import Agenda, VisitaGuiada
+from .models import Agenda, VisitaGuiada, Ruta
 
 from django.views import View
 from django.http import HttpResponse
@@ -12,7 +12,7 @@ from django.db.models import Q
 from datetime import datetime,timedelta
 from core.mixin.base import BaseContextMixin
 from blog.models import Categoria
-
+from map.models import MapPoint
 
 # Create your views here.
 class VisitaGuiadaView(BaseContextMixin, DetailView):
@@ -43,6 +43,27 @@ class VisitaGuiadaView(BaseContextMixin, DetailView):
         context['agendas_relacionadas'] = agendas_relacionadas
         return context
 
+class RutaView(BaseContextMixin, DetailView):
+    model = Ruta
+    template_name = 'agenda/ruta.html'
+    context_object_name = 'ruta'
+
+    def get_object(self, queryset=None):
+        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
+        
+        slug = self.kwargs.get('slug')
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, slug=slug)
+        return obj
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_object = self.get_object()
+        # Obtener los puntos de itinerario ordenados alfabéticamente
+        puntos_itinerario = current_object.mapas_itinerario.all().order_by('titulo')
+        context['puntos_itinerario'] = puntos_itinerario
+        return context
 
 
 class AgendaDetailView(BaseContextMixin, DetailView):
