@@ -7,7 +7,7 @@ from map.models import MapPoint
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from datetime import timedelta
-
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -16,6 +16,9 @@ User = get_user_model()
 
 
 class Agenda(Post):
+    entradas = models.BooleanField(default=False, help_text="Hi ha entrades?")
+    fecha = models.DateField(default=timezone.now)
+    hora = models.TimeField(default=timezone.now)
     ubicacion = models.CharField(max_length=255)
     descripcion_corta = models.CharField(max_length=255)
     TIPO_EVENTO_CHOICES = (

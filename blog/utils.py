@@ -32,10 +32,13 @@ class Command(BaseCommand):
 
 
 def agrupar_eventos_por_dia(eventos):
+    
     eventos_por_dia = defaultdict(list)
-
+    print(eventos[0])
     for evento in eventos:
-        eventos_por_dia[evento.fecha.day].append(evento)
+        agenda = Agenda.objects.filter(pk=evento.agenda.pk).first()
+        print(agenda.fecha)
+        eventos_por_dia[agenda.fecha.day].append(evento)
 
     # Filtrar las claves que tienen valores inválidos o vacíos
     eventos_por_dia = {k: v for k, v in eventos_por_dia.items() if v}
@@ -51,6 +54,9 @@ def agrupar_eventos_por_dia(eventos):
                     'ubicacion': agenda.ubicacion,
                     'descripcion_corta': agenda.descripcion_corta,
                     'tipo_evento': agenda.tipo_evento,
+                    'fecha': agenda.fecha.isoformat() if agenda.fecha else '',
+                    'entradas': agenda.entradas,
+                    'hora': agenda.hora.strftime('%H:%M') if agenda.hora else '',
                     # Agrega otros campos de Agenda que necesites
                 }
                 post = Post.objects.filter(agenda=agenda).first()
@@ -58,9 +64,6 @@ def agrupar_eventos_por_dia(eventos):
                     post_fields = {
                         'titulo': post.titulo,
                         'descripcion': post.descripcion,
-                        'entradas': post.entradas,
-                        'fecha': post.fecha.isoformat() if post.fecha else '',
-                        'hora': post.hora.strftime('%H:%M') if post.hora else '',
                         'categoria': post.categoria.titulo if post.categoria else '',
                         'slug': post.slug if post.slug else '',
                         'imagen':agenda.postgaleriaimagen_set.all().first().imagen.archivo.url if agenda.postgaleriaimagen_set.all() else '',

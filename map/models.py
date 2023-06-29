@@ -18,7 +18,8 @@ ICON_CHOICES = (
     ('platges','Platges'),
     ('informació',"Punt d'informació"),
     ('jaciments', 'Jaciments arqueològics'),
-    ('patrimoni', 'Patrimoni cultural')
+    ('patrimoni', 'Patrimoni cultural'),
+    ('flora-i-fauna','flora i fauna')
     # Agrega más opciones según tus necesidades
 )
 

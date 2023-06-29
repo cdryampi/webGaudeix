@@ -78,11 +78,11 @@ class PostGaleriaImagenInline(admin.TabularInline):
 
 class PostAdmin(admin.ModelAdmin):
     form = PostForm
-    list_display = ('titulo', 'fecha', 'categoria')
+    list_display = ('titulo', 'categoria')
     list_filter = ('categoria',)
     search_fields = ('titulo', 'descripcion')
     inlines = [PostImagenInline, PostGaleriaImagenInline]
-    fields = ['titulo', 'descripcion', 'fecha', 'hora', 'categoria','publicado']
+    fields = ['titulo', 'descripcion', 'categoria','publicado']
     
     def get_queryset(self, request):
         # Obtener el queryset original
