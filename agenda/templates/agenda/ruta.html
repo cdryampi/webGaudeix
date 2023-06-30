@@ -139,7 +139,11 @@ div#map {
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title">{{ mapa.titulo }}</h5>
-                                    <p class="card-text flex-grow-1">{{ mapa.descripcion | truncatewords:30 | safe }}</p>
+                                    <p class="card-text flex-grow-1">
+                                        {% autoescape on %}
+                                            {{ mapa.descripcion|striptags|truncatewords:30|safe }}
+                                        {% endautoescape %}
+                                    </p>
                                     <p class="card-text">
                                         <a href="{% url 'map:mapa' slug=mapa.slug %}" class="text-primary pr-2">Veure més</a>
                                     </p>
@@ -271,7 +275,7 @@ div#map {
                 longitud: {{ mapa.longitud|stringformat:".6f" }},
                 titulo: '{{ mapa.titulo|stringformat:"s" }}',
                 imagen: '{{ mapa.postimagen.imagen.archivo.url|stringformat:"s"}}',
-                descripcion: '{{ mapa.descripcion|stringformat:"s"|safe|truncatewords_html:10 }}',
+                descripcion: "{{ mapa.descripcion|stringformat:"s"|safe|truncatewords_html:10| linebreaksbr  }}",
                 url_interno: '{% url 'map:mapa' slug=mapa.slug %}',
                 url_externo: '{{ ruta.enlace_natura_local|stringformat:"s" }}',
                 pk: '{{ mapa.slug|stringformat:"s" }}',
