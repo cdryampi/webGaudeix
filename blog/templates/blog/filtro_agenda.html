@@ -9,8 +9,7 @@
 
 {% endblock extra_css %}
 
-<div id="calendar" cl
-ass="row"></div>
+<div id="calendar" class="row"></div>
 
 <form id="filtro-agenda-form">
   {% csrf_token %}
@@ -42,7 +41,7 @@ ass="row"></div>
     </div>
   </div>
 </aside>
-
+{% block extra_script %}
 <script>
   // Obtén los elementos HTML necesarios
   const tipoEventoButtons = document.querySelectorAll('.tipo-evento-buttons button');
@@ -321,3 +320,4 @@ ass="row"></div>
   const currentMonth = currentDate.getMonth();
   mostrarCalendario(currentYear, currentMonth);
 </script>
+{% endblock extra_script %}

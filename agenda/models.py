@@ -49,7 +49,7 @@ class Agenda(Post):
 
     def get_absolute_url(self):
             return reverse('agenda:detalle_agenda', kwargs={'slug': self.slug})
-
+    
 
 
 class Ruta(Post):

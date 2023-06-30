@@ -226,8 +226,7 @@ class Post(MetadataModel, BaseModel):
         # Siempre se actualiza la fecha de modificación y el usuario que modifica
         self.modificado_por = get_user_model().objects.first()
         self.fecha_modificacion = timezone.now()
-        if self.fecha and self.fecha < timezone.now().date() - timezone.timedelta(weeks=1):
-            self.entradas = False
+
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
