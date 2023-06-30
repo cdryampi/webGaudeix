@@ -24,7 +24,7 @@ def home(request):
 
     # Obtén los últimos posts que deseas mostrar en la página de inicio
 
-    posts = Post.objects.filter(publicado=True).order_by('-fecha')[:3]
+    posts = Post.objects.filter(publicado=True).order_by('-fecha_modificacion')[:3]
 
     # Renderiza la plantilla de la página de inicio con los datos obtenidos
 
