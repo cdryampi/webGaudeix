@@ -24,7 +24,7 @@
 
 /* Aplicar las fuentes a los elementos del sitio */
 body {
-    font-family: 'Quattrocento', sans-serif;
+    font-family: 'Quattrocento','Montserrat', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {

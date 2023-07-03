@@ -1,0 +1,31 @@
+<aside class="container-fluid">
+    <div class="container mt-5 p-3">
+        <h4>Últimes entrades:</h4>
+        <div class="row row-inline-cards justify-content-center">
+            {% for objeto in posts %}
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="card mb-3 card-inline flex-fill h-100">
+                    {% if objeto.postimagen %}
+                        <div class="image-container">
+                            <img src="{{ objeto.postimagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid img-inline">
+                        </div>
+                    {% else %}
+                        {% with imagen=objeto.postgaleriaimagen_set.first %}
+                            {% if imagen %}
+                                <div class="image-container">
+                                    <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid img-inline">
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ objeto.titulo }}</h5>
+                        <p class="card-text">{% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}{% else %}{{ objeto.descripcion_corta }}{% endif %}</p>
+                        <a href="{{ objeto.get_absolute_url }}" class="btn btn-primary">Detalles</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</aside>

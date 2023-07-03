@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'agenda',
     'paginas_estaticas',
     'map',
-    'fontawesomefree',
+    'fontawesomefree'
     #'corsheaders',
     #'admin_tree'
     #'filters'
@@ -151,6 +151,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core/static'),
 ]
 
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -160,6 +163,14 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Ckeditor
+CKEDITOR_CONFIGS = {
+    'default': {
+        'allowedContent': True,
+    },
+}
+
+
+
 
 CKEDITOR_UPLOAD_PATH = "media/"
 CKEDITOR_IMAGE_BACKEND = "pillow"

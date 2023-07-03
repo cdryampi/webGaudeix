@@ -1,5 +1,6 @@
 from django.contrib import admin
 from ..models import PostImagen,PostGaleriaImagen,Post
+
 from multimedia_manager.models import Imagen
 from django.db.models import Q
 from ..models import Tag
@@ -82,13 +83,13 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ('categoria',)
     search_fields = ('titulo', 'descripcion')
     inlines = [PostImagenInline, PostGaleriaImagenInline]
-    fields = ['titulo', 'descripcion', 'categoria','publicado']
+    fields = ['titulo', 'metatitulo', 'descripcion', 'metadescripcion', 'categoria', 'publicado', ]
     
     def get_queryset(self, request):
         # Obtener el queryset original
         queryset = super().get_queryset(request)
         
         # Filtrar los objetos de tipo Agenda
-        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguiada__isnull=False)
+        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguiada__isnull=False).exclude(mappoint__isnull=False)
         
         return queryset

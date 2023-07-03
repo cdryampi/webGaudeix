@@ -1,6 +1,5 @@
-
 from .models import Agenda, VisitaGuiada, Ruta
-
+from blog.models import Post
 from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -62,7 +61,13 @@ class RutaView(BaseContextMixin, DetailView):
         current_object = self.get_object()
         # Obtener los puntos de itinerario ordenados alfabéticamente
         puntos_itinerario = current_object.mapas_itinerario.all().order_by('titulo')
+        rutes = Ruta.objects.filter(publicado = True).exclude(pk = current_object.pk)
+        ultimos_post = Agenda.objects.filter(publicado = True)[:4]
+        
+        context['rutes'] = rutes
         context['puntos_itinerario'] = puntos_itinerario
+        context['posts'] = ultimos_post
+
         return context
 
 

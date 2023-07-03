@@ -1,11 +1,102 @@
 {% extends 'core/base.html' %}
+{% load custom_filters %}
 
 {% block extra_css %}
 <style>
-    .visita-guiada-card {
+    .categoria-titulo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .categoria-subtitulo {
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .categoria-descripcion {
         margin-bottom: 20px;
     }
-    
+
+    .categoria-carrusel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .categoria-carrusel img {
+        object-fit: cover;
+        max-height: 500px;
+        width: 100%;
+    }
+
+    .carousel-control-prev {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+
+    .carousel-inner.text-center {
+        text-align: center;
+    }
+
+    .visita-guiada-card {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .visita-guiada-card .tipo-visita {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 5px 10px;
+        margin: 0;
+        color: #fff;
+        font-weight: bold;
+        background-color: #17a2b8;
+        width: 100%;
+    }
+
+    .visita-guiada-card.flex-row .tipo-visita {
+        background-color: #28a745;
+    }
+
+    .visita-guiada-card .tipo-visita i {
+        margin-right: 5px;
+    }
+
+    .visita-guiada-card .card-body {
+        padding: 20px;
+    }
+
+    .hashtag {
+        font-size: 2.5rem;
+        color: #17a2b8;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .visita-guiada-card {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
     .visita-guiada-card .tipo-visita {
         padding: 5px 10px;
         margin-bottom: 10px;
@@ -24,53 +115,122 @@
     .visita-guiada-card .tipo-visita-otro {
         background-color: #6c757d;
     }
+    .duracion-visita {
+        padding-left: 10px; /* Ajusta el valor según tus necesidades */
+    }
+    .visita-guiada-link {
+        color: #17a2b8;
+        opacity: 0.7;
+        transition: color 0.3s;
+    }
+    
+    .visita-guiada-link:focus,
+    .visita-guiada-link:hover {
+        color: #17a2b8;
+        opacity: 1;
+        text-decoration: underline;
+    }
+    
+    
 </style>
-{% endblock %}
+{% endblock extra_css %}
 
 {% block content %}
-    <div class="container">
-        <h1>{{ categoria.titulo }}</h1>
-        <div class="card">
-            <div class="card-body">
-                <p class="card-text">{{ categoria.descripcion | safe }}</p>
+<div class="container-fluid px-0 py-0">
+    {% if categoria.categoriagaleriaimagen_set.count > 1 %}
+    <div id="categoria-carrusel-{{ categoria.slug }}" class="carousel slide categoria-carrusel" data-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for imagen in categoria.categoriagaleriaimagen_set.all %}
+            <li data-target="#categoria-carrusel-{{ categoria.slug }}" data-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active"{% endif %}></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner text-center">
+            {% for imagen in categoria.categoriagaleriaimagen_set.all %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid">
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#categoria-carrusel-{{ categoria.slug }}" role="button"
+            data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#categoria-carrusel-{{ categoria.slug }}" role="button"
+            data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}"
+            class="img-fluid">
+    </div>
+    {% endif %}
+
+    <div class="container pt-5">
+        <h1>Explora Cabrera de Mar: Descobreix els seus racons amb les nostres rutes temàtiques</h1>
+        <div class="row">
+            <div class="col-12">
+                <p class="card-text">
+                    {% autoescape on %}
+                    {{ categoria.descripcion | safe }}
+                    {% endautoescape %}
+                </p>
             </div>
         </div>
 
         <div class="row">
+            <div class="col-12 pb-3 pt-5">
+                <h2 class="titulo-destacat">Descobreix les nostres increïbles visites guiades!</h2>
+              </div>              
             {% if categoria.tipo == 'visitas_guiadas' %}
-                {% for visita in visitas_guiadas %}
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="card visita-guiada-card">
-                            <div class="tipo-visita {% if visita.publico_recomendado == 'nens' %}tipo-visita-agenda{% elif visita.publico_recomendado == 'adults' %}tipo-visita-guiada{% else %}tipo-visita-otro{% endif %}">
-                                {% if visita.publico_recomendado == 'nens' %}
-                                    <i class="fas fa-child"></i>
-                                {% elif visita.publico_recomendado == 'adults' %}
-                                    <i class="fas fa-user"></i>
-                                {% else %}
-                                    <i class="fas fa-users"></i>
-                                {% endif %}
-                                {{ visita.get_publico_recomendado_display }}
-                            </div>
-                            {% if visita.postgaleriaimagen_set.exists %}
-                                {% with imagen=visita.postgaleriaimagen_set.first %}
-                                    {% if imagen %}
-                                        <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita" class="img-fluid">
-                                    {% endif %}
-                                {% endwith %}
-                            {% endif %}
-                            <div class="card-body">
-                                <h2 class="card-title">{{ visita.titulo }}</h2>
-                                <div class="card-text">{{ visita.descripcion | safe }}</div>
-                                <p class="card-text">Data: {{ visita.fecha }}</p>
-                                <p class="card-text">Durada: {{ visita.duracion }} hores</p>
-                                <p class="card-text">Lloc: {{ visita.punto_inicio.titulo }}</p>
-                                <!-- Afegeix aquí altres detalls rellevants per a la carta -->
-                                <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="visita-guiada-link">Veure més</a>
-                            </div>
+            {% for visita in visitas_guiadas %}
+            <div class="card visita-guiada-card pt-3 col-12">
+                <div class="tipo-visita {% if visita.publico_recomendado == 'nens' %}tipo-visita-agenda{% elif visita.publico_recomendado == 'adults' %}tipo-visita-guiada{% else %}tipo-visita-otro{% endif %}">
+                    {% if visita.publico_recomendado == 'nens' %}
+                    <i class="fas fa-child"></i>
+                    {% elif visita.publico_recomendado == 'adults' %}
+                    <i class="fas fa-user"></i>
+                    {% else %}
+                    <i class="fas fa-users"></i>
+                    {% endif %}
+                    {{ visita.get_publico_recomendado_display }}
+                    <span class="duracion-visita">
+                        <i class="fas fa-clock"></i>
+                        {{ visita.duracion|format_duration }}
+                    </span>
+                    
+                </div>
+
+                <div class="row pt-3">
+                    {% if visita.postgaleriaimagen_set.exists %}
+                    {% with imagen=visita.postgaleriaimagen_set.first %}
+                    {% if imagen %}
+                    <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                        <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
+                            class="img-fluid w-100 h-auto" style="object-fit: cover; max-height: 300px;">
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    {% endif %}
+                    <div class="col-lg-8 col-md-6 col-sm-12">
+                        <div class="card-body" style="padding: 20px;">
+                            <h2 class="card-title">{{ visita.titulo }}</h2>
+                            <div class="card-text">{{ visita.descripcion | safe }}</div>
+                            <!-- Afegeix aquí altres detalls rellevants per a la carta -->
+                            <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="visita-guiada-link btn btn-link text-primary">
+                                Veure més <i class="fas fa-arrow-right"></i>
+                            </a>                            
                         </div>
                     </div>
-                {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
             {% endif %}
         </div>
     </div>
-{% endblock %}
+</div>
+{% endblock content %}

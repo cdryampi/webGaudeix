@@ -15,8 +15,12 @@
     <meta name="revisit-after" content="30 days">
     <meta name="copyright" content="Copyright © - GaudeixCabreradeMar">
     <!--Fin de los metas-->
+    
 
-    <link rel="preload"  as="style" type="text/css" href="{% static 'core/css/fonts.css' %}">
+    <!-- Fuentes -->
+    <link rel="preload" href="{% static 'core/css/fonts.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{% static 'core/css/fonts.css' %}"></noscript>
+    <!-- end fuentes -->
 
     <!--FAVICON-->
     <link rel="apple-touch-icon" sizes="144x144" href="{% static 'core/img/favicon/apple-touch-icon.png' %}">
