@@ -117,6 +117,7 @@ class Categoria(MetadataModel, BaseModel):
         ('visitas_guiadas', 'visitas guiadas'),
         ('senderisme','senderisme'),
         ('noticies','noticies'),
+        ('lloc','lloc')
         
         # Agrega más tipos según tus necesidades
     )

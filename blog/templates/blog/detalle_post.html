@@ -5,8 +5,18 @@
     <div class="text-center">
         <div class="banner">
             <div class="banner-text">
-              <h1 class="main-title">{{post.titulo | truncatewords_html:5 | safe }}</h1>
-              <h2 class="sub-title">{{post.descripcion | truncatewords_html:10 | safe }}</h2>
+              <h1 class="main-title">
+                {% autoescape on %}
+                  {{post.titulo | truncatewords_html:5 |striptags |safe }}
+                {% endautoescape %}
+
+              </h1>
+              <h2 class="sub-title">
+                {% autoescape on %}
+                
+                {% endautoescape %}
+                {{post.descripcion |striptags |truncatewords_html:10 | safe }}
+              </h2>
             </div>
             <div class="banner-highlight">#gaudeixCabrera</div>
           </div>
@@ -15,7 +25,12 @@
 
 
     <div class="pb-5">
-        <h1 class="text-center p-3 display-2">{{ post.titulo }}</h1>
+        <h1 class="text-center p-3 display-2">
+          {% autoescape on %}
+            {{ post.titulo }}
+          {% endautoescape %}
+
+        </h1>
     </div>
 
   <div class="container-fuild p-5 content-agenda-detail-container">
@@ -54,15 +69,18 @@
       
   </div>
 </section>
-
-<aside class="container-fuild agenda-pdf-link pb-0 mb-0">
-    <div class="col-md-12 col-lg-12 agenda-special-categories p-5 mt-5">
-        <div class="text-center  m-0 p-2 bg-light agenda-pdf-link">
-            <i class="fas fa-file-download fa-2x text-white mr-2"></i>
-            <a href="{% url 'agenda:calendario_pdf' %}" class="btn btn-light">Descargar PDF de la Agenda</a>
+{% comment %} 
+{% if visites.postfichero %}
+    <aside class="mx-0 px-0 pb-5 container-fluid">
+        <div class="row p-0 m-0">
+            <div class="col-md-12 p-0 m-0">
+                <a href="{{ visites.postfichero.fichero.archivo.url }}" class="btn btn-primary btn-lg btn-block" download>
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
+            </div>
         </div>
-    </div>
-</aside>
+    </aside>
+{% endif %} {% endcomment %}
 
 {% if ultimos %}
 <aside class="container-fluid">

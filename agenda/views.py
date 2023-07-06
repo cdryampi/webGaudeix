@@ -34,10 +34,11 @@ class VisitaGuiadaView(BaseContextMixin, DetailView):
         context = super().get_context_data(**kwargs)
         current_object = self.get_object()
 
-        print("Current Object:", current_object)
+       
 
-        agendas_relacionadas = Agenda.objects.filter(visitas_guiadas=current_object, publicado=True).exclude(pk=current_object.pk)[:3]
-        print("Agendas Relacionadas:", agendas_relacionadas)
+        agendas_relacionadas = Agenda.objects.filter(visitas_guiadas=current_object, publicado=True).exclude(pk=current_object.pk)
+        visita_guiadas = VisitaGuiada.objects.filter(publicado=True).exclude(pk=current_object.pk)
+        #print("Agendas Relacionadas:", agendas_relacionadas)
 
         context['agendas_relacionadas'] = agendas_relacionadas
         return context
@@ -89,7 +90,7 @@ class AgendaDetailView(BaseContextMixin, DetailView):
         # Obtener el objeto actual
         current_object = self.get_object()
         # Obtener los últimos objetos publicados, excluyendo el objeto actual
-        ultimos = Agenda.objects.filter(publicado=True).exclude(Q(pk=current_object.pk))
+        ultimos = Agenda.objects.filter(publicado=True).exclude(pk=current_object.pk).order_by('-fecha')[:4]
         context['ultimos'] = ultimos
         return context
 

@@ -34,10 +34,10 @@ class Command(BaseCommand):
 def agrupar_eventos_por_dia(eventos):
     
     eventos_por_dia = defaultdict(list)
-    print(eventos[0])
+    #print(eventos[0])
     for evento in eventos:
         agenda = Agenda.objects.filter(pk=evento.agenda.pk).first()
-        print(agenda.fecha)
+        #print(agenda.fecha)
         eventos_por_dia[agenda.fecha.day].append(evento)
 
     # Filtrar las claves que tienen valores inválidos o vacíos

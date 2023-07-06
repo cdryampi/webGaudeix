@@ -210,7 +210,7 @@
                                 <h5 class="card-title">{{ post.titulo }}</h5>
                                 <p class="card-text flex-grow-1">
                                     {% autoescape on %}
-                                    {{ post.descripcion|striptags|truncatewords:30|safe }}
+                                        {{ post.descripcion|striptags|truncatewords:30|safe }}
                                     {% endautoescape %}
                                     
                                 </p>

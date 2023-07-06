@@ -6,7 +6,88 @@
     div#map {
         height: 500px;
     }
+    aside .linked-relacions .card {
+        position: relative;
+        z-index: 1;
+    }
+    
+    aside .linked-relacions .card::before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 5px;
+        width: 101%;
+        height: 100%;
+        background-color: {{ map.categoria.color }};
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -100;
+    }
+    
+    aside .linked-relacions .card:hover::before {
+        opacity: 0.3;
+    }
+    aside .linked-relacions .card .url-link{
+        font-size:1.3rem;
+        color: #31C6F8 !important;
 
+    }
+
+    aside .linked-relacions .card:hover .url-link{
+        font-weight: bold;
+    }
+    aside .linked-relacions .image-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    aside .linked-relacions .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Cambia el valor de opacidad según tu preferencia */
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    aside .linked-relacions .card:hover .image-overlay {
+        opacity: 1;
+    }
+    
+    aside .linked-relacions .card-img-top {
+        width: 100%;
+        height: auto;
+        transition: filter 0.3s ease;
+    }
+    
+    aside .linked-relacions .card:hover .card-img-top {
+        filter: brightness(70%); /* Cambia el valor de brillo según tu preferencia */
+    }
+
+    aside .linked-relacions  .categoria-especial {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        padding: 20px;
+        text-align: center;
+        color: #fff;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
+      }
+    
+      aside .linked-relacions  .categoria-especial:hover {
+        background-color: #333;
+      }
+    
+      aside .linked-relacions  .categoria-especial img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
 
 </style>
 {% endblock extra_css %}
@@ -17,58 +98,123 @@
     <div class="text-center">
         <div class="banner">
             <div class="banner-text">
-                <h1 class="main-title">{{ map.titulo | truncatewords_html:5 | safe }}</h1>
-                <h2 class="sub-title">{{ map.descripcion | truncatewords_html:10 | safe }}</h2>
+                <h1 class="main-title">
+                    {% autoescape on %}
+                        {{ map.titulo | striptags | truncatewords_html:5 | safe }}
+                    {% endautoescape %}
+                </h1>
+                <h2 class="sub-title">
+                    {% autoescape on %}
+                        {{ map.descripcion |striptags | truncatewords_html:10 | safe }}
+                    {% endautoescape %}
+                </h2>
             </div>
             <div class="banner-highlight">#gaudeixCabrera</div>
         </div>
     </div>
 
-    <div class="container content-agenda-detail-container pt-5">
-        <div class="row">
-            <div class="col-md-7">
-                <div class="container p-2">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="pb-5">
-                                <h1 class="text-center p-3 display-2">{{ map.titulo }}</h1>
+
+    <div class="container-fluid content-agenda-detail-container pt-5">
+
+        <div class="container pt-5">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="container p-2">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pb-5">
+                                    <h1 class="text-center p-3 display-2">{{ map.titulo }}</h1>
+                                </div>
+                                <p>
+                                    {% autoescape on %}
+                                        {{ map.descripcion | safe }}
+                                    {% endautoescape %}
+                                </p>
                             </div>
-                            <p>{{ map.descripcion | safe }}</p>
-                        </div>
-                        <div class="col-md-12">
-                            {% with imagen=map.postimagen %}
-                            {% if imagen %}
-                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
-                            {% endif %}
-                            {% endwith %}
-                        </div>
-                        <div class="col-md-12 pt-3">
-                            <div class="social-share-buttons">
-                                <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
-                                    <i class="fab fa-facebook-f fa-2x px-2"></i>
-                                </a>
-                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ agenda.titulo }}" target="_blank">
-                                    <i class="fab fa-twitter fa-2x px-2"></i>
-                                </a>
-                                <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
-                                    <i class="fab fa-instagram fa-2x px-2"></i>
-                                </a>
+                            <div class="col-md-12">
+                                {% with imagen=map.postimagen %}
+                                {% if imagen %}
+                                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+                                {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div class="col-md-12 pt-3">
+                                <div class="social-share-buttons">
+                                    <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+                                        <i class="fab fa-facebook-f fa-2x px-2"></i>
+                                    </a>
+                                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ agenda.titulo }}" target="_blank">
+                                        <i class="fab fa-twitter fa-2x px-2"></i>
+                                    </a>
+                                    <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
+                                        <i class="fab fa-instagram fa-2x px-2"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5 map-container">
-                <div class="row justify-content-center align-content-center" style="height: 100%%;">
-                    <div id="map" style="width: 100%; height: 500px;"></div>
+                <div class="col-md-5 map-container">
+                    <div class="row justify-content-center align-content-center" style="height: 100%%;">
+                        <div id="map" style="width: 100%; height: 500px;"></div>
+                    </div>
                 </div>
+                
             </div>
-            
         </div>
+    
+
+
     </div>
 
 </section>
 
+{% if llocs %}
+<aside class="container-fluid">
+    <div class="container pt-3 linked-relacions">
+
+        <h3>Altres llocs d'interès</h3>
+        <div class="row">
+            {% for post in llocs %}
+            <div class="col-md-6 p-3">
+                <div class="card mb-3 h-100">
+                    <div class="image-container">
+                        {% if post.postimagen.imagen %}
+                            <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}">
+                        {% endif %}
+                        <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ post.titulo }}</h5>
+                        <p class="card-text flex-grow-1">
+                            {% autoescape on %}
+                                {{ post.descripcion |striptags |truncatewords:30 | safe }}
+                            {% endautoescape %}
+                        </p>
+                        <a href="{% url 'map:mapa' slug=post.slug %}" class="text-primary text-left mt-auto url-link">Veure més</a>
+                    </div>
+                </div>
+            </div>
+            
+            {% empty %}
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">No hay posts disponibles.</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+
+</aside>
+{% endif %}
+
+
+{% comment %} 
 <aside class="container-fuild agenda-pdf-link pb-0 mb-0">
     <div class="col-md-12 col-lg-12 agenda-special-categories p-5 mt-5">
         <div class="text-center  m-0 p-2 bg-light agenda-pdf-link">
@@ -76,47 +222,16 @@
             <a href="{% url 'agenda:calendario_pdf' %}" class="btn btn-light">Descargar PDF de la Agenda</a>
         </div>
     </div>
-</aside>
+</aside> {% endcomment %}
 
-{% if ultimos %}
-<aside class="container-fluid">
-    <div class="container mt-5 p-3">
-        <h4>També et pot interessar...</h4>
-        <div class="row row-inline-cards justify-content-center">
-            {% for objeto in ultimos %}
-            <div class="col-md-4 col-lg-3 col-6">
-                <div class="card mb-3 card-inline flex-fill h-100">
-                    {% with imagen=objeto.postgaleriaimagen_set.first %}
-                    {% if imagen %}
-                    <div class="image-container">
-                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid img-inline">
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ objeto.titulo }}</h5>
-                        <p class="card-text">{% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}{% else %}{{ objeto.descripcion_corta }}{% endif %}</p>
-                        <div class="event-details">
-                            <p class="event-date-time">
-                                <i class="fas fa-calendar-alt"></i> <span class="event-date">{{ objeto.fecha }}</span> - <i class="fas fa-clock"></i> <span class="event-time">{{ objeto.hora }}</span>
-                            </p>
-                        </div>
-                        <a href="{{ objeto.get_absolute_url }}" class="btn btn-primary">Detalles</a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</aside>
-{% endif %}
 
-{% if posts %}
+
+{% if ultimas_agendas %}
 <aside class="container-fluid">
     <div class="container mt-5 p-3">
         <h4>Últimes entrades:</h4>
         <div class="row row-inline-cards justify-content-center">
-            {% for objeto in posts %}
+            {% for objeto in ultimas_agendas %}
             <div class="col-md-4 col-lg-3 col-6">
                 <div class="card mb-3 card-inline flex-fill h-100">
                     {% if objeto.postimagen %}

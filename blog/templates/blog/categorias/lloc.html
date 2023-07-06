@@ -226,7 +226,7 @@
                                         {{ post.descripcion |striptags |truncatewords:30 | safe }}
                                     {% endautoescape %}
                                 </p>
-                                <a href="{% url 'blog:detalle_post' slug=post.slug %}" class="text-primary text-left mt-auto url-link">Veure més</a>
+                                <a href="{% url 'map:mapa' slug=post.slug %}" class="text-primary text-left mt-auto url-link">Veure més</a>
                             </div>
                         </div>
                     </div>

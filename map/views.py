@@ -1,6 +1,11 @@
 from django.views import View
 from django.http import JsonResponse
 from .models import MapPoint
+from agenda.models import Agenda
+
+from django.db.models import F
+import random
+
 from django.views.generic import View, DetailView
 from core.mixin.base import BaseContextMixin
 from django.shortcuts import get_object_or_404
@@ -45,4 +50,16 @@ class MapaView(BaseContextMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_object = self.get_object()
+
+        ultimas_agendas = Agenda.objects.filter(publicado=True).order_by('-fecha')[:4]
+
+        # Obtener todos los puntos de mapa publicados, excluyendo el objeto actual
+        llocs = MapPoint.objects.filter(publicado=True).exclude(pk=current_object.pk)
+
+        # Obtener una muestra aleatoria de 4 elementos de la lista de puntos de mapa
+        random_llocs = random.sample(list(llocs), 4)
+
+        context['ultimas_agendas'] = ultimas_agendas
+        context['llocs'] = random_llocs
         return context
+

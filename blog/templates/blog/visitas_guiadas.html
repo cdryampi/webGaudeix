@@ -219,7 +219,11 @@
                     <div class="col-lg-8 col-md-6 col-sm-12">
                         <div class="card-body" style="padding: 20px;">
                             <h2 class="card-title">{{ visita.titulo }}</h2>
-                            <div class="card-text">{{ visita.descripcion | safe }}</div>
+                            <div class="card-text">
+                                {% autoescape on %}
+                                    {{ visita.descripcion |truncatewords_html:50 | safe }}
+                                {% endautoescape %}
+                            </div>
                             <!-- Afegeix aquí altres detalls rellevants per a la carta -->
                             <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="visita-guiada-link btn btn-link text-primary">
                                 Veure més <i class="fas fa-arrow-right"></i>

@@ -9,10 +9,12 @@ from redes_sociales.models import RedSocial
 from .utils import agrupar_eventos_por_dia
 from django.db.models import Q
 import json
+from django.db.models import F
+import random
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.contrib import messages
-
+from map.models import MapPoint
 
 
 class ListarPostsView(ListView):
@@ -34,8 +36,12 @@ class DetallePostView(BaseContextMixin,DetailView):
         post = self.object
         ultimas_agendas = Agenda.objects.filter(Q(categoria=post.categoria) | Q(categoria__subblog=post.categoria.subblog)).order_by('-fecha_creacion')[:3]
         context['ultimos'] = ultimas_agendas if ultimas_agendas else None
-        posts = Post.objects.filter(publicado=True).exclude(Q(agenda__isnull=False) | Q(visitaguiada__isnull=False)).exclude(pk=post.pk)[:3]
-        context['posts'] = posts
+        # Obtener todos los puntos de mapa publicados, excluyendo el objeto actual
+        agendas = Agenda.objects.filter(publicado=True).order_by('-fecha')[:4]
+        
+        context['ultimas_agendas'] = ultimas_agendas
+        context['posts'] = agendas
+
         return context
 
 
@@ -111,6 +117,9 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             rutes  = Ruta.objects.filter(publicado=True).all()
             context['rutes'] = rutes
         elif categoria.tipo == 'normal':
+            posts = Post.objects.filter(publicado = True, categoria = categoria)
+            context['posts'] = posts
+        elif categoria.tipo == 'lloc':
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
         return context

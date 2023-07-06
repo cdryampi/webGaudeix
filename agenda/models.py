@@ -142,23 +142,30 @@ class Ruta(Post):
         return f"Ruta: {self.titulo}"
 
 class VisitaGuiada(Post):
-    precio = models.DecimalField(max_digits=8, decimal_places=2, help_text="Preu de la visita (en euros)")
-    duracion = models.DurationField(default=timedelta(days=2), help_text="Duració de la visita (en format DD HH:MM:SS)")
-
-    punto_inicio = models.ForeignKey(
-        MapPoint,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='visitas_punto_inicio',
-        help_text="Mapa relacionat amb la visita"
-    )
 
     PUBLICO_RECOMENDADO_CHOICES = (
         ('nens', _('Nens')),
         ('joves', _('Joves')),
         ('adults', _('Adults')),
         ('todos', _('Totes les edats')),
+    )
+
+    MOSTRAR_CALENDARIO_CHOICES = (
+        ('si', _('Sí')),
+        ('no', _('No')),
+    )
+
+    precio = models.DecimalField(max_digits=8, decimal_places=2, help_text="Preu de la visita (en euros)")
+    duracion = models.DurationField(default=timedelta(days=2), help_text="Duració de la visita (en format DD HH:MM:SS)")
+    fecha_inicio = models.DateField(default=timezone.now, help_text="Data d'inici del rang")
+    fecha_fin = models.DateField(default=timezone.now() + timezone.timedelta(days=7), help_text="Data de finalització del rang")
+
+
+    mostrar_calendario = models.CharField(
+        max_length=2,
+        choices=MOSTRAR_CALENDARIO_CHOICES,
+        default='no',
+        help_text="Indica si es mostrarà el calendari en la plantilla"
     )
     publico_recomendado = models.CharField(
         max_length=20,
