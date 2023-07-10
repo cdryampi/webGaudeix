@@ -36,7 +36,8 @@ def agrupar_eventos_por_dia(eventos):
     eventos_por_dia = defaultdict(list)
     #print(eventos[0])
     for evento in eventos:
-        agenda = Agenda.objects.filter(pk=evento.agenda.pk).first()
+
+        agenda = Agenda.objects.filter(pk=evento.pk).first()
         #print(agenda.fecha)
         eventos_por_dia[agenda.fecha.day].append(evento)
 
@@ -48,7 +49,7 @@ def agrupar_eventos_por_dia(eventos):
     for key, value in eventos_por_dia.items():
         serialized_eventos = []
         for evento in value:
-            agenda = Agenda.objects.filter(pk=evento.agenda.pk).first()
+            agenda = Agenda.objects.filter(pk=evento.pk).first()
             if agenda:
                 agenda_fields = {
                     'ubicacion': agenda.ubicacion,

@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'colorfield',
     'agenda',
     'paginas_estaticas',
+    'eventos_especiales',
     'map',
     'fontawesomefree'
     #'corsheaders',

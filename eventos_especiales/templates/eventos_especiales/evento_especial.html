@@ -1,0 +1,479 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .titulo-principal {
+        font-size: 6.5rem;
+        font-weight: bold;
+        color: {{ evento_especial.color | safe }}; /* Color primario */
+        margin-bottom: 20px;
+        text-align: end;
+    }
+    .titulo-principal-pdf{
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: {{ evento_especial.color | safe }}; /* Color primario */
+        margin-bottom: 20px;
+        text-align: end;
+    }
+    .border-left-evento{
+        border-left: 5px solid {{ evento_especial.color | safe }} !important;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        align-self: center;
+    }
+    p.int-value{
+        color: {{ evento_especial.color | safe }}; /* Color primario */
+        font-weight: bold;
+        font-size: 6.5rem;
+    }
+    p.string-value{
+        font-weight: bold;
+        font-size: 3.5rem;
+    }
+    
+    .event-container .container-fluid {
+        background-color: #f9f9f9;
+        padding-top: 30px;
+        margin: 0;
+    }
+    
+    .event-container .row.justify-content-center {
+        margin-top: 50px;
+    }
+    
+    .event-container .col-12.d-flex.flex-wrap {
+        justify-content: center;
+    }
+    .bg-event {
+        background: linear-gradient(135deg, rgba(238, 238, 238, 0.95) 0%, rgba(238, 238, 238, 0.95) 33%, rgba(238, 238, 238, 0.95) 66%, rgba(238, 238, 238, 1) 100%);
+      }
+      
+    
+
+    .event-container .collage-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        margin: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(0, 0, 0, 0.1) inset;
+
+    }
+
+    .btn-download {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+        background-color: {{ evento_especial.color | safe }}; /* Color primario */
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    
+
+    .btn-download:hover {
+        background-color: darken({{ evento_especial.color | safe }}, 10%); /* Color primario oscurecido al 10% */
+        transform: translateY(-3px) scale(1.05);
+    }
+    
+    .btn-download:active {
+        transform: translateY(1px) scale(0.98);
+    }
+    
+
+    .btn-icon {
+        margin-right: 5px;
+    }
+    
+    .btn-text {
+        vertical-align: middle;
+    }
+    .link-div {
+        text-align: center;
+        margin-top: 20px;
+      }
+      
+      .link {
+        display: inline-block;
+        padding: 30px 50px;
+        font-weight: bold;
+        color: {{ evento_especial.color | safe }};
+        background-color: #f9f9f9;
+        border: 2px solid {{ evento_especial.color | safe }};
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      
+      .link:hover {
+        background-color: {{ evento_especial.color | safe }};
+        color: white;
+      }
+      .title-countdown{
+        font-size: 6.5rem;
+      }
+
+      .card.related-activity-card.mb-3.h-100 {
+        width: 350px;
+    }
+    .card.related-activity-card {
+        height: 100%;
+      }
+
+    .related-activity-card {
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+      
+    .related-activity-card:hover , .certificado:hover{
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+      }
+    @media (max-width: 767px) {
+        .event-container .collage-img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .carousel-inner .carousel-item > div {
+            display: none;
+        }
+        .carousel-inner .carousel-item > div:first-child {
+            display: block;
+        }
+
+    }
+    @media (min-width: 768px) and (max-width: 991px) {
+        .card.related-activity-card.mb-3.h-100 {
+          width: 215px;
+        }
+      }
+    .carousel-inner .carousel-item.active,
+    .carousel-inner .carousel-item-next,
+    .carousel-inner .carousel-item-prev {
+        display: flex;
+    }
+    
+    /* display 3 */
+    @media (min-width: 768px) {
+        .carousel-inner .carousel-item-right.active,
+        .carousel-inner .carousel-item-next {
+            transform: translateX(33.333%);
+        }
+        
+        .carousel-inner .carousel-item-left.active, 
+        .carousel-inner .carousel-item-prev {
+            transform: translateX(-33.333%);
+        }
+    }
+    
+    .carousel-inner .carousel-item-right,
+    .carousel-inner .carousel-item-left { 
+        transform: translateX(0);
+    }
+
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+  }
+
+  .custom-prev,
+.custom-next {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  border: none;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.custom-prev-icon,
+.custom-next-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.custom-prev:hover,
+.custom-next:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+{% include 'parallax/parallax.html' %}
+
+<div class="container-fluid bg-gray p-0 m-0">
+    <div class="container mt-3">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-12 align-content-end">
+                <h1 class="titulo-principal">{{ evento_especial.titulo | safe }}</h1>
+            </div>
+            <div class="col-lg-6 col-12 border-left-evento align-content-start">
+                {% autoescape on %}
+                    {{ evento_especial.descripcion_corta | safe }}
+                {% endautoescape %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if evento_especial.imagenes.count >= 4 %}
+    <div class="container-fluid p-t-3 m-0 event-container bg-event">
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 d-flex flex-wrap">
+                {% for imagen in evento_especial.imagenes.all %}
+                    <img src="{{ imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid collage-img" style="width: {{ imagen.width }}px; height: {{ imagen.height }}px;">
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% if evento_especial.eventofichero %}
+    <div class="container-fluid bg-gray p-0 m-0">
+        <div class="container mt-3">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-12 align-content-end">
+                    <p class="titulo-principal-pdf"><span class="text-black">Descarrega el programa d'{% if evento_especial.titulo|lower|slice:"0:1" in "aeiou" %}{{ evento_especial.titulo | safe }}{% else %}{{ evento_especial.titulo | safe }}{% endif %}</span></p>
+                </div>
+                <div class="col-lg-6 col-12 border-left-evento align-content-start">
+                    <a href="{{ evento_especial.eventofichero.fichero.archivo.url }}" class="btn btn-primary btn-download" target="_blank">
+                        Descarregar PDF
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+
+
+{% if evento_especial.fecha_evento %}
+    {% with event_date=evento_especial.fecha_evento %}
+        {% if event_date|date:'M d, Y' > now|date:'M d, Y' %}
+        <div class="container-fluid bg-gray p-0 m-0 py-5">
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-12 text-center py-3">
+                        <h2 class="title-countdown">Encara / Només falten</h2>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="container">
+                            <p class="int-value"><span id="days"></span></p>
+                            <p class="string-value">dies</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="container">
+                            <p class="int-value"><span id="hours"></span></p>
+                            <p class="string-value">hores</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="container">
+                            <p class="int-value"><span id="minutes"></span></p>
+                            <p class="string-value">minuts</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="container">
+                            <p class="int-value"><span id="seconds"></span></p>
+                            <p class="string-value">segons</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+    {% endwith %}
+{% endif %}
+
+
+
+
+<div class="container-fluid bg-gray p-0 m-0">
+    <div class="container mt-3">
+        <div class="row justify-content-center">
+            <div class="link-div">
+                <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" target="_blank" class="link">Obtén les teves entrades aquí!</a>
+              </div>              
+        </div>
+    <div>
+</div>
+
+{% if evento_especial.agendas.all %}
+<aside class="container p-3">
+    <div class="py-3">
+        <h4 class="related-activities-title">Properes activitats per a gaudir al màxim!</h4>
+    </div>
+    <div id="carouselAgendas" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for agenda in evento_especial.agendas.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <a href="{{ agenda.get_absolute_url }}" class="related-activity-link my-1">
+                    <div class="card related-activity-card mb-3 mx-1 h-100">
+                        {% with imagen=agenda.postgaleriaimagen_set.first %}
+                        {% if imagen %}
+                        <div class="image-container">
+                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                        <div class="card-body text-center">
+                            <h5 class="card-title related-activity-title">{{ agenda.titulo }}</h5>
+                            <p class="card-text related-activity-description">
+                                {% if agenda.descripcion_corta|wordcount > 10 %}{{ agenda.descripcion_corta|truncatewords:10 }}...{% else %}{{ agenda.descripcion_corta }}{% endif %}
+                            </p>
+                            <div class="related-activity-details">
+                                <p class="related-activity-date-time">
+                                    <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
+                                    <span class="event-date">{{ agenda.fecha }}</span>
+                                    <i class="fas fa-clock" style="color: #3ebfab;"></i>
+                                    <span class="event-time">{{ agenda.hora }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button class="carousel-control-prev custom-prev" type="button" data-bs-target="#carouselAgendas" data-bs-slide="prev">
+            <span class="custom-prev-icon" aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
+          </button>
+          <button class="carousel-control-next custom-next" type="button" data-bs-target="#carouselAgendas" data-bs-slide="next">
+            <span class="custom-next-icon" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+          </button>
+          
+    </div>
+</aside>
+{% endif %}
+
+
+
+
+
+
+
+{% endblock content %}
+
+{% block extra_script %}
+<script>
+    // Elimina la función randomSize() ya que no es necesaria
+    
+    // Agrega esta función para obtener el tamaño aleatorio de las imágenes
+    function getRandomSize(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Obtén las imágenes y establece el tamaño aleatorio para cada una
+    var images = document.querySelectorAll('.collage-img');
+    for (var i = 0; i < images.length; i++) {
+        var width = getRandomSize(350, 1024);
+        var height = getRandomSize(200, 700);
+        images[i].style.width = width + 'px';
+        images[i].style.height = height + 'px';
+    }
+    // Función para actualizar la cuenta regresiva
+    function updateCountdown() {
+        // Obtiene la fecha del evento especial y la fecha actual
+        var eventDate = new Date("{{ evento_especial.fecha_evento|date:'Y-m-d' }}");
+        var currentDate = new Date();
+        console.log("{{ evento_especial.fecha_evento|date:'Y-m-d' }}");
+        // Calcula la diferencia en milisegundos entre las dos fechas
+        var difference = eventDate.getTime() - currentDate.getTime();
+
+        // Calcula los días, horas, minutos y segundos restantes
+        var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        // Actualiza los elementos HTML con los valores calculados
+        document.getElementById("days").innerHTML = days;
+        document.getElementById("hours").innerHTML = hours;
+        document.getElementById("minutes").innerHTML = minutes;
+        document.getElementById("seconds").innerHTML = seconds;
+    }
+
+    // Espera a que se haya cargado completamente el HTML
+    document.addEventListener("DOMContentLoaded", function() {
+        // Llama a la función updateCountdown() inicialmente para mostrar la cuenta regresiva
+        updateCountdown();
+
+        // Actualiza la cuenta regresiva cada segundo
+        setInterval(updateCountdown, 1000);
+    });
+
+    $(document).ready(function() {
+        $('#carouselAgendas').carousel({
+          interval: 5000 // Intervalo de cambio de slide en milisegundos
+        });
+      
+        var minPerSlide = 3; // Número mínimo de cards por slide
+      
+        $('.carousel .carousel-item').each(function() {
+          var next = $(this).next();
+          if (!next.length) {
+            next = $(this).siblings(':first');
+          }
+          next.children(':first-child').clone().appendTo($(this));
+      
+          for (var i = 0; i < minPerSlide - 1; i++) {
+            next = next.next();
+            if (!next.length) {
+              next = $(this).siblings(':first');
+            }
+            next.children(':first-child').clone().appendTo($(this));
+          }
+        });
+      
+        var prevButton = document.querySelector('.carousel-control-prev');
+        var nextButton = document.querySelector('.carousel-control-next');
+        var carousel = new bootstrap.Carousel(document.querySelector('#carouselAgendas'));
+        var isButtonBlocked = false;
+      
+        prevButton.addEventListener('click', function() {
+          if (!isButtonBlocked) {
+            carousel.prev();
+            blockButtons();
+          }
+        });
+      
+        nextButton.addEventListener('click', function() {
+          if (!isButtonBlocked) {
+            carousel.next();
+            blockButtons();
+          }
+        });
+      
+        function blockButtons() {
+          isButtonBlocked = true;
+          setTimeout(function() {
+            isButtonBlocked = false;
+          }, 1000); // Bloqueo de 2 segundos
+        }
+      });
+      
+    
+</script>
+{% endblock extra_script %}

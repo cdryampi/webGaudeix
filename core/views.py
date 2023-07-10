@@ -9,6 +9,7 @@ from footer.models import Footer
 from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
 from personalizacion.models import PortadaVideo, SeleccionDestacados
+from eventos_especiales.models import EventoEspecial
 
 app_name = 'core'
 # Create your views here.
@@ -64,7 +65,7 @@ def home(request):
     coleccion_posts = SeleccionDestacados.objects.all().first()
     
 
-
+    evento = EventoEspecial.objects.filter(publicado=True).first()
     # Agrupa los puntos de mapa por icono
     grouped_points = {}
     for point in map_points:
@@ -101,7 +102,8 @@ def home(request):
             'videos': videos,
             'map_points': grouped_points,
             'categorias_header': categorias_con_subblog,
-            'coleccion_posts': coleccion_posts
+            'coleccion_posts': coleccion_posts,
+            'evento_especial': evento
         }
     )
 

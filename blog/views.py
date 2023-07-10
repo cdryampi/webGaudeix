@@ -148,7 +148,6 @@ class FiltrarAgendaView(View):
 
         if tipo_evento:
             agendas = agendas.filter(tipo_evento=tipo_evento)
-
         # Serializar los resultados del filtro
         eventos_agrupados = agrupar_eventos_por_dia(agendas)
         serialized_agendas = json.dumps(eventos_agrupados)

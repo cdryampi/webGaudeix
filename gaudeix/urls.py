@@ -32,6 +32,7 @@ urlpatterns = [
     path('map/',include('map.urls')),
     path('',include('personalizacion.urls')),
     path('', include('paginas_estaticas.urls')),
+    path('', include('eventos_especiales.urls')),
     path('api/', include('api.urls'))
     # re_path(
     #     r'^imagen-autocomplete/$',

@@ -131,6 +131,7 @@ class PostFicheroImagenInline(admin.TabularInline):
 
             kwargs['queryset'] = Fichero.objects.filter(
                 Q(postfichero__isnull=True) | Q(postfichero__post__id=agenda_id),
+                Q(eventofichero__isnull=True)
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
 

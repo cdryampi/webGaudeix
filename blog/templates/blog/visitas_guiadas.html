@@ -200,7 +200,7 @@
                     {{ visita.get_publico_recomendado_display }}
                     <span class="duracion-visita">
                         <i class="fas fa-clock"></i>
-                        {{ visita.duracion|format_duration }}
+                        {% comment %} {{ visita.duracion|format_duration }} {% endcomment %}
                     </span>
                     
                 </div>

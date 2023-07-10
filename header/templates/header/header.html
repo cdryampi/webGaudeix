@@ -2,15 +2,30 @@
 {% if header %}
 <div class="container-fluid p-0 header-container">
     {% include 'topbar/topbar.html' %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header.color_fondo_header }} !important;">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'core:home' %}">
-                {% if header.logo %}
-                    <img src="{{ header.logo.url }}" alt="Logo" class="logo-img">
-                {% else %}
-                    <span class="logo-text">Cabrera de Mar</span>
-                {% endif %}
-            </a>
+            <div>
+                {% if evento_especial.logo_especial.url %}
+                    <a class="navbar-brand" href="{% url 'eventos_especiales:evento_especial' slug=evento_especial.slug %}">
+                            <img src="{{ evento_especial.logo_especial.url }}" alt="Logo" class="logo-img">
+                        {% else %}
+                            {% if evento_especial.titulo %}
+                                <span class="logo-text">{{ evento_especial.titulo }}</span>
+                            {% endif %}
+                    </a>
+                 {% endif %}
+
+                <a class="navbar-brand" href="{% url 'core:home' %}">
+                    {% if header.logo %}
+                        <img src="{{ header.logo.url }}" alt="Logo" class="logo-img">
+                    {% else %}
+                        <span class="logo-text">Cabrera de Mar</span>
+                    {% endif %}
+                </a>
+
+            </div>
+
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -18,15 +33,15 @@
                 <ul class="navbar-nav ml-auto">
                     {% for referencia in referencias %}
                         {% if referencia.tipo == 'externo' %}
-                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{{ referencia.externo.enlace }}" target="_blank">{{ referencia.externo.titulo }}</a></li>
+                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{{ referencia.externo.enlace }}" target="_blank" style="color: {{ header.color_letra}} !important;">{{ referencia.externo.titulo }}</a></li>
                         {% elif referencia.tipo == 'post' %}
-                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}">{{ referencia.post.titulo }}</a></li>
+                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.post.titulo }}</a></li>
                         {% elif referencia.tipo == 'categoria' %}
-                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{{ referencia.categoria.titulo }}</a></li>
+                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.categoria.titulo }}</a></li>
                         {% elif referencia.tipo == 'subblog' %}
                             {% if referencia.subblog.publicado %}
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="navbarDropdownSubblog{{ referencia.subblog.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="navbarDropdownSubblog{{ referencia.subblog.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: {{ header.color_letra}} !important;">
                                         {{ referencia.subblog.titulo }}
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownSubblog{{ referencia.subblog.id }}">
@@ -40,8 +55,22 @@
                                 </li>
                             {% endif %}
                         {% elif referencia.tipo == 'contacto' %}
-                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'paginas_estaticas:contacto' %}">{{ referencia.contacto.titulo }}</a></li>
+                        
+                            <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="{% url 'paginas_estaticas:contacto' %}" style="color: {{ header.color_letra}} !important;">{{ referencia.contacto.titulo }}</a></li>
+                        
+                        {% elif referencia.tipo == 'evento_especial' %}
+                            {% if referencia.evento_especial.publicado %}
+                                <li class="nav-item active bg-white rounded-bottom shadow">
+                                    <a class="nav-link text-black font-weight-bold" href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}" style="color: {{ header.color_letra}} !important;">
+                                        {{ referencia.evento_especial.titulo }}
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        
                         {% endif %}
+                        
+                        
                     {% endfor %}
                 </ul>
             </div>

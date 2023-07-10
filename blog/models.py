@@ -291,7 +291,7 @@ class PostFichero(models.Model):
 
     def delete(self, *args, **kwargs):
         # Eliminar la imagen asociada antes de eliminar el objeto SubBlogImagen
-        self.imagen.delete()
+        self.fichero.delete()
         super().delete(*args, **kwargs)
 
 

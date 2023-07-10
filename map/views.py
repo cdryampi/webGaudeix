@@ -1,7 +1,8 @@
 from django.views import View
 from django.http import JsonResponse
 from .models import MapPoint
-from agenda.models import Agenda
+from agenda.models import Agenda, Ruta
+
 
 from django.db.models import F
 import random
@@ -59,7 +60,12 @@ class MapaView(BaseContextMixin, DetailView):
         # Obtener una muestra aleatoria de 4 elementos de la lista de puntos de mapa
         random_llocs = random.sample(list(llocs), 4)
 
+        # Obtener las rutas vinculadas a este mapa
+        rutes = Ruta.objects.filter(mapas_itinerario=current_object).all()
+        print(rutes)
+
         context['ultimas_agendas'] = ultimas_agendas
         context['llocs'] = random_llocs
+        context['rutes'] = rutes
         return context
 

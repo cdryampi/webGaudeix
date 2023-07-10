@@ -1,5 +1,6 @@
 from django.db import models
 from blog.models import Post
+from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
 #from django.contrib.gis.db import models as gis_models
 
@@ -34,6 +35,7 @@ class MapPoint(Post):
     latitud = models.FloatField(help_text='Introduïu la latitud (copiada de Google Maps)')
     longitud = models.FloatField(help_text='Introduïu la longitud (copiada de Google Maps)')
     icono = models.CharField(max_length=100, choices=ICON_CHOICES)
+    contenido_adicional = RichTextField(blank=True, null=True, help_text='Texto adicional')
     objects = MapPointManager()
 
     def __str__(self):

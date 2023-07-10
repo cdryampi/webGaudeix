@@ -7,7 +7,8 @@ a {
 /* end default */
 /* Header inicio */
 header .container-fluid nav {
-    background-color: #000000 !important;
+
+    height: 75px;
 }
 header nav .navbar-brand img{
     height: 2.5rem;
@@ -22,6 +23,8 @@ header a {
 header ul.navbar-nav.ml-auto {
     text-transform: capitalize;
 }
+
+
   /* Estilo para el menú desplegable */
 .dropdown-menu {
   background-color: #ffffff; /* Color de fondo */

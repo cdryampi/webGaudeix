@@ -177,7 +177,7 @@
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-clock"></i>
-                                            <strong>Duració:</strong> {{ visites.duracion|format_duration }}
+                                            {% comment %} <strong>Duració:</strong> {{ visites.duracion|format_duration }} {% endcomment %}
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-calendar-alt"></i>
@@ -297,7 +297,7 @@
                             {% endwith %}
                         </h4>
                         <h5 class="card-title" id="event-title">Duració diària:</h5>
-                        <p class="card-text"><i class="fas fa-clock"></i>{{ visites.duracion|format_duration }}</p>
+                        {% comment %} <p class="card-text"><i class="fas fa-clock"></i>{{ visites.duracion|format_duration }}</p> {% endcomment %}
                     </div>
                 </div>
                 <div class="container-fluid mx-0 py-2 ">
