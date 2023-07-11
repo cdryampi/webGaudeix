@@ -1,0 +1,192 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .banner-container {
+        position: relative;
+      }
+      
+      .banner-img {
+        width: 100%;
+      }
+      
+      .banner-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      .banner-title {
+        color: #ffffff;
+        font-size: 36px;
+        font-weight: bold;
+      }
+      
+      .punto-info-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      
+      .punto-info-description {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+      }
+      
+      .punto-info-contact {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 20px;
+      }
+      
+      .punto-info-contact li {
+        margin-bottom: 10px;
+      }
+      
+      .punto-info-contact li i {
+        margin-right: 5px;
+      }
+      
+      .punto-info-banner {
+        width: 100%;
+        height: auto;
+      }
+      .card {
+        border: none;
+        border-radius: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      .card-body {
+        padding: 20px;
+      }
+      
+      .card-title {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      
+      .card-text {
+        margin-bottom: 20px;
+      }
+      
+      .list-group-item {
+        border: none;
+        padding: 8px 0;
+      }
+      
+      .list-group-item i {
+        margin-right: 10px;
+      }
+      
+      .list-group-item a {
+        color: #000;
+        text-decoration: none;
+      }
+      
+      .list-group-item a:hover {
+        text-decoration: underline;
+      }
+      .fas {
+        color: #31C3FC;
+      }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="container-fluid p-0 m-0">
+        <div class="container-fluid p-0 m-0 banner-container">
+            <img src="{% static 'core/img/sample/oficina-turisme-header.png' %}" alt="Punt d'informació" class="banner-img">
+            <div class="banner-content">
+              <h1 class="banner-title text-center">Punt d'informació</h1>
+            </div>
+          </div>
+          
+
+          <div class="container pt-5">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 col-sm-12 col-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <h2 class="card-title punto-info-title">
+                          {% autoescape on %}
+                            {{ punt.titulo | safe }}
+                          {% endautoescape %}
+                        </h2>
+                        <div class="card-text punto-info-description">
+                            {% autoescape on %}
+                            {{ punt.descripcion | safe }}
+                            {% endautoescape %}
+                        </div>                        
+
+                        <div class="punto-info-contact">
+                            <div class="punto-info-contact-item">
+                              <i class="fas fa-phone"></i>
+                              <a href="tel:{{ punt.telefono }}">{{ punt.telefono }}</a>
+                            </div>
+                            <div class="punto-info-contact-item">
+                              <i class="fas fa-envelope"></i>
+                              <a href="mailto:{{ punt.correo }}">{{ punt.correo }}</a>
+                            </div>
+                            <div class="punto-info-contact-item">
+                              <i class="fas fa-map-marker-alt"></i>
+                              {{ punt.direccion }}
+                            </div>
+                        </div>
+                        <div id="map" style="width: 100%; height: 500px;"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+              <div class="col-md-6 col-lg-6 col-sm-12 col-12">
+                <img src="{{ punt.banner.url }}" alt="Banner Punt d'informació" class="punto-info-banner">
+              </div>
+            </div>
+          </div>
+          
+    </div>
+{% endblock %}
+
+
+
+{% block extra_script %}
+<script>
+    function initMap() {
+        const mapContainer = document.getElementById('map');
+        const latitudInicio = parseFloat('{{ punt.mapa.latitud|stringformat:".6f" }}'.replace(',', '.'));
+        const longitudInicio = parseFloat('{{ punt.mapa.longitud|stringformat:".6f" }}'.replace(',', '.'));
+    
+        const map = new google.maps.Map(mapContainer, {
+            center: { lat: latitudInicio, lng: longitudInicio },
+            zoom: 14
+        });
+    
+        const marker = new google.maps.Marker({
+            position: { lat: latitudInicio, lng: longitudInicio },
+            map: map,
+            title: '{{ punt.mapa.titulo }}'
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+            content: '<h3>{{ punt.mapa.titulo }}</h3>'
+        });
+
+        marker.addListener('click', function() {
+            infoWindow.open(map, marker);
+        });
+    }
+    
+    function loadGoogleMapsAPI(callback) {
+        var script = document.createElement('script');
+        script.src = 'https://maps.googleapis.com/maps/api/js?AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=' + callback;
+        script.defer = true;
+        script.async = true;
+        document.head.appendChild(script);
+      }
+    
+      loadGoogleMapsAPI('initMap');
+    </script>
+{% endblock extra_script %}

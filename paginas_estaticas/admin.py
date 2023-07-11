@@ -5,6 +5,8 @@ from .models import PaginaLegal
 @admin.register(PaginaLegal)
 class PaginaLegalAdmin(admin.ModelAdmin):
     pass
+@admin.register(Contacto)
+class ContactoAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(PuntoInformacion)
-admin.site.register(Contacto)

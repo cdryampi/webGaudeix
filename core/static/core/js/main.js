@@ -10,4 +10,6 @@ window.addEventListener('scroll', function() {
       navbar.classList.remove('fixed-top');
     }
   });
-  
+
+
+

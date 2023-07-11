@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from ckeditor.fields import RichTextField
 from core.models import MetadataModel
+from map.models import MapPoint
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -54,8 +55,7 @@ class PuntoInformacion(PaginaEstatica):
     direccion = models.CharField(max_length=255, help_text="Adreça")
     banner = models.ImageField(upload_to='punto_informacion_banners', help_text="Banner del punt d'informació")
     descripcion = RichTextField(help_text="Descripció del punt d'informació")
-    latitud = models.FloatField(help_text="Latitud per a Google Maps")
-    longitud = models.FloatField(help_text="Longitud per a Google Maps")
+    mapa = models.ForeignKey(MapPoint, on_delete=models.CASCADE, blank=True, null=True)
 
     def clean(self):
         if PuntoInformacion.objects.exclude(pk=self.pk).exists():

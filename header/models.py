@@ -26,7 +26,8 @@ class Header(SingletonModel):
             categoria=None,
             subblog=None,
             externo=None,
-            evento_especial = None
+            evento_especial = None,
+            contacto= None
         ).delete()
 
         super().save(*args, **kwargs)

@@ -6,9 +6,8 @@ a {
 }
 /* end default */
 /* Header inicio */
-header .container-fluid nav {
-
-    height: 75px;
+nav#navbar {
+  padding: 1rem;
 }
 header nav .navbar-brand img{
     height: 2.5rem;
@@ -23,6 +22,8 @@ header a {
 header ul.navbar-nav.ml-auto {
     text-transform: capitalize;
 }
+
+
 
 
   /* Estilo para el menú desplegable */
@@ -45,11 +46,15 @@ header ul.navbar-nav.ml-auto {
 .dropdown-menu a:hover {
   background-color: #f8f8f8; /* Color de fondo al pasar el ratón */
 }
-/* Estilo para el último elemento del menú desplegable */
-.dropdown-menu .last-item {
-  font-weight: bold;
-  color: #3EBFAB !important; /* Color de texto personalizado */
+@media (max-width: 767px) {
+  .dropdown-menu {
+    background-color: #ffffff; /* Color de fondo */
+  }
 }
+
+/* Estilo para el último elemento del menú desplegable */
+
+
 
 /* fin header */
 

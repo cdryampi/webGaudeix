@@ -1,4 +1,4 @@
-from .models import PaginaLegal, Contacto
+from .models import PaginaLegal, Contacto, PuntoInformacion
 from django.views.generic import TemplateView
 from core.mixin.base import BaseContextMixin
 from django.http import JsonResponse
@@ -36,6 +36,17 @@ class PoliticaCookiesView(BaseContextMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['legal'] = PaginaLegal.objects.get(tipo='cookies')
         return context
+
+
+class PuntInformacioView(BaseContextMixin,TemplateView):
+    template_name = 'paginas_estaticas/punt_informacio.html'
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['punt'] = PuntoInformacion.objects.all().first()
+        return context
+
 
 class ContactoView(BaseContextMixin, TemplateView):
     template_name = 'paginas_estaticas/contacto.html'
