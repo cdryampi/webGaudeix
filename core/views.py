@@ -62,8 +62,9 @@ def home(request):
 
     # obtener los Post seleccionado explicitamente
 
-    coleccion_posts = SeleccionDestacados.objects.all().first()
+    coleccion_posts = SeleccionDestacados.objects.filter(publicado=True).first()
     
+    # Obtener todas las categorias publicadas.
 
     evento = EventoEspecial.objects.filter(publicado=True).first()
     # Agrupa los puntos de mapa por icono

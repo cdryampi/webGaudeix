@@ -6,17 +6,109 @@ a {
 }
 /* end default */
 /* Header inicio */
-header .container-fluid nav {
-    background-color: #000000 !important;
+nav#navbar {
+  padding: 1rem;
 }
 header nav .navbar-brand img{
     height: 2.5rem;
+}
+header a {
+  font-size: 1.2rem;
 }
 #navbar {
     transition: top 0.3s ease-in-out;
   }
 
+header ul.navbar-nav.ml-auto {
+    text-transform: capitalize;
+}
+
+
+
+
+  /* Estilo para el menú desplegable */
+.dropdown-menu {
+  background-color: #ffffff; /* Color de fondo */
+  border: none; /* Borde */
+  border-radius: 0; /* Bordes redondeados */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+.dropdown-menu a {
+  color: #000000; /* Color del texto */
+  font-weight: bold; /* Grosor de la fuente */
+  padding: 10px 20px; /* Espaciado interno */
+  display: block; /* Mostrar como bloque */
+  text-decoration: none; /* Sin subrayado */
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.dropdown-menu a:hover {
+  background-color: #f8f8f8; /* Color de fondo al pasar el ratón */
+}
+@media (max-width: 767px) {
+  .dropdown-menu {
+    background-color: #ffffff; /* Color de fondo */
+  }
+}
+
+/* Estilo para el último elemento del menú desplegable */
+
+
+
 /* fin header */
+
+/* video home */
+#videos-container-home {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000; 
+}
+#video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#videos-container-home  video{
+  width: 100%;
+}
+
+#videos-container-home.video-ended video {
+  display: none;
+}
+
+#videos-container-home .video-fade {
+  opacity: 0;
+  background-color: black;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#videos-container-home .video-fade.active {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  #videos-container-home {
+    height: 30vh !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  #videos-container-home {
+    height: 30vh !important;
+  }
+}
+
+
+
+/* end video home */
 /* banner  */
 .banner {
     position: relative;
@@ -29,7 +121,7 @@ header nav .navbar-brand img{
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   }
   
@@ -229,17 +321,21 @@ header nav .navbar-brand img{
 
 
 /* inicio subBlog especiales */
-section.categoria-especial-container {
+.categoria-especial-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 250px));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
     justify-content: center;
     align-items: center;
     align-items: stretch;
     grid-auto-rows: 150px;
-    padding: 0;
+    padding: 1rem;
     margin: 0;
    
 }
+
+
+
+
 
 .categoria-especial {
     text-align: center;
@@ -331,23 +427,23 @@ aside .image-container {
 /* fin de agenda ultimos */
 
 /* aside entradas */
-aside.bg-yellow {
+aside.entrades.bg-yellow {
     background-color: #FFB516; /* Color corporativo amarillo */
 }
 
-aside .card {
+aside.entrades .card {
     border-radius: 10px;
 }
 
-aside .card h4 {
+aside.entrades .card h4 {
     font-size: 24px;
 }
 
-aside .card p {
+aside.entrades .card p {
     font-size: 16px;
 }
 
-aside .card a {
+aside.entrades .card a {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 10px;
@@ -358,9 +454,13 @@ aside .card a {
     text-decoration: none;
 }
 
-aside .card a i {
+aside.entrades .card a i {
     margin-right: 5px;
 }
+
+
+
+
 
 /* fin aside entradas */
 
@@ -429,6 +529,9 @@ aside .card a i {
   .legend-label {
     font-size: 14px;
   }
+  #accordion .btn:focus {
+    outline: none;
+  }
   
 
 
@@ -476,7 +579,12 @@ aside .card a i {
     max-width: 25rem;
   }
   /* Media query para tablets pequeñas */
-
+  @media (min-width: 768px) and (max-width: 991px) {
+    .footer-container{
+      flex-direction: column;
+    }
+  }
+  
   @media (max-width: 767px) {
     .footer-container {
       flex-direction: column !important;

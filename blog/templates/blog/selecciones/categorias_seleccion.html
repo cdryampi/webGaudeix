@@ -116,45 +116,29 @@
 {% endblock extra_css %}
 
 {% if coleccion_posts %}
-<section class="container-fluid py-3" id="destacats">
+<section class="container-fluid py-3 bg-light" id="destacats">
     <div class="py-3">
-        <h4 class="related-activities-title text-center h2">Properes activitats per a gaudir al màxim!</h4>
+        <p class="related-activities-title lead px-5 text-left">Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac,
+             la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera.
+              Aquests són només alguns dels llocs més emblemàtics del nostre municipi,
+               on cada racó us farà viure una experiència única i inoblidable.
+        </p>
     </div>
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            {% for agenda in coleccion_posts.coleccion.all %}
-            <div class="swiper-slide">
-                <a href="
-                    {% if agenda.agenda %} 
-                        {% url 'agenda:detalle_agenda' slug=agenda.slug %}
-                    {% elif agenda.visitaguiada %}
-                        {% url 'agenda:visites-guiades' slug=agenda.slug %}
-                    {% elif agenda.mappoint %}
-                        {% url 'map:mapa' slug=agenda.slug %}
-                    {% else %}
-                        {{ agenda.get_absolute_url }}
-                    {% endif %}" 
-                class="related-activity-link">
-                    
-                    <div class="card related-activity-card mb-3 h-100">
-                        {% with imagen=agenda.postgaleriaimagen_set.first %}
-                        {% if imagen %}
-                        <div class="image-container">
-                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+    <div class="col-12">
+        <div class="row categoria-especial-container py-5">
+            {% for categoria in categorias %}
+            <div class="col-especial-subBlog p-1">
+                <div class="categoria-especial mx-auto text-center" style="background-color: {{ categoria.color }}">
+                    <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="text-white d-block">
+                        <img src="{{ categoria.categoriabannerimagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid align-middle">
+                        <div class="caption">
+                            <h3>{{ categoria.titulo }}</h3>
                         </div>
-                        {% endif %}
-                        {% endwith %}
-                        <div class="card-body text-center">
-                            <h5 class="card-title related-activity-title">{{ agenda.titulo }}</h5>
-                        </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>
-
-        <div class="swiper-button-prev custom-prev"></div>
-        <div class="swiper-button-next custom-next"></div>
     </div>
 </section>
 

@@ -1,11 +1,50 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block content %}
-    <h1>{{ legal.tipo | safe }}</h1>
-    <p>{{ legal.contenido | safe}}</p>
-    {% if legal.imagen %}
-        <img src="{{ legal.imagen.url }}" alt="Imagen">
-    {% endif %}
 
+{% block extra_css %}
+<style>
+    .banner-container {
+        position: relative;
+      }
+      
+      .banner-img {
+        width: 100%;
+      }
+      
+      .banner-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      .banner-title {
+        color: #31C6F8;
+        font-size: 36px;
+        font-weight: bold;
+      }
+      
+</style>
+{% endblock extra_css %}
+
+
+
+
+{% block content %}
+
+<div class="container-fluid p-0 m-0">
+    <div class="container-fluid p-0 m-0 banner-container">
+        <img src="{% static 'core/img/sample/directori-interes-header.png' %}" alt="Polítiques de privacitat" class="banner-img">
+        <div class="banner-content">
+          <h1 class="banner-title text-center">Polítiques de privacitat</h1>
+        </div>
+      </div>
+    <div class="container pt-5">
+        {% autoescape on %}
+            {{ legal.contenido | safe}}
+        {% endautoescape %}
+    </div>
+
+</div>
     <!-- Agrega aquí cualquier otro contenido específico de la página legal -->
 {% endblock %}
