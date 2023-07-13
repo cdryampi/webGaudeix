@@ -10,6 +10,7 @@ from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
 from personalizacion.models import PortadaVideo, SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
+from agenda.models import Agenda
 
 app_name = 'core'
 # Create your views here.
@@ -23,9 +24,9 @@ def home(request):
 
     categorias = Categoria.objects.filter(publicado=True)
 
-    # Obtén los últimos posts que deseas mostrar en la página de inicio
+    # Obtén los últimos eventos del portal
 
-    posts = Post.objects.filter(publicado=True).order_by('-fecha_modificacion')[:3]
+    agendas = Agenda.objects.filter(publicado=True).order_by('-fecha_modificacion')[:4]
 
     # Renderiza la plantilla de la página de inicio con los datos obtenidos
 
@@ -38,6 +39,10 @@ def home(request):
     referencias = Referencia.objects.filter(header = header)
     topbar = Topbar.objects.filter(publicado =True).last()
     portada = True
+
+    agenda = Categoria.objects.filter(tipo='agenda').first()
+        
+
 
     # obtener el último parallax publicado
     parallax = Parallax.objects.filter(publicado=True).last()
@@ -57,9 +62,9 @@ def home(request):
 
     categorias_filtradas = ['platges', "informació", 'jaciments', 'patrimoni']
     # Obtén los puntos del mapa
-    map_points = MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas).values('titulo', 'latitud', 'longitud', 'icono')
+    map_points = MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas).order_by('icono').all()
 
-
+    #print(map_points)
     # obtener los Post seleccionado explicitamente
 
     coleccion_posts = SeleccionDestacados.objects.filter(publicado=True).first()
@@ -68,13 +73,7 @@ def home(request):
 
     evento = EventoEspecial.objects.filter(publicado=True).first()
     # Agrupa los puntos de mapa por icono
-    grouped_points = {}
-    for point in map_points:
-        icono = point['icono']
-        if icono not in grouped_points:
-            grouped_points[icono] = []
-        grouped_points[icono].append(point)
-    #print(grouped_points)
+
     portada_video = PortadaVideo.objects.filter(publicado=True).first()
     videos = []
     if portada_video:
@@ -90,7 +89,8 @@ def home(request):
         'core/home/home.html',
         {
             'categorias': categorias,
-            'posts': posts,
+            'agendas': agendas,
+            'agenda': agenda,
             'header': header,
             'referencias': referencias,
             'topbar': topbar,
@@ -101,7 +101,7 @@ def home(request):
             'categorias_especiales': categorias_especiales,
             'footer': footer,
             'videos': videos,
-            'map_points': grouped_points,
+            'map_points': map_points,
             'categorias_header': categorias_con_subblog,
             'coleccion_posts': coleccion_posts,
             'evento_especial': evento

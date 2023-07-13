@@ -1,53 +1,56 @@
 {% block extra_css %}
 <style>
-    .swiper-container {
+    .collage-container-categorias-seleccion {
         width: 100%;
         padding: 1.5rem;
-    }
-    
-    .swiper-slide {
-        width: 100%;
+        overflow: hidden;
     }
 
-    .related-activities-title {
-        margin-bottom: 1rem;
-    }
-
-    .related-activity-link {
-        text-decoration: none;
-    }
-
-    .related-activity-card {
+    .collage-card-categorias-seleccion {
         transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
-
-    .related-activity-card:hover {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        transform: translateY(-3px);
-    }
-
-    .card-body {
-        padding: 1rem;
-    }
-
-    .card-title {
-        margin-bottom: 0.5rem;
-    }
-
-    .image-container img {
-        width: 100%;
-        height: auto;
-        height: 275px;
-        object-fit: contain;
-    }
-
-    #destacats {
+        width: 350px; /* Tamaño estandar para las cards */
+        height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
         position: relative;
         overflow: hidden;
     }
 
-    .custom-prev,
-    .custom-next {
+    .collage-card-categorias-seleccion:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+    }
+
+    .collage-card-body-categorias-seleccion {
+        padding: 1rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.6); /* Oscurecer la imagen con su color */
+        color: #FFF;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .collage-card-categorias-seleccion:hover .collage-card-body-categorias-seleccion {
+        opacity: 1;
+    }
+
+    .collage-card-title-categorias-seleccion {
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+
+    .collage-image-container-categorias-seleccion img {
+        width: 100%;
+        height: auto;
+        max-height: 350px; /* Tamaño máximo de la imagen */
+        object-fit: cover;
+    }
+    .custom-prev-2,
+    .custom-next-2 {
         width: 40px;
         height: 40px;
         background-color: rgba(0, 0, 0, 0.5);
@@ -59,16 +62,16 @@
         z-index: 10;
     }
 
-    .custom-prev {
+    .custom-prev-2 {
         left: 10px;
     }
 
-    .custom-next {
+    .custom-next-2 {
         right: 10px;
     }
 
-    .custom-prev-icon,
-    .custom-next-icon {
+    .custom-prev-icon-2,
+    .custom-next-icon-2 {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -78,92 +81,67 @@
         border-radius: 50%;
     }
 
-    .custom-prev:hover,
-    .custom-next:hover {
+    .custom-prev-2:hover,
+    .custom-next-2:hover {
         background-color: rgba(0, 0, 0, 0.7);
     }
 
-    .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after, .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
+    .collage-swiper-button-next-categorias-seleccion::after,
+    .collage-swiper-rtl-categorias-seleccion .collage-swiper-button-prev-categorias-seleccion::after,
+    .collage-swiper-button-prev-categorias-seleccion::after,
+    .collage-swiper-rtl-categorias-seleccion .collage-swiper-button-next-categorias-seleccion::after {
         color: #FFF;
-    }
-
-    .card.related-activity-card.mb-3.h-100 {
-        max-height: 350px;
-        overflow: hidden;
-    }
-
-
-    @media (max-width: 767px) {
-        .swiper-container {
-            padding: 0;
-        }
-
-        .swiper-slide {
-            width: 50%;
-        }
-    }
-
-    @media (min-width: 768px) and (max-width: 991px) {
-        .swiper-container {
-            padding: 0;
-        }
-
-        .swiper-slide {
-            width: 33.33%;
-        }
     }
 </style>
 {% endblock extra_css %}
 
 {% if coleccion_posts %}
-<section class="container-fluid py-3 bg-light" id="destacats">
+<section class="container-fluid py-3" id="collage-container-categorias-seleccion">
     <div class="py-3">
-        <p class="related-activities-title lead px-5 text-left">Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac,
-             la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera.
-              Aquests són només alguns dels llocs més emblemàtics del nostre municipi,
-               on cada racó us farà viure una experiència única i inoblidable.
-        </p>
+        <p class="collage-title-categorias-seleccion lead px-5 text-left">Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac, la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera. Aquests són només alguns dels llocs més emblemàtics del nostre municipi, on cada racó us farà viure una experiència única i inoblidable.</p>
     </div>
     <div class="col-12">
-        <div class="row categoria-especial-container py-5">
-            {% for categoria in categorias %}
-            <div class="col-especial-subBlog p-1">
-                <div class="categoria-especial mx-auto text-center" style="background-color: {{ categoria.color }}">
-                    <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="text-white d-block">
-                        <img src="{{ categoria.categoriabannerimagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid align-middle">
-                        <div class="caption">
-                            <h3>{{ categoria.titulo }}</h3>
+        <div class="collage-container-categorias-seleccion py-5 swiper-container swiper-container-collage-categorias-seleccion">
+            <div class="swiper-wrapper">
+                {% for categoria in categorias %}
+                <div class="swiper-slide collage-card-categorias-seleccion">
+                    <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="text-white d-block collage-link-categorias-seleccion">
+                        <div class="collage-image-container-categorias-seleccion">
+                            <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid align-middle">
+                        </div>
+                        <div class="collage-card-body-categorias-seleccion">
+                            <h3 class="collage-card-title-categorias-seleccion">{{ categoria.titulo }}</h3>
                         </div>
                     </a>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <div class="swiper-button-prev custom-prev-2"></div>
+            <div class="swiper-button-next custom-next-2"></div>
         </div>
     </div>
 </section>
-
 {% endif %}
 
 {% block extra_script %}
 <script>
-    function initSwiper() {
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 4, // Número de tarjetas por slide
-            spaceBetween: 10, // Espacio entre tarjetas
+    function initCollageSwiperCategoriasSeleccion() {
+        let collageSwiperCategoriasSeleccion = new Swiper('.swiper-container-collage-categorias-seleccion', {
+            loop: true,
+            slidesPerView: 2, // Número de tarjetas por slide
+            spaceBetween: 20, // Espacio entre tarjetas
             navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
+                nextEl: '.custom-next-2',
+                prevEl: '.custom-prev-2',
             },
             breakpoints: {
                 // Configuración para dispositivos móviles
-                374:{
-                    slidesPerView: 2,
+                374: {
+                    slidesPerView: 1,
                 },
-
                 767: {
                     slidesPerView: 3,
                 },
-
                 // Configuración para tablets
                 991: {
                     slidesPerView: 4,
@@ -172,6 +150,8 @@
         });
     }
 
-    window.onload = initSwiper;
+    document.addEventListener("DOMContentLoaded", function() {
+        initCollageSwiperCategoriasSeleccion();
+    });
 </script>
 {% endblock extra_script %}

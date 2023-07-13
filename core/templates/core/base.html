@@ -54,7 +54,7 @@
             
             {% include 'header/header.html' %}
         </header>
-        {% if portada  %}
+        {% if portada %}
             {% comment %} {% include 'parallax/parallax.html' %} {% endcomment %}
             {% include 'portada-video/portada-video.html' %}
             
@@ -64,10 +64,13 @@
 
         {% endif %}
 
+
+
         {% if portada %}
             {% if coleccion_posts  %}
                 {% include 'destacados/destacados.html' %}
             {% endif %}
+            {% include 'custom/hero.html' %}
             {% if categorias %}
                 {% include 'blog/selecciones/categorias_seleccion.html' %}
             {% endif %}
@@ -84,7 +87,11 @@
         {% include 'map/map.html' %}
     {% endif %}
 
-
+    {% if portada %}
+        {% if agendas %}
+            {% include 'agenda/selecciones/selector_agendas.html' %}
+        {% endif %}
+    {% endif %}
 
     <footer class= "container-fluid p-0 m-0 pt-5">
         <!-- Pie de página -->

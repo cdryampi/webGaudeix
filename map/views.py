@@ -30,7 +30,7 @@ class CoordenadasAyuntamientoAPI(View):
 class MapPointAPI(View):
     def get(self, request):
         categorias_filtradas = ['platges', "informació", 'jaciments', 'patrimoni']
-        puntos = MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas).values('titulo', 'latitud', 'longitud', 'icono')
+        puntos = MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas).values('titulo', 'latitud', 'longitud', 'icono','postimagen')
         return JsonResponse(list(puntos), safe=False)
     
 

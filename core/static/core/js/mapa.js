@@ -40,8 +40,8 @@ function initMap() {
 
         // Agregar evento de clic al marcador para mostrar el InfoWindow
         marker.addListener('click', () => {
-        infoWindow.open(map, marker);
-        redirectToCarousel(point.icono); // Redirigir al carrusel correspondiente
+        //infoWindow.open(map, marker);
+        console.log("clicked")// Redirigir al carrusel correspondiente
         });
 
       });
@@ -71,30 +71,4 @@ function getColorForIcon(icono) {
   }
 }
 
-function redirectToCarousel(icono) {
-    let carouselId = '';
-    console.log(icono)
-    switch (icono) {
-      case 'platges':
-        carouselId = 'collapse_3';
-        break;
-      case 'informació':
-        carouselId = 'collapse_4';
-        break;
-      case 'jaciments':
-        carouselId = 'collapse_1';
-        break;
-      case 'patrimoni':
-        carouselId = 'collapse_2';
-        break;
-      default:
-        return;
-    }
-    const carousel = document.getElementById(carouselId);
-    if (carousel) {
-      carousel.classList.add('show'); // Mostrar el carrusel
-      carousel.scrollIntoView({ behavior: 'smooth' }); // Desplazarse hacia el carrusel
-    }
-    
-  }
 window.initMap = initMap;

@@ -23,8 +23,20 @@ header ul.navbar-nav.ml-auto {
     text-transform: capitalize;
 }
 
+/* Custom */
+.btn-custom {
+  color: #000;
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+}
+
+.btn-custom:hover {
+  background-color: #e9ecef;
+  border-color: #e9ecef;
+}
 
 
+/* end Custom */
 
   /* Estilo para el menú desplegable */
 .dropdown-menu {
