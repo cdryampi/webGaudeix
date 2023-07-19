@@ -149,7 +149,7 @@
                     <h1>Agenda cultural Cabrera de Mar</h1>
                 </td>
                 <td>
-                    <img src="http://127.0.0.1:8080/static/core/img/logos/logo-cabrera-main.png" alt="Logo de la Agenda Cultural">
+                    <img src="./static/core/img/logos/logo-cabrera-main.png" alt="Logo de la Agenda Cultural">
                 </td>
             </tr>
         </table>
@@ -159,33 +159,36 @@
     </div>
     <div class="calendar">
         {% for fecha, agendas in agendas.items %}
-        <h3>{{ fecha }}</h3>
-        <table>
-            {% for fecha, agenda in agendas.items %}
-            <tr class="dia">
-                <td>
-                    <p class="fecha">{{ fecha }}</p>
-                </td>
-            </tr>
-            {% for a in agenda %}
-            <tr class="agenda {% if forloop.counter > 2 %}evento-diferente{% endif %}">
-                <td>
-                    <p class="titulo">{{ a.titulo }}</p>
-                </td>
-                <td>
-                    <p class="description">{{ a.descripcion_corta | safe }}</p>
-                    <p class="ubicacion">{{ a.ubicacion | safe }}</p>
-                    <p class="hora">{{ a.hora | time:"h:i A" }}</p>
-                    <p class="tag">
-                        {% for b in a.tags.all|slice:":5" %}
-                        <span class="tag">{{ b.nombre }}</span>
-                        {% endfor %}
-                    </p>
-                </td>
-            </tr>
-            {% endfor %}
-            {% endfor %}
-        </table>
+            {% if agendas %}
+
+                <h3>{{ fecha }}</h3>
+                <table>
+                    {% for fecha, agenda in agendas.items %}
+                    <tr class="dia">
+                        <td>
+                            <p class="fecha">{{ fecha }}</p>
+                        </td>
+                    </tr>
+                    {% for a in agenda %}
+                    <tr class="agenda {% if forloop.counter > 2 %}evento-diferente{% endif %}">
+                        <td>
+                            <p class="titulo">{{ a.agenda.titulo }}</p>
+                        </td>
+                        <td>
+                            <p class="description">{{ a.agenda.descripcion_corta | safe }}</p>
+                            <p class="ubicacion">{{ a.agenda.ubicacion.titulo | safe }}</p>
+                            <p class="hora">{{ a.hora | time:"h:i A" }}</p>
+                            <p class="tag">
+                                {% for b in a.agenda.tags.all|slice:":5" %}
+                                <span class="tag">{{ b.nombre }}</span>
+                                {% endfor %}
+                            </p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                </table>
+            {% endif %}
         {% endfor %}
     </div>
 </body>

@@ -1,9 +1,17 @@
 {% extends 'core/base.html' %}
 
-{% block content %}
-{% include 'parallax/parallax.html' %}
+{% block media %}
+  {% if parallax %}
+    {% include 'parallax/parallax.html' %}
+  {% endif %}
+{% endblock media %}
 
+
+{% block content %}
 <section class="p-5">
+  <div class="col-12">
+    <h1 class="h1 text-center py-5">Viu la Cultura i les Festes a Cabrera de Mar</h1>
+  </div>
   {% include 'blog/filtro_agenda.html' %}
 </section>
 

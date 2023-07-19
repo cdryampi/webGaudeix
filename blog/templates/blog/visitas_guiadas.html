@@ -238,3 +238,10 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block asides %}
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+
+{% endblock asides %}

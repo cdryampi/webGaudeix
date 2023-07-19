@@ -10,7 +10,9 @@ from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
 from personalizacion.models import PortadaVideo, SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
-from agenda.models import Agenda
+from agenda.models import Agenda, VariationAgenda
+from django.db.models import Max
+from django.db.models import Subquery, OuterRef
 
 app_name = 'core'
 # Create your views here.
@@ -26,7 +28,13 @@ def home(request):
 
     # Obtén los últimos eventos del portal
 
-    agendas = Agenda.objects.filter(publicado=True).order_by('-fecha_modificacion')[:4]
+    subquery = VariationAgenda.objects.filter(agenda=OuterRef('pk')).order_by('-fecha', '-hora')
+    ultimos_eventos = VariationAgenda.objects.filter(
+        agenda__publicado=True
+    ).annotate(
+        latest_variation_date=Subquery(subquery.values('fecha')[:1]),
+        latest_variation_time=Subquery(subquery.values('hora')[:1])
+    ).order_by('fecha', 'hora')[:4]
 
     # Renderiza la plantilla de la página de inicio con los datos obtenidos
 
@@ -67,7 +75,7 @@ def home(request):
     #print(map_points)
     # obtener los Post seleccionado explicitamente
 
-    coleccion_posts = SeleccionDestacados.objects.filter(publicado=True).first()
+    coleccion_destacados = SeleccionDestacados.objects.filter(publicado=True).first()
     
     # Obtener todas las categorias publicadas.
 
@@ -89,7 +97,7 @@ def home(request):
         'core/home/home.html',
         {
             'categorias': categorias,
-            'agendas': agendas,
+            'ultimos_eventos': ultimos_eventos,
             'agenda': agenda,
             'header': header,
             'referencias': referencias,
@@ -103,7 +111,7 @@ def home(request):
             'videos': videos,
             'map_points': map_points,
             'categorias_header': categorias_con_subblog,
-            'coleccion_posts': coleccion_posts,
+            'coleccion_destacados': coleccion_destacados,
             'evento_especial': evento
         }
     )

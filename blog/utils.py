@@ -4,7 +4,7 @@ from blog.models import Post
 from collections import defaultdict
 from django.core.serializers import serialize
 from .models import Post, Noticia
-from agenda.models import Agenda
+from agenda.models import Agenda, VariationAgenda
 from django.http import JsonResponse
 from django.http import HttpResponse
 from datetime import datetime
@@ -37,7 +37,7 @@ def agrupar_eventos_por_dia(eventos):
     #print(eventos[0])
     for evento in eventos:
 
-        agenda = Agenda.objects.filter(pk=evento.pk).first()
+        agenda = VariationAgenda.objects.filter(pk=evento.pk).first()
         #print(agenda.fecha)
         eventos_por_dia[agenda.fecha.day].append(evento)
 
@@ -49,25 +49,25 @@ def agrupar_eventos_por_dia(eventos):
     for key, value in eventos_por_dia.items():
         serialized_eventos = []
         for evento in value:
-            agenda = Agenda.objects.filter(pk=evento.pk).first()
+            agenda = VariationAgenda.objects.filter(pk=evento.pk).first()
             if agenda:
                 agenda_fields = {
-                    'ubicacion': agenda.ubicacion,
-                    'descripcion_corta': agenda.descripcion_corta,
-                    'tipo_evento': agenda.tipo_evento,
+                    'ubicacion': agenda.agenda.ubicacion.titulo,
+                    'descripcion_corta': agenda.agenda.descripcion_corta,
+                    'tipo_evento': agenda.agenda.tipo_evento,
                     'fecha': agenda.fecha.isoformat() if agenda.fecha else '',
-                    'entradas': agenda.entradas,
+                    'entradas': agenda.agenda.entradas,
                     'hora': agenda.hora.strftime('%H:%M') if agenda.hora else '',
                     # Agrega otros campos de Agenda que necesites
                 }
-                post = Post.objects.filter(agenda=agenda).first()
+                post = Post.objects.filter(agenda=agenda.agenda).first()
                 if post:
                     post_fields = {
                         'titulo': post.titulo,
                         'descripcion': post.descripcion,
                         'categoria': post.categoria.titulo if post.categoria else '',
                         'slug': post.slug if post.slug else '',
-                        'imagen':agenda.postgaleriaimagen_set.all().first().imagen.archivo.url if agenda.postgaleriaimagen_set.all() else '',
+                        'imagen':agenda.agenda.postgaleriaimagen_set.all().first().imagen.archivo.url if agenda.agenda.postgaleriaimagen_set.all() else '',
                         'tags': [tag.nombre for tag in post.tags.all()],
                         # Agrega otros campos de Post que necesites
                     }

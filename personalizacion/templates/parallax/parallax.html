@@ -1,13 +1,13 @@
 {% load static %}
-<div class="parallax-container">
+<section class="parallax-container">
     <div class="parallax" style="background-image: url('{{ parallax.imagen.url }}');"></div>
     <div class="parallax-content">
         <h2>{{ parallax.descripcion_corta | safe }}</h2>
     </div>
     <div class="parallax-flecha">
-        <a href="#">
+        <a href="javascript:void(0)" title="Anar a la secció de l'Agenda cultural" aria-label="Anar a la secció de l'Agenda cultural" id="banner-parallax">
             <img src="{% static "core/img/parallax/down-arrow.svg"%}"/>
         </a>
     </div>
     {% include 'redes_sociales/redes_sociales.html' %}
-</div>
+</section>

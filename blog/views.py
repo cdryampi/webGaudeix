@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia
-from agenda.models import Agenda, VisitaGuiada, Ruta
+from agenda.models import Agenda, VisitaGuiada, Ruta, VariationAgenda
 from django.http import JsonResponse
 from django.views.generic import View
 from core.mixin.base import BaseContextMixin
@@ -140,16 +140,20 @@ class FiltrarAgendaView(View):
         month = int(month_str)
 
         # Filtrar las agendas según el tipo de evento
-        agendas = Agenda.objects.filter(publicado=True)
+        agendas = VariationAgenda.objects.filter(agenda__publicado=True)
+
         agendas = agendas.filter(
             Q(fecha__year=year, fecha__month=month + 1) |
             Q(fecha__isnull=True)
         )
 
         if tipo_evento:
-            agendas = agendas.filter(tipo_evento=tipo_evento)
+            agendas = agendas.filter(agenda__tipo_evento=tipo_evento)
+
         # Serializar los resultados del filtro
+
         eventos_agrupados = agrupar_eventos_por_dia(agendas)
+
         serialized_agendas = json.dumps(eventos_agrupados)
 
         # Crear el diccionario de respuesta JSON

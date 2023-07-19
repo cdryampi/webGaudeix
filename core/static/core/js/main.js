@@ -11,5 +11,13 @@ window.addEventListener('scroll', function() {
     }
   });
 
-
-
+  if (document.getElementById('banner-parallax')) {
+    const parallaxLink = document.getElementById('banner-parallax');
+    parallaxLink.addEventListener('click', scrollToMain);
+  
+    function scrollToMain(event) {
+      event.preventDefault();
+      const mainSection = document.querySelector('main');
+      mainSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }

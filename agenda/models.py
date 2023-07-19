@@ -17,9 +17,15 @@ User = get_user_model()
 
 class Agenda(Post):
     entradas = models.BooleanField(default=False, help_text="Hi ha entrades?")
-    fecha = models.DateField(default=timezone.now)
-    hora = models.TimeField(default=timezone.now)
-    ubicacion = models.CharField(max_length=255)
+    ubicacion = models.ForeignKey(
+        MapPoint,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='ubicació',
+        help_text="ubicació",
+        verbose_name="ubicació"
+    )
     descripcion_corta = models.CharField(max_length=255)
     TIPO_EVENTO_CHOICES = (
         ('musica', 'Música'),
@@ -49,7 +55,20 @@ class Agenda(Post):
 
     def get_absolute_url(self):
             return reverse('agenda:detalle_agenda', kwargs={'slug': self.slug})
+
+
+class VariationAgenda(models.Model):
+    agenda = models.ForeignKey(Agenda, on_delete=models.CASCADE)
+    fecha = models.DateField(default=timezone.now)
+    hora = models.TimeField(default=timezone.now)
+
+
+    def __str__(self):
+            return f"Agenda: {self.agenda.titulo}"
     
+    class Meta:
+        verbose_name = "variació de agenda"
+        verbose_name_plural = "variacions"
 
 
 class Ruta(Post):

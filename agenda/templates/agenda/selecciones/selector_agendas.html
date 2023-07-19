@@ -1,51 +1,73 @@
-<section class="container-fluid">
-    <div class="wrapper container">
-
-
-
-        <div class="py-3">
-            <h3 class="related-activities-title h3 text-center">Agenda</h3>
-            <p class="lead text-center">No et perdis cap activitat, gaudeix Cabrera!</p>
-        </div>
-        <div class="row row-inline-cards justify-content-center">
-            {% for objeto in agendas %}
-            <div class="col-12 col-md-6 col-lg-3 ">
-                <a href="{{ objeto.get_absolute_url }}" class="related-activity-link my-1">
-                    <article class="card related-activity-card mb-3 h-100">
-                        {% with imagen=objeto.postgaleriaimagen_set.first %}
-                        {% if imagen %}
-                        <div class="image-container">
-                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
-                        </div>
-                        {% endif %}
-                        {% endwith %}
-                        <div class="card-body text-center">
-                            <h5 class="card-title related-activity-title">{{ objeto.titulo }}</h5>
-                            <p class="card-text related-activity-description">
-                                {% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}...{% else %}{{ objeto.descripcion_corta }}{% endif %}
-                            </p>
-                            <div class="related-activity-details">
-                                <p class="related-activity-date-time">
-                                    <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
-                                    <span class="event-date">{{ objeto.fecha }}</span>
-                                    <i class="fas fa-clock" style="color: #3ebfab;"></i>
-                                    <span class="event-time">{{ objeto.hora }}</span>
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% if agenda %}
-    <div class="container">
-        <div class="col-12 py-3 text-center">
+<aside class="container-fluid">
+  <div class="wrapper container">
+      <div class="py-3">
+          <h3 class="related-activities-title h3 text-center">Agenda</h3>
+          <p class="lead text-center">No et perdis cap activitat, gaudeix Cabrera!</p>
+      </div>
+      <div class="row row-inline-cards justify-content-center">
+          {% for objeto in ultimos_eventos %}
+          <div class="col-12 col-md-6 col-lg-3">
+              <a href="{{ objeto.agenda.get_absolute_url }}" class="related-activity-link my-1">
+                  <article class="card related-activity-card mb-3 h-100">
+                      {% with imagen=objeto.agenda.postgaleriaimagen_set.first %}
+                      {% if imagen %}
+                      <div class="image-container">
+                          <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.agenda.titulo }}" class="img-fluid">
+                      </div>
+                      {% endif %}
+                      {% endwith %}
+                      <div class="card-body text-center">
+                          <h5 class="card-title related-activity-title">{{ objeto.agenda.titulo }}</h5>
+                          <p class="card-text related-activity-description">
+                              {% if objeto.agenda.descripcion_corta|wordcount > 10 %}{{ objeto.agenda.descripcion_corta|truncatewords:10 }}...{% else %}{{ objeto.agenda.descripcion_corta }}{% endif %}
+                          </p>
+                          <div class="related-activity-details">
+                              <p class="related-activity-date-time">
+                                  <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
+                                  <span class="event-date">{{ objeto.fecha }}</span>
+                                  <i class="fas fa-clock" style="color: #3ebfab;"></i>
+                                  <span class="event-time">{{ objeto.hora }}</span>
+                              </p>
+                              <p class="text-center card-overlay">
+                                  {% if objeto.agenda.tipo_evento == 'musica' %}
+                                    <i class="fas fa-music fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'teatre' %}
+                                    <i class="fas fa-theater-masks fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'exposicio' %}
+                                    <i class="fas fa-palette fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'festes' %}
+                                    <i class="fas fa-glass-cheers fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'cinema' %}
+                                    <i class="fas fa-film fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'dansa' %}
+                                    <i class="fas fa-running fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'visites_guiades' %}
+                                    <i class="fas fa-map-signs fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'activitats_turistiques' %}
+                                    <i class="fas fa-camera fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'xarrades' %}
+                                    <i class="fas fa-comments fa-3x" style="color: #3ebfab;"></i>
+                                  {% elif objeto.agenda.tipo_evento == 'altres' %}
+                                    <i class="fas fa-question fa-3x" style="color: #3ebfab;"></i>
+                                  {% endif %}
+                              </p>
+                          </div>
+                      </div>
+                  </article>
+              </a>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
+  {% if agenda %}
+  <div class="container">
+      <div class="col-12 py-3 text-center">
+          {% if agenda.categoria %}
+            <a href="{% url 'blog:categoria' slug=agenda.categoria.slug %}" class="btn btn-light btn-custom py-3 px-4">Tota l'agenda</a>
+          {% else %}
             <a href="{% url 'blog:categoria' slug=agenda.slug %}" class="btn btn-light btn-custom py-3 px-4">Tota l'agenda</a>
-        </div>
-    </div>
-
-
-    {% endif %}
-</section>
+          {% endif %}
+      </div>
+  </div>
+  {% endif %}
+</aside>

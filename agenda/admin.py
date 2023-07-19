@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
 from multimedia_manager.models import Imagen, Fichero
-from .models import Agenda, VisitaGuiada, Ruta
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda
 from map.models import MapPoint
 from django.forms import DurationField
 from blog.models import PostImagen, PostGaleriaImagen, PostFichero
@@ -31,6 +31,11 @@ class PostGaleriaImagenInline(admin.TabularInline):
             kwargs['empty_label'] = 'Sin imagen asociada'
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+class VariationAgendaInline(admin.TabularInline):
+    model = VariationAgenda
+    extra = 0
+
 
 class PostImagenInlineRuta(admin.TabularInline):
     model = PostImagen
@@ -64,7 +69,7 @@ class PostImagenInlineRuta(admin.TabularInline):
 
 
 class AgendaAdmin(admin.ModelAdmin):
-    inlines = [PostGaleriaImagenInline]
+    inlines = [PostGaleriaImagenInline, VariationAgendaInline]
 
 
 

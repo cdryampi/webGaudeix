@@ -1,0 +1,95 @@
+{% if coleccion_destacados %}
+<section class="container-fluid py-3 bg-light" id="destacats">
+    <div class="py-3">
+        <h4 class="related-activities-title text-center h2">Activitats Relacionades</h4>
+        <p class="lead related-activities-subtitle text-center">Descobreix altres activitats interessants per a gaudir al màxim.</p>
+
+
+    </div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            {% for agenda in coleccion_destacados %}
+            <div class="swiper-slide">
+                <a href="
+                    {% if agenda.agenda %} 
+                        {% url 'agenda:detalle_agenda' slug=agenda.agenda.slug %}
+                    {% elif agenda.visitaguiada %}
+                        {% url 'agenda:visites-guiades' slug=agenda.agenda.slug %}
+                    {% elif agenda.mappoint %}
+                        {% url 'map:mapa' slug=agenda.slug %}
+                    {% else %}
+                        {{ agenda.get_absolute_url }}
+                    {% endif %}" 
+                class="related-activity-link">
+                    
+                    <div class="card related-activity-card mb-3 h-100 agenda-relacionada-container">
+                        {% with imagen=agenda.agenda.postgaleriaimagen_set.first %}
+                        {% if imagen %}
+                        <div class="image-container image-container-agenda">
+                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.agenda.titulo }}" class="img-fluid">
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                        <div class="card-body text-center">
+                            <h5 class="card-title related-activity-title">{{ agenda.agenda.titulo }}</h5>
+                            <p class="card-text related-activity-description">
+                                {% if agenda.agenda.descripcion_corta|wordcount > 8 %}{{ agenda.agenda.descripcion_corta|truncatewords:5 }}...{% else %}{{ agenda.agenda.descripcion_corta }}{% endif %}
+                            </p>
+                            <div class="related-activity-details related-activity-details-agenda">
+                                <p class="related-activity-date-time">
+                                    <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
+                                    <span class="event-date">{{ agenda.fecha }}</span>
+                                    <i class="fas fa-clock" style="color: #3ebfab;"></i>
+                                    <span class="event-time">{{ agenda.hora }}</span><br>
+                                    <i class="fas fa-map-marker-alt" style="color: #3ebfab;"></i> <span>{{ agenda.agenda.ubicacion.titulo }}</span>
+                                </p>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="swiper-button-prev custom-prev"></div>
+        <div class="swiper-button-next custom-next"></div>
+    </div>
+</section>
+
+{% endif %}
+
+{% block extra_script %}
+<script>
+    function initSwiper() {
+        let swiper = new Swiper('.swiper-container', {
+            loop: true,
+            slidesPerView: 3, // Número de tarjetas por slide
+            spaceBetween: 10, // Espacio entre tarjetas
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                // Configuración para dispositivos móviles
+                374:{
+                    slidesPerView: 2,
+                },
+
+                767: {
+                    slidesPerView: 3,
+                },
+
+                // Configuración para tablets
+                991: {
+                    slidesPerView: 3,
+                },
+            },
+        });
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        initSwiper();
+    });
+</script>
+{% endblock extra_script %}
