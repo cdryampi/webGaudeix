@@ -81,7 +81,7 @@ class RutaView(BaseContextMixin, DetailView):
 class AgendaDetailView(BaseContextMixin, DetailView):
     model = Agenda
     template_name = 'agenda/agenda.html'
-    context_object_name = 'agenda'
+    context_object_name = 'local_agenda'
 
     def get_object(self, queryset=None):
         # Obtener el objeto de la agenda utilizando el slug en lugar del ID
