@@ -137,6 +137,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ca'
 
+DEFAULT_CHARSET = 'utf-8'
+
 TIME_ZONE = 'Europe/Andorra'
 
 USE_I18N = True

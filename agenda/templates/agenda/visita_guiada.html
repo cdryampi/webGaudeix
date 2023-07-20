@@ -177,7 +177,7 @@
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-clock"></i>
-                                            {% comment %} <strong>Duració:</strong> {{ visites.duracion|format_duration }} {% endcomment %}
+                                            <strong>Duració:</strong> {{ visites.duracion|format_duration }}
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-calendar-alt"></i>
@@ -260,9 +260,9 @@
 </section>
 
 
-<aside>
+<aside class="pb-5 pt-3">
     <div class="container p-1">
-        <h3 class="text-center py-2">Calendari d'Esdeveniments</h3>
+        <h3 class="text-center py-3">Calendari d'Esdeveniments</h3>
         <div class="row">
             <div class="col-12 col-lg-8 col-md-6 col-sm-12">
                 <div class="calendar">
@@ -297,7 +297,7 @@
                             {% endwith %}
                         </h4>
                         <h5 class="card-title" id="event-title">Duració diària:</h5>
-                        {% comment %} <p class="card-text"><i class="fas fa-clock"></i>{{ visites.duracion|format_duration }}</p> {% endcomment %}
+                        <p class="card-text"><i class="fas fa-clock"></i>{{ visites.duracion|format_duration }}</p>
                     </div>
                 </div>
                 <div class="container-fluid mx-0 py-2 ">
@@ -333,43 +333,47 @@
             </div>
         </div>
     </div>
-
+    {% if agendas_relacionadas %}
     <aside class="container p-3">
-        <div class="py-3">
-            <h4 class="related-activities-title">Activitats relacionades:</h4>
-        </div>
-        <div class="row row-inline-cards justify-content-center">
-            {% for objeto in agendas_relacionadas %}
-            <div class="col-12 col-md-6 col-lg-4 py-3">
-                <a href="{{ objeto.get_absolute_url }}" class="related-activity-link my-1">
-                    <article class="card related-activity-card mb-3 h-100">
-                        {% with imagen=objeto.postgaleriaimagen_set.first %}
-                        {% if imagen %}
-                        <div class="image-container">
-                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
-                        </div>
-                        {% endif %}
-                        {% endwith %}
-                        <div class="card-body text-center">
-                            <h5 class="card-title related-activity-title">{{ objeto.titulo }}</h5>
-                            <p class="card-text related-activity-description">
-                                {% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}...{% else %}{{ objeto.descripcion_corta }}{% endif %}
+      <div class="py-3">
+          <h4 class="related-activities-title">Activitats relacionades:</h4>
+      </div>
+      <div class="row row-inline-cards justify-content-center">
+          {% for objeto in agendas_relacionadas %}
+          <div class="col-12 col-md-6 col-lg-4 py-3">
+              <a href="{{ objeto.get_absolute_url }}" class="related-activity-link my-1">
+                  <article class="card related-activity-card mb-3 h-100">
+                      {% with imagen=objeto.postgaleriaimagen_set.first %}
+                      {% if imagen %}
+                      <div class="image-container">
+                          <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
+                      </div>
+                      {% endif %}
+                      {% endwith %}
+                      <div class="card-body text-center">
+                          <h5 class="card-title related-activity-title">{{ objeto.titulo }}</h5>
+                          <p class="card-text related-activity-description">
+                            {% autoescape on %}
+                              {% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}...{% else %}{{ objeto.descripcion_corta }}{% endif %}
+                            {% endautoescape %}
                             </p>
-                            <div class="related-activity-details">
-                                <p class="related-activity-date-time">
-                                    <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
-                                    <span class="event-date">{{ objeto.fecha }}</span>
-                                    <i class="fas fa-clock" style="color: #3ebfab;"></i>
-                                    <span class="event-time">{{ objeto.hora }}</span>
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </aside>
+                          <div class="related-activity-details">
+                              <p class="related-activity-date-time">
+                                  <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
+                                  <span class="event-date">{{ objeto.fecha }}</span>
+                                  <i class="fas fa-clock" style="color: #3ebfab;"></i>
+                                  <span class="event-time">{{ objeto.hora }}</span>
+                              </p>
+                          </div>
+                      </div>
+                  </article>
+              </a>
+          </div>
+          {% endfor %}
+      </div>
+  </aside>
+    {% endif %}
+
 </aside>
 
 
@@ -387,75 +391,83 @@
 {% endif %}
 
 
-
-
-
 {% endblock %}
 
+{% block asides %}
+
+    {% if coleccion_destacados %}
+        {% include 'agenda/selecciones/agenda_relacionada.html' %}
+    {% endif %}
+
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+    
+{% endblock asides %}
 
 {% block extra_script %}
-<script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Obtener las fechas de inicio y fin del modelo de Django
-        const fechaInicioString = '13 setembre de 2023';
-        const fechaFinString = '20 setembre de 2023';
-      
-        // Mapear los meses en catalán a sus equivalentes en inglés
-        const monthMap = {
-          'gener': 'January',
-          'febrer': 'February',
-          'març': 'March',
-          'abril': 'April',
-          'maig': 'May',
-          'juny': 'June',
-          'juliol': 'July',
-          'agost': 'August',
-          'setembre': 'September',
-          'octubre': 'October',
-          'novembre': 'November',
-          'desembre': 'December'
-        };
-      
-        // Obtener el día, mes y año de la fecha de inicio
-        const fechaInicioParts = fechaInicioString.split(' ');
-        const diaInicio = parseInt(fechaInicioParts[0]);
-        const mesInicio = monthMap[fechaInicioParts[1]];
-        const anyInicio = parseInt(fechaInicioParts[3]);
-      
-        // Obtener el día, mes y año de la fecha de finalización
-        const fechaFinParts = fechaFinString.split(' ');
-        const diaFin = parseInt(fechaFinParts[0]);
-        const mesFin = monthMap[fechaFinParts[1]];
-        const anyFin = parseInt(fechaFinParts[3]);
-      
-        // Generar las fechas de inicio y finalización en formato inglés
-        const fechaInicioFormatted = `${mesInicio} ${diaInicio}, ${anyInicio}`;
-        const fechaFinFormatted = `${mesFin} ${diaFin}, ${anyFin}`;
-        const fechaInicio = new Date(fechaInicioFormatted);
-        const fechaFin = new Date(fechaFinFormatted);
-      
-        // Generar el calendario marcado
-        const calendarDays = document.getElementById('calendar-days');
-      
-        // Obtener el mes y el año de la fecha de inicio
-        const currentMonth = fechaInicio.getMonth();
-        const currentYear = fechaInicio.getFullYear();
-      
-        // Generar el título del mes
-        const currentMonthTitle = document.getElementById('current-month-title');
-        currentMonthTitle.textContent = fechaInicio.toLocaleString('default', { month: 'long', year: 'numeric' });
-      
-        // Generar los días del calendario
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-      
-        let calendarHTML = '';
-        for (let i = 1; i <= daysInMonth; i++) {
-          const date = new Date(currentYear, currentMonth, i);
-          const dayClass = (date >= fechaInicio && date <= fechaFin) ? 'calendar-day marked-date' : 'calendar-day';
-          calendarHTML += `<div class="${dayClass}">${i}</div>`;
-        }
-      
-        calendarDays.innerHTML = calendarHTML;
-      });      
-</script>
+      // Obtener las fechas de inicio y fin del modelo de Django
+      const fechaInicioString = '{{ visites.fecha_inicio }}';
+      const fechaFinString = '{{ visites.fecha_fin }}';
+
+      // Mapear los meses en catalán a sus equivalentes en inglés
+      const monthMap = {
+        'gener': 'gener',
+        'febrer': 'febrer',
+        'març': 'març',
+        'abril': 'abril',
+        'maig': 'maig',
+        'juny': 'juny',
+        'juliol': 'juliol',
+        'agost': 'agost',
+        'setembre': 'setembre',
+        'octubre': 'octubre',
+        'novembre': 'novembre',
+        'desembre': 'desembre'
+      };
+
+      // Obtener el día, mes y año de la fecha de inicio
+      const fechaInicioParts = fechaInicioString.split(' ');
+      const diaInicio = parseInt(fechaInicioParts[0]);
+      const mesInicio = monthMap[fechaInicioParts[1]];
+      const anyInicio = parseInt(fechaInicioParts[3]);
+
+      // Obtener el día, mes y año de la fecha de finalización
+      const fechaFinParts = fechaFinString.split(' ');
+      const diaFin = parseInt(fechaFinParts[0]);
+      const mesFin = monthMap[fechaFinParts[1]];
+      const anyFin = parseInt(fechaFinParts[3]);
+
+      // Generar las fechas de inicio y finalización en formato inglés
+      const fechaInicioFormatted = `${diaInicio} ${mesInicio} ${anyInicio}`;
+      const fechaFinFormatted = `${diaFin} ${mesFin} ${anyFin}`;
+      const fechaInicio = new Date(fechaInicioFormatted);
+      const fechaFin = new Date(fechaFinFormatted);
+
+      // Generar el calendario marcado
+      const calendarDays = document.getElementById('calendar-days');
+
+      // Obtener el mes y el año de la fecha de inicio
+      const currentMonth = fechaInicio.getMonth();
+      const currentYear = fechaInicio.getFullYear();
+
+      // Generar el título del mes
+      const currentMonthTitle = document.getElementById('current-month-title');
+      currentMonthTitle.textContent = fechaInicio.toLocaleString('ca', { month: 'long', year: 'numeric' });
+
+      // Generar los días del calendario
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+      let calendarHTML = '';
+      for (let i = 1; i <= daysInMonth; i++) {
+        const date = new Date(currentYear, currentMonth, i);
+        const dayClass = (date >= fechaInicio && date <= fechaFin) ? 'calendar-day marked-date' : 'calendar-day';
+        calendarHTML += `<div class="${dayClass}">${i}</div>`;
+      }
+
+      calendarDays.innerHTML = calendarHTML;
+    });
+  </script>
 {% endblock extra_script %}

@@ -14,6 +14,7 @@ from django.utils import timezone
 import itertools
 import emoji
 import re
+from blog.models import Categoria
 
 # Create your views here.
 class VisitaGuiadaView(BaseContextMixin, DetailView):
@@ -38,9 +39,12 @@ class VisitaGuiadaView(BaseContextMixin, DetailView):
 
        
         visita_guiadas = VisitaGuiada.objects.filter(publicado=True).exclude(pk=current_object.pk)
+        categorias = Categoria.objects.filter(publicado= True).all()
         #print("Agendas Relacionadas:", agendas_relacionadas)
 
-        context['visita_guiadas'] = visita_guiadas
+        context['coleccion_destacados'] = visita_guiadas
+        context['categorias'] = categorias
+        context['agendas_relacionadas'] = current_object.agendas.all()
         return context
 
 class RutaView(BaseContextMixin, DetailView):
@@ -63,10 +67,12 @@ class RutaView(BaseContextMixin, DetailView):
         # Obtener los puntos de itinerario ordenados alfabéticamente
         puntos_itinerario = current_object.mapas_itinerario.all().order_by('titulo')
         rutes = Ruta.objects.filter(publicado = True).exclude(pk = current_object.pk)
+
         ultimos_post = Agenda.objects.filter(publicado = True)[:4]
         
         context['rutes'] = rutes
         context['puntos_itinerario'] = puntos_itinerario
+
         context['posts'] = ultimos_post
 
         return context

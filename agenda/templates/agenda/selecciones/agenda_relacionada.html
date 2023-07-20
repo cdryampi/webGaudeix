@@ -14,7 +14,7 @@
                     {% if agenda.agenda %} 
                         {% url 'agenda:detalle_agenda' slug=agenda.agenda.slug %}
                     {% elif agenda.visitaguiada %}
-                        {% url 'agenda:visites-guiades' slug=agenda.agenda.slug %}
+                        {% url 'agenda:visites-guiades' slug=agenda.slug %}
                     {% elif agenda.mappoint %}
                         {% url 'map:mapa' slug=agenda.slug %}
                     {% else %}
@@ -23,18 +23,45 @@
                 class="related-activity-link">
                     
                     <div class="card related-activity-card mb-3 h-100 agenda-relacionada-container">
-                        {% with imagen=agenda.agenda.postgaleriaimagen_set.first %}
-                        {% if imagen %}
-                        <div class="image-container image-container-agenda">
-                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.agenda.titulo }}" class="img-fluid">
-                        </div>
+                        {% if agenda.agenda %}
+
+                            {% with imagen=agenda.agenda.postgaleriaimagen_set.first %}
+                            {% if imagen %}
+                            <div class="image-container image-container-agenda">
+                                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.agenda.titulo }}" class="img-fluid">
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+
+                        {% else %}
+
+                            {% with imagen=agenda.postgaleriaimagen_set.first %}
+                                {% if imagen %}
+                                    <div class="image-container image-container-agenda">
+                                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
                         {% endif %}
-                        {% endwith %}
                         <div class="card-body text-center">
-                            <h5 class="card-title related-activity-title">{{ agenda.agenda.titulo }}</h5>
+                            <h5 class="card-title related-activity-title">
+                                {% if agenda.agenda %}
+                                    {{ agenda.agenda.titulo }}
+                                {% else %}
+                                {{ agenda.titulo }}
+                                {% endif %}
+                            </h5>
                             <p class="card-text related-activity-description">
-                                {% if agenda.agenda.descripcion_corta|wordcount > 8 %}{{ agenda.agenda.descripcion_corta|truncatewords:5 }}...{% else %}{{ agenda.agenda.descripcion_corta }}{% endif %}
+                                    {% if agenda.agenda %}
+                                        {% if agenda.agenda.descripcion_corta|wordcount > 8 %}{{ agenda.agenda.descripcion_corta|truncatewords:5 }}...{% else %}{{ agenda.agenda.descripcion_corta }}{% endif %}
+                                    {% else %}
+                                        {% autoescape on %}
+                                            {% if agenda.descripcion|wordcount > 15 %}{{ agenda.descripcion|truncatewords:10 |striptags |safe }}...{% else %}{{ agenda.descripcion |safe }}{% endif %}
+                                        {% endautoescape %}
+                                    {% endif %}
+                                
                             </p>
+                            {% if agenda.agenda %}
                             <div class="related-activity-details related-activity-details-agenda">
                                 <p class="related-activity-date-time">
                                     <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
@@ -43,9 +70,36 @@
                                     <span class="event-time">{{ agenda.hora }}</span><br>
                                     <i class="fas fa-map-marker-alt" style="color: #3ebfab;"></i> <span>{{ agenda.agenda.ubicacion.titulo }}</span>
                                 </p>
-
-
                             </div>
+                            {% elif agenda.visitaguiada %}
+                                <div class="related-activity-details related-activity-details-agenda">
+                                    <p class="related-activity-date-time">
+                                        {% if agenda.publico_recomendado %}
+                                            <i class="fas fa-users" style="color: #3ebfab;"></i>
+                                            <span class="event-public">{{ agenda.get_publico_recomendado_display }}</span>
+                                            <span class="px-2"></span>
+                                        {% endif %}
+                                        {% if agenda.fecha_inicio %}
+                                            <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
+                                            <span class="event-date">{{ agenda.fecha_inicio }}</span>
+                                            <span class="px-2"></span>
+                                        {% endif %}
+                                        {% if agenda.hora_inicio %}
+                                            <i class="fas fa-clock" style="color: #3ebfab;"></i>
+                                            <span class="event-time">{{ agenda.hora_inicio }}</span>
+                                            <span class="px-2"></span>
+                                        {% endif %}
+                                        {% if agenda.precio == 0 %}
+                                            <i class="fas fa-tag" style="color: #3ebfab;"></i>
+                                            <span class="event-price">Gratis</span>
+                                        {% elif agenda.precio %}
+                                            <i class="fas fa-tag" style="color: #3ebfab;"></i>
+                                            <span class="event-price">{{ agenda.precio }} €</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            {% endif %}
+
                         </div>
                     </div>
                 </a>

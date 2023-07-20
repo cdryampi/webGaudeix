@@ -424,9 +424,9 @@ section.categoria-especial-container .col-especial-subBlog{
     justify-content: center;
   }
 
-.image-container-agenda{
+/* .image-container-agenda{
   height:400px !important;
-}
+} */
 
 .img-fluid {
     max-width: 100% !important;

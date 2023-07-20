@@ -51,9 +51,6 @@ class MapaView(BaseContextMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_object = self.get_object()
-
-        ultimas_agendas = Agenda.objects.filter(publicado=True).order_by('-fecha')[:4]
-
         # Obtener todos los puntos de mapa publicados, excluyendo el objeto actual
         llocs = MapPoint.objects.filter(publicado=True).exclude(pk=current_object.pk)
 
@@ -62,9 +59,6 @@ class MapaView(BaseContextMixin, DetailView):
 
         # Obtener las rutas vinculadas a este mapa
         rutes = Ruta.objects.filter(mapas_itinerario=current_object).all()
-        print(rutes)
-
-        context['ultimas_agendas'] = ultimas_agendas
         context['llocs'] = random_llocs
         context['rutes'] = rutes
         return context

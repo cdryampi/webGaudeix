@@ -252,24 +252,22 @@
     </div>
 
 </section>
-
-<aside class="container">
-
-    <div class="row mt-4">
-        {% for categoria in categorias %}
-          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-            <div class="categoria-especial mx-auto text-center" style="background-color: {{ categoria.color }};">
-              <a href="{% url 'blog:categoria' categoria.slug %}" class="text-white d-block">
-                {% if categoria.categoriabannerimagen.imagen %}
-                  <img src="{{ categoria.categoriabannerimagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid align-middle">
-                {% endif %}
-                <div class="caption">
-                  <h3>{{ categoria.titulo }}</h3>
-                </div>
-              </a>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-</aside>
 {% endblock %}
+{% block asides %}
+
+    {% if categorias %}
+        <div class="container">
+            <div class="col-12">
+                <h2 class="h2 text-center">
+                    Descobreix els Tresors de Cabrera de Mar
+                </h2>
+            </div>
+        </div>
+        {% include 'blog/selecciones/categorias_seleccion.html' %}
+    {% endif %}
+
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+    
+{% endblock asides %}

@@ -99,6 +99,42 @@
         margin-bottom: 10px;
       }
 
+    .container-rutes .card {
+        position: relative;
+        z-index: 1;
+    }
+
+   .container-rutes .card::before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 5px;
+        width: 101%;
+        height: 100%;
+        background-color: {{ map.categoria.color }};
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+
+    .container-rutes .card:hover::before {
+        opacity: 0.3;
+    }
+
+    .container-rutes  div.hover::before{
+        opacity: 0.3;
+    }
+
+   .container-rutes .card .url-link {
+        font-size: 1.3rem;
+        color: #31C6F8 !important;
+    }
+    
+  .container-rutes  .card:hover .url-link,
+    div.hover .url-link {
+        font-weight: bold;
+    }
+
 </style>
 {% endblock extra_css %}
 
@@ -207,14 +243,14 @@
 
     </div>
    {% if rutes %}
-                            <div class="container pt-5">
+                            <div class="container container-rutes pt-5">
 
                                 <h3>Rutes:</h3>
                                 <div class="row">
                                     {% for post in rutes %}
                                     <div class="col-md-12 p-3">
                                         <div class="card mb-3 h-100">
-                                            <div class="image-container">
+                                            <div class="image-container-rutes">
                                                 {% if post.postimagen.imagen %}
                                                     <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}">
                                                 {% endif %}
@@ -228,7 +264,7 @@
                                                     {% endautoescape %}
                                                     
                                                 </p>
-                                                <a href="{% url 'agenda:ruta' slug=post.slug %}" class="text-primary text-left mt-auto url-link">Veure més</a>
+                                                <a href="{% url 'agenda:ruta' slug=post.slug %}" class="pr-2 url-link">Veure més</a>
                                             </div>
                                         </div>
                                     </div>
@@ -281,7 +317,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-text">No hay posts disponibles.</p>
+                            <p class="card-text">No hi ha posts disponibles.</p>
                         </div>
                     </div>
                 </div>
@@ -305,44 +341,13 @@
     </div>
 </aside> {% endcomment %}
 
-
-
-{% if ultimas_agendas %}
-<aside class="container-fluid">
-    <div class="container mt-5 p-3">
-        <h4>Últimes entrades:</h4>
-        <div class="row row-inline-cards justify-content-center">
-            {% for objeto in ultimas_agendas %}
-            <div class="col-md-4 col-lg-3 col-6">
-                <div class="card mb-3 card-inline flex-fill h-100">
-                    {% if objeto.postimagen %}
-                    <div class="image-container">
-                        <img src="{{ objeto.postimagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid img-inline">
-                    </div>
-                    {% else %}
-                    {% with imagen=objeto.postgaleriaimagen_set.first %}
-                    {% if imagen %}
-                    <div class="image-container">
-                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid img-inline">
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ objeto.titulo }}</h5>
-                        <p class="card-text">{% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}{% else %}{{ objeto.descripcion_corta }}{% endif %}</p>
-                        <a href="{{ objeto.get_absolute_url }}" class="btn btn-primary">Detalles</a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</aside>
-{% endif %}
-
-
 {% endblock %}
+
+{% block asides %}
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+{% endblock asides %}
 
 
 {% block extra_script %}

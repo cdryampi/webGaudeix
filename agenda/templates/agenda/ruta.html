@@ -14,12 +14,13 @@ div#map {
     object-fit: contain;
 }
 
-.card {
+.card-overlay {
     position: relative;
     z-index: 1;
+    opacity: 1;
 }
 
-.card::before {
+.card-overlay::before {
     content: "";
     position: absolute;
     top: 15px;
@@ -32,19 +33,19 @@ div#map {
     z-index: -1;
 }
 
-.card:hover::before {
+.card-overlay:hover::before {
     opacity: 0.3;
 }
 div.hover::before{
     opacity: 0.3;
 }
 
-.card .url-link {
+.card-overlay .url-link {
     font-size: 1.3rem;
     color: #31C6F8 !important;
 }
 
-.card:hover .url-link,
+.card-overlay:hover .url-link,
 div.hover .url-link {
     font-weight: bold;
 }
@@ -65,7 +66,7 @@ div.hover .url-link {
     transition: opacity 0.3s ease;
 }
 
-.card:hover .image-overlay,
+.card-overlay:hover .image-overlay,
 div.hover .image-overlay {
     opacity: 1;
 }
@@ -76,11 +77,18 @@ div.hover .image-overlay {
     transition: filter 0.3s ease;
 }
 
-.card:hover .card-img-top,
+.card-overlay:hover .card-img-top,
 div.hover .card-img-top {
     filter: brightness(70%);
 }
+.itinerari-image-container{
+    height: 100px;
+    width: 100%;
+}
 
+.image-container img{
+    height: 300px;
+}
 
 </style>
 {% endblock extra_css %}
@@ -152,42 +160,42 @@ div.hover .card-img-top {
                     <table class="table">
                         <tbody>
                             <tr>
-                                <td><i class="fas fa-clock"></i></td>
+                                <td><i class="fas fa-clock" style="color: #3ebfab;"></i></td>
                                 <td><strong>Durada:</strong></td>
                                 <td>{{ ruta.duracion }}</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-hiking"></i></td>
+                                <td><i class="fas fa-hiking" style="color: #3ebfab;"></i></td>
                                 <td><strong>Pendent:</strong></td>
                                 <td>{{ ruta.pendiente }} metres</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-road"></i></td>
+                                <td><i class="fas fa-road" style="color: #3ebfab;"></i></td>
                                 <td><strong>Distància:</strong></td>
                                 <td>{{ ruta.distancia }} quilòmetres</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-palette"></i></td>
+                                <td><i class="fas fa-palette" style="color: #3ebfab;"></i></td>
                                 <td><strong>Tema:</strong></td>
                                 <td>{{ ruta.tema }}</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-biking"></i></td>
+                                <td><i class="fas fa-biking" style="color: #3ebfab;"></i></td>
                                 <td><strong>Activitat:</strong></td>
                                 <td>{{ ruta.actividad }}</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-star"></i></td>
+                                <td><i class="fas fa-star" style="color: #3ebfab;"></i></td>
                                 <td><strong>Valoració:</strong></td>
                                 <td>{{ ruta.valoracion }}</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-map-signs"></i></td>
+                                <td><i class="fas fa-map-signs" style="color: #3ebfab;"></i></td>
                                 <td><strong>Tipologia:</strong></td>
                                 <td>{{ ruta.get_tipologia_display }}</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-chart-line"></i></td>
+                                <td><i class="fas fa-chart-line" style="color: #3ebfab;"></i></td>
                                 <td><strong>Dificultat:</strong></td>
                                 <td>{{ ruta.get_dificultad_display }}</td>
                             </tr>
@@ -199,8 +207,8 @@ div.hover .card-img-top {
                     <div class="row">
                         {% for mapa in puntos_itinerario %}
                         <div class="col-md-6 p-3">
-                            <div class="card mb-3 h-100" id="{{ mapa.slug|stringformat:'s' }}">
-                                <div class="image-container">
+                            <div class="card mb-3 h-100 card-overlay" id="{{ mapa.slug|stringformat:'s' }}">
+                                <div class="image-container itinerari-image-container">
                                     {% if mapa.postimagen.imagen %}
                                         <img src="{{ mapa.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ mapa.titulo }}" style="width: 100%; height: 100px; object-fit: cover;">
                                     {% endif %}
@@ -221,7 +229,7 @@ div.hover .card-img-top {
                         </div>
                         {% empty %}
                         <div class="col">
-                            <div class="card">
+                            <div class="card card-overlay">
                                 <div class="card-body">
                                     <p class="card-text">No hay mapas disponibles en el itinerario.</p>
                                 </div>
@@ -279,7 +287,7 @@ div.hover .card-img-top {
         <div class="row">
             {% for post in rutes %}
             <div class="col-md-6 p-3">
-                <div class="card mb-3 h-100">
+                <div class="card mb-3 h-100 card-overlay">
                     <div class="image-container">
                         {% if post.postimagen.imagen %}
                             <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}">
@@ -315,13 +323,19 @@ div.hover .card-img-top {
 
 </aside>
 
-{% if posts %}
-    {% include 'blog/post/ultimas_entradas.html' %}
-{% endif %}
-
 {% endif %}
 
 {% endblock %}
+
+
+
+{% block asides %}
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+{% endblock asides %}
+
+
 
 {% block extra_script %}
 <script>

@@ -130,45 +130,54 @@
         opacity: 1;
         text-decoration: underline;
     }
-    
+    #categoria-carrusel-visites-guiades {
+        height: 50vh;
+    }
     
 </style>
 {% endblock extra_css %}
 
+{% block media %}
+{% if categoria.categoriagaleriaimagen_set.count > 1 %}
+<section class="container-fluid px-0 py-0">
+<div id="categoria-carrusel-{{ categoria.slug }}" class="carousel slide categoria-carrusel" data-ride="carousel">
+    <ol class="carousel-indicators">
+        {% for imagen in categoria.categoriagaleriaimagen_set.all %}
+        <li data-target="#categoria-carrusel-{{ categoria.slug }}" data-slide-to="{{ forloop.counter0 }}"
+            {% if forloop.first %}class="active"{% endif %}></li>
+        {% endfor %}
+    </ol>
+    <div class="carousel-inner text-center">
+        {% for imagen in categoria.categoriagaleriaimagen_set.all %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid">
+        </div>
+        {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#categoria-carrusel-{{ categoria.slug }}" role="button"
+        data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#categoria-carrusel-{{ categoria.slug }}" role="button"
+        data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+</section>
+{% else %}
+<div class="text-center">
+    <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}"
+        class="img-fluid">
+</div>
+</div>
+{% endif %}
+
+{% endblock media %}
 {% block content %}
 <div class="container-fluid px-0 py-0">
-    {% if categoria.categoriagaleriaimagen_set.count > 1 %}
-    <div id="categoria-carrusel-{{ categoria.slug }}" class="carousel slide categoria-carrusel" data-ride="carousel">
-        <ol class="carousel-indicators">
-            {% for imagen in categoria.categoriagaleriaimagen_set.all %}
-            <li data-target="#categoria-carrusel-{{ categoria.slug }}" data-slide-to="{{ forloop.counter0 }}"
-                {% if forloop.first %}class="active"{% endif %}></li>
-            {% endfor %}
-        </ol>
-        <div class="carousel-inner text-center">
-            {% for imagen in categoria.categoriagaleriaimagen_set.all %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid">
-            </div>
-            {% endfor %}
-        </div>
-        <a class="carousel-control-prev" href="#categoria-carrusel-{{ categoria.slug }}" role="button"
-            data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#categoria-carrusel-{{ categoria.slug }}" role="button"
-            data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-    {% else %}
-    <div class="text-center">
-        <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}"
-            class="img-fluid">
-    </div>
-    {% endif %}
+
 
     <div class="container pt-5">
         <h1>Explora Cabrera de Mar: Descobreix els seus racons amb les nostres rutes temàtiques</h1>
@@ -200,7 +209,7 @@
                     {{ visita.get_publico_recomendado_display }}
                     <span class="duracion-visita">
                         <i class="fas fa-clock"></i>
-                        {% comment %} {{ visita.duracion|format_duration }} {% endcomment %}
+                        {{ visita.duracion|format_duration }}
                     </span>
                     
                 </div>

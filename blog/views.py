@@ -34,13 +34,7 @@ class DetallePostView(BaseContextMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         post = self.object
-        ultimas_agendas = Agenda.objects.filter(Q(categoria=post.categoria) | Q(categoria__subblog=post.categoria.subblog)).order_by('-fecha_creacion')[:3]
-        context['ultimos'] = ultimas_agendas if ultimas_agendas else None
-        # Obtener todos los puntos de mapa publicados, excluyendo el objeto actual
-        agendas = Agenda.objects.filter(publicado=True).order_by('-fecha')[:4]
-        
-        context['ultimas_agendas'] = ultimas_agendas
-        context['posts'] = agendas
+
 
         return context
 
@@ -96,32 +90,41 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         context = super().get_context_data(**kwargs)
         # Obtener el objeto de la categoría actual
         categoria = context['categoria']
-        categorias_hermanas = Categoria.objects.filter(subblog=categoria.subblog).exclude(id=categoria.id)
+        categorias_hermanas = Categoria.objects.filter(publicado= True).exclude(id=categoria.id)
         context['categorias'] = categorias_hermanas
+        
         # Verificar si el tipo de categoría es "agenda"
         if categoria.tipo == 'agenda':
             # Obtener la lista de agendas relacionadas
             agendas = Agenda.objects.filter(publicado=True).all()
             parallax = Parallax.objects.filter(publicado= True).first()
             redes_sociales= RedSocial.objects.filter().all()
+            categorias = Categoria.objects.filter(publicado=True)
             context['redes_sociales'] = redes_sociales
             context['parallax'] = parallax
             context['agendas'] = agendas
+            context['categorias'] = categorias
+
         elif categoria.tipo == 'visitas_guiadas':
             visitas_guiadas = VisitaGuiada.objects.filter(publicado=True, categoria = categoria).all()
             context['visitas_guiadas'] = visitas_guiadas
+
         elif categoria.tipo == 'noticies':
             noticias = Noticia.objects.filter(publicado=True, categoria=categoria).all()
             context['noticias'] = noticias
+
         elif categoria.tipo == 'senderisme':
             rutes  = Ruta.objects.filter(publicado=True).all()
             context['rutes'] = rutes
+
         elif categoria.tipo == 'normal':
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
+
         elif categoria.tipo == 'lloc':
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
+            
         return context
 
 

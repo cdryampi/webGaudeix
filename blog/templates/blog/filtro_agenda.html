@@ -162,10 +162,10 @@
         const agendasDia = eventosPorDia[dia];
         agendasDia.forEach(function (agenda) {
           const colElement = document.createElement('div');
-          colElement.classList.add('col-12', 'py-3', 'h-100');
+          colElement.classList.add('col-12', 'h-100');
   
           const cardElement = document.createElement('article');
-          cardElement.classList.add('card', 'mb-3', 'card-inline', 'related-activity-card', 'h-100');
+          cardElement.classList.add('card', 'card-inline', 'related-activity-card', 'h-100');
   
           const imageContainer = document.createElement('div');
           imageContainer.classList.add('image-container');
@@ -189,7 +189,7 @@
   
           const cardText = document.createElement('p');
           cardText.classList.add('card-text', 'related-activity-description', 'text-center');
-          const descripcionCorta = agenda.descripcion_corta || 'Descripción no disponible';
+          const descripcionCorta = agenda.descripcion_corta || 'Descripció no disponible';
           cardText.textContent = descripcionCorta;
           cardBody.appendChild(cardText);
   
@@ -225,7 +225,7 @@
           const detallesLink = document.createElement('a');
           detallesLink.href = '/agenda/' + agenda.slug + '/';
           detallesLink.classList.add('related-activity-link');
-          detallesLink.classList.add('col-md-6', 'col-lg-3', 'col-12');
+          detallesLink.classList.add('col-md-6', 'col-lg-3', 'col-12','p-3');
           cardElement.appendChild(imageContainer);
           cardElement.appendChild(cardBody);
   
