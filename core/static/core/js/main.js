@@ -18,6 +18,11 @@ window.addEventListener('scroll', function() {
     function scrollToMain(event) {
       event.preventDefault();
       const mainSection = document.querySelector('main');
-      mainSection.scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo(
+        {
+         behavior: 'smooth',
+         top: mainSection.getBoundingClientRect().top - document.body.getBoundingClientRect().top - 150,
+        }
+      );
     }
   }

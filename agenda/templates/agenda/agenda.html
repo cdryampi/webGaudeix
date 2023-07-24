@@ -36,7 +36,7 @@
                       <td class="font-weight-bold"><i class="fas fa-map-marker-alt"></i> Ubicació:</td>
                       <td>
                         <p>
-                          <a href="{% url 'map:mapa' slug=local_agenda.ubicacion.slug %}" class="font-weight-bold">{{ local_agenda.ubicacion.titulo }}</a> - <span>{{ local_agenda.ubicacion.calle }}</span>,
+                          <a href="{% url 'map:mapa' slug=local_agenda.ubicacion.slug %}" class="font-weight-bold">{{ local_agenda.ubicacion.titulo }}</a>{% if local_agenda.ubicacion.calle %} - <span>{{ local_agenda.ubicacion.calle }}</span>{% endif %},
                           <span>{{ local_agenda.ubicacion.codigo_postal }}</span> <span>{{ local_agenda.ubicacion.comunidad_autonoma }}</span>
                         </p>
                       </td>
@@ -48,6 +48,17 @@
                       </td>
                     </tr>
                     {% endfor %}
+                    {% if local_agenda.postfichero %}
+                    <tr>
+                      <td colspan="2">
+                      <i class="fas fa-file-pdf"></i>
+                      <strong>PDF:</strong> 
+                      <a href="{{ local_agenda.postfichero.fichero.archivo.url }}" class="text-black" download>
+                        descarregar
+                      </a>
+                      <td>
+                    </tr>
+                    {% endif %}
                   </tbody>
                 </table>
                 

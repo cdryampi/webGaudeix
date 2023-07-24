@@ -118,105 +118,14 @@
         font-size: 6.5rem;
       }
 
-      .swiper-container .card.related-activity-card.mb-3.h-100 {
-        width: 350px;
-    }
-    .card.related-activity-card {
-        height: 100%;
-      }
-
-    .related-activity-card {
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-      }
-      
-    .related-activity-card:hover , .certificado:hover{
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        transform: translateY(-3px);
-      }
-    @media (max-width: 767px) {
-        .event-container .collage-img {
-            width: 100%;
-            height: auto;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .carousel-inner .carousel-item > div {
-            display: none;
-        }
-        .carousel-inner .carousel-item > div:first-child {
-            display: block;
-        }
-
-    }
-    @media (min-width: 768px) and (max-width: 991px) {
-        .swiper-container .card.related-activity-card.mb-3.h-100 {
-          width: 215px;
-        }
-      }
-    .carousel-inner .carousel-item.active,
-    .carousel-inner .carousel-item-next,
-    .carousel-inner .carousel-item-prev {
-        display: flex;
-    }
-    
-    /* display 3 */
-    @media (min-width: 768px) {
-        .carousel-inner .carousel-item-right.active,
-        .carousel-inner .carousel-item-next {
-            transform: translateX(33.333%);
-        }
-        
-        .carousel-inner .carousel-item-left.active, 
-        .carousel-inner .carousel-item-prev {
-            transform: translateX(-33.333%);
-        }
-    }
-    
-    .carousel-inner .carousel-item-right,
-    .carousel-inner .carousel-item-left { 
-        transform: translateX(0);
-    }
-
-
-.carousel-item img {
-    width: 100%;
-    height: auto;
-  }
-
-  .custom-prev,
-.custom-next {
-  width: 40px;
-  height: 40px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  border: none;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.custom-prev-icon,
-.custom-next-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-}
-
-.custom-prev:hover,
-.custom-next:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
 </style>
 {% endblock extra_css %}
 
-{% block content %}
-{% include 'parallax/parallax.html' %}
+{% block media %}
+    {% include 'parallax/parallax.html' %}
+{% endblock media %}
 
+{% block content %}
 <div class="container-fluid bg-gray p-0 m-0">
     <div class="container mt-3">
         <div class="row justify-content-center">
@@ -237,12 +146,21 @@
         <div class="row justify-content-center mt-5">
             <div class="col-12 d-flex flex-wrap">
                 {% for imagen in evento_especial.imagenes.all %}
-                    <img src="{{ imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid collage-img" style="width: {{ imagen.width }}px; height: {{ imagen.height }}px;">
+                    <a href="{{ imagen.archivo.url }}" class="fancybox">
+                        <img src="{{ imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid collage-img" style="width: {{ imagen.width }}px; height: {{ imagen.height }}px;">
+                    </a>
                 {% endfor %}
+            </div>
+        </div>
+        <div class="row justify-content-center mt-2">
+            <div class="col-12">
+                <small class="d-block text-center mt-3">Fes clic a les imatges per veure la galeria completa</small>
             </div>
         </div>
     </div>
 {% endif %}
+
+
 
 {% if evento_especial.eventofichero %}
     <div class="container-fluid bg-gray p-0 m-0">
@@ -309,7 +227,7 @@
 
 
 
-<div class="container-fluid bg-gray p-0 m-0">
+<div class="container-fluid bg-gray p-0 m-0 pb-5">
     <div class="container mt-3">
         <div class="row justify-content-center">
             <div class="link-div">
@@ -319,62 +237,15 @@
     <div>
 </div>
 
-{% if evento_especial.agendas.all %}
-<aside class="container p-5">
-    <div class="py-3">
-        <h4 class="related-activities-title">Properes activitats per a gaudir al màxim!</h4>
-    </div>
-    <div id="carouselAgendas" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            {% for agenda in evento_especial.agendas.all %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <a href="{{ agenda.get_absolute_url }}" class="related-activity-link my-1">
-                    <div class="card related-activity-card mb-3 mx-1 h-100">
-                        {% with imagen=agenda.postgaleriaimagen_set.first %}
-                        {% if imagen %}
-                        <div class="image-container">
-                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
-                        </div>
-                        {% endif %}
-                        {% endwith %}
-                        <div class="card-body text-center">
-                            <h5 class="card-title related-activity-title">{{ agenda.titulo }}</h5>
-                            <p class="card-text related-activity-description">
-                                {% if agenda.descripcion_corta|wordcount > 10 %}{{ agenda.descripcion_corta|truncatewords:10 }}...{% else %}{{ agenda.descripcion_corta }}{% endif %}
-                            </p>
-                            <div class="related-activity-details">
-                                <p class="related-activity-date-time">
-                                    <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
-                                    <span class="event-date">{{ agenda.fecha }}</span>
-                                    <i class="fas fa-clock" style="color: #3ebfab;"></i>
-                                    <span class="event-time">{{ agenda.hora }}</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                </div>
-            {% endfor %}
-        </div>
-
-        <button class="carousel-control-prev custom-prev" type="button" data-bs-target="#carouselAgendas" data-bs-slide="prev">
-            <span class="custom-prev-icon" aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
-          </button>
-          <button class="carousel-control-next custom-next" type="button" data-bs-target="#carouselAgendas" data-bs-slide="next">
-            <span class="custom-next-icon" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
-          </button>
-          
-    </div>
-</aside>
-{% endif %}
-
-
-
-
-
-
-
 {% endblock content %}
+
+{% block asides %}
+
+    {% if coleccion_destacados  %}
+        {% include 'destacados/destacados.html' %}
+    {% endif %}
+
+{% endblock asides %}
 
 {% block extra_script %}
 <script>
@@ -424,56 +295,16 @@
         setInterval(updateCountdown, 1000);
     });
 
-    $(document).ready(function() {
-        $('#carouselAgendas').carousel({
-          interval: 5000 // Intervalo de cambio de slide en milisegundos
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar FancyBox para todos los elementos con la clase "fancybox"
+        Fancybox.bind('.fancybox', {
+            // Opciones de configuración de FancyBox
+            groupAll: true,
         });
-      
-        var minPerSlide = 3; // Número mínimo de cards por slide
-      
-        $('.carousel .carousel-item').each(function() {
-          var next = $(this).next();
-          if (!next.length) {
-            next = $(this).siblings(':first');
-          }
-          next.children(':first-child').clone().appendTo($(this));
-      
-          for (var i = 0; i < minPerSlide - 1; i++) {
-            next = next.next();
-            if (!next.length) {
-              next = $(this).siblings(':first');
-            }
-            next.children(':first-child').clone().appendTo($(this));
-          }
-        });
-      
-        var prevButton = document.querySelector('.carousel-control-prev');
-        var nextButton = document.querySelector('.carousel-control-next');
-        var carousel = new bootstrap.Carousel(document.querySelector('#carouselAgendas'));
-        var isButtonBlocked = false;
-      
-        prevButton.addEventListener('click', function() {
-          if (!isButtonBlocked) {
-            carousel.prev();
-            blockButtons();
-          }
-        });
-      
-        nextButton.addEventListener('click', function() {
-          if (!isButtonBlocked) {
-            carousel.next();
-            blockButtons();
-          }
-        });
-      
-        function blockButtons() {
-          isButtonBlocked = true;
-          setTimeout(function() {
-            isButtonBlocked = false;
-          }, 1000); // Bloqueo de 2 segundos
-        }
-      });
-      
-    
+        const customTitle = document.querySelector('.custom-title');
+
+        // Cambia el texto del título
+        customTitle.textContent = 'Principals activitats';
+    });
 </script>
 {% endblock extra_script %}

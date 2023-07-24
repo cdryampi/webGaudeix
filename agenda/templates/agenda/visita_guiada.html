@@ -131,30 +131,35 @@
 </style>
 {% endblock %}
 
+{% block media %}
+<section class="container-fluid p-0">
+  <div id="carouselVisites" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      {% for imagen in visites.postgaleriaimagen_set.all %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="gallery">
+          <img src="{{ imagen.imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid fancybox">
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#carouselVisites" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselVisites" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Següent</span>
+    </a>
+  </div>
+  <div class="col-12">
+    <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+  </div>
+</section>
 
+{% endblock media %}
 
 {% block content %}
-
-<aside class="container-fluid p-0">
-    <div id="carouselVisites" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            {% for imagen in visites.postgaleriaimagen_set.all %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid">
-            </div>
-            {% endfor %}
-        </div>
-        <a class="carousel-control-prev" href="#carouselVisites" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Anterior</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselVisites" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Següent</span>
-        </a>
-    </div>
-</aside>
-
 
 <section class="mx-0 px-0 pb-5 pt-0 container-fluid">
     <div class="p-3">
@@ -173,7 +178,12 @@
                                     <ul class="list-unstyled mb-0">
                                         <li class="mb-3">
                                             <i class="fas fa-dollar-sign"></i>
-                                            <strong>Preu:</strong> {{ visites.precio }}
+                                            <strong>Preu:</strong>
+                                            {% if visites.precio == 0 %}
+                                              <span class="event-price">Gratis</span>
+                                              {% elif visites.precio %}
+                                                <span class="event-price">{{ visites.precio }} €</span>
+                                            {% endif %}
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-clock"></i>
@@ -191,6 +201,16 @@
                                             <i class="fas fa-users"></i>
                                             <strong>Públic recomanat:</strong> {{ visites.get_publico_recomendado_display }}
                                         </li>
+                                        {% if visites.postfichero %}
+                                        <li class="mb-3">
+                                          <i class="fas fa-file-pdf"></i>
+                                          <strong>PDF:</strong> 
+                                          <a href="{{ visites.postfichero.fichero.archivo.url }}" class="text-black" download>
+                                            descarregar
+                                          </a>
+                                        </li>
+                                        {% endif %}
+
                                         <li>
                                             <i class="fas fa-map-marker-alt"></i>
                                             <strong>Ubicació:</strong>
@@ -377,20 +397,6 @@
 </aside>
 
 
-
-{% if visites.postfichero %}
-    <section class="mx-0 px-0 pb-5 container-fluid">
-        <div class="row p-0 m-0">
-            <div class="col-md-12 p-0 m-0">
-                <a href="{{ visites.postfichero.fichero.archivo.url }}" class="btn btn-primary btn-lg btn-block" download>
-                    <i class="fas fa-file-pdf"></i> Descargar PDF
-                </a>
-            </div>
-        </div>
-    </section>
-{% endif %}
-
-
 {% endblock %}
 
 {% block asides %}
@@ -441,10 +447,15 @@
       const anyFin = parseInt(fechaFinParts[3]);
 
       // Generar las fechas de inicio y finalización en formato inglés
-      const fechaInicioFormatted = `${diaInicio} ${mesInicio} ${anyInicio}`;
-      const fechaFinFormatted = `${diaFin} ${mesFin} ${anyFin}`;
+      // Formatear las fechas de inicio y fin en formato 'MM/DD/YYYY'
+      const fechaInicioFormatted = '{{ visites.fecha_inicio|date:"m/d/Y" }}';
+      const fechaFinFormatted = '{{ visites.fecha_fin|date:"m/d/Y" }}';
+
+      // Crear los objetos Date con las fechas formateadas
       const fechaInicio = new Date(fechaInicioFormatted);
       const fechaFin = new Date(fechaFinFormatted);
+      console.log(fechaInicioFormatted);
+      console.log(fechaFinFormatted);
 
       // Generar el calendario marcado
       const calendarDays = document.getElementById('calendar-days');
@@ -468,6 +479,13 @@
       }
 
       calendarDays.innerHTML = calendarHTML;
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar FancyBox para todos los elementos con la clase "fancybox"
+      Fancybox.bind('.fancybox', {
+        // Opciones de configuración de FancyBox
+        groupAll: true,
+      });
     });
   </script>
 {% endblock extra_script %}

@@ -11,14 +11,15 @@ from map.models import MapPoint
 from personalizacion.models import PortadaVideo, SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
 from agenda.models import Agenda, VariationAgenda
-from django.db.models import Max
-from django.db.models import Subquery, OuterRef
+from django.utils import timezone
+from django.db.models import Q
+
 
 app_name = 'core'
 # Create your views here.
 
 def error_404(request, exception):
-    return render(request, 'core/404/error.html', {'message': 'Página no encontrada'})
+    return render(request, 'core/404/error.html', {'message': 'Página no encontrada'},status=404)
 
 def home(request):
     
@@ -28,12 +29,12 @@ def home(request):
 
     # Obtén los últimos eventos del portal
 
-    subquery = VariationAgenda.objects.filter(agenda=OuterRef('pk')).order_by('-fecha', '-hora')
-    ultimos_eventos = VariationAgenda.objects.filter(
-        agenda__publicado=True
-    ).annotate(
-        latest_variation_date=Subquery(subquery.values('fecha')[:1]),
-        latest_variation_time=Subquery(subquery.values('hora')[:1])
+    # ultimos eventos del portal
+    now = timezone.now()
+    variation_agendas = VariationAgenda.objects.filter(
+        Q(agenda__publicado=True) &
+        Q(fecha__gte=now.date()) &
+        (Q(fecha=now.date(), hora__gte=now.time()) | Q(fecha__gt=now.date()))
     ).order_by('fecha', 'hora')[:4]
 
     # Renderiza la plantilla de la página de inicio con los datos obtenidos
@@ -77,6 +78,8 @@ def home(request):
 
     coleccion_destacados = SeleccionDestacados.objects.filter(publicado=True).first()
     
+    if coleccion_destacados:
+        coleccion_destacados = coleccion_destacados.coleccion.all()
     # Obtener todas las categorias publicadas.
 
     evento = EventoEspecial.objects.filter(publicado=True).first()
@@ -97,7 +100,7 @@ def home(request):
         'core/home/home.html',
         {
             'categorias': categorias,
-            'ultimos_eventos': ultimos_eventos,
+            'ultimos_eventos': variation_agendas,
             'agenda': agenda,
             'header': header,
             'referencias': referencias,
@@ -112,7 +115,8 @@ def home(request):
             'map_points': map_points,
             'categorias_header': categorias_con_subblog,
             'coleccion_destacados': coleccion_destacados,
-            'evento_especial': evento
+            'evento_especial': evento,
+            'video_hero':True
         }
     )
 

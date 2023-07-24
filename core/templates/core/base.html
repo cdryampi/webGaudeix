@@ -41,6 +41,8 @@
     <script src="{% static 'core/js/swiper/swiper-bundle.min.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/sample.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/swiper/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'core/js/gallery-js/fancybox.css' %}">
+
     {% block extra_css %}
         
     {% endblock extra_css %}
@@ -51,12 +53,33 @@
     <!-- Agrega aquí el contenido común a todas las páginas -->
 
         <header>
-            
             {% include 'header/header.html' %}
         </header>
+        {% block hero %}
+            {% if video_hero %}
+                <section class="container-fluid p-0 m-0" id="iframe-section-container">
+                    <div class="youtube-background" id="iframe-video-container" style="height: 100%; width: 100%; z-index: 0; position: absolute; overflow: hidden; inset: 0px; pointer-events: none;">
+                        <iframe 
+                        class="iframe-video"
+                        src="https://www.youtube.com/embed/MrIvGzYVRYM?mute=1&autoplay=1&controls=0" 
+                        frameborder="0" 
+                        webkitallowfullscreen
+                        mozallowfullscreen
+                        allowfullscreen
+                        autoplay
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        style="top: 50%;left: 50%;transform: translateX(-50%) translateY(-50%);position: absolute;opacity: 1; width: 101%;height: 120%;"
+                      >
+                      </iframe>
+                        
+                    </div>
+               
+                </section>
+            {% endif %}
+        {% endblock hero %}
         {% if portada %}
             {% comment %} {% include 'parallax/parallax.html' %} {% endcomment %}
-            {% include 'portada-video/portada-video.html' %}
+            {% comment %} {% include 'portada-video/portada-video.html' %} {% endcomment %}
             
             {% if coleccion_destacados %}
                 {% include 'blog/categoria_especial.html' %}
@@ -66,7 +89,6 @@
         {% block media %}
         
         {% endblock media %}
-
 
         {% if portada %}
             {% if coleccion_destacados  %}
@@ -86,8 +108,6 @@
         {% endblock %}
     </main>
     
-
-
     {% if portada %}
         {% include 'map/map.html' %}
     {% endif %}
@@ -103,7 +123,6 @@
     {% endblock asides %}
     <footer class= "container-fluid p-0 m-0 pt-5">
         <!-- Pie de página -->
-        
         {% include 'footer/footer.html' %}
     </footer>
 
@@ -111,11 +130,11 @@
     {% if portada %}
         <script src="{% static 'core/js/mapa.js' %}"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
-        <script src="{% static 'core/js/video-home.js' %}"></script>
+        {% comment %} <script src="{% static 'core/js/video-home.js' %}"></script> {% endcomment %}
     {% endif %}
     
     <script src="{% static 'core/js/main.js' %}"></script>
-
+    <script src="{% static 'core/js/gallery-js/fancybox.js' %}"></script>
     {% block extra_script %}
     {% endblock extra_script %}
     

@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.contrib import messages
 from map.models import MapPoint
-
+from django.utils import timezone
 
 class ListarPostsView(ListView):
     model = Post
@@ -92,7 +92,7 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         categoria = context['categoria']
         categorias_hermanas = Categoria.objects.filter(publicado= True).exclude(id=categoria.id)
         context['categorias'] = categorias_hermanas
-        
+        now = timezone.now()
         # Verificar si el tipo de categoría es "agenda"
         if categoria.tipo == 'agenda':
             # Obtener la lista de agendas relacionadas
@@ -103,6 +103,7 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             context['redes_sociales'] = redes_sociales
             context['parallax'] = parallax
             context['agendas'] = agendas
+            context['joves'] = VariationAgenda.objects.filter(agenda__publicado= True, agenda__tipo_evento='joves',fecha__gt=now).first()
             context['categorias'] = categorias
 
         elif categoria.tipo == 'visitas_guiadas':

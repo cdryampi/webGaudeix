@@ -16,17 +16,20 @@
   <div class="form-group">
     <label for="tipo-evento">Tipo de Evento:</label>
     <div id="tipo-evento" class="tipo-evento-buttons">
-      <button type="button" class="btn btn-light" value="">Todos</button>
-      <button type="button" class="btn btn-light" value="musica">Música</button>
-      <button type="button" class="btn btn-light" value="teatre">Teatre</button>
-      <button type="button" class="btn btn-light" value="exposicio">Exposició</button>
-      <button type="button" class="btn btn-light" value="festes">Festes</button>
-      <button type="button" class="btn btn-light" value="cinema">Cinema</button>
-      <button type="button" class="btn btn-light" value="dansa">Dansa</button>
-      <button type="button" class="btn btn-light" value="visites_guiades">Visites guiades</button>
-      <button type="button" class="btn btn-light" value="activitats_turistiques">Activitats turístiques</button>
-      <button type="button" class="btn btn-light" value="xarrades">Conferencies</button>
-      <button type="button" class="btn btn-light" value="altres">Altres</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="">Tots</button>
+      {% if joves %}
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="joves">Juliol jove</button>
+      {% endif %}
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="musica">Música</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="teatre">Teatre</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="exposicio">Exposició</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="festes">Festes</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="cinema">Cinema</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="dansa">Dansa</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="visites_guiades">Visites guiades</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="activitats_turistiques">Activitats turístiques</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="xarrades">Conferencies</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="altres">Altres</button>
     </div>
     <input type="hidden" id="tipo_evento" name="tipo_evento" value="">
   </div>

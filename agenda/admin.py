@@ -36,6 +36,24 @@ class VariationAgendaInline(admin.TabularInline):
     model = VariationAgenda
     extra = 0
 
+class PostFicheroImagenInline(admin.TabularInline):
+    model = PostFichero
+    extra = 1
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'fichero':
+            agenda_id = None
+            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
+                agenda_id = request.resolver_match.kwargs['object_id']
+
+            kwargs['queryset'] = Fichero.objects.filter(
+                Q(postfichero__isnull=True) | Q(postfichero__post__id=agenda_id),
+                Q(eventofichero__isnull=True)
+            )
+            kwargs['empty_label'] = 'Sin fichero asociado'
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class PostImagenInlineRuta(admin.TabularInline):
     model = PostImagen
@@ -69,7 +87,7 @@ class PostImagenInlineRuta(admin.TabularInline):
 
 
 class AgendaAdmin(admin.ModelAdmin):
-    inlines = [PostGaleriaImagenInline, VariationAgendaInline]
+    inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
 
 
 
@@ -124,23 +142,7 @@ class VisitaGuidadaForm(forms.ModelForm):
         return instance
 
 
-class PostFicheroImagenInline(admin.TabularInline):
-    model = PostFichero
-    extra = 1
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'fichero':
-            agenda_id = None
-            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
-                agenda_id = request.resolver_match.kwargs['object_id']
-
-            kwargs['queryset'] = Fichero.objects.filter(
-                Q(postfichero__isnull=True) | Q(postfichero__post__id=agenda_id),
-                Q(eventofichero__isnull=True)
-            )
-            kwargs['empty_label'] = 'Sin fichero asociado'
-
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class VisitaGuidadaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm

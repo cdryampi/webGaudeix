@@ -1,4 +1,17 @@
 {% extends 'core/base.html' %}
+{% block extra_css %}
+<style>
+  @media only screen and (max-width: 767px) {
+    div#calendar{
+      display:none;
+    }
+    #tipo-evento {
+      text-align: center;
+    }
+  }
+</style>
+
+{% endblock extra_css %}
 
 {% block media %}
   {% if parallax %}
@@ -8,7 +21,7 @@
 
 
 {% block content %}
-<section class="p-5">
+<section class="p-lg-5 p-md-5">
   <div class="col-12">
     <h1 class="h1 text-center py-5">Viu la Cultura i les Festes a Cabrera de Mar</h1>
   </div>

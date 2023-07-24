@@ -36,7 +36,8 @@ class Agenda(Post):
         ('dansa', 'Dansa'),
         ('visites_guiades','Visites guiades'),
         ('activitats_turistiques','Activitats turístiques'),
-        ('xarrades','xarrades'),
+        ('xerrades','xerrades'),
+        ('joves','joves'),
         ('altres', 'Altres (Otros)'),
     )
 

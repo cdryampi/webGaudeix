@@ -57,14 +57,15 @@ INSTALLED_APPS = [
     'paginas_estaticas',
     'eventos_especiales',
     'map',
-    'fontawesomefree'
+    'fontawesomefree',
+    'corsheaders',
     #'corsheaders',
     #'admin_tree'
     #'filters'
 ]
 
 MIDDLEWARE = [
-    #'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -190,3 +191,14 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ysanchez@cabrerademar.cat'  # Reemplaza con tu dirección de correo Gmail
 EMAIL_HOST_PASSWORD = 'Cabrera@2023'  # Reemplaza con tu contraseña de Gmail
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+CORS_ALLOW_HEADERS = ['*']
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://www.youtube.com",
+]
