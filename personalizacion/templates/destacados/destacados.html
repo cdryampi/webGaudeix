@@ -44,37 +44,3 @@
 </section>
 
 {% endif %}
-
-{% block extra_script %}
-<script>
-    function initSwiper() {
-        let swiper = new Swiper('.swiper-container', {
-            loop: true,
-            slidesPerView: 4, // Número de tarjetas por slide
-            spaceBetween: 10, // Espacio entre tarjetas
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                // Configuración para dispositivos móviles
-                374:{
-                    slidesPerView: 2,
-                },
-
-                767: {
-                    slidesPerView: 3,
-                },
-
-                // Configuración para tablets
-                991: {
-                    slidesPerView: 4,
-                },
-            },
-        });
-    }
-    document.addEventListener("DOMContentLoaded", function() {
-        initSwiper();
-    });
-</script>
-{% endblock extra_script %}

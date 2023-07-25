@@ -1,0 +1,2 @@
+AddDefaultCharset UTF-8
+Header always edit Set-Cookie (.*) "$1; SameSite=None; Secure"

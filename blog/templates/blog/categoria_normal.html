@@ -225,16 +225,3 @@
     {% endif %}
     
 {% endblock asides %}
-
-{% block extra_script %}
-    <script>
-        // extra_js.js
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar FancyBox para todos los elementos con la clase "fancybox"
-            Fancybox.bind('.fancybox', {
-            // Opciones de configuración de FancyBox
-            groupAll: true,
-            });
-        });
-    </script>
-{% endblock extra_script %}
