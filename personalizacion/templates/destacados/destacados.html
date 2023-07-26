@@ -24,9 +24,9 @@
                         {% if imagen %}
                         <div class="image-container">
                             <picture>
-                                <source srcset="{{ imagen.imagen.small_thumbnail.url }}" media="(max-width: 575px)">
-                                <source srcset="{{ imagen.imagen.medium_thumbnail.url }}" media="(max-width: 991px)">
-                                <img src="{{ imagen.imagen.medium_thumbnail.url }}" alt="{{ agenda.titulo }}" class="img-fluid lazy-load-img" width="350" height="{{ imagen.imagen.large_thumbnail.height }}" loading="lazy">
+                                <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                                <img src="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" alt="{{ agenda.titulo }}" class="img-fluid lazy-load-img" width="350" height="{{ imagen.imagen.large_thumbnail.height }}" loading="lazy">
                             </picture>
                         </div>                        
                         {% endif %}

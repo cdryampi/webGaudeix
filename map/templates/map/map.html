@@ -55,9 +55,9 @@
                             {% if imagen %}
                             <div class="image-container">
                                 <picture>
-                                  <source srcset="{{ imagen.imagen.small_thumbnail.url }}" media="(max-width: 575px)">
-                                  <img src="{{ imagen.imagen.large_thumbnail.url }}"
-                                      data-src="{{ imagen.imagen.large_thumbnail.url }}"
+                                  <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                  <img src="{{ imagen.imagen.large_thumbnail.url |urlencode }}"
+                                      data-src="{{ imagen.imagen.large_thumbnail.url |urlencode }}"
                                       alt="{{ objeto.titulo }}"
                                       class="img-fluid lazy-load-img">
                               </picture>

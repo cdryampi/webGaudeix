@@ -14,9 +14,9 @@
                             {% with primera_imagen=categoria.categoriagaleriaimagen_set.first.imagen %}
                                 {% if primera_imagen %}
                                     <picture>
-                                        <source srcset="{{ primera_imagen.small_thumbnail.url }}" media="(max-width: 575px)">
-                                        <source srcset="{{ primera_imagen.medium_thumbnail.url }}" media="(max-width: 991px)">
-                                        <source srcset="{{ primera_imagen.large_thumbnail.url }}" media="(min-width: 992px)">
+                                        <source srcset="{{ primera_imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                        <source srcset="{{ primera_imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                                        <source srcset="{{ primera_imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
                                         <img src="" 
                                             data-src="{{ primera_imagen.medium_thumbnail.url }}"
                                             alt="{{ categoria.titulo }}" 
