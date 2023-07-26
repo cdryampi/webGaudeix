@@ -8,7 +8,7 @@ from redes_sociales.models import RedSocial
 from footer.models import Footer
 from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
-from personalizacion.models import PortadaVideo, SeleccionDestacados
+from personalizacion.models import VideosEmbed, SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
 from agenda.models import Agenda, VariationAgenda
 from django.utils import timezone
@@ -52,10 +52,6 @@ def home(request):
     agenda = Categoria.objects.filter(tipo='agenda').first()
         
 
-
-    # obtener el último parallax publicado
-    parallax = Parallax.objects.filter(publicado=True).last()
-
     #obtener las redes sociales
     redes_sociales = RedSocial.objects.all()
     
@@ -85,14 +81,7 @@ def home(request):
     evento = EventoEspecial.objects.filter(publicado=True).first()
     # Agrupa los puntos de mapa por icono
 
-    portada_video = PortadaVideo.objects.filter(publicado=True).first()
-    videos = []
-    if portada_video:
-        if portada_video:
-            videos_portada = portada_video.videosportada.videos.all()
-            for item in videos_portada:
-                videos.append(item.archivo.url)
-                
+    portada_video = VideosEmbed.objects.filter(publicado=True).first()   
     categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
 
     return render(
@@ -106,17 +95,15 @@ def home(request):
             'referencias': referencias,
             'topbar': topbar,
             'portada': portada,
-            'parallax': parallax,
             'redes_sociales': redes_sociales,
             'color_red_social': redes_color,
             'categorias_especiales': categorias_especiales,
             'footer': footer,
-            'videos': videos,
+            'video': portada_video,
             'map_points': map_points,
             'categorias_header': categorias_con_subblog,
             'coleccion_destacados': coleccion_destacados,
             'evento_especial': evento,
-            'video_hero':True
         }
     )
 

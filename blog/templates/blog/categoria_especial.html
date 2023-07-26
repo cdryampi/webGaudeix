@@ -1,28 +1,5 @@
 {% load  static  %}
-{% block extra_css %}
-<style>
-    .col-especial-subBlog {
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-      }
-      
-      .col-especial-subBlog:hover{
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        transform: translateY(-3px);
-      }
 
-      {% for categoria in categorias_especiales %}
-
-      .col-especial-subBlog:nth-child({{ forloop.counter }}):hover {
-        background-color: {{ categoria.color }};
-        box-shadow: 0 0 10px {{ categoria.color }}; /* Color del hover para el elemento actual */
-      }
-      .col-especial-subBlog:nth-child({{ forloop.counter }}) {
-        background-color: {{ categoria.color }};
-      }
-      {% endfor %}
-      
-</style>
-{% endblock extra_css %}
 <section class="container-fluid p-0 m-0 pt-3 bg-light">
     <div class="col-12 p-3">
         <h2 class="h2 text-center">Et proposem els millors plans!</h2>
@@ -31,7 +8,7 @@
     <div class="col-12">
         <div class="row categoria-especial-container py-5">
             {% for categoria in categorias_especiales %}
-            <div class="col-especial-subBlog p-1">
+            <div class="col-especial-subBlog p-1" data-color="{{ categoria.color }}">
                 <div class="categoria-especial mx-auto text-center" style="background-color: {{ categoria.color }}">
                     <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="text-white d-block">
                         <img src="{{ categoria.categoriabannerimagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid align-middle">

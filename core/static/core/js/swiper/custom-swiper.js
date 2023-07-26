@@ -51,10 +51,8 @@ function initCollageSwiperCategoriasSeleccion() {
 
 document.addEventListener("DOMContentLoaded", function() {
     // Agrupar esta función dentro de una condición
-    if (window.innerWidth >= 768) {
-        initSwiper();
-        initCollageSwiperCategoriasSeleccion();
-    }
+    initSwiper();
+    initCollageSwiperCategoriasSeleccion();
     Fancybox.bind('.fancybox', {
         // Opciones de configuración de FancyBox
         groupAll: true,

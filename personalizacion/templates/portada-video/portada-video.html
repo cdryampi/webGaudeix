@@ -1,6 +1,21 @@
-{% block content %}
-    <div id="videos-container-home">
-        
+{% load static %}
+<section class="video-hero container-fluid p-0 m-0">
+    <div class="fullscreen-video-background">
+        <div class="_pattern-overlay">
+            
+        </div>
+        <div id="_buffering-background"></div>
+        <div id="_youtube-iframe-wrapper">
+            <div id="_youtube-iframe" data-youtubeurl="{{ video.videos.archivo }}"></div>
+        </div>
+    </div>
+    {% if redes_sociales %}
+        {% include 'redes_sociales/redes_sociales.html' %}
+    {% endif %}
+    <div class="parallax-flecha">
+    <a href="javascript:void(0)" title="Anar a la secció principal" aria-label="Anar a la secció principal" id="banner-parallax">
+        <img src="{% static "core/img/parallax/down-arrow.svg"%}"/>
+    </a>
     </div>
 
-{% endblock content %}
+</section>

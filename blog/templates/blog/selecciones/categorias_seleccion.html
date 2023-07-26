@@ -1,3 +1,4 @@
+{% load static %}
 {% if categorias %}
 <section class="container-fluid py-3" id="collage-container-categorias-seleccion">
     <div class="py-3">
@@ -10,8 +11,24 @@
                 <div class="swiper-slide collage-card-categorias-seleccion">
                     <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="text-white d-block collage-link-categorias-seleccion">
                         <div class="collage-image-container-categorias-seleccion">
-                            <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid align-middle">
-                        </div>
+                            {% with primera_imagen=categoria.categoriagaleriaimagen_set.first.imagen %}
+                                {% if primera_imagen %}
+                                    <picture>
+                                        <source srcset="{{ primera_imagen.small_thumbnail.url }}" media="(max-width: 575px)">
+                                        <source srcset="{{ primera_imagen.medium_thumbnail.url }}" media="(max-width: 991px)">
+                                        <source srcset="{{ primera_imagen.large_thumbnail.url }}" media="(min-width: 992px)">
+                                        <img src="" 
+                                            data-src="{{ primera_imagen.medium_thumbnail.url }}"
+                                            alt="{{ categoria.titulo }}" 
+                                            class="img-fluid align-middle lazy-load-img">
+                                    </picture>
+                                {% else %}
+                                    <img src="{% static 'core/static/img/img-agenda.jpg' %}"
+                                        alt="{{ categoria.titulo }}" 
+                                        class="img-fluid align-middle lazy-load-img">
+                                {% endif %}
+                            {% endwith %}
+                        </div>                                              
                         <div class="collage-card-body-categorias-seleccion">
                             <h3 class="collage-card-title-categorias-seleccion">{{ categoria.titulo }}</h3>
                         </div>

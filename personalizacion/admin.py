@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carrusel, Slide, InternalLink, Parallax, PortadaVideo, VideosPortada, SeleccionDestacados
+from .models import Carrusel, Slide, InternalLink, Parallax, VideosEmbed, SeleccionDestacados
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from .forms import CarruselForm, SeleccionForm
 from django.core.exceptions import ValidationError
@@ -19,16 +19,10 @@ class CarruselAdmin(admin.ModelAdmin):
 class SeleccionDestacadosAdmin(admin.ModelAdmin):
     form = SeleccionForm
 
-class VideosPortadainLine(admin.StackedInline):
-    model = VideosPortada
-
-class PortadaVideoAdmin(admin.ModelAdmin):
-    inlines = [VideosPortadainLine]
-
 
 
 admin.site.register(Carrusel, CarruselAdmin)
 admin.site.register(Slide,SlideAdmin)
 admin.site.register(Parallax)
-admin.site.register(PortadaVideo, PortadaVideoAdmin)
+admin.site.register(VideosEmbed)
 admin.site.register(SeleccionDestacados, SeleccionDestacadosAdmin)

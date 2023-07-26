@@ -126,27 +126,14 @@ class Parallax(models.Model):
         return self.titulo
 
 
-class PortadaVideo(models.Model):
+
+class VideosEmbed(models.Model):
     titulo = titulo = models.CharField(max_length=100)
     publicado = models.BooleanField(default=False)
+    videos = models.ForeignKey(Video, on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return self.titulo
-        
+        return f"Portada de video: {self.titulo}"
 
-
-
-class VideosPortada(models.Model):
-    portadavideo = models.OneToOneField(
-        PortadaVideo, on_delete=models.CASCADE, null=True)
-    videos = models.ManyToManyField(Video)
-    orden = models.PositiveIntegerField(default=0)
-
-    def __str__(self):
-        return f"Portada de video: {self.portadavideo}"
-
-    def delete(self, *args, **kwargs):
-        self.videos.clear()
-        super().delete(*args, **kwargs)
 
 
 class CarruselSubBlog(models.Model):

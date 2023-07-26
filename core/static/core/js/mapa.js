@@ -50,7 +50,7 @@ function initMap() {
         const content = `
                         <div class="info-window">
                             <h4 class="info-window-title">${point.titulo}</h4>
-                            <p class="info-window-image"><img src="media/${point.postimagen__imagen__archivo}" alt="${point.titulo}" style="width: 100%; height: 100px; object-fit: cover;"></p>
+                            <p class="info-window-image"><img src="${point.small_thumbnail_url}" alt="${point.titulo}" style="width: 100%; height: 200px; object-fit: cover;"></p>
                             <p class="info-window-description">${truncateDescription(point.descripcion, 20)}</p>
                             <p class="info-window-link">
                               <a href="map/${point.slug}" class="text-danger">Veure més</a>
@@ -72,8 +72,6 @@ function initMap() {
 
       });
 
-      // Ocultar el spinner de carga
-      mapLoading.style.display = 'none';
     })
     .catch(() => {
       //document.getElementById('map-error').style.display = 'block';

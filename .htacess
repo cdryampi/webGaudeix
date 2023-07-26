@@ -1,2 +1,8 @@
 AddDefaultCharset UTF-8
 Header always edit Set-Cookie (.*) "$1; SameSite=None; Secure"
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_USER_AGENT} Googlebot [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} Bingbot [NC]
+    RewriteRule ^.*$ - [R=403,L]
+</IfModule>

@@ -54,7 +54,13 @@
                             {% with imagen=objeto.postimagen %}
                             {% if imagen %}
                             <div class="image-container">
-                                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
+                                <picture>
+                                  <source srcset="{{ imagen.imagen.small_thumbnail.url }}" media="(max-width: 575px)">
+                                  <img src="{{ imagen.imagen.large_thumbnail.url }}"
+                                      data-src="{{ imagen.imagen.large_thumbnail.url }}"
+                                      alt="{{ objeto.titulo }}"
+                                      class="img-fluid lazy-load-img">
+                              </picture>
                             </div>
                             {% endif %}
                             {% endwith %}

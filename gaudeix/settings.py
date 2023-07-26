@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'map',
     'fontawesomefree',
     'corsheaders',
+    'imagekit',
+    'embed_video',
     #'corsheaders',
     #'admin_tree'
     #'filters'

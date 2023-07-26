@@ -11,5 +11,18 @@ window.addEventListener('scroll', function() {
     }
   });
 
-
-
+  if (document.getElementById('banner-parallax')) {
+    const parallaxLink = document.getElementById('banner-parallax');
+    parallaxLink.addEventListener('click', scrollToMain);
+  
+    function scrollToMain(event) {
+      event.preventDefault();
+      const mainSection = document.querySelector('main');
+      window.scrollTo(
+        {
+         behavior: 'smooth',
+         top: mainSection.getBoundingClientRect().top - document.body.getBoundingClientRect().top - 150,
+        }
+      );
+    }
+  }

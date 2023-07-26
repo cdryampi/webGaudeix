@@ -1,11 +1,17 @@
 {% load static %}
 <section class="parallax-container">
-    <div class="parallax" style="background-image: url('{{ parallax.imagen.url }}');"></div>
+    {% if parallax %}
+        <div class="parallax lazy-bg bg-lazy" data-src="{{ parallax.imagen.url }}">
+    {% else %}
+        <div class="parallax lazy-bg bg-lazy" data-src="{% static 'core/img/sample/portada-video-bg.jpg' %}">
+    {% endif %}
+
+    </div>
     <div class="parallax-content">
         <h2>{{ parallax.descripcion_corta | safe }}</h2>
     </div>
     <div class="parallax-flecha">
-        <a href="javascript:void(0)" title="Anar a la secció de l'Agenda cultural" aria-label="Anar a la secció de l'Agenda cultural" id="banner-parallax">
+        <a href="javascript:void(0)" title="Anar a la secció principal" aria-label="Anar a la secció principal" id="banner-parallax">
             <img src="{% static "core/img/parallax/down-arrow.svg"%}"/>
         </a>
     </div>

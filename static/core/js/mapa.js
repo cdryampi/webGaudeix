@@ -1,3 +1,22 @@
+function truncateDescription(description, wordCount) {
+  // Convertir la descripción en un array de palabras
+  const words = description.split(' ');
+
+  // Verificar si la descripción ya tiene menos de `wordCount` palabras
+  if (words.length <= wordCount) {
+    return description;
+  }
+
+  // Obtener las primeras `wordCount` palabras y unirlas nuevamente en una cadena
+  const truncatedWords = words.slice(0, wordCount);
+  const truncatedDescription = truncatedWords.join(' ');
+
+  // Agregar puntos suspensivos al final de la descripción truncada
+  const finalDescription = truncatedDescription + '...';
+
+  return finalDescription;
+}
+
 function initMap() {
   const mapContainer = document.getElementById('map-container');
   const mapLoading = document.getElementById('map-loading');
@@ -6,10 +25,11 @@ function initMap() {
     .then(response => response.json())
     .then(data => {
       const map = new google.maps.Map(mapContainer, {
-        center: { lat: 41.5232824, lng: 2.3704616 },
-        zoom: 14
+        center: { lat: 41.5179554, lng: 2.3883919 },
+        zoom: 14,
+        mapTypeId: 'satellite'
       });
-
+      console.log(data);
       data.forEach(point => {
 
         const marker = new google.maps.Marker({
@@ -28,9 +48,15 @@ function initMap() {
         });
         
         const content = `
-          <h3 style="font-size: 18px; margin-bottom: 5px;">${point.titulo}</h3>
-          <p style="font-style: italic; margin-top: 0;">${point.icono}</p>
-        `;
+                        <div class="info-window">
+                            <h4 class="info-window-title">${point.titulo}</h4>
+                            <p class="info-window-image"><img src="${point.small_thumbnail_url}" alt="${point.titulo}" style="width: 100%; height: 200px; object-fit: cover;"></p>
+                            <p class="info-window-description">${truncateDescription(point.descripcion, 20)}</p>
+                            <p class="info-window-link">
+                              <a href="map/${point.slug}" class="text-danger">Veure més</a>
+                            </p>
+                        </div>
+                          `;
 
         // Crear el InfoWindow para mostrar el título del marcador
         const infoWindow = new google.maps.InfoWindow({
@@ -40,19 +66,18 @@ function initMap() {
 
         // Agregar evento de clic al marcador para mostrar el InfoWindow
         marker.addListener('click', () => {
-        infoWindow.open(map, marker);
-        redirectToCarousel(point.icono); // Redirigir al carrusel correspondiente
+          infoWindow.setContent(infoWindow);
+          infoWindow.open(map, marker);
         });
 
       });
 
-      // Ocultar el spinner de carga
-      mapLoading.style.display = 'none';
     })
     .catch(() => {
-      document.getElementById('map-error').style.display = 'block';
+      //document.getElementById('map-error').style.display = 'block';
       // Ocultar el spinner de carga en caso de error
-      mapLoading.style.display = 'none';
+      //mapLoading.style.display = 'none';
+      console.log("Error")
     });
 }
 
@@ -71,30 +96,4 @@ function getColorForIcon(icono) {
   }
 }
 
-function redirectToCarousel(icono) {
-    let carouselId = '';
-    console.log(icono)
-    switch (icono) {
-      case 'platges':
-        carouselId = 'collapse_3';
-        break;
-      case 'informació':
-        carouselId = 'collapse_4';
-        break;
-      case 'jaciments':
-        carouselId = 'collapse_1';
-        break;
-      case 'patrimoni':
-        carouselId = 'collapse_2';
-        break;
-      default:
-        return;
-    }
-    const carousel = document.getElementById(carouselId);
-    if (carousel) {
-      carousel.classList.add('show'); // Mostrar el carrusel
-      carousel.scrollIntoView({ behavior: 'smooth' }); // Desplazarse hacia el carrusel
-    }
-    
-  }
 window.initMap = initMap;

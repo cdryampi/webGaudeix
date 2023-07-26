@@ -10,6 +10,9 @@ import random
 from django.views.generic import View, DetailView
 from core.mixin.base import BaseContextMixin
 from django.shortcuts import get_object_or_404
+from django.db.models import F, ExpressionWrapper
+
+
 
 class CoordenadasAyuntamientoAPI(View):
     def get(self, request):
@@ -30,9 +33,34 @@ class CoordenadasAyuntamientoAPI(View):
 class MapPointAPI(View):
     def get(self, request):
         categorias_filtradas = ['platges', "informació", 'jaciments', 'patrimoni']
-        puntos = MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas).values('titulo', 'latitud', 'longitud', 'icono','postimagen__imagen__archivo','descripcion','slug')
-        return JsonResponse(list(puntos), safe=False)
-    
+        puntos = MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas)
+
+        # Calcular los valores de las imágenes y almacenarlos en una lista de diccionarios
+        puntos_data = []
+        for punto in puntos:
+            imagen = punto.postimagen.imagen
+            if imagen:
+                small_thumbnail_url = imagen.small_thumbnail.url
+                large_thumbnail_url = imagen.large_thumbnail.url
+            else:
+                # Si no hay imagen, proporciona un valor predeterminado o deja en blanco
+                small_thumbnail_url = ''  # Puedes usar un valor predeterminado aquí
+                large_thumbnail_url = ''
+
+            punto_data = {
+                'titulo': punto.titulo,
+                'latitud': punto.latitud,
+                'longitud': punto.longitud,
+                'icono': punto.icono,
+                'small_thumbnail_url': small_thumbnail_url,
+                'large_thumbnail_url': large_thumbnail_url,
+                'descripcion': punto.descripcion,
+                'slug': punto.slug,
+            }
+
+            puntos_data.append(punto_data)
+
+        return JsonResponse(puntos_data, safe=False)
 
 class MapaView(BaseContextMixin, DetailView):
     model = MapPoint

@@ -1,7 +1,5 @@
 from django.urls import path
-from .views import ParallaxView, PortadaVideoAPIView
+from .views import ParallaxView
 urlpatterns = [
     path('parallax/', ParallaxView.as_view(), name='parallax'),
-    path('api/portada-video/', PortadaVideoAPIView.as_view(), name='portada-video-api'),
-
 ]
