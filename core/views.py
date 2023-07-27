@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.shortcuts import render
 from blog.models import Categoria, Post
+from agenda.models import VariationAgenda
 from header.models import Header, Referencia
 from topbar.models import Topbar
 from personalizacion.models import Parallax
@@ -10,78 +10,60 @@ from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
 from personalizacion.models import VideosEmbed, SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
-from agenda.models import Agenda, VariationAgenda
 from django.utils import timezone
 from django.db.models import Q
-
+from django.views.decorators.cache import cache_page
+from gaudeix.settings import TIEMPO_EXPIRACION
 
 app_name = 'core'
-# Create your views here.
 
-def error_404(request, exception):
-    return render(request, 'core/404/error.html', {'message': 'Página no encontrada'},status=404)
-
-def home(request):
-    
-    # Obtén las categorías que deseas mostrar en la página de inicio
-
-    categorias = Categoria.objects.filter(publicado=True)
-
-    # Obtén los últimos eventos del portal
-
-    # ultimos eventos del portal
+# Función para obtener las últimas agendas del portal
+def get_ultimos_eventos():
     now = timezone.now()
-    variation_agendas = VariationAgenda.objects.filter(
+    return VariationAgenda.objects.filter(
         Q(agenda__publicado=True) &
         Q(fecha__gte=now.date()) &
         (Q(fecha=now.date(), hora__gte=now.time()) | Q(fecha__gt=now.date()))
     ).order_by('fecha', 'hora')[:4]
 
-    # Renderiza la plantilla de la página de inicio con los datos obtenidos
+# Función para obtener las categorías especiales
+def get_categorias_especiales():
+    return Categoria.objects.filter(publicado=True, especial=True)
 
-    # Obtén la instancia de Header
+# Función para obtener los elementos del footer
+def get_footer():
+    return Footer.objects.all().first()
 
-    header = Header.objects.first()
-
-    #Obtén las referencias de header
-
-    referencias = Referencia.objects.filter(header = header)
-    topbar = Topbar.objects.filter(publicado =True).last()
-    portada = True
-
-    agenda = Categoria.objects.filter(tipo='agenda').first()
-        
-
-    #obtener las redes sociales
-    redes_sociales = RedSocial.objects.all()
-    
-    #obtener color más repetido de las redes sociales
-    redes_color = obtener_color_mas_repetido()
-
-    #Seleccionar las categorias especiales.
-    categorias_especiales = Categoria.objects.filter(publicado=True, especial=True)
-
-    #Seleccionar los elementos del footer
-
-    footer = Footer.objects.all().first()
-
+# Función para obtener los puntos del mapa
+def get_map_points():
     categorias_filtradas = ['platges', "informació", 'jaciments', 'patrimoni']
-    # Obtén los puntos del mapa
-    map_points = MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas).order_by('icono').all()
+    return MapPoint.objects.filter(publicado=True, icono__in=categorias_filtradas).order_by('icono').all()
 
-    #print(map_points)
-    # obtener los Post seleccionado explicitamente
-
+# Función para obtener los Post seleccionados explícitamente
+def get_coleccion_destacados():
     coleccion_destacados = SeleccionDestacados.objects.filter(publicado=True).first()
-    
     if coleccion_destacados:
-        coleccion_destacados = coleccion_destacados.coleccion.all()
-    # Obtener todas las categorias publicadas.
+        return coleccion_destacados.coleccion.all()
+    return None
 
+# Vista home cacheada con el tiempo de expiración definido
+@cache_page(TIEMPO_EXPIRACION)
+def home(request):
+    categorias = Categoria.objects.filter(publicado=True)
+    ultimos_eventos = get_ultimos_eventos()
+    header = Header.objects.first()
+    referencias = Referencia.objects.filter(header=header)
+    topbar = Topbar.objects.filter(publicado=True).last()
+    portada = True
+    agenda = Categoria.objects.filter(tipo='agenda').first()
+    redes_sociales = RedSocial.objects.all()
+    redes_color = obtener_color_mas_repetido()
+    categorias_especiales = get_categorias_especiales()
+    footer = get_footer()
+    map_points = get_map_points()
+    coleccion_destacados = get_coleccion_destacados()
     evento = EventoEspecial.objects.filter(publicado=True).first()
-    # Agrupa los puntos de mapa por icono
-
-    portada_video = VideosEmbed.objects.filter(publicado=True).first()   
+    portada_video = VideosEmbed.objects.filter(publicado=True).first()
     categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
 
     return render(
@@ -89,7 +71,7 @@ def home(request):
         'core/home/home.html',
         {
             'categorias': categorias,
-            'ultimos_eventos': variation_agendas,
+            'ultimos_eventos': ultimos_eventos,
             'agenda': agenda,
             'header': header,
             'referencias': referencias,
@@ -107,3 +89,5 @@ def home(request):
         }
     )
 
+def error_404(request, exception):
+    return render(request, 'core/404/error.html', {'message': 'Página no encontrada'}, status=404)

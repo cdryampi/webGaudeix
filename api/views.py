@@ -17,6 +17,7 @@ class TeenvioView(View):
         return render(request, self.template_name)
 
     def post(self, request):
+        #print(request.POST.get('email'))
         # Obtener el correo electrónico del formulario
         email = request.POST.get('email')
         #print(email)

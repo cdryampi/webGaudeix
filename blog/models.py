@@ -6,18 +6,23 @@ from multimedia_manager.models import Imagen, Fichero
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 from colorfield.fields import ColorField
-from django.core.validators import MinLengthValidator, RegexValidator
+from django.core.validators import MinLengthValidator, RegexValidator, MaxLengthValidator
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
+from core.utils import generate_short_slug
 
 
 User = get_user_model()
 
 class Tag(models.Model):
-    nombre = models.CharField(max_length=255)
+    nombre = models.CharField(
+        max_length=255,
+        validators=[MaxLengthValidator(255)],  # Agregar validador de longitud máxima
+         help_text="Títol del tag"
+        )
 
     class Meta:
         verbose_name = "Tag"
@@ -39,27 +44,26 @@ class SubBlog(MetadataModel, BaseModel):
     def save(self, *args, **kwargs):
         if not self.id:
             # Si es un nuevo objeto, se establece la fecha de creación y el usuario actual
+            # Validamos que el campo 'titulo' no esté vacío antes de guardar
+            if not self.titulo:
+                raise ValueError("El campo 'titulo' no puede estar vacío.")
             self.fecha_creacion = timezone.now()
             self.creado_por = get_user_model().objects.first()
-            self.slug = slugify(self.titulo)
+            # Generar un valor hexadecimal único utilizando uuid4
+            unique_hex = generate_short_slug()
+            self.slug = f"{slugify(self.titulo)}-{unique_hex}"
         else:
+            
             if not self.creado_por:
                 self.creado_por = get_user_model().objects.first()
-            # Verificar si el slug ha cambiado
-            if self.slug != slugify(self.titulo):
-                base_slug = slugify(self.titulo)
-                slug = base_slug
-                suffix = 1
-                while SubBlog.objects.filter(slug=slug).exists():
-                    slug = f"{base_slug}-{suffix}"
-                    suffix += 1
-                self.slug = slug
 
+            self.modificado_por = get_user_model().objects.first()
         # Siempre se actualiza la fecha de modificación y el usuario que modifica
         self.modificado_por = get_user_model().objects.first()
         self.fecha_modificacion = timezone.now()
 
         super().save(*args, **kwargs)
+
     def view_on_site(self, obj):
         url = obj.get_absolute_url()
         if url:

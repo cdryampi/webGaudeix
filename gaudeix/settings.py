@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'imagekit',
     'embed_video',
+    'compressor'
     #'corsheaders',
     #'admin_tree'
     #'filters'
@@ -85,6 +86,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'core', 'templates'),
+            os.path.join(BASE_DIR, 'api', 'templates'),   # Directorio de plantillas de la aplicación api
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -142,6 +144,9 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'ca'
 
 DEFAULT_CHARSET = 'utf-8'
+
+FILE_CHARSET = 'utf-8'
+
 
 TIME_ZONE = 'Europe/Andorra'
 
@@ -213,3 +218,25 @@ CSRF_COOKIE_SAMESITE = 'None'
 CORS_ALLOWED_ORIGINS = [
     "https://www.youtube.com",
 ]
+
+# compresor
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.cssmin.CSSMinFilter',
+]
+
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter',
+]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+
+#cache
+TIEMPO_EXPIRACION = 2 * 60 * 60

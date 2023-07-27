@@ -145,13 +145,6 @@ class Imagen(BaseModel):
             # Aquí puedes realizar cualquier otra acción después de eliminar la imagen, como eliminar el archivo asociado
             delete_file(self.archivo)
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            # Obtener el nombre original sin extensión
-            nombre_original = os.path.splitext(self.archivo.name)[0]
-            self.titulo = nombre_original
-        super().save(*args, **kwargs)
-
     def clean(self):
         super().clean()
         try:
