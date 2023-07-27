@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 <section class="video-hero container-fluid p-0 m-0">
     <div class="fullscreen-video-background">
         <div class="_pattern-overlay">
@@ -18,4 +18,34 @@
     </a>
     </div>
 
+</section> {% endcomment %}
+
+
+
+
+{% load static %}
+
+<section class="video-hero container-fluid p-0 m-0">
+    <div class="fullscreen-video-background">
+        <video autoplay loop muted playsinline disablepictureinpicture>
+            {% if video_local %}
+                <source src="{{ video_local.videos.archivo.url }}" type="video/mp4">
+            {% else %}
+                <source src="{% static 'core/video/home.mp4' %}" type="video/mp4">
+            {% endif %}
+            
+            <!-- Agrega aquí más etiquetas <source> si deseas proporcionar diferentes formatos de video para navegadores diferentes -->
+            Tu navegador no admite el elemento de video.
+        </video>
+    </div>
+
+    {% if redes_sociales %}
+        {% include 'redes_sociales/redes_sociales.html' %}
+    {% endif %}
+
+    <div class="parallax-flecha">
+        <a href="javascript:void(0)" title="Anar a la secció principal" aria-label="Anar a la secció principal" id="banner-parallax">
+            <img src="{% static 'core/img/parallax/down-arrow.svg' %}"/>
+        </a>
+    </div>
 </section>

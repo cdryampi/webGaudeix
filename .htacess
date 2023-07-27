@@ -6,3 +6,15 @@ Header always edit Set-Cookie (.*) "$1; SameSite=None; Secure"
     RewriteCond %{HTTP_USER_AGENT} Bingbot [NC]
     RewriteRule ^.*$ - [R=403,L]
 </IfModule>
+# Habilitar el módulo de caché
+LoadModule headers_module modules/mod_headers.so
+
+# Configurar cabeceras de caché para archivos estáticos
+<FilesMatch "\.(css|js|ico|png|jpe?g|gif|svg|woff|woff2)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# Otras cabeceras de caché
+<FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "max-age=3600, public, must-revalidate"
+</FilesMatch>

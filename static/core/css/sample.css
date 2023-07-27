@@ -73,13 +73,56 @@ header ul.navbar-nav.ml-auto {
 
 /* video home */
 
-#videos-container-home {
+.video-hero{
+  height: 87vh;
+  position: relative;
+}
+
+.fullscreen-video-background {
+  background: #000;
   position: relative;
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #000; 
+  z-index: -99;
+	overflow: hidden;
+	height: 100%;
 }
+.fullscreen-video-background video{
+  width: 100%;
+}
+	._pattern-overlay { 
+		position: absolute;
+		top: 0;
+		width: 100%;
+		opacity: 0.3;
+		bottom: 0;
+		z-index: 2;
+	}
+	
+	#_buffering-background {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		bottom: 0;
+		background: #222;
+		z-index: 1;
+	}
+	
+	#_youtube-iframe-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		position: absolute;
+		height: 100%;
+  }
+  #_youtube-iframe {
+    position: absolute;
+    pointer-events: none;
+    margin: 0 auto;
+    height: 300vh; 
+    width: 120vw;
+  }
+
 #video-player {
   position: absolute;
   top: 0;
@@ -108,15 +151,33 @@ header ul.navbar-nav.ml-auto {
   opacity: 1;
 }
 
+.ytp-endscreen-content {
+  display: none !important;
+}
+.ytp-ce-element.ytp-ce-video.ytp-ce-large-round  {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
-  #videos-container-home {
-    height: 30vh !important;
+  .video-hero {
+    height: 40vh !important;
   }
+  .fullscreen-video-background{
+    height: 73%;
+  }
+  .container-social{
+    width: 100% !important;
+    border-top-left-radius: 0px !important;
+  }
+  .parallax-flecha{
+    bottom: calc(22%) !important;
+  }
+  
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  #videos-container-home {
-    height: 30vh !important;
+  .video-hero {
+    height: 50vh !important;
   }
 }
 
@@ -443,6 +504,16 @@ section.categoria-especial-container .col-especial-subBlog{
 .categoria-especial .img-fluid.align-middle{
     height: 75px;
 }
+
+.col-especial-subBlog {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.col-especial-subBlog:hover{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+}
+
 
 .agenda-special-category .especial-agenda{
     max-height: 35px;

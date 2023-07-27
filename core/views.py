@@ -81,7 +81,7 @@ def home(request):
             'color_red_social': redes_color,
             'categorias_especiales': categorias_especiales,
             'footer': footer,
-            'video': portada_video,
+            'video_local': portada_video,
             'map_points': map_points,
             'categorias_header': categorias_con_subblog,
             'coleccion_destacados': coleccion_destacados,

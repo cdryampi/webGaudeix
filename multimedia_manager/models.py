@@ -39,8 +39,12 @@ class MediaManager(models.Manager):
 
 class Video(BaseModel):
     titulo = models.CharField(max_length=100, blank=True)
-    archivo = EmbedVideoField(
-        help_text="URL de YouTube o Vimeo",
+    archivo = models.FileField(
+        upload_to=upload_to_video,
+        help_text="Extensiones permitidas: .mp4, .avi, .mov, .mkv",
+        null=True,
+        blank=True,
+        default=None
     )
     tipo = models.CharField(max_length=50, choices=TIPOS_ARCHIVO, default='video', editable=False)
 

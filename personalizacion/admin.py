@@ -3,12 +3,14 @@ from .models import Carrusel, Slide, InternalLink, Parallax, VideosEmbed, Selecc
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from .forms import CarruselForm, SeleccionForm
 from django.core.exceptions import ValidationError
-
+from multimedia_manager.models import Video
 
 
 class InternalLinkInline(admin.StackedInline):
     model = InternalLink
     extra = 1
+
+
 
 class SlideAdmin(admin.ModelAdmin):
     inlines = [InternalLinkInline]
@@ -18,6 +20,7 @@ class CarruselAdmin(admin.ModelAdmin):
 
 class SeleccionDestacadosAdmin(admin.ModelAdmin):
     form = SeleccionForm
+
 
 
 
