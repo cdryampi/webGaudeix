@@ -13,7 +13,11 @@ from eventos_especiales.models import EventoEspecial
 from django.utils import timezone
 from django.db.models import Q
 from django.views.decorators.cache import cache_page
+from django_user_agents.utils import get_user_agent
 from gaudeix.settings import TIEMPO_EXPIRACION
+from .utils import generate_cache_key
+from django.core.cache import caches
+
 
 app_name = 'core'
 
@@ -47,8 +51,21 @@ def get_coleccion_destacados():
     return None
 
 # Vista home cacheada con el tiempo de expiración definido
-@cache_page(TIEMPO_EXPIRACION)
+
 def home(request):
+
+    cache_key = generate_cache_key(request)
+    cache = caches['default']
+
+
+
+    # Intentar obtener la página desde la caché
+    cached_page = cache.get(cache_key)
+    if cached_page is not None:
+        return cached_page
+
+
+    
     categorias = Categoria.objects.filter(publicado=True)
     ultimos_eventos = get_ultimos_eventos()
     header = Header.objects.first()
@@ -65,8 +82,11 @@ def home(request):
     evento = EventoEspecial.objects.filter(publicado=True).first()
     portada_video = VideosEmbed.objects.filter(publicado=True).first()
     categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
+    parallax = Parallax.objects.filter(publicado=True).first()
+    user_agent = get_user_agent(request)
 
-    return render(
+
+    response = render(
         request,
         'core/home/home.html',
         {
@@ -86,8 +106,16 @@ def home(request):
             'categorias_header': categorias_con_subblog,
             'coleccion_destacados': coleccion_destacados,
             'evento_especial': evento,
+            'user_agent': user_agent,
+            'parallax':parallax,
         }
     )
+    
+    # Guardar la respuesta en la caché con la clave generada
+    response['X-Frame-Options'] = 'SAMEORIGIN'  # O 'SAMEORIGIN' si quieres permitir el uso de iframes del mismo dominio
+    cache.set(cache_key, response, TIEMPO_EXPIRACION)
+    return response
+
 
 def error_404(request, exception):
     return render(request, 'core/404/error.html', {'message': 'Página no encontrada'}, status=404)

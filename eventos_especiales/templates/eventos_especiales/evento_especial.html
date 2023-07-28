@@ -118,6 +118,29 @@
         font-size: 6.5rem;
       }
 
+      @media screen and (max-width: 768px) {
+        .titulo-principal {
+            font-size: 4rem;
+            margin-bottom: 35px;
+            text-align: center;
+          }
+        .border-left-evento{
+            border: none;
+            text-align: center;
+        }
+        .title-countdown{
+            font-size: 4rem;
+        }
+        p.int-value{
+            text-align: center;
+        }
+        p.string-value{
+            text-align: center;
+        }
+        .event-container .collage-img{
+            margin: 5px;
+        }
+      }
 </style>
 {% endblock extra_css %}
 
@@ -269,7 +292,6 @@
         // Obtiene la fecha del evento especial y la fecha actual
         var eventDate = new Date("{{ evento_especial.fecha_evento|date:'Y-m-d' }}");
         var currentDate = new Date();
-        console.log("{{ evento_especial.fecha_evento|date:'Y-m-d' }}");
         // Calcula la diferencia en milisegundos entre las dos fechas
         var difference = eventDate.getTime() - currentDate.getTime();
 

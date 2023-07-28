@@ -4,30 +4,34 @@
     <div class="col-12">
       <h3 class="h3 text-center py-5">Descobreix els llocs icònics de Cabrera de mar</h3>
     </div>
-    <aside class="col-lg-6 col-md-6 col-sm-12 col-12 pl-5" style="position: relative; height: 600px;">
 
-      <div id="map-container" class="" style="height: 600px; width: 100%;"></div>
-      <div id="legend-container" class="map-legend">
-        <h4>Leyenda</h4>
-    
-        <div class="legend-item">
-          <div class="legend-color bg-primary"></div>
-          <span class="legend-label">Platges</span>
+    {% if user_agent.is_pc %}
+      <aside class="col-lg-6 col-md-6 col-sm-12 col-12 pl-5" style="position: relative; height: 600px;">
+
+        <div id="map-container" class="" style="height: 600px; width: 100%;"></div>
+        <div id="legend-container" class="map-legend">
+          <h4>Leyenda</h4>
+      
+          <div class="legend-item">
+            <div class="legend-color bg-primary"></div>
+            <span class="legend-label">Platges</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color bg-info"></div>
+            <span class="legend-label">Punt d'informació</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color bg-warning"></div>
+            <span class="legend-label">Jaciments arqueològics</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color bg-secondary"></div>
+            <span class="legend-label">Patrimoni cultural</span>
+          </div>
         </div>
-        <div class="legend-item">
-          <div class="legend-color bg-info"></div>
-          <span class="legend-label">Punt d'informació</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color bg-warning"></div>
-          <span class="legend-label">Jaciments arqueològics</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color bg-secondary"></div>
-          <span class="legend-label">Patrimoni cultural</span>
-        </div>
-      </div>
-    </aside>
+      </aside>
+    {% endif %}
+
     
     <aside class="col-lg-6 col-md-6 col-sm-12 col-12 pt-md-3 pt-sm-3 pt-3 pt-0">
       <div id="accordion">

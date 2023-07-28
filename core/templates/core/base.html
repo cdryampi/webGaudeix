@@ -66,9 +66,21 @@
             {% comment %} {% include 'parallax/parallax.html' %} {% endcomment %}
             
             {% if video_local %}
-                {% include 'portada-video/portada-video.html' %}
+
+                {% if user_agent.is_mobile %}
+
+                    {% include 'parallax/parallax.html' %}
+
+                {% else %}
+
+                    {% include 'portada-video/portada-video.html' %}
+
+                {% endif %}
+                
             {% else %}
+
                 {% include 'parallax/parallax.html' %}
+
             {% endif %}
 
 
@@ -119,19 +131,32 @@
 
     <!-- Agrega aquí tus scripts JavaScript u otros recursos -->
     {% if portada %}
+
         {% compress js %}
+
             <script src="{% static 'core/js/mapa.js' %}"></script>
             {% comment %} <script src="{% static 'core/js/video-home.js' %}"></script> {% endcomment %}
             <script src="{% static 'core/js/velocity.min.js' %}"></script>
+
         {% endcompress %}
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
+
+            {% if user_agent.is_pc %}
+
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
+            
+            {% endif %}
+
     {% endif %}
-    {% compress js %}
-        <script src="{% static 'core/js/main.js' %}"></script>
-        <script src="{% static 'core/js/gallery-js/fancybox.js' %}"></script>
-        <script src="{% static 'core/js/swiper/custom-swiper.js' %}"></script>
-        <script src="{% static 'core/js/imagen.js' %}"></script>
-    {% endcompress %}
+
+        {% compress js %}
+
+            <script src="{% static 'core/js/main.js' %}"></script>
+            <script src="{% static 'core/js/gallery-js/fancybox.js' %}"></script>
+            <script src="{% static 'core/js/swiper/custom-swiper.js' %}"></script>
+            <script src="{% static 'core/js/imagen.js' %}"></script>
+
+        {% endcompress %}
+
     {% block extra_script %}
     {% endblock extra_script %}
     

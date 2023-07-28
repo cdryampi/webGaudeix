@@ -34,5 +34,5 @@ class BaseContextMixin:
         context['redes_sociales'] = RedSocial.objects.all()
         context['ultimos_eventos'] = variation_agendas
         context['agenda'] = Categoria.objects.filter(publicado=True, tipo='agenda').first()
-
+        context['request'] = self.request
         return context

@@ -61,7 +61,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'imagekit',
     'embed_video',
-    'compressor'
+    'compressor',
+    'django_user_agents',
     #'corsheaders',
     #'admin_tree'
     #'filters'
@@ -77,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 ROOT_URLCONF = 'gaudeix.urls'
@@ -240,3 +242,9 @@ STATICFILES_FINDERS = [
 
 #cache
 TIEMPO_EXPIRACION = 2 * 60 * 60
+
+
+
+# Name of cache backend to cache user agents. If it not specified default
+# cache alias will be used. Set to `None` to disable caching.
+USER_AGENTS_CACHE = 'default'
