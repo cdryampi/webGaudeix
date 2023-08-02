@@ -10,6 +10,7 @@ from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
 from personalizacion.models import VideosEmbed, SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
+from paginas_estaticas.models import Cookies, PaginaLegal
 from django.utils import timezone
 from django.db.models import Q
 from django.views.decorators.cache import cache_page
@@ -17,7 +18,6 @@ from django_user_agents.utils import get_user_agent
 from gaudeix.settings import TIEMPO_EXPIRACION
 from .utils import generate_cache_key
 from django.core.cache import caches
-
 
 app_name = 'core'
 
@@ -84,8 +84,9 @@ def home(request):
     categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
     parallax = Parallax.objects.filter(publicado=True).first()
     user_agent = get_user_agent(request)
-
-
+    cookies = Cookies.objects.filter().first()
+    cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
+    print(request.COOKIES)
     response = render(
         request,
         'core/home/home.html',
@@ -108,6 +109,8 @@ def home(request):
             'evento_especial': evento,
             'user_agent': user_agent,
             'parallax':parallax,
+            'cookies': cookies,
+            'cookie_page': cookie_page,
         }
     )
     

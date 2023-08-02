@@ -124,6 +124,10 @@
         
 
     {% endblock asides %}
+
+    {% include 'cookies/cookies.html' %}
+
+
     <footer class= "container-fluid p-0 m-0 pt-5">
         <!-- Pie de página -->
         {% include 'footer/footer.html' %}
@@ -148,14 +152,19 @@
 
     {% endif %}
 
+
+
+
         {% compress js %}
 
             <script src="{% static 'core/js/main.js' %}"></script>
             <script src="{% static 'core/js/gallery-js/fancybox.js' %}"></script>
             <script src="{% static 'core/js/swiper/custom-swiper.js' %}"></script>
             <script src="{% static 'core/js/imagen.js' %}"></script>
-
+            <script src="{% static 'core/js/cookies.js' %}"></script>
         {% endcompress %}
+        
+
 
     {% block extra_script %}
     {% endblock extra_script %}

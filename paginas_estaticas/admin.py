@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import  PuntoInformacion, Contacto
-from .models import PaginaLegal
+from .models import PaginaLegal, Cookies
+
 # Register your models here.
 @admin.register(PaginaLegal)
 class PaginaLegalAdmin(admin.ModelAdmin):
@@ -10,3 +11,4 @@ class ContactoAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(PuntoInformacion)
+admin.site.register(Cookies)

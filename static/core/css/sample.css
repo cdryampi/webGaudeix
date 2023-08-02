@@ -170,9 +170,9 @@ header ul.navbar-nav.ml-auto {
     border-top-left-radius: 0px !important;
   }
   .parallax-flecha{
-    bottom: calc(22%) !important;
+    top: 82%;
   }
-  
+
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -1148,3 +1148,52 @@ table.table-custom tr.even {
     }
   }
 /* fin footer */
+/* cookie */
+/* Estilos para el mensaje de cookies */
+.cookies-message-container {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 9999; /* Asegura que el mensaje esté siempre encima de otros elementos */
+}
+
+.cookies-message {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cookies-message p {
+  margin-bottom: 10px;
+}
+
+.cookies-message a {
+  color: #31C6F8;
+  text-decoration: underline;
+}
+
+/* Estilos para el botón de aceptar cookies */
+#accept-cookies-btn {
+  background-color: #31C6F8;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#accept-cookies-btn:hover {
+  background-color: #0056b3;
+}
+
+.fixed-cookie-message {
+  position: fixed;
+  bottom: 10px; /* Ajusta la distancia al fondo de la página */
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* end cookie */

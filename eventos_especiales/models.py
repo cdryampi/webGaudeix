@@ -93,6 +93,18 @@ class EventoEspecial(BaseModel, MetadataModel):
                 self.slug = f"{self.slug}-{timestamp}"
         super().save(*args, **kwargs)
     
+    def is_now(self):
+        """
+        reporta si hemos superado el tiempo limite del evento
+        """
+        return self.fecha_evento > timezone.now().date()
+    
+    def has_ended(self):
+        """
+        Retorna True si el evento ha terminado (ha pasado una semana desde la fecha del evento).
+        """
+        return self.fecha_evento + timezone.timedelta(days=10) <= timezone.now().date()
+
     def __str__(self):
         return self.titulo
     

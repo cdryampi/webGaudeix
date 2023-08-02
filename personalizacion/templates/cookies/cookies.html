@@ -1,0 +1,11 @@
+{% if cookies %}
+        <div class="cookies-message-container">
+            <div class="cookies-message">
+                <p>{{ cookies.contenido}}</p>
+                {% if cookie_page %}
+                    <p>Per a més informació podeu consultar la nostra política de galetes <a class="font-weight-bold font-italic text-dark" href="{% url 'paginas_estaticas:politica_cookies' %}" target="_blank" title="política de galetes">aquí</a></p>
+                {% endif %}
+                <button id="accept-cookies-btn" onclick="acceptCookies()">ok</button>
+            </div>
+        </div>
+{% endif %}

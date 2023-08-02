@@ -205,47 +205,64 @@
 
 
 
-
-{% if evento_especial.fecha_evento %}
-    {% with event_date=evento_especial.fecha_evento %}
-        {% if event_date|date:'M d, Y' > now|date:'M d, Y' %}
-        <div class="container-fluid bg-gray p-0 m-0 py-5">
-            <div class="container mt-3">
-                <div class="row">
-                    <div class="col-12 text-center py-3">
-                        <h2 class="title-countdown">Encara / Només falten</h2>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6">
-                        <div class="container">
-                            <p class="int-value"><span id="days"></span></p>
-                            <p class="string-value">dies</p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6">
-                        <div class="container">
-                            <p class="int-value"><span id="hours"></span></p>
-                            <p class="string-value">hores</p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6">
-                        <div class="container">
-                            <p class="int-value"><span id="minutes"></span></p>
-                            <p class="string-value">minuts</p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-3 col-md-6">
-                        <div class="container">
-                            <p class="int-value"><span id="seconds"></span></p>
-                            <p class="string-value">segons</p>
-                        </div>
-                    </div>
-                </div>
-
+{% if evento_especial.has_ended %}
+    <div class="container-fluid bg-gray p-0 m-0 py-5">
+        <div class="jumbotron jumbotron-fluid bg-light text-center">
+            <div class="container">
+            <h3 class="titulo-principal text-center">{{evento_especial.titulo}} ha finalitzat!</h3>
+            <p class="lead">Gràcies per participar.</p>
             </div>
         </div>
-        {% endif %}
-    {% endwith %}
+    </div>
+{% elif evento_especial.is_now %}
+    <div class="container-fluid bg-gray p-0 m-0 py-5">
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-12 text-center py-3">
+                    <h2 class="title-countdown">Encara / Només falten</h2>
+                </div>
+                <div class="col-12 col-lg-3 col-md-6">
+                    <div class="container">
+                        <p class="int-value"><span id="days"></span></p>
+                        <p class="string-value">dies</p>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 col-md-6">
+                    <div class="container">
+                        <p class="int-value"><span id="hours"></span></p>
+                        <p class="string-value">hores</p>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 col-md-6">
+                    <div class="container">
+                        <p class="int-value"><span id="minutes"></span></p>
+                        <p class="string-value">minuts</p>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 col-md-6">
+                    <div class="container">
+                        <p class="int-value"><span id="seconds"></span></p>
+                        <p class="string-value">segons</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% else %}
+
+    <div class="container-fluid bg-gray p-0 m-0 py-5">
+        <div class="jumbotron jumbotron-fluid bg-light text-center">
+            <div class="container">
+            <h1 class="titulo-principal text-center">{{evento_especial.titulo}} ha començat!</h1>
+            <p class="lead">Gaudeix de l'event que has estat esperant.</p>
+            </div>
+        </div>
+    </div>
+
 {% endif %}
+
 
 
 
@@ -272,14 +289,14 @@
 
 {% block extra_script %}
 <script>
-    // Elimina la función randomSize() ya que no es necesaria
+    // Elimina la función randomSize() ja que no és necessària
     
-    // Agrega esta función para obtener el tamaño aleatorio de las imágenes
+    // Afegeix aquesta funció per obtenir la mida aleatòria de les imatges
     function getRandomSize(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Obtén las imágenes y establece el tamaño aleatorio para cada una
+    // Obtingu les imatges i estableix la mida aleatòria per a cadascuna
     var images = document.querySelectorAll('.collage-img');
     for (var i = 0; i < images.length; i++) {
         var width = getRandomSize(350, 1024);
@@ -287,46 +304,60 @@
         images[i].style.width = width + 'px';
         images[i].style.height = height + 'px';
     }
-    // Función para actualizar la cuenta regresiva
+    
+    // Funció per actualitzar el compte enrere
     function updateCountdown() {
-        // Obtiene la fecha del evento especial y la fecha actual
+        // Obtingu la data de l'esdeveniment especial i la data actual
         var eventDate = new Date("{{ evento_especial.fecha_evento|date:'Y-m-d' }}");
         var currentDate = new Date();
-        // Calcula la diferencia en milisegundos entre las dos fechas
+        // Calcula la diferència en mil·lisegons entre les dues dates
         var difference = eventDate.getTime() - currentDate.getTime();
 
-        // Calcula los días, horas, minutos y segundos restantes
+        if (difference <= 0) {
+            // Si el temps restant és 0 o negatiu, mostra un missatge o realitza alguna acció
+            document.getElementById("countdown").innerHTML = "¡L'esdeveniment ha començat!";
+            // Atura el compte enrere si ja ha arribat a 0
+            clearInterval(countdownInterval);
+            return;
+        }
+
+        // Calcula els dies, hores, minuts i segons restants
         var days = Math.floor(difference / (1000 * 60 * 60 * 24));
         var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        // Actualiza los elementos HTML con los valores calculados
+        // Actualitza els elements HTML amb els valors calculats
         document.getElementById("days").innerHTML = days;
         document.getElementById("hours").innerHTML = hours;
         document.getElementById("minutes").innerHTML = minutes;
         document.getElementById("seconds").innerHTML = seconds;
     }
 
-    // Espera a que se haya cargado completamente el HTML
+    // Espera que s'hagi carregat completament l'HTML
     document.addEventListener("DOMContentLoaded", function() {
-        // Llama a la función updateCountdown() inicialmente para mostrar la cuenta regresiva
+        // Crida a la funció updateCountdown() inicialment per mostrar el compte enrere
         updateCountdown();
 
-        // Actualiza la cuenta regresiva cada segundo
-        setInterval(updateCountdown, 1000);
+        // Actualitza el compte enrere cada segon
+        var countdownInterval = setInterval(updateCountdown, 1000);
+
+        // Atura el compte enrere si ja ha arribat a 0
+        if (document.getElementById("countdown").innerHTML === "¡L'esdeveniment ha començat!") {
+            clearInterval(countdownInterval);
+        }
     });
 
-      document.addEventListener('DOMContentLoaded', function() {
-        // Inicializar FancyBox para todos los elementos con la clase "fancybox"
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicialitza el FancyBox per a tots els elements amb la classe "fancybox"
         Fancybox.bind('.fancybox', {
-            // Opciones de configuración de FancyBox
+            // Opcions de configuració del FancyBox
             groupAll: true,
         });
         const customTitle = document.querySelector('.custom-title');
 
-        // Cambia el texto del título
-        customTitle.textContent = 'Principals activitats';
+        // Canvia el text del títol
+        customTitle.textContent = 'Activitats principals';
     });
 </script>
 {% endblock extra_script %}

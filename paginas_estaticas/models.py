@@ -78,3 +78,13 @@ class Contacto(PaginaEstatica):
     def save(self, *args, **kwargs):
         self.pk = 1
         super().save(*args, **kwargs)
+
+class Cookies(SingletonModel):
+    titulo = models.CharField(max_length=100, help_text="Título de la política de cookies")
+    contenido = models.TextField(help_text="Contenido de la política de cookies")
+
+    def __str__(self):
+        return self.titulo
+
+    class Meta:
+        verbose_name_plural = "Políticas de Cookies"
