@@ -1,4 +1,3 @@
-from django.views import View
 from django.http import JsonResponse
 from .models import MapPoint
 from agenda.models import Agenda, Ruta

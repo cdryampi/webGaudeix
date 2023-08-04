@@ -97,6 +97,27 @@ class SubBlogImagen(models.Model):
                 old_instance.imagen.delete()
         super().save(*args, **kwargs)
 
+class SubblogGaleriaImagen(models.Model):
+    subblog = models.ForeignKey(
+        SubBlog, on_delete=models.CASCADE, default=None)
+    imagen = models.ForeignKey(Imagen, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Subblog: {self.subblog.titulo} - Imagen: {self.imagen}"
+    
+
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = SubblogGaleriaImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
+
 
 class Categoria(MetadataModel, BaseModel):
 

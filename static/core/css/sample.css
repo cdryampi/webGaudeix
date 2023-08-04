@@ -1162,7 +1162,7 @@ table.table-custom tr.even {
 }
 
 .cookies-message {
-  max-width: 600px;
+  max-width: 50%;
   margin: 0 auto;
 }
 
@@ -1192,8 +1192,10 @@ table.table-custom tr.even {
 
 .fixed-cookie-message {
   position: fixed;
-  bottom: 10px; /* Ajusta la distancia al fondo de la página */
-  left: 50%;
-  transform: translateX(-50%);
+}
+@media (max-width: 767px) {
+  .cookies-message {
+    max-width: 100%;
+  }
 }
 /* end cookie */

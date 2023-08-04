@@ -19,6 +19,7 @@ from gaudeix.settings import TIEMPO_EXPIRACION
 from .utils import generate_cache_key
 from django.core.cache import caches
 
+
 app_name = 'core'
 
 # Función para obtener las últimas agendas del portal
@@ -86,7 +87,6 @@ def home(request):
     user_agent = get_user_agent(request)
     cookies = Cookies.objects.filter().first()
     cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
-    print(request.COOKIES)
     response = render(
         request,
         'core/home/home.html',
@@ -121,4 +121,53 @@ def home(request):
 
 
 def error_404(request, exception):
-    return render(request, 'core/404/error.html', {'message': 'Página no encontrada'}, status=404)
+    
+    categorias = Categoria.objects.filter(publicado=True)
+    ultimos_eventos = get_ultimos_eventos()
+    header = Header.objects.first()
+    referencias = Referencia.objects.filter(header=header)
+    topbar = Topbar.objects.filter(publicado=True).last()
+    agenda = Categoria.objects.filter(tipo='agenda').first()
+    redes_sociales = RedSocial.objects.all()
+    redes_color = obtener_color_mas_repetido()
+    categorias_especiales = get_categorias_especiales()
+    footer = get_footer()
+    map_points = get_map_points()
+    coleccion_destacados = get_coleccion_destacados()
+    evento = EventoEspecial.objects.filter(publicado=True).first()
+    portada_video = VideosEmbed.objects.filter(publicado=True).first()
+    categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
+    parallax = Parallax.objects.filter(publicado=True).first()
+    user_agent = get_user_agent(request)
+    cookies = Cookies.objects.filter().first()
+    cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
+
+    response = render(
+        request,
+        'core/404/404.html',
+        {
+            'categorias': categorias,
+            'ultimos_eventos': ultimos_eventos,
+            'agenda': agenda,
+            'header': header,
+            'referencias': referencias,
+            'topbar': topbar,
+            'redes_sociales': redes_sociales,
+            'color_red_social': redes_color,
+            'categorias_especiales': categorias_especiales,
+            'footer': footer,
+            'video_local': portada_video,
+            'map_points': map_points,
+            'categorias_header': categorias_con_subblog,
+            'coleccion_destacados': coleccion_destacados,
+            'evento_especial': evento,
+            'user_agent': user_agent,
+            'parallax':parallax,
+            'cookies': cookies,
+            'cookie_page': cookie_page,
+        }
+    )
+
+    return response
+
+

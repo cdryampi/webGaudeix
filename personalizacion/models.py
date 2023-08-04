@@ -135,20 +135,6 @@ class VideosEmbed(models.Model):
         return f"Portada de video: {self.titulo}"
 
 
-
-class CarruselSubBlog(models.Model):
-    carrusel = models.ForeignKey(Carrusel, on_delete=models.CASCADE)
-    subblog = models.ForeignKey(SubBlog, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Carrusel de SubBlog'
-        verbose_name_plural = 'Carruseles de SubBlogs'
-
-    def __str__(self):
-        return f"Carrusel: {self.carrusel.nombre} - SubBlog: {self.subblog.titulo}"
-
-
-
 class Personalizacion(models.Model):
     # Atributos del modelo
     favicon = models.OneToOneField(Favicon, on_delete=models.SET_NULL, null=True, blank=True)

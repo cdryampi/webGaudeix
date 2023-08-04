@@ -33,7 +33,7 @@ urlpatterns = [
     path('',include('personalizacion.urls')),
     path('', include('paginas_estaticas.urls')),
     path('s/', include('eventos_especiales.urls')),
-    path('api/', include('api.urls'))
+    path('api/', include('api.urls')),
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),
@@ -41,3 +41,5 @@ urlpatterns = [
     # ),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'core.views.error_404'

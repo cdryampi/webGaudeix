@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     # Otras URLs de la aplicación "core"
     # ...
-    path('404/', error_404, name='error_404'),
     path('', views.home, name='home'),
 ]
+
+

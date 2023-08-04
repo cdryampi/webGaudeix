@@ -43,6 +43,7 @@ class PostImagenInline(admin.TabularInline):
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
+                    Q(subbloggaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -67,6 +68,7 @@ class PostGaleriaImagenInline(admin.TabularInline):
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True),
+                    Q(subbloggaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True)
                     | Q(postgaleriaimagen__post__id=post_id),
                 )
