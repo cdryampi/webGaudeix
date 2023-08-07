@@ -5,13 +5,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header.color_fondo_header }} !important;">
         <div class="container">
             <div>
-                {% if evento_especial.logo_especial.url %}
-                    <a class="navbar-brand" href="{% url 'eventos_especiales:evento_especial' slug=evento_especial.slug %}">
-                            <img src="{{ evento_especial.logo_especial.url }}" alt="Logo" class="logo-img">
-                        {% else %}
-                            {% if evento_especial.titulo %}
-                                <span class="logo-text">{{ evento_especial.titulo }}</span>
-                            {% endif %}
+                {% if evento_especial_activo.logo_especial %}
+                    <a class="navbar-brand" href="{% url 'eventos_especiales:evento_especial' slug=evento_especial_activo.slug %}">
+                            <img src="{{ evento_especial_activo.logo_especial.url }}" alt="Logo" class="logo-img">
                     </a>
                  {% endif %}
 
@@ -61,7 +57,7 @@
                         {% elif referencia.tipo == 'evento_especial' %}
                             {% if referencia.evento_especial.publicado %}
                                 <li class="nav-item active bg-white rounded-bottom shadow">
-                                    <a class="nav-link text-black font-weight-bold" href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}" style="color: {{ header.color_fondo_header}} !important;">
+                                    <a class="nav-link text-black font-weight-bold evento_especial_link" href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}" style="color: {{ header.color_fondo_header}} !important;">
                                         {{ referencia.evento_especial.titulo }}
                                     </a>
                                 </li>

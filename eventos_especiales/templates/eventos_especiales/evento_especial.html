@@ -1,6 +1,10 @@
 {% extends "core/base.html" %}
 {% load static %}
-
+{% block title %}
+    {% autoescape off %}
+        {{ evento_especial.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
 {% block extra_css %}
 <style>
     .titulo-principal {
@@ -140,6 +144,9 @@
         .event-container .collage-img{
             margin: 5px;
         }
+        .evento_especial_link {
+            padding: .5rem;
+        }
       }
 </style>
 {% endblock extra_css %}
@@ -164,13 +171,13 @@
     </div>
 </div>
 
-{% if evento_especial.imagenes.count >= 4 %}
+{% if evento_especial.eventoespecialgaleriaimagen_set.all.count >= 4 %}
     <div class="container-fluid p-t-3 m-0 event-container bg-event">
         <div class="row justify-content-center mt-5">
             <div class="col-12 d-flex flex-wrap">
-                {% for imagen in evento_especial.imagenes.all %}
-                    <a href="{{ imagen.archivo.url }}" class="fancybox">
-                        <img src="{{ imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid collage-img" style="width: {{ imagen.width }}px; height: {{ imagen.height }}px;">
+                {% for imagen in evento_especial.eventoespecialgaleriaimagen_set.all %}
+                    <a href="{{ imagen.imagen.archivo.url }}" class="fancybox">
+                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ evento_especial.titulo }}" class="img-fluid collage-img" style="width: {{ imagen.imagen.archivo.width }}px; height: {{ imagen.imagen.archivo.height }}px;">
                     </a>
                 {% endfor %}
             </div>

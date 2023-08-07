@@ -24,3 +24,6 @@
 
 # Ignorar archivos .log generados por Django
 *.log
+
+# ignorar el config.json
+config.json

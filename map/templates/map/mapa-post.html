@@ -1,6 +1,12 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
+{% block title %}
+    {% autoescape off %}
+        {{ map.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
 {% block extra_css %}
 <style>
     div#map {

@@ -1,5 +1,11 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% block title %}
+    {% autoescape off %}
+        {{ post.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
 {% block content %}
 <section class="pb-5 px-0 container-fluid">
     <div class="text-center">

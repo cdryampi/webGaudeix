@@ -76,7 +76,7 @@ def home(request):
     agenda = Categoria.objects.filter(tipo='agenda').first()
     redes_sociales = RedSocial.objects.all()
     redes_color = obtener_color_mas_repetido()
-    categorias_especiales = get_categorias_especiales()
+    categorias_especiales_activo = get_categorias_especiales()
     footer = get_footer()
     map_points = get_map_points()
     coleccion_destacados = get_coleccion_destacados()
@@ -100,7 +100,7 @@ def home(request):
             'portada': portada,
             'redes_sociales': redes_sociales,
             'color_red_social': redes_color,
-            'categorias_especiales': categorias_especiales,
+            'categorias_especiales_activo': categorias_especiales_activo,
             'footer': footer,
             'video_local': portada_video,
             'map_points': map_points,

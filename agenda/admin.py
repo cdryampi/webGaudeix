@@ -11,6 +11,8 @@ from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 
 
+
+
 class PostGaleriaImagenInline(admin.TabularInline):
     model = PostGaleriaImagen
     extra = 1
@@ -27,6 +29,7 @@ class PostGaleriaImagenInline(admin.TabularInline):
                 Q(subblogimagen__isnull=True),
                 Q(categoriagaleriaimagen__isnull=True),
                 Q(postimagen__isnull=True),
+                Q(eventoespecialgaleriaimagen__isnull=True),
             )
             kwargs['empty_label'] = 'Sin imagen asociada'
 
@@ -77,6 +80,7 @@ class PostImagenInlineRuta(admin.TabularInline):
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
+                    Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -86,8 +90,11 @@ class PostImagenInlineRuta(admin.TabularInline):
 
 
 
+
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
+    autocomplete_fields = ['ubicacion']
+
 
 
 

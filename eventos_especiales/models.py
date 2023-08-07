@@ -8,14 +8,8 @@ from personalizacion.models import Parallax, Video, Carrusel
 from agenda.models import Agenda
 from ckeditor.fields import RichTextField
 from django.utils import timezone
+from django.urls import reverse
 # Create your models here.
-
-
-
-
-
-
-
 
 class EventoEspecial(BaseModel, MetadataModel):
     
@@ -28,7 +22,10 @@ class EventoEspecial(BaseModel, MetadataModel):
         default=timezone.now,
         help_text="Data de l'esdeveniment"
     )
-
+    fecha_fin = models.DateField(
+        default=timezone.now,
+        help_text="Data de finalització de l'esdeveniment"
+    )
     publicado = models.BooleanField(
         default=False,
         help_text="Indica si l'esdeveniment especial està publicat"
@@ -47,16 +44,11 @@ class EventoEspecial(BaseModel, MetadataModel):
 
     logo_especial = models.ImageField(
         upload_to='eventos_especiales/',
-        help_text="Logotip especial per a l'esdeveniment"
+        help_text="Logotip especial per a l'esdeveniment",
+        null=True,
+        blank=True
     )
     
-    imagenes = models.ManyToManyField(
-        Imagen,
-        blank=True,
-        related_name="eventos_especiales",
-        help_text="Imatges de l'esdeveniment especial (mínim 4)"
-    )
-
     agendas = models.ManyToManyField(
         Agenda,
         blank=True,
@@ -101,10 +93,13 @@ class EventoEspecial(BaseModel, MetadataModel):
     
     def has_ended(self):
         """
-        Retorna True si el evento ha terminado (ha pasado una semana desde la fecha del evento).
+        Retorna True si el evento ha terminado (ha pasado la fecha de finalización).
         """
-        return self.fecha_evento + timezone.timedelta(days=10) <= timezone.now().date()
-
+        return self.fecha_fin < timezone.now().date()
+    
+    def get_absolute_url(self):
+        return reverse('eventos_especiales:evento_especial', kwargs={'slug': self.slug})
+    
     def __str__(self):
         return self.titulo
     
@@ -112,6 +107,25 @@ class EventoEspecial(BaseModel, MetadataModel):
         verbose_name_plural = "Esdeveniments Especials"
 
 
+class EventoEspecialGaleriaImagen(models.Model):
+    evento_especial = models.ForeignKey(
+        EventoEspecial, on_delete=models.CASCADE, default=None)
+    imagen = models.ForeignKey(Imagen, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Post: {self.evento_especial.titulo} - Imagen: {self.imagen}"
+    
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = EventoEspecial.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
 
 
 

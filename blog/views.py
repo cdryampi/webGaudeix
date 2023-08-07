@@ -11,7 +11,7 @@ from django.db.models import Q
 import json
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-
+from eventos_especiales.models import EventoEspecial
 class ListarPostsView(ListView):
     model = Post
     template_name = 'blog/listar_posts.html'
@@ -112,6 +112,11 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         elif categoria.tipo == 'lloc':
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
+        elif categoria.tipo == 'festes_i_tradicions':
+            festes = EventoEspecial.objects.filter().all()
+            posts = Post.objects.filter(publicado = True, categoria = categoria)
+            context['posts'] = posts
+            context['festes'] = festes
             
         return context
 

@@ -1,0 +1,248 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ categoria.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .carousel-control-prev{
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+
+
+    .carousel-inner.text-center {
+        text-align: center;
+    }
+
+    .image-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Cambia el valor de opacidad según tu preferencia */
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: auto;
+        transition: filter 0.3s ease;
+    }
+    
+    .card-post:hover .card-img-top {
+        filter: brightness(70%); /* Cambia el valor de brillo según tu preferencia */
+    }
+
+    .card-post {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .card-post::before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 5px;
+        width: 101%;
+        height: 100%;
+        background-color: {{ categoria.color }};
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -100;
+    }
+    
+    .card-post:hover::before {
+        opacity: 0.3;
+    }
+    .card-post .url-link{
+        font-size:1.3rem;
+        color: #31C6F8 !important;
+
+    }
+
+    .card-post:hover .url-link{
+        font-weight: bold;
+    }
+    .img-cat-banner{
+        max-height: 50vh !important;
+        width: 100%;
+        object-fit: cover;
+    }
+
+</style>
+{% endblock extra_css %}
+{% block media %}
+    {% if categoria.categoriagaleriaimagen_set.count > 1 %}
+    <section class="container-fluid px-0 py-0">
+        <div id="categoria-carrusel-{{ categoria.slug }}" class="carousel slide categoria-carrusel" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for imagen in categoria.categoriagaleriaimagen_set.all %}
+                <li data-target="#categoria-carrusel-{{ categoria.slug }}" data-slide-to="{{ forloop.counter0 }}"
+                    {% if forloop.first %}class="active"{% endif %}></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner text-center">
+                {% for imagen in categoria.categoriagaleriaimagen_set.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="categoria-{{ categoria.slug }}">
+                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid img-cat-banner">
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#categoria-carrusel-{{ categoria.slug }}" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#categoria-carrusel-{{ categoria.slug }}" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <div class="col-12">
+            <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+        </div>
+    </section>
+    
+    {% else %}
+        <div class="text-center">
+            <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}"
+                class="img-fluid img-cat-banner">
+        </div>
+    </div>
+{% endif %}
+
+{% endblock media %}
+
+{% block content %}
+<section class="mx-0 px-0 py-5 container-fluid">
+    <div class="container">
+        <div class="categoria-container">
+            <h2 class="h1 text-center">{{ categoria.titulo }}</h2>
+            <p class="categoria-subtitulo  lead text-center">{{ categoria.subtitulo }}</p>
+            <p class="categoria-descripcion">
+                {% autoescape on %}
+                    {{ categoria.descripcion | safe }}
+                {% endautoescape %}
+            </p>
+
+            <div class="container pt-3">
+
+                <h3>Contingut relacionat</h3>
+                <div class="row">
+
+                    {% for festa in festes %}
+                        <div class="col-md-6 p-3">
+                            <div class="card mb-3 h-100 card-post">
+                                <div class="image-container">
+                                    {% if festa.imagenes.first %}
+                                        <img src="{{ festa.imagenes.first.archivo.url }}" class="card-img-top" alt="{{ festa.titulo }}" style="height: 350px;">
+                                    {% endif %}
+                                    <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">{{ festa.titulo }}</h5>
+                                    <p class="card-text flex-grow-1">
+                                        {% autoescape on %}
+                                            {{ festa.descripcion_corta |striptags |truncatewords:30 | safe }}
+                                        {% endautoescape %}
+                                    </p>
+                                    <a href="{% url 'eventos_especiales:evento_especial' slug=festa.slug %}" 
+                                    class="text-primary text-left mt-auto url-link">Saber més</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% for post in posts %}
+                    <div class="col-md-6 p-3">
+                        <div class="card mb-3 h-100 card-post">
+                            <div class="image-container">
+                                {% if post.postimagen.imagen %}
+                                    <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}" style="height: 350px;">
+                                {% endif %}
+                                <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ post.titulo }}</h5>
+                                <p class="card-text flex-grow-1">
+                                    {% autoescape on %}
+                                        {{ post.descripcion |striptags |truncatewords:30 | safe }}
+                                    {% endautoescape %}
+                                </p>
+                                <a href="
+                                {% if post.agenda %} 
+                                    {% url 'post:detalle_agenda' slug=post.agenda.slug %}
+                                {% elif post.visitaguiada %}
+                                    {% url 'post:visites-guiades' slug=post.agenda.slug %}
+                                {% elif post.mappoint %}
+                                    {% url 'map:mapa' slug=post.slug %}
+                                {% else %}
+                                    {{ post.get_absolute_url }}
+                                {% endif %}" 
+                                class="text-primary text-left mt-auto url-link">Saber més</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+
+            
+            
+            
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block asides %}
+
+    {% if categorias %}
+        <div class="container">
+            <div class="col-12">
+                <h2 class="h2 text-center">
+                    Descobreix els Tresors de Cabrera de Mar
+                </h2>
+            </div>
+        </div>
+        {% include 'blog/selecciones/categorias_seleccion.html' %}
+    {% endif %}
+
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+    
+{% endblock asides %}

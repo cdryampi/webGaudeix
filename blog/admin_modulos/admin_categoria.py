@@ -29,6 +29,7 @@ class CategoriaBannerImagenInline(admin.TabularInline):
                 postimagen__isnull=True,
                 postgaleriaimagen__isnull = True,
                 subbloggaleriaimagen__isnull=True,
+                eventoespecialgaleriaimagen__isnull=True
             )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -47,6 +48,7 @@ class CategoriaGaleriaImagenInline(admin.TabularInline):
                 categoria_id = request.resolver_match.kwargs['object_id']
                 #print(categoria_id)
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True) | Q(categoriagaleriaimagen__categoria_id=categoria_id),

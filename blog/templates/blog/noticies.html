@@ -1,6 +1,10 @@
 {% extends "core/base.html" %}
 
-
+{% block title %}
+    {% autoescape off %}
+        {{ categoria.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
 
 <!-- CSS personalizado -->
 {% block extra_css %}

@@ -1,6 +1,11 @@
 {% extends 'core/base.html' %}
-{% load static %}
 
+{% load static %}
+{% block title %}
+    {% autoescape off %}
+        {{ noticia.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
 <!-- CSS personalizado -->
 {% block extra_css %}
 <style>

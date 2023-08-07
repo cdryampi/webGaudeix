@@ -1,5 +1,11 @@
 {% extends 'core/base.html' %}
 
+{% block title %}
+    {% autoescape off %}
+        {{ categoria.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
 {% block extra_css %}
 <style>
     .carousel-control-prev{

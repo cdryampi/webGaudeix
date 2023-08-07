@@ -32,7 +32,6 @@ class EventoEspecialView(BaseContextMixin,DetailView):
         evento_especial = self.object
         parallax = evento_especial.parallax
         
-        print(evento_especial.agendas.all())
 
         redes_sociales= RedSocial.objects.filter().all()
         context['redes_sociales'] = redes_sociales

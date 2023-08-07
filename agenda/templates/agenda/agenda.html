@@ -1,5 +1,10 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% block title %}
+    {% autoescape off %}
+        {{ local_agenda.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
 {% block media %}
 
     {% include 'agenda/parallax-banner/banner.html' %}

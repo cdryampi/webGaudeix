@@ -30,7 +30,7 @@ class BaseContextMixin:
         context['referencias'] = Referencia.objects.filter(header=context['header'])
         context['topbar'] = Topbar.objects.filter(publicado=True).last()
         context['footer'] = Footer.objects.filter().first()
-        context['evento_especial'] = EventoEspecial.objects.filter(publicado = True).first()
+        context['evento_especial_activo'] = EventoEspecial.objects.filter(publicado = True).first()
         context['redes_sociales'] = RedSocial.objects.all()
         context['ultimos_eventos'] = variation_agendas
         context['agenda'] = Categoria.objects.filter(publicado=True, tipo='agenda').first()

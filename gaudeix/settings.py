@@ -12,20 +12,34 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import json
+
+BASE_LOCAL_DIR = Path(__file__).resolve().parent
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Cargar la configuración desde el archivo config.json
+
+config_file_path = os.path.join(BASE_LOCAL_DIR, 'config.json')
+with open(config_file_path, 'r') as config_file:
+    config = json.load(config_file)
+
+# Cargar la configuración desde el archivo settings.json
+
+settings_file_path = os.path.join(BASE_LOCAL_DIR, 'settings.json')
+with open(settings_file_path, 'r') as settings_file:
+    settings = json.load(settings_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(9qzw=6p^i_28c8hvq!s*vl+x1#^ndm621k%d#&hc(2%2wv+k0'
+SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = settings["DEBUG"]
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = settings["ALLOWED_HOSTS"]
 
 
 # Application definition
@@ -108,18 +122,17 @@ WSGI_APPLICATION = 'gaudeix.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Base de datos
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gaudeix',
-        'USER': 'gaudeix',
-        'PASSWORD': 'wRskNkm',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': config["DATABASES"]["default"]["ENGINE"],
+        'NAME': config["DATABASES"]["default"]["NAME"],
+        'USER': config["DATABASES"]["default"]["USER"],
+        'PASSWORD': config["DATABASES"]["default"]["PASSWORD"],
+        'HOST': config["DATABASES"]["default"]["HOST"],
+        'PORT': config["DATABASES"]["default"]["PORT"],
     }
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -143,14 +156,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'ca'
+LANGUAGE_CODE = settings["LANGUAGE_CODE"]
 
 DEFAULT_CHARSET = 'utf-8'
 
 FILE_CHARSET = 'utf-8'
 
 
-TIME_ZONE = 'Europe/Andorra'
+TIME_ZONE = settings["TIME_ZONE"]
 
 USE_I18N = True
 
@@ -164,8 +177,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core/static'),
 ]
-
-
 
 
 # Default primary key field type
@@ -184,8 +195,6 @@ CKEDITOR_CONFIGS = {
 }
 
 
-
-
 CKEDITOR_UPLOAD_PATH = "media/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
@@ -194,28 +203,30 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #GOOGLE_MAPS_API_KEY = 'kAIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ'
 
 # Correo electrónico auxiliar
-AUXILIARY_EMAIL = 'ysanchez@cabrerademar.cat'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'ysanchez@cabrerademar.cat'  # Reemplaza con tu dirección de correo Gmail
-EMAIL_HOST_PASSWORD = 'Cabrera@2023'  # Reemplaza con tu contraseña de Gmail
+AUXILIARY_EMAIL = config['EMAIL_HOST_USER']
+EMAIL_BACKEND = settings["EMAIL_BACKEND"]
+EMAIL_HOST = settings["EMAIL_HOST"]
+EMAIL_PORT = settings["EMAIL_PORT"]
+EMAIL_USE_TLS = settings["EMAIL_USE_TLS"]
+EMAIL_HOST_USER = config['EMAIL_HOST_USER']  # Reemplaza con tu dirección de correo Gmail
+EMAIL_HOST_PASSWORD = config['EMAIL_HOST_PASSWORD'] # Reemplaza con tu contraseña de Gmail
 
 
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_ALL_ORIGINS = settings["CORS_ALLOW_ALL_ORIGINS"]
+CORS_ALLOW_CREDENTIALS = settings["CORS_ALLOW_CREDENTIALS"]
+
+CORS_ALLOW_METHODS = settings["CORS_ALLOW_METHODS"]
+
+CORS_ALLOW_HEADERS = settings["CORS_ALLOW_HEADERS"]
+
 SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = 'None'
+
+CSRF_COOKIE_SECURE = settings["CSRF_COOKIE_SECURE"]
 
 
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = settings["SESSION_COOKIE_SAMESITE"]
+CSRF_COOKIE_SAMESITE = settings["CSRF_COOKIE_SAMESITE"]
 
 CORS_ALLOWED_ORIGINS = [
     "https://www.youtube.com",
@@ -223,8 +234,8 @@ CORS_ALLOWED_ORIGINS = [
 
 # compresor
 
-COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = True
+COMPRESS_ENABLED = settings["COMPRESS_ENABLED"]
+COMPRESS_OFFLINE = settings["COMPRESS_OFFLINE"]
 
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.cssmin.CSSMinFilter',

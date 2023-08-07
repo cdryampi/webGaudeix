@@ -118,7 +118,7 @@ class Carrusel(models.Model):
 class Parallax(models.Model):
     
     titulo = models.CharField(max_length=100)
-    descripcion_corta = models.CharField(max_length=200)
+    descripcion_corta = models.CharField(max_length=200, null= True, blank= True)
     imagen = models.ImageField(upload_to=get_parallax_image_path)
     publicado = models.BooleanField(default=False)
 
