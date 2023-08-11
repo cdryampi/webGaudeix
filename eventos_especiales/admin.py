@@ -21,7 +21,11 @@ class EventoFicheroInline(admin.TabularInline):
 
             kwargs['queryset'] = Fichero.objects.filter(
                 Q(eventofichero__isnull=True) | Q(eventofichero__id=evento_id),
-                Q(eventofichero__isnull=False) | Q(postfichero__isnull=True)
+                Q(eventofichero__isnull=False) | Q(postfichero__isnull=True),
+                Q(pdfcollectionresoluciofichero__isnull =True),
+                Q(pdfcollectionjustificaciofichero__isnull=True),
+                Q(pdfcollectionconvocatoriafichero__isnull=True),
+                Q(pdfcollectiontotesfichero__isnull = True),
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
 
@@ -62,7 +66,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Informació general', {
-            'fields': ('titulo', 'fecha_evento', 'fecha_fin', 'descripcion_larga', 'descripcion_corta', 'logo_especial','color', 'publicado', 'metatitulo', 'metadescripcion')
+            'fields': ('titulo', 'fecha_evento', 'fecha_fin', 'descripcion_larga', 'descripcion_corta', 'logo_especial', 'imagen_especial','color', 'publicado', 'metatitulo', 'metadescripcion')
         }),
         ('Vinculat a', {
             'fields': ('agendas', 'parallax', 'videos', 'carruseles')

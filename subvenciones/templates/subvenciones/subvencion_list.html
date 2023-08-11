@@ -1,0 +1,109 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ SubvencionDescripcion.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
+
+
+{% block extra_css %}
+<style>
+    .subvencion-link {
+        border: 1px solid #ccc;
+        padding: 2.5rem;
+        transition: box-shadow 0.3s;
+        display: block;
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    .subvencion-link:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .banner-container {
+        position: relative;
+    }
+      
+    .banner-img {
+        width: 100%;
+        max-height: 50vh;
+        object-fit: cover;
+    }
+      
+    .banner-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+      
+    .banner-title {
+        color: #31C6F8;
+        font-size: 36px;
+        font-weight: bold;
+    }
+      
+</style>
+{% endblock extra_css %}
+
+
+{% block media %}
+
+<div class="container-fluid p-0 m-0">
+    <div class="container-fluid p-0 m-0 banner-container">
+        <img src="{{ SubvencionDescripcion.imagen.url }}" alt="{{ SubvencionDescripcion.titulo }}" class="banner-img">
+        <div class="banner-content">
+            <h1 class="h1 banner-title">
+                {{ SubvencionDescripcion.titulo }}
+            </h1>
+        </div>
+</div>
+
+
+{% endblock media %}
+
+{% block content %}
+
+<div class="container-fluid p-0 m-0 py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% autoescape on %}
+                    {{ SubvencionDescripcion.descripcion | safe }}
+                {% endautoescape %}
+            </div>
+            <div class="col-12 p-3">
+                <h2 class="h2 text-center">Llistat de totes les subvencions actuals</h2>
+                <div class="row justify-content-center">
+                    
+                    {% for subvencion in subvenciones %}
+                        {% if subvencion.publicado %}
+                        <div class="col-lg-6 col-sm-6 col-md-6 col-12 p-3">
+                            <a href="{% url 'subvencions:subvencio' slug=subvencion.slug %}" class="subvencion-link">
+                                {{ subvencion.titulo }}
+                            </a>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% if SubvencionDescripcion.disclaimer %}
+                <div class="col-12">
+                    <div class="disclaimer">
+                        {% autoescape on %}
+                            {{ SubvencionDescripcion.disclaimer | safe }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

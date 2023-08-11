@@ -116,7 +116,7 @@
       
       .link:hover {
         background-color: {{ evento_especial.color | safe }};
-        color: white;
+        color: white !important;
       }
       .title-countdown{
         font-size: 6.5rem;
@@ -197,10 +197,10 @@
         <div class="container mt-3">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-12 align-content-end">
-                    <p class="titulo-principal-pdf"><span class="text-black">Descarrega el programa d'{% if evento_especial.titulo|lower|slice:"0:1" in "aeiou" %}{{ evento_especial.titulo | safe }}{% else %}{{ evento_especial.titulo | safe }}{% endif %}</span></p>
+                    <p class="titulo-principal-pdf"><span class="text-black">Descarrega el programa d{% if evento_especial.titulo|lower|slice:"0:1" in "aeiou" %}'{{ evento_especial.titulo | safe }}{% else %}e {{ evento_especial.titulo | safe }}{% endif %}</span></p>
                 </div>
                 <div class="col-lg-6 col-12 border-left-evento align-content-start">
-                    <a href="{{ evento_especial.eventofichero.fichero.archivo.url }}" class="btn btn-primary btn-download" target="_blank">
+                    <a href="{{ evento_especial.eventofichero.fichero.archivo.url }}" class="link" target="_blank">
                         Descarregar PDF
                     </a>
                 </div>
@@ -224,11 +224,11 @@
 {% elif evento_especial.is_now %}
     <div class="container-fluid bg-gray p-0 m-0 py-5">
         <div class="container mt-3">
-            <div class="row">
+            <div class="row" id="countdown">
                 <div class="col-12 text-center py-3">
-                    <h2 class="title-countdown">Encara / Només falten</h2>
+                    <h2 class="title-countdown" >Encara / Només falten</h2>
                 </div>
-                <div class="col-12 col-lg-3 col-md-6">
+                <div class="col-12 col-lg-3 col-md-6" >
                     <div class="container">
                         <p class="int-value"><span id="days"></span></p>
                         <p class="string-value">dies</p>
@@ -240,7 +240,7 @@
                         <p class="string-value">hores</p>
                     </div>
                 </div>
-                <div class="col-12 col-lg-3 col-md-6">
+                <div class="col-12 col-lg-3 col-md-6 ">
                     <div class="container">
                         <p class="int-value"><span id="minutes"></span></p>
                         <p class="string-value">minuts</p>
@@ -314,6 +314,7 @@
     
     // Funció per actualitzar el compte enrere
     function updateCountdown() {
+
         // Obtingu la data de l'esdeveniment especial i la data actual
         var eventDate = new Date("{{ evento_especial.fecha_evento|date:'Y-m-d' }}");
         var currentDate = new Date();
@@ -344,15 +345,19 @@
     // Espera que s'hagi carregat completament l'HTML
     document.addEventListener("DOMContentLoaded", function() {
         // Crida a la funció updateCountdown() inicialment per mostrar el compte enrere
-        updateCountdown();
+        let countdownElement = document.getElementById("countdown")
+        if(countdownElement){
+            updateCountdown();
 
-        // Actualitza el compte enrere cada segon
-        var countdownInterval = setInterval(updateCountdown, 1000);
-
-        // Atura el compte enrere si ja ha arribat a 0
-        if (document.getElementById("countdown").innerHTML === "¡L'esdeveniment ha començat!") {
-            clearInterval(countdownInterval);
+            // Actualitza el compte enrere cada segon
+            var countdownInterval = setInterval(updateCountdown, 1000);
+    
+            // Atura el compte enrere si ja ha arribat a 0
+            if (document.getElementById("countdown").innerHTML === "¡L'esdeveniment ha començat!") {
+                clearInterval(countdownInterval);
+            }
         }
+
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -364,7 +369,10 @@
         const customTitle = document.querySelector('.custom-title');
 
         // Canvia el text del títol
-        customTitle.textContent = 'Activitats principals';
+        if(customTitle){
+            customTitle.textContent = 'Activitats principals';
+        }
+        
     });
 </script>
 {% endblock extra_script %}

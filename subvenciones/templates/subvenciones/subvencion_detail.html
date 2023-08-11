@@ -1,0 +1,156 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ subvencio.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+{% block extra_css %}
+    <style>
+        a.pdf-link-subvencio {
+            display: block;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            transition: box-shadow 0.3s;
+        }
+        a.pdf-link-subvencio:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="container-fluid p-0 m-0 py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="h1 text-center">
+                        {{ subvencio.titulo | safe }}
+                    </h1>
+
+                </div>
+                <div class="col-12 pt-2">
+                    <p class="h5">
+                        Última actualització {{ subvencio.fecha|date:"l, j F Y" }}
+                    </p>
+                </div>
+                <div class="col-12 py-5">
+                    {% autoescape on %}
+                        {{ subvencio.descripcion | safe }}
+                    {% endautoescape %}
+                </div>
+                <div class="col-12 pb-5">
+                    <div class="container">
+                        <ul class="nav nav-tabs" id="pdfTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="convocatoria-tab" data-toggle="tab" href="#convocatoria" role="tab" aria-controls="convocatoria" aria-selected="true">
+                                    <i class="fas fa-file-pdf" style="color: #3EBFAB;"></i> Convocatòria
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="resolucio-tab" data-toggle="tab" href="#resolucio" role="tab" aria-controls="resolucio" aria-selected="false">
+                                    <i class="fas fa-file-pdf" style="color: #3EBFAB;"></i> Resolució
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="justificacio-tab" data-toggle="tab" href="#justificacio" role="tab" aria-controls="justificacio" aria-selected="false">
+                                    <i class="fas fa-file-pdf" style="color: #3EBFAB;"></i> Justificació
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="totes-tab" data-toggle="tab" href="#totes" role="tab" aria-controls="totes" aria-selected="false">
+                                    <i class="fas fa-file-archive" style="color: #3EBFAB;"></i> Totes les PDF
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pdfTabsContent">
+                            <div class="tab-pane fade show active" id="convocatoria" role="tabpanel" aria-labelledby="convocatoria-tab">
+                                <!-- Contenido de la convocatoria PDF -->
+                                <small class="mb-3 pl-3">Fitxers PDF de la Convocatòria</small>
+
+                                <ul class="list-group p-0 m-0 pl-3 container">
+                                    <div class="row p-0 m-0 w-100">
+                                    {% for pdf in subvencio.pdfcollectionconvocatoriafichero_set.all %}
+                                        <li class="list-group-item border-0 pl-0 w-100 col-12 p-1 m-0">
+                                            <a href="{{ pdf.fichero.archivo.url }}" target="_blank" class="pdf-link-subvencio">
+                                                <i class="fas fa-file-alt mr-2" style="color: #3EBFAB;"></i> {{ pdf.titulo }}
+                                                <span class="info-file">{{ pdf.titulo }} (PDF {{ pdf.fichero.archivo.size|filesizeformat }})</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </div>
+                                </ul>
+                            </div>
+                            <div class="tab-pane fade" id="resolucio" role="tabpanel" aria-labelledby="resolucio-tab">
+                                <!-- Contenido de la resolución PDF -->
+                                <small class="mb-3 pl-3">Fitxers PDF de la resolució</small>
+
+                                <ul class="list-group p-0 m-0 pl-3 container">
+                                    <div class="row p-0 m-0 w-100">
+                                    {% for pdf in subvencio.pdfcollectionresoluciofichero_set.all %}
+                                        <li class="list-group-item border-0 pl-0 w-100 col-12 p-1 m-0">
+                                            <a href="{{ pdf.fichero.archivo.url }}" target="_blank" class="pdf-link-subvencio">
+                                                <i class="fas fa-file-alt mr-2" style="color: #3EBFAB;"></i> {{ pdf.titulo }}
+                                                <span class="info-file">{{ pdf.titulo }} (PDF {{ pdf.fichero.archivo.size|filesizeformat }})</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </div>
+                                </ul>
+                            </div>
+                            <div class="tab-pane fade" id="justificacio" role="tabpanel" aria-labelledby="justificacio-tab">
+                                <!-- Contenido de la justificación PDF -->
+                                <small class="mb-3 pl-3">Fitxers PDF de la justificación</small>
+
+                                <ul class="list-group p-0 m-0 pl-3 container">
+                                    <div class="row p-0 m-0 w-100">
+                                    {% for pdf in subvencio.pdfcollectionjustificaciofichero_set.all %}
+                                        <li class="list-group-item border-0 pl-0 w-100 col-12 p-1 m-0">
+                                            <a href="{{ pdf.fichero.archivo.url }}" target="_blank" class="pdf-link-subvencio">
+                                                <i class="fas fa-file-alt mr-2" style="color: #3EBFAB;"></i> {{ pdf.titulo }}
+                                                <span class="info-file">{{ pdf.titulo }} (PDF {{ pdf.fichero.archivo.size|filesizeformat }})</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </div>
+                                </ul>
+                            </div>
+                            <div class="tab-pane fade" id="totes" role="tabpanel" aria-labelledby="totes-tab">
+                                <!-- Contenido de todos los PDF -->
+                                <small class="mb-3 pl-3">Grups de fitxers PDF</small>
+
+                                <ul class="list-group p-0 m-0 pl-3 container">
+                                    <div class="row p-0 m-0 w-100">
+                                    {% for pdf in subvencio.pdfcollectiontotesfichero_set.all %}
+                                        <li class="list-group-item border-0 pl-0 w-100 col-12 p-1 m-0">
+                                            <a href="{{ pdf.fichero.archivo.url }}" target="_blank" class="pdf-link-subvencio">
+                                                <i class="fas fa-file-alt mr-2" style="color: #3EBFAB;"></i> {{ pdf.titulo }}
+                                                <span class="info-file">{{ pdf.titulo }} (PDF {{ pdf.fichero.archivo.size|filesizeformat }})</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </div>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% if subvencio.disclaimer %}
+                    <div class="col-12">
+                        <div class="disclaimer">
+                            {% autoescape on %}
+                                {{ subvencio.disclaimer | safe }}
+                            {% endautoescape %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

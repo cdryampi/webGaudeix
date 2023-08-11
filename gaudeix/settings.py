@@ -77,6 +77,8 @@ INSTALLED_APPS = [
     'embed_video',
     'compressor',
     'django_user_agents',
+    'selecciones',
+    'subvenciones',
     #'corsheaders',
     #'admin_tree'
     #'filters'

@@ -23,6 +23,9 @@ from django.conf.urls.static import static
 from django.urls import re_path
 from django_select2 import urls as select2_urls
 
+
+
+
 urlpatterns = [
 
     path('admin/', admin.site.urls),
@@ -34,6 +37,7 @@ urlpatterns = [
     path('', include('paginas_estaticas.urls')),
     path('s/', include('eventos_especiales.urls')),
     path('api/', include('api.urls')),
+    path('sv/',include('subvenciones.urls'))
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),

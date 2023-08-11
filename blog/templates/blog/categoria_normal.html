@@ -175,9 +175,9 @@
                                 </p>
                                 <a href="
                                 {% if post.agenda %} 
-                                    {% url 'post:detalle_agenda' slug=post.agenda.slug %}
+                                    {% url 'agenda:detalle_agenda' slug=post.agenda.slug %}
                                 {% elif post.visitaguiada %}
-                                    {% url 'post:visites-guiades' slug=post.agenda.slug %}
+                                    {% url 'agenda:visites-guiades' slug=post.agenda.slug %}
                                 {% elif post.mappoint %}
                                     {% url 'map:mapa' slug=post.slug %}
                                 {% else %}

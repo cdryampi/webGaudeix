@@ -36,15 +36,25 @@ class MapPointAPI(View):
 
         # Calcular los valores de las imágenes y almacenarlos en una lista de diccionarios
         puntos_data = []
+
         for punto in puntos:
-            imagen = punto.postimagen.imagen
-            if imagen:
-                small_thumbnail_url = imagen.small_thumbnail.url
-                large_thumbnail_url = imagen.large_thumbnail.url
-            else:
-                # Si no hay imagen, proporciona un valor predeterminado o deja en blanco
-                small_thumbnail_url = ''  # Puedes usar un valor predeterminado aquí
-                large_thumbnail_url = ''
+            small_thumbnail_url = ''  # Puedes usar un valor predeterminado aquí
+            large_thumbnail_url = ''
+            try:
+                if punto.postimagen:
+                    imagen = punto.postimagen.imagen
+                if imagen:
+                    small_thumbnail_url = imagen.small_thumbnail.url
+                    large_thumbnail_url = imagen.large_thumbnail.url
+                else:
+                    # Si no hay imagen, proporciona un valor predeterminado o deja en blanco
+                    small_thumbnail_url = ''  # Puedes usar un valor predeterminado aquí
+                    large_thumbnail_url = ''
+
+            except Exception as e:
+                pass
+
+
 
             punto_data = {
                 'titulo': punto.titulo,

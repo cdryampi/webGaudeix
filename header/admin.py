@@ -1,4 +1,4 @@
-from .models import Header, Referencia, EnlaceExterno
+from .models import Header, Referencia, EnlaceExterno, HeaderFooter
 from django.contrib import admin
 
 
@@ -13,7 +13,9 @@ class ReferenciaAdmin(admin.TabularInline):
 @admin.register(Header)
 class HeaderAdmin(admin.ModelAdmin):
      inlines = [ReferenciaAdmin]
-
+@admin.register(HeaderFooter)
+class HeaderFooterAdmin(admin.ModelAdmin):
+     inlines = [ReferenciaAdmin]
 
 @admin.register(Referencia)  # Quita el comentario para registrar el modelo Referencia
 class ReferenciaAdminWeb(admin.ModelAdmin):

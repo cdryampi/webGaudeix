@@ -22,10 +22,12 @@ class EventoEspecial(BaseModel, MetadataModel):
         default=timezone.now,
         help_text="Data de l'esdeveniment"
     )
+
     fecha_fin = models.DateField(
         default=timezone.now,
         help_text="Data de finalització de l'esdeveniment"
     )
+
     publicado = models.BooleanField(
         default=False,
         help_text="Indica si l'esdeveniment especial està publicat"
@@ -36,6 +38,7 @@ class EventoEspecial(BaseModel, MetadataModel):
         null=True,
         blank=True
     )
+
     descripcion_corta = RichTextField(
         help_text="Descripció curta de l'esdeveniment especial",
         null=True,
@@ -45,6 +48,13 @@ class EventoEspecial(BaseModel, MetadataModel):
     logo_especial = models.ImageField(
         upload_to='eventos_especiales/',
         help_text="Logotip especial per a l'esdeveniment",
+        null=True,
+        blank=True
+    )
+
+    imagen_especial = models.ImageField(
+        upload_to='eventos_especiales/',
+        help_text="miniatura que serveix per les seleccions i per les metadades",
         null=True,
         blank=True
     )
@@ -63,11 +73,13 @@ class EventoEspecial(BaseModel, MetadataModel):
         blank=True,
         help_text="Parallax relacionat amb l'esdeveniment especial (opcional)"
     )
+
     videos = models.ManyToManyField(
         Video,
         blank=True,
         help_text="Videos relacionats amb l'esdeveniment especial (opcional)"
     )
+
     carruseles = models.ManyToManyField(
         Carrusel,
         blank=True,

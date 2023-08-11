@@ -39,6 +39,7 @@
 {% block extra_script %}
 <script>
   // Obtén los elementos HTML necesarios
+
   const tipoEventoButtons = document.querySelectorAll('.tipo-evento-buttons button');
   const tipoEventoInput = document.getElementById('tipo_evento');
   const filtroForm = document.getElementById('filtro-agenda-form');
@@ -129,7 +130,7 @@
   function mostrarResultados(resultados) {
     if (resultadosContainer) {
       resultadosContainer.innerHTML = '';
-  
+      
       const agendas = JSON.parse(resultados.agendas);
   
       const eventosPorDia = obtenerEventosPorDia(agendas);
@@ -137,10 +138,11 @@
       const currentYear = calendarElement.dataset.year;
       const currentMonth = calendarElement.dataset.month;
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  
+      
       const eventosEnElMes = Object.keys(eventosPorDia).filter(function (dia) {
-        return parseInt(dia) <= daysInMonth;
+        return parseInt(dia) <= daysInMonth && eventosPorDia.hasOwnProperty(dia);
       });
+      
   
       generarCalendario(currentYear, currentMonth, eventosEnElMes);
   
@@ -277,16 +279,29 @@
   
     // Obtén el número de días en el mes
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-  
+    let calendar = document.getElementById('calendar');
     // Crea los días del calendario utilizando las clases de Bootstrap
     let calendarDays = '';
     for (let i = 1; i <= daysInMonth; i++) {
       let dayClass = 'calendar-day';
       if (eventos.includes(i.toString())) {
         dayClass += ' event-day';
-        if (isPastDay(currentYear, currentMonth, i)) {
+
+        // Actualizar el calendario de eventos más amigable.
+
+        if(calendar.getAttribute('data-year') < currentYear){
           dayClass += ' past-day';
+        }else{
+          if(calendar.getAttribute('data-month') < currentMonth){
+            dayClass += ' past-day';
+          }else{
+            if (isPastDay(currentYear, currentMonth, i)) {
+              dayClass += ' past-day';
+            }
+          }
+
         }
+
       }
 
       calendarDays += `<div class="${dayClass}">${i}</div>`;
@@ -336,15 +351,8 @@
 
     // Actualizar los eventos cuando se cambie de mes
     calendarElement.addEventListener('click', (event) => {
-        if (event.target.classList.contains('fa-chevron-left') || event.target.classList.contains('fa-chevron-right')) {
-        const currentYear = calendarElement.dataset.year;
-        const currentMonth = calendarElement.dataset.month;
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        const eventosEnElMes = Object.keys(eventosPorDia).filter(function (dia) {
-            return parseInt(dia) <= daysInMonth;
-        });
-        mostrarResultados(eventosPorDia);
-        }
+
+      filtrarAgenda();
     });
   }
 
@@ -354,5 +362,6 @@
   const currentMonth = currentDate.getMonth();
   mostrarCalendario(currentYear, currentMonth);
   filtrarAgenda();
+
 </script>
 {% endblock extra_script %}

@@ -1,5 +1,5 @@
 from blog.models import Categoria
-from header.models import Header,Referencia
+from header.models import Header,Referencia, HeaderFooter
 from topbar.models import Topbar
 from footer.models import Footer
 from eventos_especiales.models import EventoEspecial
@@ -24,6 +24,8 @@ class BaseContextMixin:
             (Q(fecha=now.date(), hora__gte=now.time()) | Q(fecha__gt=now.date()))
         ).order_by('fecha', 'hora')[:4]
 
+        
+        context['header_footer'] = HeaderFooter.objects.first()
         context['header'] = Header.objects.first()
         categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
         context['categorias_header'] = categorias_con_subblog
@@ -36,4 +38,5 @@ class BaseContextMixin:
         context['agenda'] = Categoria.objects.filter(publicado=True, tipo='agenda').first()
         context['cookies'] = Cookies.objects.filter().first()
         context['cookie_page'] = PaginaLegal.objects.filter(tipo="cookies").first()
+
         return context

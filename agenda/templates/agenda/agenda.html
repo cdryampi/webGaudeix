@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
 {% block title %}
     {% autoescape off %}
         {{ local_agenda.titulo |striptags | safe  }}
@@ -86,10 +87,20 @@
           <div class="col-md-6">
             
             {% with imagen=local_agenda.postgaleriaimagen_set.first %}
-              {% if imagen %}
-                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ local_agenda.titulo }}" class="img-fluid">
-              {% endif %}
-            {% endwith %}
+            {% if imagen %}
+              <div class="fancybox-carousel">
+                <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="carousel" data-caption="{{ local_agenda.titulo }}">
+                  <img src="{{ imagen.imagen.archivo.url }}" alt="{{ local_agenda.titulo }}" class="img-fluid">
+                </a>
+                {% for imagen in local_agenda.postgaleriaimagen_set.all %}
+                  <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="carousel" data-caption="{{ local_agenda.titulo }}"></a>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+          <div class="col-12">
+            <small class="text-center">Fes clic a les imatges per veure l'imatge completa</small>
+          </div>
           </div>
         </div>
     </div>
@@ -99,14 +110,15 @@
 </section>
 
 
-{% if local_agenda.entradas %}
-<div class="jumbotron jumbotron-fluid bg-light text-center mb-0">
-    <div class="container">
-        <h4 class="display-4">Compra les teves entrades</h4>
-        <p class="lead">Tens la oportunitat de comprar les teves entrades per a aquest esdeveniment.</p>
-        <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" class="btn btn-outline-dark btn-lg" target="_blank">Comprar entrades</a>
-    </div>
-</div>
+{% if entrades %}
+
+            <div class="jumbotron jumbotron-fluid bg-light text-center mb-0">
+              <div class="container">
+                <h4 class="display-4">Compra les teves entrades</h4>
+                <p class="lead">Tens la oportunitat de comprar les teves entrades per a aquest esdeveniment.</p>
+                <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" class="btn btn-outline-dark btn-lg" target="_blank">Comprar entrades</a>
+              </div>
+            </div>
 {% endif %}
 
 

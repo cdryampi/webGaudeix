@@ -24,6 +24,7 @@ class PostImagenInline(admin.TabularInline):
             if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
                 post_id = request.resolver_match.kwargs['object_id']
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
@@ -49,6 +50,7 @@ class PostGaleriaImagenInline(admin.TabularInline):
             
             # Filtrar las imágenes disponibles para seleccionar
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),

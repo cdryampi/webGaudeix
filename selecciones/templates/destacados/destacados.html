@@ -1,0 +1,87 @@
+{% if coleccion_destacados %}
+<section class="container-fluid py-3 bg-light" id="destacats">
+    <div class="py-3">
+        <h4 class="related-activities-title text-center h2 custom-title">Destacats</h4>
+    </div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+            {% for evento in coleccion_destacados.eventos_especiales.all %}
+                <div class="swiper-slide">
+                    <a href="{% url 'eventos_especiales:evento_especial' slug=evento.slug %}" 
+                    class="related-activity-link">
+                        
+                        <div class="card related-activity-card mb-3 h-100">
+                            {% if evento.imagen_especial %}
+                                {% with imagen=evento.imagen_especial %}
+                                    {% if imagen %}
+                                    <div class="image-container">
+                                        <picture>
+                                            <img src="{{ imagen.url |urlencode }}" alt="{{ evento.titulo }}" class="img-fluid lazy-load-img" width="350" height="{{ imagen.height }}" loading="lazy">
+                                        </picture>
+                                    </div>                        
+                                    {% endif %}
+                                {% endwith %}
+                            {% else %}
+                                    {% with imagen=evento.eventoespecialgaleriaimagen_set.first %}
+                                        {% if imagen %}
+                                            <div class="image-container">
+                                                <picture>
+                                                    <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                                    <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                                                    <img src="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" alt="{{ evento.titulo }}" class="img-fluid lazy-load-img" width="350" height="{{ imagen.imagen.large_thumbnail.height }}" loading="lazy">
+                                                </picture>
+                                            </div>  
+                                        {% endif %}
+                                    {% endwith %}
+                            {% endif %}
+                            <div class="card-body text-center">
+                                <h5 class="card-title related-activity-title">{{ evento.titulo }}</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+
+
+            {% for post in coleccion_destacados.coleccion.all %}
+            <div class="swiper-slide">
+                <a href="
+                    {% if post.agenda %} 
+                        {% url 'agenda:detalle_agenda' slug=post.slug %}
+                    {% elif post.visitaguiada %}
+                        {% url 'agenda:visites-guiades' slug=post.slug %}
+                    {% elif post.mappoint %}
+                        {% url 'map:mapa' slug=post.slug %}
+                    {% else %}
+                        {{ post.get_absolute_url }}
+                    {% endif %}" 
+                class="related-activity-link">
+                    
+                    <div class="card related-activity-card mb-3 h-100">
+                        {% with imagen=post.postgaleriaimagen_set.first %}
+                        {% if imagen %}
+                        <div class="image-container">
+                            <picture>
+                                <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                                <img src="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" alt="{{ agenda.titulo }}" class="img-fluid lazy-load-img" width="350" height="{{ imagen.imagen.large_thumbnail.height }}" loading="lazy">
+                            </picture>
+                        </div>                        
+                        {% endif %}
+                        {% endwith %}
+                        <div class="card-body text-center">
+                            <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="swiper-button-prev custom-prev"></div>
+        <div class="swiper-button-next custom-next"></div>
+    </div>
+</section>
+
+{% endif %}

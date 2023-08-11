@@ -3,6 +3,7 @@ from django.db import models
 from singleton_model import SingletonModel
 
 from blog.models import Post, Categoria, SubBlog
+from subvenciones.models import SubvencionDescripcion
 
 from paginas_estaticas.models import Contacto
 
@@ -11,6 +12,8 @@ from eventos_especiales.models import EventoEspecial
 from django.core.exceptions import ValidationError
 
 from colorfield.fields import ColorField
+
+import pdb
 
 class Header(SingletonModel):
     logo = models.ImageField(upload_to='logo/')
@@ -32,7 +35,26 @@ class Header(SingletonModel):
 
         super().save(*args, **kwargs)
 
+class HeaderFooter(SingletonModel):
+    color_fondo_header = ColorField(default='#0000')
+    color_letra = ColorField(default='#FFFFFF')
+    def __str__(self):
+        return "Menú del footer"
+    def save(self, *args, **kwargs):
+        # Eliminar referencias sin vínculos
+        Referencia.objects.filter(
+            header_footer=self,
+            post=None,
+            categoria=None,
+            subblog=None,
+            externo=None,
+            evento_especial = None,
+            contacto= None,
+            subvencion = None
 
+        ).delete()
+
+        super().save(*args, **kwargs)
 
 class EnlaceExterno(models.Model):
     titulo = models.CharField(max_length=35, help_text="Títol de l'enllaç")
@@ -49,7 +71,8 @@ class Referencia(models.Model):
         ('subblog', 'SubBlog'),
         ('externo', 'Enlace Externo'),
         ('contacto','Contacto'),
-        ('evento_especial','evento_especial')
+        ('evento_especial','evento_especial'),
+        ('subvencion','Subvencion')
     )
 
     tipo = models.CharField(max_length=30, choices=TIPOS_REFERENCIA)
@@ -60,7 +83,11 @@ class Referencia(models.Model):
     contacto = models.ForeignKey(Contacto, on_delete=models.CASCADE, blank=True, null=True)
     evento_especial = models.ForeignKey(EventoEspecial, on_delete=models.CASCADE, blank=True, null=True)
     orden = models.PositiveIntegerField(default=0)
+
     header = models.ForeignKey(Header, on_delete=models.CASCADE, null=True, blank=True, default=1)
+    header_footer = models.ForeignKey(HeaderFooter, on_delete=models.CASCADE, null=True, blank=True)
+
+    subvencion = models.ForeignKey(SubvencionDescripcion, on_delete=models.CASCADE ,null=True, blank=True)
     
     def __str__(self):
         tipo = self.get_tipo_display()
@@ -79,6 +106,8 @@ class Referencia(models.Model):
             titulo = self.contacto.titulo
         elif self.evento_especial:
             titulo = self.evento_especial.titulo
+        elif self.subvencion:
+            titulo = self.subvencion.titulo
 
         return f"{tipo}: {titulo}"
 
@@ -92,6 +121,7 @@ class Referencia(models.Model):
             self.externo = None
             self.contacto = None  # Nueva línea: Limpiar el campo 'contacto'
             self.evento_especial = None
+            self.subvencion = None
 
         elif self.tipo == 'categoria':
 
@@ -100,6 +130,7 @@ class Referencia(models.Model):
             self.externo = None
             self.contacto = None  # Nueva línea: Limpiar el campo 'contacto'
             self.evento_especial = None
+            self.subvencion = None
 
         elif self.tipo == 'subblog':
 
@@ -108,13 +139,16 @@ class Referencia(models.Model):
             self.externo = None
             self.contacto = None  # Nueva línea: Limpiar el campo 'contacto'
             self.evento_especial = None
+            self.subvencion = None
 
         elif self.tipo == 'externo':
+            
             self.post = None
             self.categoria = None
             self.subblog = None
             self.contacto = None  # Nueva línea: Limpiar el campo 'contacto'
             self.evento_especial = None
+            self.subvencion = None
 
         elif self.tipo == 'contacto':  # Nueva condición para el tipo 'contacto'
 
@@ -123,6 +157,7 @@ class Referencia(models.Model):
             self.subblog = None
             self.externo = None
             self.evento_especial = None
+            self.subvencion = None
 
         elif self.tipo == 'evento_especial':
 
@@ -131,11 +166,25 @@ class Referencia(models.Model):
             self.subblog = None
             self.externo = None
             self.contacto = None
+            self.subvencion = None
 
-        if not self.post and not self.categoria and not self.subblog and not self.externo and not self.contacto and not self.evento_especial:
+        elif self.tipo == 'subvencion':
+            self.post = None
+            self.categoria = None
+            self.subblog = None
+            self.externo = None
+            self.contacto = None
+            self.evento_especial = None
+            
+
+        if not self.post and not self.categoria and not self.subblog and not self.externo and not self.contacto and not self.evento_especial and not self.subvencion:
             return
-        
+            
+        if self.header and self.header_footer:
+            raise ValidationError("Solo puedes seleccionar un tipo de header")
+
         super().save(*args, **kwargs)
+
 
     class Meta:
         ordering = ['orden']

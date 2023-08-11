@@ -1,5 +1,7 @@
 import os
 import uuid
+import unicodedata
+from unidecode import unidecode
 from .errors import ExtensionInvalidaError, TamanioArchivoExcedidoError
 from django.core.exceptions import ValidationError
 
@@ -7,7 +9,7 @@ from django.core.exceptions import ValidationError
 ALLOWED_EXTENSIONS = {
     'imagen': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'],
     'video': ['.mp4', '.avi', '.mov', '.mkv'],
-    'fichero': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx']
+    'fichero': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.zip']
 }
 MAX_TAMANIO_ARCHIVO = 33485760  # 30 MB
 
@@ -32,11 +34,21 @@ def validate_image_quality(image):
         raise ValidationError("La calidad de la imagen debe ser de al menos 80.")
 
 
+
+def utf8_friendly_filename(filename):
+    # Translitera los caracteres unicode en caracteres ASCII
+    safe_chars = unidecode(unicodedata.normalize('NFKD', filename)).encode('ASCII', 'ignore').decode('utf-8')
+    return safe_chars.replace(" ", "_")
+
 def generar_nombre_archivo(filename, tipo):
-    nombre = os.path.splitext(filename)[0].lower()
+    nombre = os.path.splitext(filename)[0]
     extension = os.path.splitext(filename)[1].lower()
+
+    # Translitera los caracteres unicode en caracteres ASCII
+    safe_nombre = unidecode(unicodedata.normalize('NFKD', nombre)).encode('ASCII', 'ignore').decode('utf-8')
+
     if extension in ALLOWED_EXTENSIONS[tipo]:
-        return os.path.join(tipo, f'{nombre}{extension}')
+        return os.path.join(tipo, f'{safe_nombre}{extension}')
     else:
         raise ExtensionInvalidaError('Extensión de archivo no permitida')
 

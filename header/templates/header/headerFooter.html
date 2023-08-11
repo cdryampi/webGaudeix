@@ -1,0 +1,48 @@
+{% load static %}
+{% if header_footer %}
+<div class="container-fluid p-0 header-container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header_footer.color_fondo_header }} !important;">
+        <div class="container">
+            <div class="navbar-collapse">
+                <ul class="navbar-nav d-flex justify-content-center justify-content-lg-between justify-content-md-between justify-content-sm-between w-100">
+                    {% for referencia in header_footer.referencia_set.all %}
+                        <li class="nav-item">
+                            {% if referencia.tipo == 'externo' %}
+                                <a class="nav-link text-white text-uppercase" href="{{ referencia.externo.enlace }}" target="_blank" style="color: {{ header_footer.color_letra}} !important;">
+                                    {{ referencia.externo.titulo }}
+                                </a>
+                            {% elif referencia.tipo == 'post' %}
+                                <a class="nav-link text-white text-uppercase" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}" style="color: {{ header_footer.color_letra}} !important;">
+                                    {{ referencia.post.titulo }}
+                                </a>
+                            {% elif referencia.tipo == 'categoria' %}
+                                <a class="nav-link text-white text-uppercase" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}" style="color: {{ header_footer.color_letra}} !important;">
+                                    {{ referencia.categoria.titulo }}
+                                </a>
+                            {% elif referencia.tipo == 'subblog' %}
+                                {% if referencia.subblog.publicado %}
+                                    <a class="nav-link text-white text-uppercase" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">{{ referencia.subblog.titulo }}</a>
+                                {% endif %}
+                            {% elif referencia.tipo == 'contacto' %}
+                                <a class="nav-link text-white text-uppercase" href="{% url 'paginas_estaticas:contacto' %}" style="color: {{ header_footer.color_letra}} !important;">
+                                    {{ referencia.contacto.titulo }}
+                                </a>
+                            {% elif referencia.tipo == 'evento_especial' %}
+                                {% if referencia.evento_especial %}
+                                    <a class="nav-link text-white text-uppercase" href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}" style="color: {{ header_footer.color_letra}} !important;">
+                                        {{ referencia.evento_especial.titulo }}
+                                    </a>
+                                {% endif %}
+                            {% elif referencia.tipo == 'subvencion' %}
+                                <a class="nav-link text-white text-uppercase" href="{% url 'subvencions:subvencions' %}" target="_blank" style="color: {{ header_footer.color_letra}} !important;">subvencions</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+{% else %}
+    {% include 'header/header_default.html' %}
+{% endif %}

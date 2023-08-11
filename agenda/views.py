@@ -16,6 +16,7 @@ import emoji
 import re
 from blog.models import Categoria
 
+
 # Create your views here.
 class VisitaGuiadaView(BaseContextMixin, DetailView):
     model = VisitaGuiada
@@ -67,12 +68,12 @@ class RutaView(BaseContextMixin, DetailView):
         # Obtener los puntos de itinerario ordenados alfabéticamente
         puntos_itinerario = current_object.mapas_itinerario.all().order_by('titulo')
         rutes = Ruta.objects.filter(publicado = True).exclude(pk = current_object.pk)
-
+        now = timezone.now()
         ultimos_post = Agenda.objects.filter(publicado = True)[:4]
         
         context['rutes'] = rutes
         context['puntos_itinerario'] = puntos_itinerario
-
+        context['now'] = now
         context['posts'] = ultimos_post
 
         return context
@@ -95,10 +96,14 @@ class AgendaDetailView(BaseContextMixin, DetailView):
         
         # Obtener el objeto actual
         current_object = self.get_object()
-
-        print(current_object)
-        # Filtrar los eventos futuros utilizando objetos Q y obtener el primer objeto VariationAgenda de cada Agenda
         now = timezone.now()
+        show_ticket_section = False
+        for variation in current_object.variationagenda_set.all():
+            if now.date() <= variation.fecha:
+                show_ticket_section = True
+                break
+        # Filtrar los eventos futuros utilizando objetos Q y obtener el primer objeto VariationAgenda de cada Agenda
+        
 
         variation_agendas = VariationAgenda.objects.filter(
             Q(agenda__publicado=True) &
@@ -120,7 +125,7 @@ class AgendaDetailView(BaseContextMixin, DetailView):
         all_events = list(itertools.chain(*grouped_events))
 
         context['coleccion_destacados'] = all_events
-        
+        context['entrades'] = show_ticket_section
         return context
 
 

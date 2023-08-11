@@ -66,7 +66,7 @@ class Video(BaseModel):
 class Fichero(BaseModel):
     archivo = models.FileField(
         upload_to=upload_to_fichero,
-        help_text="Extensiones permitidas: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx",
+        help_text="Extensiones permitidas: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .zip",
         null=True,
         blank=True,
         default=None

@@ -10,7 +10,7 @@ function initSwiper() {
         breakpoints: {
             // Configuración para dispositivos móviles
             374: {
-                slidesPerView: 2,
+                slidesPerView: 1,
             },
             767: {
                 slidesPerView: 3,

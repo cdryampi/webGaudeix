@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from blog.models import Categoria, Post
 from agenda.models import VariationAgenda
-from header.models import Header, Referencia
+from header.models import Header, Referencia, HeaderFooter
 from topbar.models import Topbar
 from personalizacion.models import Parallax
 from redes_sociales.models import RedSocial
 from footer.models import Footer
 from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
-from personalizacion.models import VideosEmbed, SeleccionDestacados
+from personalizacion.models import VideosEmbed
+from selecciones.models import SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
 from paginas_estaticas.models import Cookies, PaginaLegal
 from django.utils import timezone
@@ -48,7 +49,7 @@ def get_map_points():
 def get_coleccion_destacados():
     coleccion_destacados = SeleccionDestacados.objects.filter(publicado=True).first()
     if coleccion_destacados:
-        return coleccion_destacados.coleccion.all()
+        return coleccion_destacados
     return None
 
 # Vista home cacheada con el tiempo de expiración definido
@@ -70,13 +71,14 @@ def home(request):
     categorias = Categoria.objects.filter(publicado=True)
     ultimos_eventos = get_ultimos_eventos()
     header = Header.objects.first()
+    header_footer = HeaderFooter.objects.first()
     referencias = Referencia.objects.filter(header=header)
     topbar = Topbar.objects.filter(publicado=True).last()
     portada = True
     agenda = Categoria.objects.filter(tipo='agenda').first()
     redes_sociales = RedSocial.objects.all()
     redes_color = obtener_color_mas_repetido()
-    categorias_especiales_activo = get_categorias_especiales()
+    categorias_especiales = get_categorias_especiales()
     footer = get_footer()
     map_points = get_map_points()
     coleccion_destacados = get_coleccion_destacados()
@@ -95,12 +97,13 @@ def home(request):
             'ultimos_eventos': ultimos_eventos,
             'agenda': agenda,
             'header': header,
+            'header_footer': header_footer,
             'referencias': referencias,
             'topbar': topbar,
             'portada': portada,
             'redes_sociales': redes_sociales,
             'color_red_social': redes_color,
-            'categorias_especiales_activo': categorias_especiales_activo,
+            'categorias_especiales': categorias_especiales,
             'footer': footer,
             'video_local': portada_video,
             'map_points': map_points,
@@ -125,6 +128,7 @@ def error_404(request, exception):
     categorias = Categoria.objects.filter(publicado=True)
     ultimos_eventos = get_ultimos_eventos()
     header = Header.objects.first()
+    header_footer = HeaderFooter.objects.first()
     referencias = Referencia.objects.filter(header=header)
     topbar = Topbar.objects.filter(publicado=True).last()
     agenda = Categoria.objects.filter(tipo='agenda').first()
@@ -150,6 +154,7 @@ def error_404(request, exception):
             'ultimos_eventos': ultimos_eventos,
             'agenda': agenda,
             'header': header,
+            'header_footer': header_footer,
             'referencias': referencias,
             'topbar': topbar,
             'redes_sociales': redes_sociales,

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from core.mixin.base import BaseContextMixin
+
 
 from django.views.generic import View, DetailView
 from core.mixin.base import BaseContextMixin
