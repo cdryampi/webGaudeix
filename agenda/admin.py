@@ -9,7 +9,7 @@ from blog.models import PostImagen, PostGaleriaImagen, PostFichero
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
-
+from django.utils.html import format_html
 
 
 
@@ -69,11 +69,17 @@ class PostImagenInlineRuta(admin.TabularInline):
 
     def imagen_preview(self, instance):
         if instance.imagen:
-            return instance.imagen.imagen_thumbnail()
+            return instance.imagen.archivo.imagen_thumbnail()
         return '(Cap imatge associada)'
 
     imagen_preview.short_description = 'Imatge associada'
-
+    # Agregar help_text al campo 'imagen'
+    fieldsets = [
+        (None, {
+            'fields': ['imagen'],
+            'description': "Seleccioneu la imatge que es farà servir com a miniatura i principal."
+        }),
+    ]
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'imagen':
             post_id = None
@@ -98,7 +104,13 @@ class PostImagenInlineRuta(admin.TabularInline):
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
     autocomplete_fields = ['ubicacion']
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        field = super().formfield_for_dbfield(db_field, **kwargs)
 
+        if db_field.name == 'tipo_evento':
+            field.help_text = _("Selecciona el tipus d'esdeveniment")
+
+        return field
 
 
 
@@ -159,8 +171,44 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostImagenInlineRuta, PostGaleriaImagenInline, PostFicheroImagenInline]
     filter_horizontal = ('agendas',)
-    exclude = ['duracion']  # Excluir el campo duracion en el administrador
+    autocomplete_fields = ['mapa']
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'metatitulo',
+                'descripcion',
+                'metadescripcion',
+                'publicado',
+                'precio',
+                'fecha_inicio',
+                'fecha_fin',
+                'duracion_dias',
+                'duracion_horas',
+                'publico_recomendado',
+                'mostrar_calendario',
+                'mapa',
+                'agendas'
+                ],
+
+            'description': (
+                "<p><strong><em>Aquesta és l'administració d'una Visita Guiada.</em></strong></p>"
+                "<p><em>Aquí pots introduir totes les dades relacionades amb la teva visita guiada. "
+                "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"
+                "<p><em>Recorda que aquests camps estan destinats a recollir informació sobre la visita, "
+                "com el <strong>preu</strong>, la <strong>duració</strong>, les <strong>dates</strong> i altres detalls importants.</em></p>"
+                "<p><em>Tingues en compte que si les dates de <strong>inici</strong> i <strong>fi</strong> estan invertides, "
+                "el <strong>calendari</strong> pot no funcionar com esperat. A més, si la data passada és més gran que la de <strong>inici</strong>, "
+                "pot haver-hi problemes amb les <strong>dates</strong>.</em></p>"
+                "<p><em>Si l'event no té <strong>preu</strong>, pots deixar-lo a 0,00, i el sistema el detectarà com a gratuït.</em></p>"
+                "<p><em>Recordeu que cal activar manualment el <strong>calendari</strong> perquè es mostri en el calendari a la web en <strong>mostrar calendari</strong>.</em></p>"
+            ),
+
+        }),
+        # Resto de los fieldsets
+    ]
     
+    exclude = ['duracion']  # Excluir el campo duracion en el administrador
 
 
 
@@ -172,6 +220,7 @@ class RutaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostGaleriaImagenInline, PostFicheroImagenInline, PostImagenInlineRuta]
     exclude = ['duracion']  # Excluir el campo duracion en el administrador
+
 
 
 admin.site.register(Ruta, RutaAdmin)

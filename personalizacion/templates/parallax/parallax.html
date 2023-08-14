@@ -13,7 +13,7 @@
         {% endif %}
         
     </div>
-    <div class="parallax-flecha">
+    <div class="parallax-flecha {% if user_agent.is_mobile %} parallax-mobile {% endif %}">
         <a href="javascript:void(0)" title="Anar a la secció principal" aria-label="Anar a la secció principal" id="banner-parallax">
             <img src="{% static "core/img/parallax/down-arrow.svg"%}"/>
         </a>

@@ -170,14 +170,20 @@ header ul.navbar-nav.ml-auto {
     border-top-left-radius: 0px !important;
   }
   .parallax-flecha{
-    top: 82%;
+    top: calc(70vh - 20px);
   }
 
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
   .video-hero {
-    height: 50vh !important;
+    height: 40vh !important;
+  }
+  .parallax-flecha.parallax-mobile {
+    top: calc(70vh - 20px) !important;
+  }
+  .container-social.parallax-mobile{
+    bottom: 0 !important;
   }
 }
 
@@ -456,6 +462,33 @@ header ul.navbar-nav.ml-auto {
     border: none;
 }
 
+@media (max-width: 768px) and (max-width: 991px) {
+  .video-hero {
+    height: 40vh !important;
+  }
+  .fullscreen-video-background{
+    height: 73%;
+  }
+  .container-social{
+    width: 100% !important;
+    bottom: 10%;
+    border-top-left-radius: 0px !important;
+  }
+  .parallax-flecha{
+    top: calc(25vh - 20px);
+  }
+  .parallax-flecha.parallax-mobile {
+    top: calc(70vh - 20px) !important;
+  }
+  .container-social.parallax-mobile{
+    bottom: 0 !important;
+  }
+}
+@media only screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+  .video-hero {
+    height: 40vh !important;
+  }
+}
 /* end redes sociales */
 
 

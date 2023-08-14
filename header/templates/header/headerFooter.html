@@ -4,7 +4,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header_footer.color_fondo_header }} !important;">
         <div class="container">
             <div class="navbar-collapse">
-                <ul class="navbar-nav d-flex justify-content-center justify-content-lg-between justify-content-md-between justify-content-sm-between w-100">
+                <ul class="navbar-nav d-flex justify-content-center justify-content-lg-between justify-content-md-between justify-content-sm-between w-100 text-center">
                     {% for referencia in header_footer.referencia_set.all %}
                         <li class="nav-item">
                             {% if referencia.tipo == 'externo' %}

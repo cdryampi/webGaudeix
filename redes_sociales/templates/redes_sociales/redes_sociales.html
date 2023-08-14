@@ -1,5 +1,5 @@
 {% load  static  %}
-<div class="container-social" style="background-color: {{ color_red_social }}" >
+<div class="container-social {% if user_agent.is_mobile %} parallax-mobile {% endif %}" style="background-color: {{ color_red_social }}" >
     <ul class="list-group">
         {% for red_social in redes_sociales %}
         <li class="list-group-item">

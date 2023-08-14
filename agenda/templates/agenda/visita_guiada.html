@@ -89,9 +89,11 @@
     /* Estilos para dispositivos móviles */
     @media (max-width: 767px) {
       .calendar {
-          width: 100%;
           max-width: 100%;
-
+          width: 100%;
+          justify-content: center;
+          align-content: center;
+          justify-items: center;
         }
         .calendar-days {
           grid-gap: 0px;
@@ -132,30 +134,9 @@
 {% endblock %}
 
 {% block media %}
-<section class="container-fluid p-0">
-  <div id="carouselVisites" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-      {% for imagen in visites.postgaleriaimagen_set.all %}
-      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-        <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="gallery">
-          <img src="{{ imagen.imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid fancybox">
-        </a>
-      </div>
-      {% endfor %}
-    </div>
-    <a class="carousel-control-prev" href="#carouselVisites" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Anterior</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselVisites" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Següent</span>
-    </a>
-  </div>
-  <div class="col-12">
-    <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
-  </div>
-</section>
+  {% if visites.postgaleriaimagen_set.all.count > 2%}
+    {% include 'agenda/carrusel/visita_guiada/visita_guiada_carrusel.html' %}
+  {% endif %}
 
 {% endblock media %}
 
@@ -165,7 +146,7 @@
     <div class="p-3">
         <h1 class="text-center">{{ visites.titulo }}</h1>
     </div>
-    <div class="container-fuild p-5 content-agenda-detail-container">
+    <div class="container-fuild p-lg-5 p-sm-5 p-md-5 p-lg-5 p-2 content-agenda-detail-container justify-content-center">
         <div class="container p-2">
             <div class="row">
                 <div class="col-md-12 col-lg-12">
@@ -224,7 +205,7 @@
                                 </div>
                             </div>
                             
-                        <div class="social-share-buttons pt-3">
+                        <div class="social-share-buttons pt-3 text-center">
                             <!-- Botones para compartir en redes sociales -->
                             <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
                                 <i class="fab fa-facebook-f fa-2x px-2"></i>
@@ -238,34 +219,28 @@
                     </div>
                     </div>
                         
-                        <div class="col-md-6 col-lg-6 col-12">
-                            {% with imagenes=visites.postgaleriaimagen_set.all %}
-                                {% if imagenes.count > 3 %}
-                                    <div id="carouselExample" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                            {% for imagen in imagenes %}
-                                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                                    <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="sr-only">Anterior</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="sr-only">Siguiente</span>
-                                        </a>
-                                    </div>
-                                {% else %}
-                                    {% if imagenes %}
-                                        <img src="{{ imagenes.first.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
-                                    {% endif %}
-                                {% endif %}
-                            {% endwith %}
+                    <div class="col-md-6 col-lg-6 col-12 pt-5 pt-lg-0 pt-sm-0 pt-xl-0 pt-md-5">
+                      {% if visites.postimagen %}
+                          <a href="{{ visites.postimagen.imagen.archivo.url }}" data-fancybox="single-image">
+                              <img src="{{ visites.postimagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid fancybox">
+                          </a>
+                          <div class="col-12">
+                            <small class="text-center">Fes clic a l'imatge per veure-la en resolució completa</small>
                         </div>
-
+                      {% else %}
+                          {% with imagenes=visites.postgaleriaimagen_set.all %}
+                              {% if imagenes %}
+                                  <a href="{{ imagenes.first.imagen.archivo.url }}" data-fancybox="single-image">
+                                      <img src="{{ imagenes.first.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid fancybox">
+                                  </a>
+                                  <div class="col-12">
+                                    <small class="text-center">Fes clic a l'imatge per veure-la en resolució completa</small>
+                                </div>
+                              {% endif %}
+                          {% endwith %}
+                      {% endif %}
+                  </div>
+                  
                     </div>
                 </div>
             </div>
@@ -283,7 +258,7 @@
 <aside class="pb-5 pt-3">
     <div class="container p-1">
         <h3 class="text-center py-3">Calendari d'Esdeveniments</h3>
-        <div class="row">
+        <div class="row mx-0">
             <div class="col-12 col-lg-8 col-md-6 col-sm-12">
                 <div class="calendar">
                     <div class="calendar-header">
@@ -358,10 +333,14 @@
       <div class="py-3">
           <h4 class="related-activities-title">Activitats relacionades:</h4>
       </div>
-      <div class="row row-inline-cards justify-content-center">
+      <div class="row row-inline-cards justify-content-center px-0">
           {% for objeto in agendas_relacionadas %}
           <div class="col-12 col-md-6 col-lg-4 py-3">
-              <a href="{{ objeto.get_absolute_url }}" class="related-activity-link my-1">
+              <a href="
+                {% spaceless %}
+                  {{ objeto.get_absolute_url }}
+                {% endspaceless %}" class="related-activity-link my-1">
+
                   <article class="card related-activity-card mb-3 h-100">
                       {% with imagen=objeto.postgaleriaimagen_set.first %}
                       {% if imagen %}

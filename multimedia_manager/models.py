@@ -64,6 +64,7 @@ class Video(BaseModel):
 
 
 class Fichero(BaseModel):
+    titulo = models.CharField(max_length=100, blank=True)
     archivo = models.FileField(
         upload_to=upload_to_fichero,
         help_text="Extensiones permitidas: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .zip",
@@ -98,7 +99,7 @@ class Fichero(BaseModel):
             raise ValidationError(str(e))
 
     def __str__(self):
-        return os.path.basename(self.archivo.name)
+        return self.titulo
 
 
 
