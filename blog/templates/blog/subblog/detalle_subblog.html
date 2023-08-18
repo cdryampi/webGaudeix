@@ -1,0 +1,100 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ subblog.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+  .carousel-control-prev{
+    width: 37%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.carousel-control-next {
+    width: 37%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 0.9;
+}
+
+
+.carousel-inner.text-center {
+    text-align: center;
+}
+.img-cat-banner{
+  max-height: 50vh !important;
+  width: 100%;
+  object-fit: cover;
+}
+
+</style>
+{% endblock %}
+
+{% block media %}
+
+
+    {% include 'blog/subblog/carrusel_subblog.html' %}
+
+
+{% endblock media %}
+
+{% block content %}
+<section class="container-fluid px-0 py-5">
+  <div class="container">
+    <div class="categoria-container">
+        <h2 class="h1 text-center">{{ subblog.titulo }}</h2>
+        <p class="categoria-subtitulo  lead text-center">{{ subblog.subtitulo }}</p>
+        <p class="categoria-descripcion">
+            {% autoescape on %}
+                {{ subblog.contenido | safe }}
+            {% endautoescape %}
+        </p>
+      </div>
+      <div class="col-12 py-3">
+        <div class="text-center fancybox-carousel">
+            {% if subblog.subbloggaleriaimagen_set.count %}
+
+                <img src="{{ subblog.subblogimagen.imagen.archivo.url }}" alt="{{ subblog.titulo }}"
+                class="fancybox img-fluid img-cat-banner" data-fancybox="carousel" data-caption="{{ subblog.titulo }}" style="cursor:pointer;">
+                <div class="col-12">
+                    <small class="text-center">Fes clic a l'imatge per veure-la completa</small>
+                </div>
+    
+            {% endif %}
+    
+        </div>
+    </div>
+      </div>
+    </div>
+</section>
+{% endblock %}
+{% block asides %}
+
+    {% if categorias %}
+        <div class="container">
+            <div class="col-12">
+                <h2 class="h2 text-center">
+                    Descobreix els Tresors de Cabrera de Mar
+                </h2>
+            </div>
+        </div>
+        {% include 'blog/selecciones/categorias_seleccion.html' %}
+    {% endif %}
+
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+    
+{% endblock asides %}

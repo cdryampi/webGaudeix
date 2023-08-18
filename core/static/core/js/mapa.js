@@ -46,15 +46,23 @@ function initMap() {
             anchor: new google.maps.Point(0, 20)
           }
         });
-        
+
+
         const content = `
                         <div class="info-window">
                             <h4 class="info-window-title">${point.titulo}</h4>
                             <p class="info-window-image"><img src="${point.small_thumbnail_url}" alt="${point.titulo}" style="width: 100%; height: 200px; object-fit: cover;"></p>
                             <p class="info-window-description">${truncateDescription(point.descripcion, 20)}</p>
-                            <p class="info-window-link">
-                              <a href="map/${point.slug}" class="text-danger">Veure més</a>
-                            </p>
+                            <div class="row">
+                              <div class="col-6">
+                                <p class="info-window-link">
+                                  <a href="map/${point.slug}" class="text-danger">Veure més</a>
+                                </p>
+                              </div>
+                              <div class="col-6">
+                                ${point.enlace_google_maps ? `<p class="info-window-link"><a href="${point.enlace_google_maps}" target="_blank" rel="noopener noreferrer" class="text-danger">Veure més a Google Maps</a></p>` : ''}
+                              </div>
+                            </div>
                         </div>
                           `;
 

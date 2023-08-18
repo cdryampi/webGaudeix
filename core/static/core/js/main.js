@@ -17,12 +17,15 @@ window.addEventListener('scroll', function() {
   
     function scrollToMain(event) {
       event.preventDefault();
+      let mainSection = document.getElementById('main-content');
+      if (window.location.pathname === '/') {
+        // Estás en la página de inicio
+        const previusElement = document.getElementById('banner-parallax');
+        mainSection = previusElement.parentElement.parentElement.nextElementSibling;
+      }
       
-      const mainSection = document.getElementById('banner-parallax');
-      console.log(mainSection);
-      const nextElement = mainSection.parentElement.parentElement.nextElementSibling;
-      console.log(nextElement);
-      const nextElementTop = nextElement.getBoundingClientRect().top;
+
+      const nextElementTop = mainSection.getBoundingClientRect().top;
       const bodyTop = document.body.getBoundingClientRect().top;
       const offset = 150;
       const scrollToPosition = nextElementTop - bodyTop - offset;

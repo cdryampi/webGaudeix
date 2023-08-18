@@ -85,7 +85,7 @@
 
             
             {% if categorias_especiales %}
-                {% include 'blog/categoria_especial.html' %}
+                {% include 'blog/categorias/categoria_especial.html' %}
             {% endif %}
         {% endif %}
 
@@ -105,7 +105,7 @@
             {% endif %}
 
         {% endif %}
-    <main class="container-fluid p-0 m-0">
+    <main class="container-fluid p-0 m-0" id="main-content">
         <!-- Contenido específico de cada página se insertará aquí -->
         {% block content %}
         {% endblock %}

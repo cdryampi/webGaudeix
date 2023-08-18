@@ -65,6 +65,7 @@ class MapPointAPI(View):
                 'large_thumbnail_url': large_thumbnail_url,
                 'descripcion': punto.descripcion,
                 'slug': punto.slug,
+                'enlace_google_maps': punto.enlace_google_maps
             }
 
             puntos_data.append(punto_data)

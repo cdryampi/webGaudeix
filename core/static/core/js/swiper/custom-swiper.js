@@ -1,7 +1,7 @@
 function initSwiper() {
     let swiper = new Swiper('.swiper-container', {
         loop: true,
-        slidesPerView: 4, // Número de tarjetas por slide
+        slidesPerView: 1, // Número de tarjetas por slide
         spaceBetween: 10, // Espacio entre tarjetas
         navigation: {
             nextEl: '.swiper-button-next',
@@ -26,7 +26,7 @@ function initSwiper() {
 function initCollageSwiperCategoriasSeleccion() {
     let collageSwiperCategoriasSeleccion = new Swiper('.swiper-container-collage-categorias-seleccion', {
         loop: true,
-        slidesPerView: 2, // Número de tarjetas por slide
+        slidesPerView: 1, // Número de tarjetas por slide
         spaceBetween: 20, // Espacio entre tarjetas
         navigation: {
             nextEl: '.custom-next-2',

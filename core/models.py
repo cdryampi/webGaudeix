@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 class BaseModel(models.Model):
-    
+    """
+    Modelo base que contiene información común para el seguimiento de creación y modificación de registros.
+    """
     creado_por = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='%(class)s_creados', null=True, blank=True, editable=False)
     modificado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, editable=False)
     fecha_creacion = models.DateTimeField(default=timezone.now, help_text="Data de creació", editable=False)
@@ -17,8 +19,11 @@ class BaseModel(models.Model):
     
 
 class MetadataModel(models.Model):
-    metatitulo = models.CharField(max_length=255, help_text="Metatítol per a SEO", null=True, blank=True)
-    metadescripcion = models.TextField(help_text="Metadescripció per a SEO", null=True, blank=True)
+    """
+    Modelo base para almacenar metadatos utilizados para SEO en las vistas y plantillas.
+    """
+    metatitulo = models.CharField(max_length=255, help_text="Metatítol per a SEO", null=True, blank=True, verbose_name="Metatítol")
+    metadescripcion = models.TextField(help_text="Metadescripció per a SEO", null=True, blank=True, verbose_name="Metadescripció")
 
     class Meta:
         abstract = True

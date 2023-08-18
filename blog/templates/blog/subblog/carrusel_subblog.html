@@ -1,0 +1,64 @@
+{% if subblog.subbloggaleriaimagen_set.count > 1 %}
+<section class="container-fluid px-0 py-0">
+    <div id="categoria-carrusel-{{ subblog.slug }}" class="carousel slide categoria-carrusel" data-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for imagen in subblog.subbloggaleriaimagen_set.all %}
+            <li data-target="#categoria-carrusel-{{ categoria.slug }}" data-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active"{% endif %}></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner text-center">
+            {% for imagen in subblog.subbloggaleriaimagen_set.all %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="categoria-{{ subblog.slug }}">
+                    <picture>
+                        <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                        <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                        <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
+                        <img src="" 
+                            data-src="{{ imagen.image.large_thumbanil.url }}"
+                            alt="{{ subblog.titulo }}" 
+                            class="img-fluid align-middle lazy-load-img">
+                    </picture>
+                    <img src="{{ imagen.imagen.archivo.url }}" alt="{{ subblog.titulo }}" class="img-fluid img-cat-banner">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#categoria-carrusel-{{ subblog.slug }}" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#categoria-carrusel-{{ subblog.slug }}" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div class="col-12">
+        <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+    </div>
+</section>
+
+{% else %}
+
+    <div class="text-center fancybox-carousel">
+        {% if subblog.subbloggaleriaimagen_set.count %}
+            <img src="{{ subblog.subbloggaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ subblog.titulo }}"
+            class="img-fluid img-cat-banner" class="fancybox" data-fancybox="carousel" data-caption="{{ subblog.titulo }}">
+            <div class="col-12">
+                <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+            </div>
+        {% else %}
+            {% if subblog.subblogimagen.imagen %}
+                <img src="{{ subblog.subblogimagen.imagen.archivo.url }}" alt="{{ subblog.titulo }}"
+            class="fancybox img-fluid img-cat-banner" data-fancybox="carousel" data-caption="{{ subblog.titulo }}">
+            <div class="col-12">
+                <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+            </div>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+</div>
+{% endif %}

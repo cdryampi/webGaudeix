@@ -32,18 +32,76 @@ class MapPointManager(models.Manager):
 
 
 class MapPoint(Post):
-    latitud = models.FloatField(help_text='Introduïu la latitud (copiada de Google Maps)')
-    longitud = models.FloatField(help_text='Introduïu la longitud (copiada de Google Maps)')
-    icono = models.CharField(max_length=100, choices=ICON_CHOICES)
-
-    municipio = models.CharField(max_length=100, default='Cabrera de Mar', editable=False, help_text=_('Municipi'))
-    comarca = models.CharField(max_length=100, default='Maresme', editable=False, help_text=_('Comarca'))
-    comunidad_autonoma = models.CharField(max_length=100, default='Catalunya', editable=False, help_text=_('Comunitat Autònoma'))
-    pais = models.CharField(max_length=100, default='Espanya', editable=False, help_text=_('País'))
-    codigo_postal = models.CharField(max_length=10, default='08349', editable=False, help_text=_('Codi postal'))
-    calle = models.CharField(max_length=255, editable=True, help_text=_('Carrer'), null=True, blank=True)
-
-    contenido_adicional = RichTextField(blank=True, null=True, help_text='Texto adicional')
+    """
+    Clase que representa a un lugar de Cabrera de Mar
+    """
+    latitud = models.FloatField(
+        help_text='Introduïu la latitud (copiada de Google Maps)',
+        verbose_name='Latitud'
+    )
+    longitud = models.FloatField(
+        help_text='Introduïu la longitud (copiada de Google Maps)',
+        verbose_name='Longitud'
+    )
+    icono = models.CharField(
+        max_length=100,
+        choices=ICON_CHOICES
+    )
+    municipio = models.CharField(
+        max_length=100,
+        default='Cabrera de Mar',
+        editable=False,
+        help_text=_('Municipi'),
+        verbose_name='Municipi'
+    )
+    comarca = models.CharField(
+        max_length=100,
+        default='Maresme',
+        editable=False,
+        help_text=_('Comarca'),
+        verbose_name='Comarca'
+    )
+    comunidad_autonoma = models.CharField(
+        max_length=100,
+        default='Catalunya',
+        editable=False,
+        help_text=_('Comunitat Autònoma'),
+        verbose_name='Comunitat Autònoma'
+    )
+    pais = models.CharField(
+        max_length=100,
+        default='Espanya',
+        editable=False,
+        help_text=_('País'),
+        verbose_name='País'
+    )
+    codigo_postal = models.CharField(
+        max_length=10,
+        default='08349',
+        editable=False,
+        help_text=_('Codi postal'),
+        verbose_name='Codi postal'
+    )
+    calle = models.CharField(
+        max_length=255,
+        editable=True,
+        help_text=_('Carrer'),
+        null=True,
+        blank=True,
+        verbose_name='Carrer'
+    )
+    contenido_adicional = RichTextField(
+        blank=True,
+        null=True,
+        help_text='Texto adicional',
+        verbose_name='Contingut addicional'
+    )
+    enlace_google_maps = models.URLField(
+        blank=True,
+        null=True,
+        help_text='Enllaç a Google Maps',
+        verbose_name='Enllaç a Google Maps'
+    )
     objects = MapPointManager()
 
     def __str__(self):

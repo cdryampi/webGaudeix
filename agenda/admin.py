@@ -27,6 +27,7 @@ class PostGaleriaImagenInline(admin.TabularInline):
                 Q(postgaleriaimagen__isnull=True) | Q(postgaleriaimagen__post__id=agenda_id),
                 Q(categoriabannerimagen__isnull=True),
                 Q(subblogimagen__isnull=True),
+                Q(subbloggaleriaimagen__isnull=True),
                 Q(categoriagaleriaimagen__isnull=True),
                 Q(postimagen__isnull=True),
                 Q(eventoespecialgaleriaimagen__isnull=True),
@@ -88,6 +89,7 @@ class PostImagenInlineRuta(admin.TabularInline):
                 kwargs['queryset'] = Imagen.objects.filter(
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
+                    Q(subbloggaleriaimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
@@ -220,6 +222,8 @@ class RutaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostGaleriaImagenInline, PostFicheroImagenInline, PostImagenInlineRuta]
     exclude = ['duracion']  # Excluir el campo duracion en el administrador
+    autocomplete_fields = ['categoria','punto_inicio','mapas_itinerario']
+
 
 
 

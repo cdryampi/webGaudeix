@@ -25,7 +25,6 @@ from django_select2 import urls as select2_urls
 
 
 
-
 urlpatterns = [
 
     path('admin/', admin.site.urls),

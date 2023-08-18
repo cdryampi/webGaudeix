@@ -8,12 +8,12 @@
 {% endblock title %}
 {% block media %}
 
-    {% include 'agenda/parallax-banner/banner.html' %}
+      {% include 'agenda/parallax-banner/banner.html' %}
 
 {% endblock media %}
 
 {% block content %}
-<section class="pb-5 px-0 container-fluid">
+<section class="px-0 container-fluid">
     <div class="p-5">
         <h1 class="text-center p-3 h1">{{ local_agenda.titulo }}</h1>
         <p class="text-center italic lead">{{ local_agenda.descripcion_corta }}</p>
@@ -84,7 +84,7 @@
                 </a>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 agenda-img-container">
             
             {% with imagen=local_agenda.postgaleriaimagen_set.first %}
             {% if imagen %}
@@ -99,7 +99,7 @@
             {% endif %}
           {% endwith %}
           <div class="col-12">
-            <small class="text-center">Fes clic a les imatges per veure l'imatge completa</small>
+            <small class="text-center">Fes clic a la imatge per veure-la completa</small>
           </div>
           </div>
         </div>
@@ -123,7 +123,7 @@
 
 
 <aside class="container-fuild agenda-pdf-link py-0 my-0">
-    <div class="col-md-12 col-lg-12 agenda-special-categories p-5 mt-5">
+    <div class="col-md-12 col-lg-12 agenda-special-categories p-5">
         <div class="text-center  m-0 p-2 bg-light agenda-pdf-link">
             <a href="{% url 'agenda:calendario_pdf' %}" class="btn btn-outline-dark btn-lg">
                 <i class="fas fa-file-download"></i>

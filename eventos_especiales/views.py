@@ -36,6 +36,5 @@ class EventoEspecialView(BaseContextMixin,DetailView):
         redes_sociales= RedSocial.objects.filter().all()
         context['redes_sociales'] = redes_sociales
         context['parallax'] = parallax
-        context['coleccion_destacados'] = evento_especial.agendas.all()
         context['now'] = timezone.now()
         return context

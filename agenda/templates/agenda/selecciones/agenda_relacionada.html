@@ -18,7 +18,9 @@
                     {% elif agenda.mappoint %}
                         {% url 'map:mapa' slug=agenda.slug %}
                     {% else %}
-                        {{ agenda.get_absolute_url }}
+                        {% spaceless %}
+                            {{ agenda.get_absolute_url }}
+                        {% endspaceless %}
                     {% endif %}" 
                 class="related-activity-link">
                     
@@ -127,6 +129,9 @@
             },
             breakpoints: {
                 // Configuración para dispositivos móviles
+                359:{
+                    slidesPerView: 2
+                },
                 374:{
                     slidesPerView: 2,
                 },

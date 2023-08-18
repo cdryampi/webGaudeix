@@ -152,7 +152,9 @@
 {% endblock extra_css %}
 
 {% block media %}
-    {% include 'parallax/parallax.html' %}
+    <div class="hero-evento-especial">
+        {% include 'parallax/parallax.html' %}
+    </div>
 {% endblock media %}
 
 {% block content %}
@@ -288,8 +290,8 @@
 
 {% block asides %}
 
-    {% if coleccion_destacados  %}
-        {% include 'destacados/destacados.html' %}
+    {% if evento_especial.agendas  %}
+        {% include 'eventos_especiales/agenda_selection.html' %}
     {% endif %}
 
 {% endblock asides %}

@@ -5,6 +5,7 @@ from .admin_modulos.admin_subblog import SubBlogAdmin
 from .admin_modulos.admin_categoria import CategoriaAdmin
 from .admin_modulos.admin_post import PostAdmin
 from .admin_modulos.admin_noticia import NoticiaAdmin
+from .admin_modulos.admin_tags import TagAdmin
 # Se define una clase inline para mostrar imágenes en línea en el admin
 
 
@@ -20,6 +21,6 @@ admin.site.register(SubBlog, SubBlogAdmin)
 #se registra el modelo Imagen en el admin con su configuración
 admin.site.register(Post, PostAdmin)
 
-admin.site.register(Tag)
+admin.site.register(Tag, TagAdmin)
 
 admin.site.register(Noticia, NoticiaAdmin)

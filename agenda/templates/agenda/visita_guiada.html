@@ -356,14 +356,6 @@
                               {% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}...{% else %}{{ objeto.descripcion_corta }}{% endif %}
                             {% endautoescape %}
                             </p>
-                          <div class="related-activity-details">
-                              <p class="related-activity-date-time">
-                                  <i class="fas fa-calendar-alt" style="color: #3ebfab;"></i>
-                                  <span class="event-date">{{ objeto.fecha }}</span>
-                                  <i class="fas fa-clock" style="color: #3ebfab;"></i>
-                                  <span class="event-time">{{ objeto.hora }}</span>
-                              </p>
-                          </div>
                       </div>
                   </article>
               </a>

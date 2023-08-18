@@ -13,15 +13,11 @@
         height: 500px;
     }
 
-    .carousel-inner {
-        max-height: 490px;
-        width: 100%;
-    }
-    
-    .carousel-inner .map-carousel-image{
-        object-fit: cover;
-    }
-
+    {% if not user_agent.is_mobile %}
+        .col-md-5.map-container {
+            padding-top: 10%;
+        }
+    {% endif %}
     aside .linked-relacions .card {
         position: relative;
         z-index: 1;
@@ -140,68 +136,43 @@
     div.hover .url-link {
         font-weight: bold;
     }
-
+    .img-cat-banner{
+        max-height: 50vh !important;
+        width: 100%;
+        object-fit: cover;
+    }
 </style>
 {% endblock extra_css %}
 
+
+{% block media %}
+
+    {% include 'map/map_carrusel.html' %}
+    
+{% endblock media %}
 
 {% block content %}
 
 
 
 <section class="pb-5 px-0 container-fluid">
-    {% if map.postgaleriaimagen_set %}
 
-    <div class="container-fluid pb-3 px-0 mx-0">
-        {% with galeria_imagenes=map.postgaleriaimagen_set.all %}
-            {% if galeria_imagenes.count > 1 %}
-                <div id="mapCarousel" class="carousel slide map-carousel" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        {% for imagen in galeria_imagenes %}
-                            <li data-target="#mapCarousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
-                        {% endfor %}
-                    </ol>
-                    <div class="carousel-inner">
-                        {% for imagen in galeria_imagenes %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <img src="{{ imagen.imagen.archivo.url }}" class="d-block w-100 map-carousel-image" alt="{{ map.titulo }}">
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <a class="carousel-control-prev" href="#mapCarousel" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#mapCarousel" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            {% elif galeria_imagenes.count == 1 %}
-                <div class="map-banner">
-                    <img src="{{ galeria_imagenes.0.imagen.archivo.url }}" alt="{{ map.titulo }}" class="img-fluid map-banner-image">
-                </div>
-            {% endif %}
-        {% endwith %}
-    </div>
-    {% endif %}
-
-    <div class="container-fluid content-agenda-detail-container pt-5">
+    <div class="container-fluid content-agenda-detail-container mt-5">
 
         <div class="container pt-5">
             <div class="row">
+                <div class="col-12 justify-content-center">
+                    <div class="pb-5">
+                        <h1 class="text-center p-3 h1">{{ map.titulo }}</h1>
+                    </div>
+                </div>
                 <div class="col-md-7">
                     <div class="container p-2">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="pb-5">
-                                    <h1 class="text-center p-3 display-2">{{ map.titulo }}</h1>
-                                </div>
-                                <p>
-                                    {% autoescape on %}
-                                        {{ map.descripcion | safe }}
-                                    {% endautoescape %}
-                                </p>
+                                {% autoescape on %}
+                                    {{ map.descripcion | safe }}
+                                {% endautoescape %}
                             </div>
                             <div class="col-md-12">
                                 {% with imagen=map.postimagen %}
@@ -229,6 +200,9 @@
                 </div>
                 <div class="col-md-5 map-container">
                     <div class="row justify-content-center align-content-center" style="height: 100%%;">
+                        <div class="col-12 text-center">
+                            <small>Punt d'Interès: Desxobreix-ho al Mapa</div>
+                        </div>
                         <div id="map" style="width: 100%; height: 500px;"></div>
                         {% if map.contenido_adicional %}
                             <div class="col-12 pt-5">
@@ -358,6 +332,25 @@
 
 {% block extra_script %}
 <script>
+    function truncateDescription(description, wordCount) {
+        // Convertir la descripción en un array de palabras
+        const words = description.split(' ');
+      
+        // Verificar si la descripción ya tiene menos de `wordCount` palabras
+        if (words.length <= wordCount) {
+          return description;
+        }
+      
+        // Obtener las primeras `wordCount` palabras y unirlas nuevamente en una cadena
+        const truncatedWords = words.slice(0, wordCount);
+        const truncatedDescription = truncatedWords.join(' ');
+      
+        // Agregar puntos suspensivos al final de la descripción truncada
+        const finalDescription = truncatedDescription + '...';
+      
+        return finalDescription;
+    }
+    
     function initMap() {
         const mapContainer = document.getElementById('map');
         const latitudInicio = parseFloat('{{ map.latitud|stringformat:".6f" }}'.replace(',', '.'));
@@ -367,15 +360,33 @@
             center: { lat: latitudInicio, lng: longitudInicio },
             zoom: 14
         });
-    
         const marker = new google.maps.Marker({
             position: { lat: latitudInicio, lng: longitudInicio },
             map: map,
-            title: '{{ map.titulo }}'
+            title: '{{ map.titulo }}',
+            animation: google.maps.Animation.BOUNCE
         });
+        let image = '';
+        let enlace_google_maps = '';
+
+        {% if map.postimagen.imagen %}
+        image = '{{ map.postimagen.imagen.archivo.url }}';
+        {% endif %}
+        {% if map.enlace_google_maps %}
+        enlace_google_maps = '{{ map.enlace_google_maps }}'; 
+        {% endif %}
+        let description = truncateDescription(`{% autoescape on %}{{map.descripcion|safe}}{% endautoescape %}`, 20);
+        const content = `
+            <div class="info-window">
+                <h4 class="info-window-title text-center">{{map.titulo}}</h4>
+                <p class="info-window-image"><img src=${image} alt="{{map.titulo}}" style="width: 100%; height: 150px; object-fit: cover;"></p>
+                <p class="info-window-description">${description}</p>
+                ${enlace_google_maps ? `<p class="info-window-link"><a href="{{ map.enlace_google_maps }}" target="_blank" rel="noopener noreferrer" class="text-danger">Veure més a Google Maps</a></p>` : ''}
+            </div>
+        `;
 
         const infoWindow = new google.maps.InfoWindow({
-            content: '<h3>{{ map.titulo }}</h3>'
+            content: content
         });
 
         marker.addListener('click', function() {

@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% block title %}
+    {% autoescape off %}
+        {{ categoria.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+{% block extra_css %}
+<style>
+  @media only screen and (max-width: 767px) {
+    div#calendar{
+      display:none;
+    }
+    #tipo-evento {
+      text-align: center;
+    }
+  }
+</style>
+
+{% endblock extra_css %}
+
+{% block media %}
+  {% if parallax %}
+    <div class="hero-agenda-especial">
+      {% include 'parallax/parallax.html' %}
+    </div>
+  {% endif %}
+{% endblock media %}
+
+
+{% block content %}
+<section class="p-lg-5 p-md-5">
+  <div class="col-12">
+    <h1 class="h1 text-center py-5">Viu la Cultura i les Festes a Cabrera de Mar</h1>
+  </div>
+  {% include 'blog/categorias/agenda_utils/filtro_agenda.html' %}
+</section>
+
+{% endblock %}
+
+{% block asides %}
+  {% if categorias %}
+    <div class="container">
+      <div class="col-12">
+        <h2 class="text-center h2">Descobreix els Tresors de Cabrera de Mar</h2>
+      </div>
+    </div>
+    {% include 'blog/selecciones/categorias_seleccion.html' %}
+  {% endif %}
+{% endblock asides %}

@@ -29,6 +29,7 @@ class PostImagenInline(admin.TabularInline):
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
+                    Q(subbloggaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -52,11 +53,11 @@ class PostGaleriaImagenInline(admin.TabularInline):
                 kwargs['queryset'] = Imagen.objects.filter(
                     Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
-                    Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
+                    Q(subblogimagen__isnull=True),
+                    Q(subbloggaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True),
-                    Q(postgaleriaimagen__isnull=True)
-                    | Q(postgaleriaimagen__post__id=post_id),
+                    Q(postgaleriaimagen__isnull=True) | Q(postgaleriaimagen__post__id=post_id),
                 )
             kwargs['empty_label'] = 'Sin imagen asociada'
         
@@ -68,6 +69,7 @@ class MapPointAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'latitud', 'longitud', 'icono')
     list_filter = ('icono',)
     search_fields = ('titulo', 'latitud', 'longitud')
+    autocomplete_fields = ['categoria']
     actions = [export_map_points_csv]
 
 admin.site.register(MapPoint, MapPointAdmin)

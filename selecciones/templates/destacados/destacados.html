@@ -67,7 +67,20 @@
                                 <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
                                 <img src="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" alt="{{ agenda.titulo }}" class="img-fluid lazy-load-img" width="350" height="{{ imagen.imagen.large_thumbnail.height }}" loading="lazy">
                             </picture>
-                        </div>                        
+                        </div>
+                        {% else %}
+                            {% with imagen_post=post.postimagen %}
+                                {% if imagen_post %}
+                                    <div class="image-container">
+                                        <picture>
+                                            <source srcset="{{ imagen_post.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                            <source srcset="{{ imagen_post.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                                            <img src="{{ imagen_post.imagen.medium_thumbnail.url |urlencode }}" alt="{{ agenda.titulo }}" class="img-fluid lazy-load-img" width="350" height="{{ imagen_post.imagen.large_thumbnail.height }}" loading="lazy">
+                                        </picture>
+                                    </div>
+                                {% endif %}
+
+                            {% endwith %}                       
                         {% endif %}
                         {% endwith %}
                         <div class="card-body text-center">

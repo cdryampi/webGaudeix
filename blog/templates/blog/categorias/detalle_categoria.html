@@ -1,0 +1,15 @@
+{% if categoria.tipo == 'normal' %}
+    {% include 'blog/categorias/categoria_normal.html' %}
+{% elif categoria.tipo == 'lloc' %}
+    {% include 'blog/categorias/lloc.html' %}
+{% elif categoria.tipo == 'agenda' %}
+    {% include 'blog/categorias/agenda_utils/agenda_portada.html' %}
+{% elif categoria.tipo == 'visitas_guiadas' %}
+    {% include 'blog/categorias/visitas_guiadas.html' %}
+{% elif categoria.tipo == 'noticies' %}
+    {% include 'blog/categorias/noticies.html' %}
+{% elif categoria.tipo == 'senderisme' %}
+    {% include 'blog/categorias/senderisme.html' %}
+{% elif categoria.tipo == 'festes_i_tradicions' %}
+    {% include 'blog/categorias/festes-i-tradicions.html' %}
+{% endif %}

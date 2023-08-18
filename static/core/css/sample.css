@@ -174,19 +174,68 @@ header ul.navbar-nav.ml-auto {
   }
 
 }
+@media (max-width: 361px) {
+
+  .parallax-flecha {
+    top: calc(20vh - 30px);
+  }
+
+  .collage-card-body-categorias-seleccion {
+    padding: 0.5rem;
+  }
+
+  .collage-image-container-categorias-seleccion img {
+    height: -webkit-fill-available;
+  }
+
+}
 
 @media (min-width: 768px) and (max-width: 991px) {
   .video-hero {
     height: 40vh !important;
   }
+
   .parallax-flecha.parallax-mobile {
     top: calc(70vh - 20px) !important;
   }
+
   .container-social.parallax-mobile{
     bottom: 0 !important;
   }
 }
 
+@media (min-width: 360px) and (max-width: 768px) {
+  .hero-evento-especial .parallax-container{
+    height: 85vh;
+  }
+
+  .hero-agenda-especial .parallax-container{
+    height: 75vh;
+  }
+
+  .hero-evento-especial .parallax-content {
+    top: 25%;
+  }
+
+  .hero-agenda-especial .parallax-content{
+    bottom: 0%;
+    top: 50%;
+  }
+  
+  .hero-agenda-especial .parallax-flecha{
+    top: calc(55vh - 20px);
+  }
+
+  .hero-evento-especial .container-social, .hero-agenda-especial .container-social {
+    bottom: 0%;
+  }
+
+  .hero-evento-especial .parallax-flecha {
+    top: calc(50vh - 20px);
+  }
+
+
+}
 /* img lazy */
 
 /* Estilo para el contenedor de la imagen */
@@ -903,6 +952,37 @@ table.table-custom tr.even {
 }
 
 
+@media (max-width: 767px) {
+
+  .parallax-container-banner-agenda {
+    height: 45vh;
+  }
+
+  .parallax-container-banner-agenda .parallax-content {
+    top: 25%;
+  }
+
+  .parallax-container-banner-agenda  .parallax-flecha {
+    top: calc(25vh - 20px);
+  }
+
+
+  .parallax-container-banner-agenda .banner-icons {
+    display: none;
+  }
+  .parallax-container-banner-agenda .container-social{
+    bottom: 0%;
+  }
+
+  .social-share-buttons{
+    text-align: center;
+  }
+
+  .agenda-img-container{
+    padding-top: 25px;
+  }
+}
+
 
 
 /* fin banner agenda  */
@@ -1232,3 +1312,29 @@ table.table-custom tr.even {
   }
 }
 /* end cookie */
+
+
+
+/* generic media query for >= 300px  */
+
+@media screen and (max-width: 300px) {
+  .titulo-principal, .titulo-principal-pdf{
+    font-size: 2.5rem !important;
+  }
+
+  .parallax-content {
+    top: 30% !important;
+  }
+
+  .container-social {
+    bottom: 0% !important;
+  }
+
+  .parallax-flecha {
+    top: calc(65vh - 20px) !important;
+  }
+
+}
+
+
+/* end generic */

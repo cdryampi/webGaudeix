@@ -65,12 +65,29 @@ class SubBlogAdmin(admin.ModelAdmin):
     list_filter = ('publicado',)
     search_fields = ('titulo', 'contenido')
     inlines = [SubBlogImagenInline, SubblogGaleriaImagenInline]
-    fields = ['titulo', 'contenido', 'publicado', 'metatitulo', 'metadescripcion']
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'contenido',
+                'publicado',
+                'metatitulo',
+                'metadescripcion',
+            ],
+            'description': (
+                "<p><strong>Aquesta és la pàgina d'edició d'un SubBlog.</strong></p>"
+                "<p><em>Un SubBlog és una entitat principal del lloc web que serveix per agrupar diversos tipus de continguts com Post, Agendes, Visites Guiades, Rutes de Senderisme i altres. Aquesta agrupació permet organitzar i presentar diferents elements relacionats sota un mateix tema o categoria.</em></p>"
+                "<p><em>Si decideixes <strong>despublicar</strong> aquest SubBlog, els continguts associats deixaran de ser visibles per als usuaris i no es mostrarà als visitants del lloc. Tingues en compte que això pot afectar altres parts de la web que utilitzen aquesta agrupació.</em></p>"
+                "<p><em>Assegura't de revisar la configuració del <strong>Header</strong> o <strong>HeaterFooter</strong> de la app de Header per garantir que aquest SubBlog no es mostri si és el que interessa. Recorda que els canvis aquí realitzats poden afectar la manera en què es mostra el SubBlog i els continguts associats a la web.</em></p>"
+            ),
+        }),
+        # Otras secciones de fieldsets aquí si es necesario
+    ]
 
     def preview_link(self, obj):
         if obj.id:
             url = reverse('blog:detalle-subblog', kwargs={'slug': obj.slug})
-            return format_html('<a href="{}" target="_blank">Ver en el sitio</a>', url)
+            return format_html('<a href="{}" target="_blank">Anar a veure el lloc</a>', url)
         return '-'
 
     preview_link.short_description = 'Vista previa'
