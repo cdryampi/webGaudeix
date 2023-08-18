@@ -5,7 +5,8 @@ from multimedia_manager.models import Imagen, Fichero
 from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda
 from map.models import MapPoint
 from django.forms import DurationField
-from blog.models import PostImagen, PostGaleriaImagen, PostFichero
+from blog.models import PostImagen, PostGaleriaImagen, PostFichero, Categoria
+
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
@@ -106,6 +107,15 @@ class PostImagenInlineRuta(admin.TabularInline):
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
     autocomplete_fields = ['ubicacion']
+    search_fields = ['tags']
+
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "categoria":
+            kwargs["queryset"] = Categoria.objects.filter(tipo="agenda")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+
     def formfield_for_dbfield(self, db_field, **kwargs):
         field = super().formfield_for_dbfield(db_field, **kwargs)
 
@@ -173,7 +183,7 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostImagenInlineRuta, PostGaleriaImagenInline, PostFicheroImagenInline]
     filter_horizontal = ('agendas',)
-    autocomplete_fields = ['mapa']
+    autocomplete_fields = ['mapa', 'categoria']
     fieldsets = [
         (None, {
             'fields': [

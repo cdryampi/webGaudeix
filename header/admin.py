@@ -9,10 +9,24 @@ class EnlaceExternoInline(admin.StackedInline):
 
 class ReferenciaAdmin(admin.TabularInline):
      model = Referencia
+     autocomplete_fields = ['post','categoria','subblog','evento_especial',]
+
+
+     def get_formset(self, request, obj=None, **kwargs):
+          formset = super().get_formset(request, obj, **kwargs)
+
+          if isinstance(self.admin_site._registry.get(Header), HeaderAdmin):
+               formset.form.base_fields['header_footer'].queryset = HeaderFooter.objects.none()
+
+          if isinstance(self.admin_site._registry.get(HeaderFooter), HeaderFooterAdmin):
+               formset.form.base_fields['header'].queryset = Header.objects.none()
+
+          return formset
 
 @admin.register(Header)
 class HeaderAdmin(admin.ModelAdmin):
      inlines = [ReferenciaAdmin]
+     
 @admin.register(HeaderFooter)
 class HeaderFooterAdmin(admin.ModelAdmin):
      inlines = [ReferenciaAdmin]

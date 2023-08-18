@@ -83,10 +83,11 @@
     <div class="row py-5">
       <div class="col-lg-8 mx-auto">
         <div class="contact-form">
-
-
-          <h2>Contacto</h2>
-          <p>{{ contacto.descripcion }}</p>
+          <small> 
+            {% autoescape on %}
+              {{ contacto.descripcion | safe}}
+            {% endautoescape %} 
+          </small>
           <!-- Incluir el formulario de Teenvío -->
           {% include 'api/teenvio_contacto.html' %}
         </div>

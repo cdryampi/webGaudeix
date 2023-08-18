@@ -40,9 +40,13 @@
     </section>
     
     {% else %}
+    
+    {% if categoria.categoriagaleriaimagen_set.first.imagen %}
         <div class="text-center">
             <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}"
                 class="img-fluid img-cat-banner">
         </div>
+    {% endif %}
+
     </div>
 {% endif %}

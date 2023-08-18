@@ -165,11 +165,11 @@
                         <div class="col-md-6 p-3">
                             <div class="card mb-3 h-100 card-post">
                                 <div class="image-container">
-                                    {% if festa.eventoespecialgaleriaimagen_set.first %}
-                                        <img src="{{ festa.eventoespecialgaleriaimagen_set.first.imagen.archivo.url }}" class="card-img-top" alt="{{ festa.titulo }}" style="height: 350px;">
+                                    {% if festa.imagen_especial %}
+                                        <img src="{{ festa.imagen_especial.url }}" class="card-img-top" alt="{{ festa.titulo }}" style="height: 350px;">
                                     {% else %}
-                                        {% if festa.imagen_especial %}
-                                            <img src="{{ festa.imagen_especial.url }}" class="card-img-top" alt="{{ festa.titulo }}" style="height: 350px;">
+                                        {% if festa.eventoespecialgaleriaimagen_set.first %}
+                                            <img src="{{ festa.eventoespecialgaleriaimagen_set.first.imagen.archivo.url }}" class="card-img-top" alt="{{ festa.titulo }}" style="height: 350px;">
                                         {% endif %}
                                     {% endif %}
                                     <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->

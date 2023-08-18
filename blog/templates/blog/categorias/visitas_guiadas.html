@@ -184,16 +184,25 @@
                     
                 </div>
 
-                <div class="row pt-3">
-                    {% if visita.postgaleriaimagen_set.exists %}
-                    {% with imagen=visita.postgaleriaimagen_set.first %}
-                    {% if imagen %}
-                    <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
-                        <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
-                            class="img-fluid w-100 h-auto" style="object-fit: cover; max-height: 300px;">
-                    </div>
-                    {% endif %}
-                    {% endwith %}
+                <div class="row p-3">
+                    {% if visita.postimagen.imagen %}
+                        {% with imagen=visita.postimagen.imagen %}
+                            <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
+                                    class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
+                            </div>
+                        {% endwith %}
+                    {% else %}
+                        {% if visita.postgaleriaimagen_set.exists %}
+                            {% with imagen=visita.postgaleriaimagen_set.first %}
+                                {% if imagen %}
+                                    <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                        <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
+                                            class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
+                        {% endif %}
                     {% endif %}
                     <div class="col-lg-8 col-md-6 col-sm-12">
                         <div class="card-body" style="padding: 20px;">
