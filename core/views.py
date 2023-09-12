@@ -109,7 +109,7 @@ def home(request):
             'map_points': map_points,
             'categorias_header': categorias_con_subblog,
             'coleccion_destacados': coleccion_destacados,
-            'evento_especial': evento,
+            'evento_especial_activo': evento,
             'user_agent': user_agent,
             'parallax':parallax,
             'cookies': cookies,

@@ -14,56 +14,75 @@ from django.urls import reverse
 class EventoEspecial(BaseModel, MetadataModel):
     
     
-    titulo = models.CharField(max_length=255, help_text="Títol de l'esdeveniment especial")
-    slug = models.SlugField(unique=True, editable=False, help_text="Slug automàtic generat a partir del títol")
-    color = ColorField(default='#FFFFFF')
-    
+    titulo = models.CharField(
+        max_length=255,
+        help_text="Títol de l'esdeveniment especial",
+        verbose_name="Títol"
+    )
+    slug = models.SlugField(
+        unique=True,
+        editable=False,
+        help_text="Slug automàtic generat a partir del títol",
+
+    )
+    color = ColorField(
+        default='#FFFFFF',
+        verbose_name="Color"
+    )
     fecha_evento = models.DateField(
         default=timezone.now,
-        help_text="Data de l'esdeveniment"
+        help_text="Data de l'esdeveniment",
+        verbose_name="Data de l'esdeveniment"
     )
 
     fecha_fin = models.DateField(
         default=timezone.now,
-        help_text="Data de finalització de l'esdeveniment"
+        help_text="Data de finalització de l'esdeveniment",
+        verbose_name="Data de finalització"
     )
 
     publicado = models.BooleanField(
         default=False,
-        help_text="Indica si l'esdeveniment especial està publicat"
+        help_text="Indica si l'esdeveniment especial està publicat",
+        verbose_name="Publicat"
     )
 
     descripcion_larga = RichTextField(
         help_text="Descripció llarga de l'esdeveniment especial",
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="Descripció llarga"
     )
 
     descripcion_corta = RichTextField(
         help_text="Descripció curta de l'esdeveniment especial",
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="Descripció curta"
     )
 
     logo_especial = models.ImageField(
         upload_to='eventos_especiales/',
         help_text="Logotip especial per a l'esdeveniment",
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="Logotip especial"
     )
 
     imagen_especial = models.ImageField(
         upload_to='eventos_especiales/',
         help_text="miniatura que serveix per les seleccions i per les metadades",
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="Miniatura d'esdeveniment especial"
     )
     
     agendas = models.ManyToManyField(
         Agenda,
         blank=True,
         related_name="agenda",
-        help_text="Selecciona tots els esdeveniments vinculats amb l'event"
+        help_text="Selecciona tots els esdeveniments vinculats amb l'event",
+        verbose_name="Agendes"
     )
 
     parallax = models.ForeignKey(
@@ -71,19 +90,22 @@ class EventoEspecial(BaseModel, MetadataModel):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        help_text="Parallax relacionat amb l'esdeveniment especial (opcional)"
+        help_text="Parallax relacionat amb l'esdeveniment especial (opcional)",
+        verbose_name="Parallax"
     )
 
     videos = models.ManyToManyField(
         Video,
         blank=True,
-        help_text="Videos relacionats amb l'esdeveniment especial (opcional)"
+        help_text="Videos relacionats amb l'esdeveniment especial (opcional)",
+        verbose_name="Vídeos"
     )
 
     carruseles = models.ManyToManyField(
         Carrusel,
         blank=True,
-        help_text="Carrussells relacionats amb l'esdeveniment especial (opcional)"
+        help_text="Carrussells relacionats amb l'esdeveniment especial (opcional)",
+        verbose_name="Carrussells"
     )
 
     def save(self, *args, **kwargs):

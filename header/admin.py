@@ -9,6 +9,7 @@ class EnlaceExternoInline(admin.StackedInline):
 
 class ReferenciaAdmin(admin.TabularInline):
      model = Referencia
+
      autocomplete_fields = ['post','categoria','subblog','evento_especial',]
 
 
@@ -22,6 +23,7 @@ class ReferenciaAdmin(admin.TabularInline):
                formset.form.base_fields['header'].queryset = Header.objects.none()
 
           return formset
+ #    fields = ['tipo','post','categoria','subblog','externo','contacto','evento_especial','orden','subvencion']
 
 @admin.register(Header)
 class HeaderAdmin(admin.ModelAdmin):

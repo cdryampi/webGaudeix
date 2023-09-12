@@ -5,8 +5,6 @@ from django.contrib import admin
 from multimedia_manager.models import Fichero
 from .models import EventoFichero, EventoEspecial, EventoEspecialGaleriaImagen
 from django.db.models import Q
-from django.contrib.admin.widgets import FilteredSelectMultiple
-from django.db import models
 from multimedia_manager.models import Imagen
 
 class EventoFicheroInline(admin.TabularInline):
@@ -64,12 +62,34 @@ class EventoEspecialAdmin(admin.ModelAdmin):
     search_fields = ['titulo']
     filter_horizontal = ('agendas', 'videos', 'carruseles')
 
-    fieldsets = (
-        ('Informació general', {
-            'fields': ('titulo', 'fecha_evento', 'fecha_fin', 'descripcion_larga', 'descripcion_corta', 'logo_especial', 'imagen_especial','color', 'publicado', 'metatitulo', 'metadescripcion')
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'metatitulo',
+                'descripcion_corta',
+                'descripcion_larga',
+                'metadescripcion',
+                'fecha_evento',
+                'fecha_fin',
+                'publicado',
+                'agendas',
+                'logo_especial',
+                'imagen_especial',
+                'parallax',
+                'videos',
+                'carruseles'
+            ],
+            'description': (
+                "<p><strong>Aquesta és la pàgina d'edició d'un esdeveniment especial.</strong></p>"
+                "<p><em>Els <u>esdeveniments especials</u> són una part auxiliar del lloc web i es poden crear tants com desitgis.</em></p>"
+                "<p>Assegura't de completar els camps i de marcar l'opció <strong>publicat</strong> perquè es mostri destacat a la web. També pots afegir un<strong> logo especial</strong> si vols destacar encara més amb un logo (en negatiu) aquest esdeveniment al header (també s'ha d'afegir al header).</p>"
+                "<p>La <strong>imatge de l'especial</strong> només es fa servir com a miniatura per altres seccions de la web (categories relacionades i seleccions).</p>"
+                "<p>Tingues en compte que els canvis que facis aquí poden afectar la forma en què es presenta l'esdeveniment especial.</p>"
+                "<p><strong>Nota:</strong> Abans d'eliminar un esdeveniment, verifica que no el necessitis, ja que es pot despublicar.</p>"
+            ),
         }),
-        ('Vinculat a', {
-            'fields': ('agendas', 'parallax', 'videos', 'carruseles')
-        }),
-    )
+        # Otras secciones de fieldsets aquí si es necesario
+    ]
+
     inlines = [EventoFicheroInline, EventoEspecialGaleriaImagenInline]

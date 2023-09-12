@@ -69,7 +69,7 @@ class CategoriaAdmin(admin.ModelAdmin):
     search_fields = ['titulo']
     inlines = [CategoriaBannerImagenInline,CategoriaGaleriaImagenInline]
     actions = ['refresh_cache']
-    
+    autocomplete_fields = ['subblog']
     fieldsets = [
         (None, {
             'fields': ['titulo', 'metatitulo', 'subtitulo', 'descripcion', 'metadescripcion', 'especial', 'tipo', 'color', 'publicado', 'subblog'],
