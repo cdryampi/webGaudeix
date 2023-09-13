@@ -1,10 +1,26 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
+{% block meta_description %}
+    <meta name="Description" content="polítiques de Cookies">
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+  <meta name="Keywords" content="polítiques de Cookies, gaudeixcabrera, explicació.">
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
 {% block title %}
     {% autoescape off %}
         {{ legal.titulo |striptags | safe  }}
     {% endautoescape %}
 {% endblock title %}
+
+
+
 {% block extra_css %}
 <style>
     .banner-container {

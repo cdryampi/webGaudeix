@@ -1,5 +1,29 @@
 {% extends 'core/base.html' %}
 
+{% block meta_description %}
+    {% if categoria.metadescripcion %}
+        <meta name="Description" content="{{categoria.metadescripcion | safe | striptags }}">
+    {% else %}
+        <meta name="Description" content="{{categoria.descripcion | truncatewords:50 | safe | striptags }}">
+    {% endif %}
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if categoria.tags.all %}
+    <meta name="Keywords" content="{% for tag in categoria.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ categoria.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
 {% block extra_css %}
 <style>
     .carousel-control-prev{

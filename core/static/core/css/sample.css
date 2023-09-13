@@ -1247,6 +1247,7 @@ table.table-custom tr.even {
   footer input#email {
     max-width: 25rem;
   }
+
   /* Media query para tablets pequeñas */
   @media (min-width: 768px) and (max-width: 991px) {
     .footer-container{

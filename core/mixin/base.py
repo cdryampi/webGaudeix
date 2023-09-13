@@ -38,5 +38,13 @@ class BaseContextMixin:
         context['agenda'] = Categoria.objects.filter(publicado=True, tipo='agenda').first()
         context['cookies'] = Cookies.objects.filter().first()
         context['cookie_page'] = PaginaLegal.objects.filter(tipo="cookies").first()
+        
+        # Obten la URL canónica y agrega al contexto
+        canonical_url = self.get_canonical_url()
+        context['canonical_url'] = canonical_url
 
         return context
+    def get_canonical_url(self):
+        # Lógica para obtener la URL canónica, por ejemplo, desde la URL de la vista actual
+        # Si tu lógica es más compleja, puedes modificar esta función en consecuencia
+        return self.request.build_absolute_uri()

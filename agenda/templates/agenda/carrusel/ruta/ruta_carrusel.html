@@ -1,0 +1,30 @@
+<section class="container-fluid p-0">
+    <div id="carouselRuta" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for imagen in ruta.postgaleriaimagen_set.all %}
+            <li data-target="#carouselRuta" data-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active"{% endif %}></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+            {% for imagen in ruta.postgaleriaimagen_set.all %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="gallery">
+                    <img src="{{ imagen.imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid fancybox">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselRuta" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselRuta" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Següent</span>
+        </a>
+    </div>
+    <div class="col-12">
+        <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+    </div>
+</section>

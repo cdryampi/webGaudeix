@@ -27,6 +27,7 @@
       <div class="form-group">
         <label for="postal_code">Codi Postal:</label>
         <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Introduïu el codi postal">
+        <small id="emailHelpCountry" class="form-text text-muted">Aquest camp es opcional.</small>
       </div>
       <div class="form-group">
         <label for="city">Població:</label>
@@ -35,6 +36,7 @@
       <div class="form-group">
         <label for="country">País:</label>
         <input type="text" class="form-control" id="country" name="country" placeholder="Introduïu el país">
+        <small id="emailHelpCountry" class="form-text text-muted">Aquest camp es opcional.</small>
       </div>
       <div class="form-group">
         <label for="message">Missatge:</label>
@@ -124,7 +126,7 @@
     var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
   
     // Realizar la petición POST utilizando fetch
-    fetch('/contacto/', {
+    fetch('/contacte/', {
       method: 'POST',
       headers: {
         'X-CSRFToken': csrfToken

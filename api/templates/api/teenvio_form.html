@@ -4,13 +4,20 @@
     <div class="col-lg-6">
       <form id="newsletter-form" class="text-center">
         {% csrf_token %}
-        <div class="form-group">
+        <div class="form-group justify-content-center px-5">
           <h2 class="text-center my-4 text-white bold">Butlletí electrònic</h2>
-          <div class="input-group">
-            <input type="email" class="form-control form-control-lg" id="email" placeholder="Introduïu el vostre correu electrònic" required>
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="submit"><i class="fas fa-arrow-right"></i></button>
-            </div>
+          
+            <div class="col-12">
+              <div class="row justify-content-center">
+                <div class="input-group text-center w-75">
+                  <input type="email" class="form-control form-control-lg w-25" id="emailNewsletter" placeholder="Introduïu el vostre correu electrònic" required>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                </div>
+              </div>
+
+
           </div>
         </div>
       </form>
@@ -24,7 +31,7 @@
     document.getElementById('newsletter-form').addEventListener('submit', function(event) {
       event.preventDefault();
   
-      var emailInput = document.getElementById('email');
+      var emailInput = document.getElementById('emailNewsletter');
       var email = emailInput.value;
   
       // Validar el correo electrónico

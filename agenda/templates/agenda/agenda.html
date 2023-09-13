@@ -1,11 +1,27 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
+{% block meta_description %}
+    <meta name="Description" content="{{local_agenda.metadescripcion | safe | striptags }}">
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if local_agenda.tags.all %}
+    <meta name="Keywords" content="{% for tag in local_agenda.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+
 {% block title %}
     {% autoescape off %}
         {{ local_agenda.titulo |striptags | safe  }}
     {% endautoescape %}
 {% endblock title %}
+
 {% block media %}
 
       {% include 'agenda/parallax-banner/banner.html' %}

@@ -89,6 +89,7 @@ def home(request):
     user_agent = get_user_agent(request)
     cookies = Cookies.objects.filter().first()
     cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
+    current_url = request.build_absolute_uri()
     response = render(
         request,
         'core/home/home.html',
@@ -114,6 +115,7 @@ def home(request):
             'parallax':parallax,
             'cookies': cookies,
             'cookie_page': cookie_page,
+            'current_url': current_url,
         }
     )
     

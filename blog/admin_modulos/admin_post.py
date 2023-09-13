@@ -107,6 +107,7 @@ class PostAdmin(admin.ModelAdmin):
                 "<p><em><u>Per evitar errors,</u></em> hem limitat la selecció de <strong>Categoria</strong> només a aquelles de tipus <em>normal</em>. "
                 "També és recomanable que cada <em>Post</em> tingui <strong>una imatge per al banner</strong> i <strong>tres imatges a la galeria</strong> "
                 "per a una presentació visual completa.</p>"
+                "<p><em>Assegura't d'afegir tags amb sentit per què es farà servir per al <strong> SEO</strong>.</em></p>"
                 "<p><strong>Atenció:</strong> Si decideixes eliminar aquest <em>Post</em>, assegura't de revisar la <strong>Categoria</strong> "
                 "parent perquè està relacionada amb aquest <em>Post</em>. L'eliminació de la <strong>Categoria</strong> parent pot afectar "
                 "els <em>Posts</em> associats.</p>"

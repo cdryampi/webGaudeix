@@ -8,6 +8,8 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 import requests
 from .models import Teenvio, Subscriptor
+from django.utils.html import escape
+
 import json
 
 class TeenvioView(View):
@@ -19,7 +21,7 @@ class TeenvioView(View):
     def post(self, request):
         #print(request.POST.get('email'))
         # Obtener el correo electrónico del formulario
-        email = request.POST.get('email')
+        email = escape(request.POST.get('email'))
         #print(email)
         try:
             validate_email(email)

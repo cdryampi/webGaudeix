@@ -1,4 +1,18 @@
 {% extends 'core/base.html' %}
+
+{% block meta_description %}
+
+  {% if categoria.metadescripcion %}
+    <meta name="Description" content="{{ categoria.metadescripcion }}">  
+  {% else %}
+    <meta name="Description" content="Agenda cultural"> 
+  {% endif %}
+
+{% endblock meta_description%}
+
+
+
+
 {% block title %}
     {% autoescape off %}
         {{ categoria.titulo |striptags | safe  }}

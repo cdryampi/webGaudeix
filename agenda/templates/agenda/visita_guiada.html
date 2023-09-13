@@ -1,6 +1,25 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% load custom_filters %}
+
+{% block meta_description %}
+    <meta name="Description" content="{{visites.metadescripcion | safe | striptags }}">
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if visites.tags.all %}
+    <meta name="Keywords" content="{% for tag in visites.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+{% block title %}
+  {{ visites.titulo |striptags | safe  }}
+{% endblock title %}
+
 {% block extra_css %}
 <style>
   #carouselVisites .carousel-inner img {

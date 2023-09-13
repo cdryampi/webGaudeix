@@ -1,10 +1,30 @@
 {% extends 'core/base.html' %}
 {% load custom_filters %}
+
+{% block meta_description %}
+    {% if categoria.metadescripcion %}
+        <meta name="Description" content="{{categoria.metadescripcion | safe | striptags }}">
+    {% else %}
+        <meta name="Description" content="{{categoria.descripcion | truncatewords:50 | safe | striptags }}">
+    {% endif %}
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if categoria.tags.all %}
+    <meta name="Keywords" content="{% for tag in categoria.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
 {% block title %}
     {% autoescape off %}
         {{ categoria.titulo |striptags | safe  }}
     {% endautoescape %}
 {% endblock title %}
+
 {% block extra_css %}
 <style>
     .categoria-titulo {
@@ -188,7 +208,7 @@
                     {% if visita.postimagen.imagen %}
                         {% with imagen=visita.postimagen.imagen %}
                             <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
-                                <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
+                                <img src="{{ imagen.archivo.url }}" alt="Imagen de la visita"
                                     class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
                             </div>
                         {% endwith %}

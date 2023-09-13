@@ -61,6 +61,11 @@ class SubBlog(MetadataModel, BaseModel):
         help_text="Indica si el subblog està publicat",
         verbose_name="Publicat"
     )
+    tags = models.ManyToManyField(
+        Tag,
+        blank=True,
+        verbose_name="Tags"
+    )
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -230,6 +235,11 @@ class Categoria(MetadataModel, BaseModel):
         default=False,
         help_text="Indica si la categoria està publicada o no. Si està publicada, es mostrarà en la llista de categories disponibles.",
         verbose_name="Publicat"
+    )
+    tags = models.ManyToManyField(
+        Tag,
+        blank=True,
+        verbose_name="Tags"
     )
 
     def save(self, *args, **kwargs):

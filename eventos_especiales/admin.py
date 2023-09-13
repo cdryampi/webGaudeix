@@ -6,6 +6,10 @@ from multimedia_manager.models import Fichero
 from .models import EventoFichero, EventoEspecial, EventoEspecialGaleriaImagen
 from django.db.models import Q
 from multimedia_manager.models import Imagen
+from django.contrib.admin.widgets import FilteredSelectMultiple
+from django import forms
+from blog.models import Tag
+
 
 class EventoFicheroInline(admin.TabularInline):
     model = EventoFichero
@@ -52,7 +56,16 @@ class EventoEspecialGaleriaImagenInline(admin.TabularInline):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+class EventoEspecialAdminForm(forms.ModelForm):
+    class Meta:
+        model = EventoEspecial
+        fields = '__all__'
 
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=FilteredSelectMultiple("Tags", is_stacked=False),
+        required=False,
+    )
 
 
 @admin.register(EventoEspecial)
@@ -61,6 +74,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
     list_filter = ['fecha_evento', 'publicado']
     search_fields = ['titulo']
     filter_horizontal = ('agendas', 'videos', 'carruseles')
+    form = EventoEspecialAdminForm
 
     fieldsets = [
         (None, {
@@ -76,6 +90,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
                 'agendas',
                 'logo_especial',
                 'imagen_especial',
+                'tags',
                 'parallax',
                 'videos',
                 'carruseles'
@@ -86,6 +101,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
                 "<p>Assegura't de completar els camps i de marcar l'opció <strong>publicat</strong> perquè es mostri destacat a la web. També pots afegir un<strong> logo especial</strong> si vols destacar encara més amb un logo (en negatiu) aquest esdeveniment al header (també s'ha d'afegir al header).</p>"
                 "<p>La <strong>imatge de l'especial</strong> només es fa servir com a miniatura per altres seccions de la web (categories relacionades i seleccions).</p>"
                 "<p>Tingues en compte que els canvis que facis aquí poden afectar la forma en què es presenta l'esdeveniment especial.</p>"
+                "<p><em>Assegura't d'afegir tags amb sentit per què es farà servir per al <strong> SEO</strong>.</em></p>"
                 "<p><strong>Nota:</strong> Abans d'eliminar un esdeveniment, verifica que no el necessitis, ja que es pot despublicar.</p>"
             ),
         }),

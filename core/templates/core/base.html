@@ -11,13 +11,31 @@
     <!--metas-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta content="GaudeixCabreradeMar" name="author">
-    <meta name="Description" content="Cabrera de Mar">
-    <meta name="Keywords" content="">
+
+    {% block meta_description %}
+        {% if portada %}
+            <meta name="description" content="Explora la riquesa cultural de Cabrera de Mar amb les nostres propostes. Descobreix l'art, la història i les tradicions en aquesta localitat de la costa catalana.">
+        {% endif %}
+    {% endblock meta_description%}
+    
+    {% block meta_keywords %}
+        {% if portada %}
+            <meta name="Keywords" content="Cabrera de Mar, que fer, on menjar, festes, tradicions, turisme, patrimoni, platges, visites guiades, cultura">
+        {% endif %}
+    {% endblock meta_keywords %}
+
+
     <meta name="robots" content="all">
     <meta name="revisit-after" content="30 days">
     <meta name="copyright" content="Copyright © - GaudeixCabreradeMar">
     <!--Fin de los metas-->
-    
+    <!-- cannonical -->
+    {% block canonical %}
+        {% if portada %}
+            <link rel="canonical" href="{{ current_url }}"/>
+        {% endif %}
+
+    {% endblock canonical %}
 
     <!-- Fuentes -->
     <link rel="preload" href="{% static 'core/css/fonts.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">

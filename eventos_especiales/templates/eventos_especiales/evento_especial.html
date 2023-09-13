@@ -1,10 +1,34 @@
 {% extends "core/base.html" %}
 {% load static %}
+
+{% block meta_description %}
+
+    {% if evento_especial.metadescripcion %}
+        <meta name="Description" content="{{ evento_especial.metadescripcion | safe | striptags }}">
+    {% else %}
+        <meta name="Description" content="{{ evento_especial.contenido | safe | striptags }}">
+    {% endif %}
+
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+
+    {% if evento_especial.tags.all %}
+        <meta name="Keywords" content="{% for tag in evento_especial.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+    {% endif %}
+
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
 {% block title %}
     {% autoescape off %}
         {{ evento_especial.titulo |striptags | safe  }}
     {% endautoescape %}
 {% endblock title %}
+
 {% block extra_css %}
 <style>
     .titulo-principal {

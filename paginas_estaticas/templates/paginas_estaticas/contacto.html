@@ -1,9 +1,26 @@
 {% extends 'core/base.html' %}
+
+
+{% block meta_description %}
+    <meta name="Description" content="Formulari de contacte, per posar en contacte amb turisme@cabrerademar.cat.">
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+
+  <meta name="Keywords" content="contacte, gaudeixcabrera, formulario, com contactar, email, correu.">
+
+{% endblock meta_keywords %}
+
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
 {% block title %}
-    {% autoescape off %}
-        {{ legal.titulo |striptags | safe  }}
-    {% endautoescape %}
+  {{ contacto.titulo |striptags | safe  }}
 {% endblock title %}
+
+
 {% block extra_css %}
 
   <style>
@@ -66,7 +83,8 @@
       
       .btn-primary:hover {
         background-color: #0056b3;
-      }      
+      }
+
   </style>
 
 {% endblock extra_css %}

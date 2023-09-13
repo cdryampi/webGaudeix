@@ -1,8 +1,23 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
+{% block meta_description %}
+    <meta name="Description" content="{{ post.metadescripcion |safe }}">
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if post.tags.all %}
+    <meta name="Keywords" content="{% for tag in post.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
 {% block title %}
     {% autoescape off %}
-        {{ post.titulo |striptags | safe  }}
+        {{ ruta.titulo |striptags | safe  }}
     {% endautoescape %}
 {% endblock title %}
 

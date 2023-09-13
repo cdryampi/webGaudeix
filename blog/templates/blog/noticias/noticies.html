@@ -1,5 +1,18 @@
 {% extends "core/base.html" %}
 
+{% block meta_description %}
+    <meta name="Description" content="{{categoria.metadescripcion |safe }}">
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if ruta.tags.all %}
+    <meta name="Keywords" content="{% for tag in categoria.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
 {% block title %}
     {% autoescape off %}
         {{ categoria.titulo |striptags | safe  }}

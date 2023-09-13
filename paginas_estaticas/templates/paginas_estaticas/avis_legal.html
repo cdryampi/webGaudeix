@@ -1,10 +1,32 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
+{% block meta_description %}
+  {% if legal.contenido %}
+    <meta name="Description" content="
+    {% autoescape on %}
+      {{ legal.contenido | safe  | truncatewords:60  |striptags }}
+    {% endautoescape %}">
+  {% endif %}
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+
+  <meta name="Keywords" content="avís legal, gaudeixcabrera, propietat.">
+
+{% endblock meta_keywords %}
+
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
 {% block title %}
     {% autoescape off %}
         {{ legal.titulo |striptags | safe  }}
     {% endautoescape %}
 {% endblock title %}
+
 {% block extra_css %}
 <style>
     .banner-container {

@@ -10,6 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.core.mail import EmailMessage
+from django.utils.html import escape
 
 import requests
 
@@ -58,16 +59,16 @@ class ContactoView(BaseContextMixin, TemplateView):
     
     def post(self, request):
         # Obtener los datos del formulario
-        name = request.POST.get('name')
-        surname = request.POST.get('surname')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        address = request.POST.get('address')
-        postal_code = request.POST.get('postal_code')
-        city = request.POST.get('city')
-        country = request.POST.get('country')
-        message = request.POST.get('message')
-        privacy_policy = request.POST.get('privacy_policy')
+        name = escape(request.POST.get('name'))
+        surname = escape(request.POST.get('surname'))
+        email = escape(request.POST.get('email'))
+        phone = escape(request.POST.get('phone'))
+        address = escape(request.POST.get('address'))
+        postal_code = escape(request.POST.get('postal_code'))
+        city = escape(request.POST.get('city'))
+        country = escape(request.POST.get('country'))
+        message = escape(request.POST.get('message'))
+        privacy_policy = escape(request.POST.get('privacy_policy'))
 
         # Validar el correo electrónico
         try:
@@ -81,15 +82,24 @@ class ContactoView(BaseContextMixin, TemplateView):
         # Construir el cuerpo del correo electrónico
         subject = 'Nou contacte'
         body = f'''
-        Nombre: {name}
-        Apellidos: {surname}
-        Email: {email}
-        Teléfono: {phone}
-        Dirección: {address}
-        Código Postal: {postal_code}
-        Ciudad: {city}
-        País: {country}
-        Mensaje: {message}
+            Hola,
+
+            Has rebut un nou contacte a través del formulari de la web. A continuació, es mostren els detalls:
+
+            Nom: {name}
+            Cognoms: {surname}
+            Correu electrònic: {email}
+            Telèfon: {phone}
+            Adreça: {address}
+            Codi Postal: {postal_code}
+            Ciutat: {city}
+            País: {country}
+            Missatge: {message}
+
+            Gràcies.
+
+            Atentament,
+            El formulari de contacte de la web
         '''
 
         # Crear el objeto EmailMessage y especificar la codificación
@@ -97,18 +107,23 @@ class ContactoView(BaseContextMixin, TemplateView):
             subject=subject,
             body=body,
             from_email=EMAIL_HOST_USER,
-            to=['ysanchez@cabrerademar.cat'],
+            to=[EMAIL_HOST_USER],
         )
         email.encoding = 'utf-8'  # Especificar la codificación UTF-8
 
         # Configurar el servidor SMTP y enviar el correo electrónico
         try:
-            email.send()
-
-            response_data = {
-                'success': True,
-                'message': 'Correo electrónico enviado exitosamente'
-            }
+            if privacy_policy:
+                email.send()
+                response_data = {
+                    'success': True,
+                    'message': 'Correo electrónico enviado exitosamente'
+                }
+            else:
+                response_data = {
+                    'success': False,
+                    'message': 'Correo electrónico enviado exitosamente'
+                }
         except Exception as e:
             response_data = {
                 'error': str(e)

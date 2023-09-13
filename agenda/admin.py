@@ -5,13 +5,33 @@ from multimedia_manager.models import Imagen, Fichero
 from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda
 from map.models import MapPoint
 from django.forms import DurationField
-from blog.models import PostImagen, PostGaleriaImagen, PostFichero, Categoria
-
+from blog.models import PostImagen, PostGaleriaImagen, PostFichero, Categoria, Tag
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from django.utils.html import format_html
 
+class AgendaAdminForm(forms.ModelForm):
+    class Meta:
+        model = Agenda
+        fields = '__all__'
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=FilteredSelectMultiple("Tags", is_stacked=False),
+        required=False,
+    )
+
+class RutaAdminForm(forms.ModelForm):
+    class Meta:
+        model = Ruta
+        fields = '__all__'
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=FilteredSelectMultiple("Tags", is_stacked=False),
+        required=False,
+    )
 
 
 class PostGaleriaImagenInline(admin.TabularInline):
@@ -107,8 +127,38 @@ class PostImagenInlineRuta(admin.TabularInline):
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
     autocomplete_fields = ['ubicacion']
-    search_fields = ['tags']
+    form = AgendaAdminForm
 
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'metatitulo',
+                'descripcion',
+                'metadescripcion',
+                'descripcion_corta',
+                'publicado',
+                'ubicacion',
+                'entradas',
+                'tipo_evento',
+                ],
+
+            'description': (
+                "<p><strong><em>Aquesta és l'administració d'una Agenda.</em></strong></p>"
+                "<p><em>Aquí pots introduir totes les dades relacionades amb la teva agenda. "
+                "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"
+                "<p><em>Recorda que aquests camps estan destinats a recollir informació sobre l'agenda, "
+                "com el <strong>títol</strong>, la <strong>descripció</strong>, la <strong>ubicació</strong> i altres detalls importants.</em></p>"
+                "<p><em>També pots marcar l'opció <strong>entrades</strong> si hi ha entrades disponibles per a l'esdeveniment.</em> Sortirà un enllaç cap a Codetiquets.</p>"
+                "<p><em>Assegura't d'afegir tags amb sentit perquè es faran servir per al <strong>SEO</strong> i per mostrar característiques del calendari en PDF que es genera.</em></p>"
+                "<p><strong>Properes Activitats:</strong> A la pàgina del portal, els esdeveniments més propers seran destacats a la secció de 'Properes Activitats', oferint als usuaris una vista ràpida de les properes activitats programades.</p>"
+                "<p><em>El camp <strong>tipo_evento</strong> et permet seleccionar el tipus d'esdeveniment de l'agenda, com 'Música', 'Teatre', 'Exposició', etc.</em></p>"
+            ),
+
+
+        }),
+        # Resto de los fieldsets
+    ]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "categoria":
@@ -130,6 +180,13 @@ class AgendaAdmin(admin.ModelAdmin):
 class VisitaGuidadaForm(forms.ModelForm):
     duracion_dias = forms.IntegerField(help_text="Duració en dies", required=False)
     duracion_horas = forms.IntegerField(help_text="Duració en hores", required=False)
+    
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=FilteredSelectMultiple("Tags", is_stacked=False),
+        required=False,
+    )
+
 
     class Meta:
         model = VisitaGuiada
@@ -184,6 +241,7 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
     inlines = [PostImagenInlineRuta, PostGaleriaImagenInline, PostFicheroImagenInline]
     filter_horizontal = ('agendas',)
     autocomplete_fields = ['mapa', 'categoria']
+    
     fieldsets = [
         (None, {
             'fields': [
@@ -200,7 +258,8 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
                 'publico_recomendado',
                 'mostrar_calendario',
                 'mapa',
-                'agendas'
+                'agendas',
+                'tags'
                 ],
 
             'description': (
@@ -214,6 +273,7 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
                 "pot haver-hi problemes amb les <strong>dates</strong>.</em></p>"
                 "<p><em>Si l'event no té <strong>preu</strong>, pots deixar-lo a 0,00, i el sistema el detectarà com a gratuït.</em></p>"
                 "<p><em>Recordeu que cal activar manualment el <strong>calendari</strong> perquè es mostri en el calendari a la web en <strong>mostrar calendari</strong>.</em></p>"
+                "<p><em>Assegura't d'afegir tags amb sentit perquè es faran servir per al <strong>SEO</strong>.</em></p>"
             ),
 
         }),
@@ -233,7 +293,45 @@ class RutaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, PostFicheroImagenInline, PostImagenInlineRuta]
     exclude = ['duracion']  # Excluir el campo duracion en el administrador
     autocomplete_fields = ['categoria','punto_inicio','mapas_itinerario']
+    form = RutaAdminForm
 
+    fieldsets = [
+        (None,{
+            'fields':[
+                'titulo',
+                'metatitulo',
+                'descripcion',
+                'metadescripcion',
+                'publicado',
+                'pendiente',
+                'distancia',
+                'tema',
+                'actividad',
+                'valoracion',
+                'tipologia',
+                'dificultad',
+                'punto_inicio',
+                'mapas_itinerario',
+                'enlace_natura_local',
+                'tags',
+            ],
+            'description': (
+            "<p><strong><em>Aquesta és l'administració d'una Ruta.</em></strong></p>"
+            "<p><em>Aquí pots introduir totes les dades relacionades amb la teva ruta. "
+            "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"
+            "<p><em>Recorda que aquests camps estan destinats a recollir informació sobre la ruta, "
+            "com la <strong>durada</strong>, la <strong>pendent</strong>, la <strong>distància</strong>, i altres detalls importants.</em></p>"
+            "<p><em>També pots especificar la <strong>tipologia</strong> i la <strong>dificultat</strong> de la ruta per ajudar els usuaris a trobar les rutes que més els interessen.</em></p>"
+            "<p><em>El punt d'inici de la ruta es pot especificar mitjançant el <strong>Punt d'inici</strong> seleccionat.</em></p>"
+            "<p><em>Pots afegir mapes que formen part de l'itinerari amb els <strong>Mapes d'itinerari</strong>.</em></p>"
+            "<p><em>L'enllaç a Natura Local et permet vincular a una pàgina específica de Natura Local on es poden trobar més detalls sobre la ruta.</em></p>"
+            "<p><em>Assegura't d'afegir tags amb sentit perquè es faran servir per al <strong>SEO</strong>.</em></p>"
+            "<p><strong>Nota important:</strong> Perquè aquesta ruta respecti tots els camps del model, és necessari que estigui associada a la categoria <strong>'Senderisme'</strong> o seleccioni <strong>'Senderisme que existeix'</strong> a la secció de 'Categoria'.</p>"
+            "<p><strong>Properes Rutes:</strong> Les properes rutes seran destacades a la secció de 'Properes Rutes' al portal, oferint als usuaris una vista ràpida de les pròximes rutes programades.</p>"
+        ),
+
+        })
+    ]
 
 
 

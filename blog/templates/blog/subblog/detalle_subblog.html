@@ -1,5 +1,24 @@
 {% extends 'core/base.html' %}
 
+{% block meta_description %}
+    {% if subblog.metadescripcion %}
+        <meta name="Description" content="{{ subblog.metadescripcion | safe | striptags }}">
+    {% else %}
+        <meta name="Description" content="{{ subblog.contenido | safe | striptags }}">
+    {% endif %}
+
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if subblog.tags.all %}
+    <meta name="Keywords" content="{% for tag in subblog.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
 {% block title %}
     {% autoescape off %}
         {{ subblog.titulo |striptags | safe  }}
@@ -61,21 +80,6 @@
                 {{ subblog.contenido | safe }}
             {% endautoescape %}
         </p>
-      </div>
-      <div class="col-12 py-3">
-        <div class="text-center fancybox-carousel">
-            {% if subblog.subbloggaleriaimagen_set.count %}
-
-                <img src="{{ subblog.subblogimagen.imagen.archivo.url }}" alt="{{ subblog.titulo }}"
-                class="fancybox img-fluid img-cat-banner" data-fancybox="carousel" data-caption="{{ subblog.titulo }}" style="cursor:pointer;">
-                <div class="col-12">
-                    <small class="text-center">Fes clic a l'imatge per veure-la completa</small>
-                </div>
-    
-            {% endif %}
-    
-        </div>
-    </div>
       </div>
     </div>
 </section>

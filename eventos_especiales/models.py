@@ -9,6 +9,7 @@ from agenda.models import Agenda
 from ckeditor.fields import RichTextField
 from django.utils import timezone
 from django.urls import reverse
+from blog.models import Tag
 # Create your models here.
 
 class EventoEspecial(BaseModel, MetadataModel):
@@ -108,6 +109,12 @@ class EventoEspecial(BaseModel, MetadataModel):
         verbose_name="Carrussells"
     )
 
+    tags = models.ManyToManyField(
+        Tag,
+        blank=True,
+        verbose_name="Tags"
+    )
+    
     def save(self, *args, **kwargs):
         if not self.slug or not self.id:
             self.slug = slugify(self.titulo)
