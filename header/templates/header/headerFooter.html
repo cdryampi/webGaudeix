@@ -35,6 +35,8 @@
                                 {% endif %}
                             {% elif referencia.tipo == 'subvencion' %}
                                 <a class="nav-link text-white text-uppercase" href="{% url 'subvencions:subvencions' %}" target="_blank" style="color: {{ header_footer.color_letra}} !important;">subvencions</a>
+                            {% elif referencia.tipo == 'punt_informacio' %}
+                                    <a class="nav-link text-white text-uppercase" href="{% url 'paginas_estaticas:punt' %}" style="color: {{ header.color_letra}} !important;">{{ referencia.punt_informacio.titulo }}</a>
                             {% endif %}
                         </li>
                     {% endfor %}

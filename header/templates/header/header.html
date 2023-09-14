@@ -63,7 +63,10 @@
                                 </li>
                             {% endif %}
 
-                        
+                        {% elif referencia.tipo == 'punt_informacio' %}
+                            <li class="nav-item">
+                                <a class="nav-link text-white font-weight-bold" href="{% url 'paginas_estaticas:punt' %}" style="color: {{ header.color_letra}} !important;">{{ referencia.punt_informacio.titulo }}</a>
+                            </li>
                         {% endif %}
                         
                         

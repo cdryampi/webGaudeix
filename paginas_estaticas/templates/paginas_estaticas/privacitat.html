@@ -1,5 +1,13 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% block meta_description %}
+    <meta name="description" content="Consulta la nostra política de privadesa per comprendre com gestionem les teves dades personals i la teva privadesa en línia. Protegim la teva informació i t'oferim una experiència segura de navegació.">
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+    <meta name="keywords" content="política de privadesa, protecció de dades personals, privacitat en línia, seguretat en línia, consentiment de dades">
+{% endblock meta_keywords %}
+
 {% block title %}
     {% autoescape off %}
         {{ legal.titulo |striptags | safe  }}

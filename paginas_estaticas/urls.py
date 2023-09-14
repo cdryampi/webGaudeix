@@ -10,5 +10,5 @@ urlpatterns = [
     path('avis-legal/', AvisLegalView.as_view(), name='avis_legal'),
     path('politica-cookies/', PoliticaCookiesView.as_view(), name='politica_cookies'),
     path('contacte/', ContactoView.as_view(), name='contacto'),
-    path('punt-informacio', PuntInformacioView.as_view(), name='Punt')
+    path('punt-informacio/', PuntInformacioView.as_view(), name='punt')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
