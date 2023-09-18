@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 
 
 ALLOWED_EXTENSIONS = {
-    'imagen': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'],
+    'imagen': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg', 'webp'],
     'video': ['.mp4', '.avi', '.mov', '.mkv'],
     'fichero': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.zip']
 }

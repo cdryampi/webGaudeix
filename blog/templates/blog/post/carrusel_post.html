@@ -15,7 +15,7 @@
                         <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
                         <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
                         <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
-                        <img src="" 
+                        <img src="{{ imagen.image.large_thumbanil.url }}" 
                             data-src="{{ imagen.image.large_thumbanil.url }}"
                             alt="{{ post.titulo }}" 
                             class="img-fluid align-middle lazy-load-img">

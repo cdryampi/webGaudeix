@@ -178,3 +178,54 @@ def error_404(request, exception):
     return response
 
 
+def error_500(request):
+    
+    categorias = Categoria.objects.filter(publicado=True)
+    ultimos_eventos = get_ultimos_eventos()
+    header = Header.objects.first()
+    header_footer = HeaderFooter.objects.first()
+    referencias = Referencia.objects.filter(header=header)
+    topbar = Topbar.objects.filter(publicado=True).last()
+    agenda = Categoria.objects.filter(tipo='agenda').first()
+    redes_sociales = RedSocial.objects.all()
+    redes_color = obtener_color_mas_repetido()
+    categorias_especiales = get_categorias_especiales()
+    footer = get_footer()
+    map_points = get_map_points()
+    coleccion_destacados = get_coleccion_destacados()
+    evento = EventoEspecial.objects.filter(publicado=True).first()
+    portada_video = VideosEmbed.objects.filter(publicado=True).first()
+    categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
+    parallax = Parallax.objects.filter(publicado=True).first()
+    user_agent = get_user_agent(request)
+    cookies = Cookies.objects.filter().first()
+    cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
+
+    response = render(
+        request,
+        'core/500/500.html',
+        {
+            'categorias': categorias,
+            'ultimos_eventos': ultimos_eventos,
+            'agenda': agenda,
+            'header': header,
+            'header_footer': header_footer,
+            'referencias': referencias,
+            'topbar': topbar,
+            'redes_sociales': redes_sociales,
+            'color_red_social': redes_color,
+            'categorias_especiales': categorias_especiales,
+            'footer': footer,
+            'video_local': portada_video,
+            'map_points': map_points,
+            'categorias_header': categorias_con_subblog,
+            'coleccion_destacados': coleccion_destacados,
+            'evento_especial': evento,
+            'user_agent': user_agent,
+            'parallax':parallax,
+            'cookies': cookies,
+            'cookie_page': cookie_page,
+        }
+    )
+
+    return response

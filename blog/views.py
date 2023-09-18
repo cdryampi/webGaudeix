@@ -152,7 +152,7 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             context['posts'] = posts
         elif categoria.tipo == 'festes_i_tradicions':
             # Si la categoría es de tipo 'festes_i_tradicions', obtener las festividades relacionadas
-            festes = EventoEspecial.objects.filter().all()
+            festes = EventoEspecial.objects.filter(categoria = self.get_object()).all()
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
             context['festes'] = festes
@@ -243,3 +243,19 @@ class DetalleNoticiaView(BaseContextMixin, DetailView):
     model = Noticia  # Modelo que se utilizará para obtener la noticia
     template_name = 'blog/noticias/noticia.html'  # Plantilla HTML para la página
     context_object_name = 'noticia'  # Nombre con el que se pasará el objeto noticia a la plantilla
+
+class ListarNoticiaView(ListView):
+    """
+    Vista basada en clase para listar las noticias.
+    Utiliza una plantilla 'noticies.html' para mostrar la lista de noticias.
+    """
+    model = Noticia  # Modelo que se utilizará para obtener los subblogs
+    template_name = 'blog/noticias/noticies.html'  # Plantilla HTML para la página
+    context_object_name = 'noticias'  # Nombre con el que se pasará la lista de subblogs a la plantilla
+
+    def get_queryset(self):
+        """
+        Devuelve la queryset de noticias filtrada para mostrar solo los publicados.
+        """
+        queryset = super().get_queryset().filter(publicado=True)
+        return queryset

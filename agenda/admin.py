@@ -137,6 +137,7 @@ class AgendaAdmin(admin.ModelAdmin):
                 'descripcion',
                 'metadescripcion',
                 'descripcion_corta',
+                'categoria',
                 'publicado',
                 'ubicacion',
                 'entradas',

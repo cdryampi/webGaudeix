@@ -218,7 +218,7 @@ class Categoria(MetadataModel, BaseModel):
         ('senderisme','senderisme'),
         ('noticies','noticies'),
         ('lloc','lloc'),
-        ('festes_i_tradicions','festes i tradicions')
+        ('festes_i_tradicions','festes, tradicions i cultura')
         
         # Agrega más tipos según tus necesidades
     )
@@ -242,6 +242,10 @@ class Categoria(MetadataModel, BaseModel):
         verbose_name="Tags"
     )
 
+
+    def get_absolute_url(self):
+        return reverse('blog:categoria', kwargs={'slug': self.slug})
+    
     def save(self, *args, **kwargs):
         
         if not self.id:

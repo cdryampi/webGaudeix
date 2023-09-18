@@ -5,10 +5,28 @@ from eventos_especiales.models import EventoEspecial
 
 class SeleccionDestacados(models.Model):
     
-    titulo = models.CharField(max_length=100, help_text="Escriu un nom únic")
-    publicado = models.BooleanField(default=False, help_text="Marca si vols que estigui despublicat.")
-    coleccion = models.ManyToManyField(Post, related_name='seleccions', blank=True)
-    eventos_especiales = models.ManyToManyField(EventoEspecial, related_name="seleccio_especial", blank=True, help_text="Selecciona els esdeveniments que vols que apareguin a la portada.")
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Escriu un nom únic",
+        verbose_name="Títol"
+    )
+    publicado = models.BooleanField(
+        default=False,
+        help_text="Marca si vols que estigui despublicat.",
+        verbose_name="Publicat"
+    )
+    coleccion = models.ManyToManyField(
+        Post,
+        related_name='seleccions',
+        blank=True,
+        verbose_name="colecció"
+    )
+    eventos_especiales = models.ManyToManyField(
+        EventoEspecial,
+        related_name="seleccio_especial",
+        blank=True,
+        help_text="Selecciona els esdeveniments que vols que apareguin a la portada."
+    )
 
     def __str__(self):
         return self.titulo

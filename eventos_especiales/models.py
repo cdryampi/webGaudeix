@@ -9,7 +9,7 @@ from agenda.models import Agenda
 from ckeditor.fields import RichTextField
 from django.utils import timezone
 from django.urls import reverse
-from blog.models import Tag
+from blog.models import Tag, Categoria, Post
 # Create your models here.
 
 class EventoEspecial(BaseModel, MetadataModel):
@@ -20,16 +20,19 @@ class EventoEspecial(BaseModel, MetadataModel):
         help_text="Títol de l'esdeveniment especial",
         verbose_name="Títol"
     )
+    
     slug = models.SlugField(
         unique=True,
         editable=False,
         help_text="Slug automàtic generat a partir del títol",
 
     )
+
     color = ColorField(
         default='#FFFFFF',
         verbose_name="Color"
     )
+
     fecha_evento = models.DateField(
         default=timezone.now,
         help_text="Data de l'esdeveniment",
@@ -62,6 +65,16 @@ class EventoEspecial(BaseModel, MetadataModel):
         verbose_name="Descripció curta"
     )
 
+    categoria = models.ForeignKey(
+        Categoria,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="categoria",
+        help_text="Selecciona la categoria vinculada",
+        verbose_name="Categoria"
+    )
+
     logo_especial = models.ImageField(
         upload_to='eventos_especiales/',
         help_text="Logotip especial per a l'esdeveniment",
@@ -79,11 +92,11 @@ class EventoEspecial(BaseModel, MetadataModel):
     )
     
     agendas = models.ManyToManyField(
-        Agenda,
+        Post,
         blank=True,
-        related_name="agenda",
+        related_name="esdeveniment",
         help_text="Selecciona tots els esdeveniments vinculats amb l'event",
-        verbose_name="Agendes"
+        verbose_name="esdeveniment"
     )
 
     parallax = models.ForeignKey(
@@ -172,13 +185,21 @@ class EventoEspecialGaleriaImagen(models.Model):
 
 class EventoFichero(models.Model):
     evento = models.OneToOneField(
-        EventoEspecial, on_delete=models.CASCADE, null=True)
-    fichero = models.OneToOneField(Fichero, on_delete=models.CASCADE)
+        EventoEspecial,
+        on_delete=models.CASCADE,
+        null=True
+    )
+
+    fichero = models.OneToOneField(
+        Fichero,
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return f"Evento: {self.evento} - Fichero: {self.fichero}"
 
     def delete(self, *args, **kwargs):
         # Eliminar la imagen asociada antes de eliminar el objeto SubBlogImagen
-        self.evento.delete()
+        # self.evento.delete() .-.
+        self.fichero.delete()
         super().delete(*args, **kwargs)

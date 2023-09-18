@@ -42,8 +42,8 @@
     {% if agenda %}
     <div class="container">
         <div class="col-12 py-3 text-center">
-            {% if agenda.categoria %}
-              <a href="{% url 'blog:categoria' slug=agenda.categoria.slug %}" class="btn btn-light btn-custom py-3 px-4">Tota l'agenda</a>
+            {% if local_agenda.categoria %}
+              <a href="{% url 'blog:categoria' slug=local_agenda.categoria.slug %}" class="btn btn-light btn-custom py-3 px-4">Tota l'agenda</a>
             {% else %}
               <a href="{% url 'blog:categoria' slug=agenda.slug %}" class="btn btn-light btn-custom py-3 px-4">Tota l'agenda</a>
             {% endif %}

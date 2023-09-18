@@ -8,7 +8,7 @@ from django.db.models import Q
 from multimedia_manager.models import Imagen
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django import forms
-from blog.models import Tag
+from blog.models import Tag, Categoria
 
 
 class EventoFicheroInline(admin.TabularInline):
@@ -74,6 +74,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
     list_filter = ['fecha_evento', 'publicado']
     search_fields = ['titulo']
     filter_horizontal = ('agendas', 'videos', 'carruseles')
+
     form = EventoEspecialAdminForm
 
     fieldsets = [
@@ -87,6 +88,8 @@ class EventoEspecialAdmin(admin.ModelAdmin):
                 'fecha_evento',
                 'fecha_fin',
                 'publicado',
+                'categoria',
+                'color',
                 'agendas',
                 'logo_especial',
                 'imagen_especial',
@@ -102,6 +105,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
                 "<p>La <strong>imatge de l'especial</strong> només es fa servir com a miniatura per altres seccions de la web (categories relacionades i seleccions).</p>"
                 "<p>Tingues en compte que els canvis que facis aquí poden afectar la forma en què es presenta l'esdeveniment especial.</p>"
                 "<p><em>Assegura't d'afegir tags amb sentit per què es farà servir per al <strong> SEO</strong>.</em></p>"
+                "<p><em>La <strong>categoria</strong> és opcional, però això determinarà on es vincularà. En principi, es vincularà a una categoria de tipus 'festes i tradicions'.</em></p>"
                 "<p><strong>Nota:</strong> Abans d'eliminar un esdeveniment, verifica que no el necessitis, ja que es pot despublicar.</p>"
             ),
         }),
@@ -109,3 +113,8 @@ class EventoEspecialAdmin(admin.ModelAdmin):
     ]
 
     inlines = [EventoFicheroInline, EventoEspecialGaleriaImagenInline]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "categoria":
+            kwargs["queryset"] = Categoria.objects.filter(tipo="festes_i_tradicions")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)

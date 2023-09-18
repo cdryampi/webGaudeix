@@ -177,7 +177,7 @@
                                     <h4 class="py-3">Informació addicional</h4>
                                     <ul class="list-unstyled mb-0">
                                         <li class="mb-3">
-                                            <i class="fas fa-dollar-sign"></i>
+                                            <i class="fas fa-euro-sign"></i>
                                             <strong>Preu:</strong>
                                             {% if visites.precio == 0 %}
                                               <span class="event-price">Gratis</span>
@@ -215,7 +215,17 @@
                                             <i class="fas fa-map-marker-alt"></i>
                                             <strong>Ubicació:</strong>
                                             {% if visites.mapa %}
+
+                                              {% if visites.mapa.enlace_google_maps %}
+                                              
+                                                <a href="{{ visites.mapa.enlace_google_maps }}" target="_blank">Veure al mapa</a>
+                                              
+                                              {% else %}
+
                                                 <a href="https://maps.google.com/maps?q={{ visites.mapa.latitud }},{{ visites.mapa.longitud }}" target="_blank">Veure al mapa</a>
+                                              
+                                              {% endif %}
+
                                             {% else %}
                                                 No s'ha proporcionat la ubicació.
                                             {% endif %}
@@ -280,9 +290,16 @@
         <div class="row mx-0">
             <div class="col-12 col-lg-8 col-md-6 col-sm-12">
                 <div class="calendar">
-                    <div class="calendar-header">
-                        <h2 class="calendar-title" id="current-month-title"></h2>
-                    </div>
+                  <div class="calendar-header">
+                    <button id="prev-month-button" class="btn btn-link">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h2 class="calendar-title" id="current-month-title"></h2>
+                    <button id="next-month-button" class="btn btn-link">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
                     <div class="calendar-body">
                         <div class="calendar-weekdays">
                             <div class="calendar-weekday">Dl</div>
@@ -362,11 +379,20 @@
 
                   <article class="card related-activity-card mb-3 h-100">
                       {% with imagen=objeto.postgaleriaimagen_set.first %}
-                      {% if imagen %}
-                      <div class="image-container">
-                          <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
-                      </div>
-                      {% endif %}
+                        {% if imagen %}
+                          <div class="image-container">
+                              <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
+                          </div>
+                        {% else %}
+                          {% with imagenPost=objeto.postimagen %}
+                            {% if imagenPost %}
+                              <div class="image-container">
+                                <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
+                              </div>
+                            {% endif %}
+
+                          {% endwith %}
+                        {% endif %}
                       {% endwith %}
                       <div class="card-body text-center">
                           <h5 class="card-title related-activity-title">{{ objeto.titulo }}</h5>
@@ -403,73 +429,121 @@
 
 {% block extra_script %}
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Obtener las fechas de inicio y fin del modelo de Django
-      const fechaInicioString = '{{ visites.fecha_inicio }}';
-      const fechaFinString = '{{ visites.fecha_fin }}';
 
-      // Mapear los meses en catalán a sus equivalentes en inglés
-      const monthMap = {
-        'gener': 'gener',
-        'febrer': 'febrer',
-        'març': 'març',
-        'abril': 'abril',
-        'maig': 'maig',
-        'juny': 'juny',
-        'juliol': 'juliol',
-        'agost': 'agost',
-        'setembre': 'setembre',
-        'octubre': 'octubre',
-        'novembre': 'novembre',
-        'desembre': 'desembre'
-      };
+// Obtener las fechas de inicio y fin del modelo de Django
+const fechaInicioString = '{{ visites.fecha_inicio }}';
+const fechaFinString = '{{ visites.fecha_fin }}';
 
-      // Obtener el día, mes y año de la fecha de inicio
-      const fechaInicioParts = fechaInicioString.split(' ');
-      const diaInicio = parseInt(fechaInicioParts[0]);
-      const mesInicio = monthMap[fechaInicioParts[1]];
-      const anyInicio = parseInt(fechaInicioParts[3]);
+// Mapear los meses en catalán a sus equivalentes en inglés
+const monthMap = {
+  'gener': 'gener',
+  'febrer': 'febrer',
+  'març': 'març',
+  'abril': 'abril',
+  'maig': 'maig',
+  'juny': 'juny',
+  'juliol': 'juliol',
+  'agost': 'agost',
+  'setembre': 'setembre',
+  'octubre': 'octubre',
+  'novembre': 'novembre',
+  'desembre': 'desembre'
+};
 
-      // Obtener el día, mes y año de la fecha de finalización
-      const fechaFinParts = fechaFinString.split(' ');
-      const diaFin = parseInt(fechaFinParts[0]);
-      const mesFin = monthMap[fechaFinParts[1]];
-      const anyFin = parseInt(fechaFinParts[3]);
+// Obtener el día, mes y año de la fecha de inicio
+const fechaInicioParts = fechaInicioString.split(' ');
+const diaInicio = parseInt(fechaInicioParts[0]);
+const mesInicio = monthMap[fechaInicioParts[1]];
+const anyInicio = parseInt(fechaInicioParts[3]);
 
-      // Generar las fechas de inicio y finalización en formato inglés
-      // Formatear las fechas de inicio y fin en formato 'MM/DD/YYYY'
-      const fechaInicioFormatted = '{{ visites.fecha_inicio|date:"m/d/Y" }}';
-      const fechaFinFormatted = '{{ visites.fecha_fin|date:"m/d/Y" }}';
+// Obtener el día, mes y año de la fecha de finalización
+const fechaFinParts = fechaFinString.split(' ');
+const diaFin = parseInt(fechaFinParts[0]);
+const mesFin = monthMap[fechaFinParts[1]];
+const anyFin = parseInt(fechaFinParts[3]);
 
-      // Crear los objetos Date con las fechas formateadas
-      const fechaInicio = new Date(fechaInicioFormatted);
-      const fechaFin = new Date(fechaFinFormatted);
-      console.log(fechaInicioFormatted);
-      console.log(fechaFinFormatted);
+// Crear los objetos Date con las fechas formateadas
+const fechaInicioFormatted = '{{ visites.fecha_inicio|date:"m/d/Y" }}';
+const fechaFinFormatted = '{{ visites.fecha_fin|date:"m/d/Y" }}';
+let fechaInicio = new Date(fechaInicioFormatted);
+let fechaFin = new Date(fechaFinFormatted);
 
-      // Generar el calendario marcado
-      const calendarDays = document.getElementById('calendar-days');
+// Copiar las fechas originales
+let fechaInicioOriginal = new Date(fechaInicio);
+let fechaFinOriginal = new Date(fechaFin);
 
-      // Obtener el mes y el año de la fecha de inicio
-      const currentMonth = fechaInicio.getMonth();
-      const currentYear = fechaInicio.getFullYear();
+// Verificar si ambas fechas son válidas y si la fecha de inicio es menor o igual a la fecha de finalización
+if (!isNaN(fechaInicio.getTime()) && !isNaN(fechaFin.getTime()) && fechaInicio <= fechaFin) {
+  document.addEventListener('DOMContentLoaded', function() {
+    // Obtener el calendario marcado
+    const calendarDays = document.getElementById('calendar-days');
 
-      // Generar el título del mes
-      const currentMonthTitle = document.getElementById('current-month-title');
-      currentMonthTitle.textContent = fechaInicio.toLocaleString('ca', { month: 'long', year: 'numeric' });
+    // Obtener los elementos de los botones
+    const prevMonthButton = document.getElementById('prev-month-button');
+    const nextMonthButton = document.getElementById('next-month-button');
+
+    // Agregar manejadores de eventos a los botones
+    prevMonthButton.addEventListener('click', function() {
+      fechaInicioOriginal.setMonth(fechaInicioOriginal.getMonth() - 1);
+      fechaFinOriginal.setMonth(fechaFinOriginal.getMonth() - 1);
+      actualizarCalendario();
+    });
+
+    nextMonthButton.addEventListener('click', function() {
+      fechaInicioOriginal.setMonth(fechaInicioOriginal.getMonth() + 1);
+      fechaFinOriginal.setMonth(fechaFinOriginal.getMonth() + 1);
+      actualizarCalendario();
+    });
+
+    // Función para actualizar el calendario
+    function actualizarCalendario() {
+      const currentYear = fechaInicioOriginal.getFullYear();
+      const currentMonth = fechaInicioOriginal.getMonth();
+
+      // Actualizar el título del mes
+      currentMonthTitle.textContent = fechaInicioOriginal.toLocaleString('ca', { month: 'long', year: 'numeric' });
 
       // Generar los días del calendario
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
       let calendarHTML = '';
+
       for (let i = 1; i <= daysInMonth; i++) {
+
         const date = new Date(currentYear, currentMonth, i);
-        const dayClass = (date >= fechaInicio && date <= fechaFin) ? 'calendar-day marked-date' : 'calendar-day';
-        calendarHTML += `<div class="${dayClass}">${i}</div>`;
+        if (date.getMonth() === fechaInicio.getMonth() && date.getFullYear() === fechaInicio.getFullYear()) {
+
+          const dayClass = (date >= fechaInicio && date <= fechaFin) ? 'calendar-day marked-date' : 'calendar-day';
+          calendarHTML += `<div class="${dayClass}">${i}</div>`;
+
+        }else if(date.getMonth() === fechaFin.getMonth() && date.getFullYear() === fechaFin.getFullYear()){
+
+          const dayClass = (date <= fechaFin) ? 'calendar-day marked-date' : 'calendar-day';
+          calendarHTML += `<div class="${dayClass}">${i}</div>`;
+
+        }else{
+
+          const dayClass = 'calendar-day';
+          calendarHTML += `<div class="${dayClass}">${i}</div>`;
+          
+        }
       }
 
       calendarDays.innerHTML = calendarHTML;
-    });
+    }
+
+    // Obtener el elemento del título del mes
+    const currentMonthTitle = document.getElementById('current-month-title');
+
+    // Inicializar el calendario al cargar la página
+    actualizarCalendario();
+  });
+}
+
+
+
+
+    
     document.addEventListener('DOMContentLoaded', function() {
       // Inicializar FancyBox para todos los elementos con la clase "fancybox"
       Fancybox.bind('.fancybox', {

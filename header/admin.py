@@ -10,7 +10,7 @@ class EnlaceExternoInline(admin.StackedInline):
 class ReferenciaAdmin(admin.TabularInline):
      model = Referencia
 
-     autocomplete_fields = ['post','categoria','subblog','evento_especial',]
+     autocomplete_fields = ('post','categoria','subblog','evento_especial')
 
 
      def get_formset(self, request, obj=None, **kwargs):

@@ -3,7 +3,7 @@
 <form id="filtro-agenda-form">
   {% csrf_token %}
   <div class="form-group">
-    <label for="tipo-evento">Tipo de Evento:</label>
+    <label for="tipo-evento">Tipus d'esdeveniment:</label>
     <div id="tipo-evento" class="tipo-evento-buttons">
       <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="">Tots</button>
       {% if joves %}
@@ -212,7 +212,19 @@
           eventTime.classList.add('event-time', 'px-1');
           eventTime.textContent = agenda.hora || 'Hora no disponible';
           eventDateTime.appendChild(eventTime);
-  
+          
+          const lloc = document.createElement('i');
+          lloc.classList.add('fas', 'fa-map-marker-alt','px-1');
+          lloc.style.color = '#3ebfab';
+
+          const llocSpan = document.createElement('span');
+          llocSpan.textContent = agenda.ubicacion || 'Ubicació no disponible';
+          const br = document.createElement('br');
+
+          eventDateTime.appendChild(br);
+          eventDateTime.appendChild(lloc);
+          eventDateTime.appendChild(llocSpan);
+
           eventDetails.appendChild(eventDateTime);
           cardBody.appendChild(eventDetails);
   
@@ -220,12 +232,13 @@
           detallesLink.href = '/agenda/' + agenda.slug + '/';
           detallesLink.classList.add('related-activity-link');
           detallesLink.classList.add('col-md-6', 'col-lg-3', 'col-12','p-3');
+
           cardElement.appendChild(imageContainer);
           cardElement.appendChild(cardBody);
-  
           colElement.appendChild(cardElement);
   
           if (isEventPast(agenda.fecha, agenda.hora)) {
+
             cardElement.classList.add('past-event');
             const finalizadoDiv = document.createElement('div');
             finalizadoDiv.classList.add('finalizado');
@@ -233,9 +246,12 @@
             cardElement.appendChild(finalizadoDiv);
             detallesLink.appendChild(colElement);
             eventosPasados.push(detallesLink);
+
           } else {
+
             detallesLink.appendChild(colElement);
             eventosFuturos.push(detallesLink);
+            
           }
         });
       });
