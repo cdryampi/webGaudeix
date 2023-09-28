@@ -10,16 +10,6 @@ from core.utils import refresh_cache
 from django.utils.translation import gettext_lazy as _
 
 
-class PostForm(forms.ModelForm):
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        widget=FilteredSelectMultiple("Etiquetas", is_stacked=False),
-        required=False,
-    )
-
-    class Meta:
-        model = Post
-        fields = "__all__"
 
 
 
@@ -47,6 +37,9 @@ class PostImagenInline(admin.TabularInline):
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
                     Q(subbloggaleriaimagen__isnull=True),
+                    Q(diversidadimagenbanner__isnull=True),
+                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -73,8 +66,10 @@ class PostGaleriaImagenInline(admin.TabularInline):
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True),
                     Q(subbloggaleriaimagen__isnull=True),
-                    Q(postgaleriaimagen__isnull=True)
-                    | Q(postgaleriaimagen__post__id=post_id),
+                    Q(diversidadimagenbanner__isnull=True),
+                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True),
+                    Q(postgaleriaimagen__isnull=True) | Q(postgaleriaimagen__post__id=post_id),
                 )
             kwargs['empty_label'] = 'Sin imagen asociada'
         
@@ -84,17 +79,17 @@ class PostGaleriaImagenInline(admin.TabularInline):
 
 
 class PostAdmin(admin.ModelAdmin):
-    form = PostForm
     list_display = ('titulo', 'categoria')
     list_filter = ('categoria',)
     search_fields = ('titulo', 'descripcion')
     inlines = [PostImagenInline, PostGaleriaImagenInline]
     actions = ['refresh_cache']
     autocomplete_fields = ['categoria']
+    filter_horizontal = ('tags',)
 
     fieldsets = [
         (None, {
-            'fields': ['titulo', 'metatitulo', 'descripcion', 'metadescripcion', 'categoria', 'publicado'],
+            'fields': ['titulo', 'metatitulo', 'descripcion', 'metadescripcion', 'categoria', 'publicado','tags'],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'un Post.</strong></p>"
                 "<p><em><u>Un Post</u></em> és una entrada del blog que pot contenir diferents tipus de continguts. "

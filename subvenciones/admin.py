@@ -27,7 +27,9 @@ class PDFCollectionConvocatoriaFicheroInline(admin.TabularInline):
                 Q(postfichero__isnull=True),
                 Q(pdfcollectionjustificaciofichero__isnull=True),
                 Q(pdfcollectionresoluciofichero__isnull =True),
-                Q(pdfcollectiontotesfichero__isnull = True)
+                Q(pdfcollectiontotesfichero__isnull = True),
+                Q(pdfdiversidadfichero__isnull=True),
+                Q(compadescubrefichero__isnull=True),
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
             kwargs['help_text'] = 'Selecciona un fitxer PDF associat a aquesta convocatòria de subvenció.'
@@ -55,7 +57,9 @@ class PDFCollectionJustificacioFicheroInline(admin.TabularInline):
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(eventofichero__isnull=True),
                 Q(postfichero__isnull=True),
-                Q(pdfcollectionresoluciofichero__isnull =True)
+                Q(pdfcollectionresoluciofichero__isnull =True),
+                Q(pdfdiversidadfichero__isnull=True),
+                Q(compadescubrefichero__isnull=True),
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
             kwargs['help_text'] = 'Selecciona un fitxer PDF associat a aquesta convocatòria de subvenció.'
@@ -83,7 +87,9 @@ class PDFCollectionResolucioFicheroInline(admin.TabularInline):
                 Q(pdfcollectionconvocatoriafichero__isnull=True),
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(eventofichero__isnull=True),
-                Q(postfichero__isnull=True)
+                Q(postfichero__isnull=True),
+                Q(pdfdiversidadfichero__isnull=True),
+                Q(compadescubrefichero__isnull=True),
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
             kwargs['help_text'] = 'Selecciona un fitxer PDF associat a aquesta resolució de subvenció.'
@@ -111,7 +117,9 @@ class PDFCollectionTotesFicheroInline(admin.TabularInline):
                 Q(pdfcollectionjustificaciofichero__isnull = True),
                 Q(pdfcollectionconvocatoriafichero__isnull = True), 
                 Q(eventofichero__isnull=True),
-                Q(postfichero__isnull=True)
+                Q(postfichero__isnull=True),
+                Q(pdfdiversidadfichero__isnull=True),
+                Q(compadescubrefichero__isnull=True),
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
             kwargs['help_text'] = 'Selecciona un fitxer PDF o zip associat a aquesta subvenció.'

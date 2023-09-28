@@ -1,0 +1,235 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block meta_description %}
+
+    {% if compra_y_descubre.metadescripcion %}
+        <meta name="Description" content="{{ compra_y_descubre.metadescripcion | safe | striptags }}">
+    {% else %}
+        <meta name="Description" content="{{ compra_y_descubre.contenido | safe | striptags }}">
+    {% endif %}
+
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+
+    {% if compra_y_descubre.tags.all %}
+        <meta name="Keywords" content="{% for tag in compra_y_descubre.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+    {% endif %}
+
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ compra_y_descubre.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
+{% block extra_css %}
+    <style>
+        
+        .event-container .banner-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            margin: 0px;
+            border-radius: 5px;
+
+        }
+        
+        .titulo-principal, .inside-primary-color strong {
+            color: {{ compra_y_descubre.primary_color }};
+        }
+
+        .secondary-color{
+            color: {{ compra_y_descubre.secondary_color }};
+        }
+        .primary-color{
+            color: {{ compra_y_descubre.primary_color }};
+        }
+
+        .container-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 3 columnas con igual ancho */
+            gap: 20px; /* Espacio entre las columnas y filas */
+            align-items: center; /* Centra verticalmente los elementos en cada fila */
+            justify-items: center;
+          }
+        
+        .paso-container p{
+            color: {{ compra_y_descubre.primary_color }};
+            font-weight: 700;
+        }
+        .paso-img{
+            max-height: 300px;
+            object-fit: cover!important;
+        }
+
+        .link {
+            display: inline-block;
+            padding: 30px 50px;
+            font-weight: bold;
+            color: {{ compra_y_descubre.primary_color | safe }};
+            background-color: #f9f9f9;
+            border: 2px solid {{ compra_y_descubre.primary_color | safe }};
+            border-radius: 30px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .link:hover {
+            background-color: {{ compra_y_descubre.primary_color | safe }};
+            color: white !important;
+        }
+        
+        .title-countdown{
+            font-size: 6.5rem;
+        }
+        
+        .header-text{
+            font-size: 2rem;
+        }
+
+        /* Establecer una sola columna para tabletas y dispositivos móviles */
+        @media (max-width: 768px) {
+            .container-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+    </style>
+{% endblock extra_css %}
+
+{% block content %}
+
+{% if compra_y_descubre.compradescubreimagen %}
+    <div class="container-fluid  event-container bg-event">
+        <div class="col-12 p-0 m-0">
+                <a href="{{ compra_y_descubre.compradescubreimagen.imagen.archivo.url }}" class="fancybox">
+                    <img src="{{ compra_y_descubre.compradescubreimagen.imagen.archivo.url }}" alt="{{ compra_y_descubre.titulo }}" class="img-fluid banner-img">
+                </a>
+        </div>
+        <div class="row justify-content-center mt-2">
+            <div class="col-12">
+                <small class="d-block">Fes clic al banner per veure a pantalla completa</small>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% if compra_y_descubre.titulo %}
+    <div class="container-fluid bg-gray pt-2 pt-sm-2 pt-md-3 pt-lg-3 pt-xl-4 m-0">
+        <div class="container mt-3">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-12 align-content-end">
+                    <h1 class="titulo-principal">{{ compra_y_descubre.titulo | safe }}</h1>
+                </div>
+                <div class="col-lg-6 col-12 border-left-evento align-content-start inside-primary-color">
+                    {% autoescape on %}
+                        {{ compra_y_descubre.descripcion_corta | safe }}
+                    {% endautoescape %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+{% if compra_y_descubre.compadescubrepasosimagen_set.all.count >= 0 %}
+    <div class="container pt-3  event-container">
+        <div class="col-12 pt-3">
+            <h2 class="titulo-principal text-center h2">Vols participar?</h2>
+        </div>
+        <div class="row justify-content-center mt-2">
+            <div class="col-12 container-grid">
+                {% for imagen in compra_y_descubre.compadescubrepasosimagen_set.all %}
+                    <div class="paso-container">
+                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ compra_y_descubre.titulo }}" class="paso-img">
+                        <h3 class="h3 text-center secondary-color">
+                            {{ imagen.titulo }}
+                        </h3>
+                        <p class="text-center primary-color">
+                            {{ imagen.descripcion |safe}}
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-12 pt-3">
+            <p class="small text-center">Participar és molt fàcil, només has de comprar als teus negocis de confiança i omplir la butlleta.</p>
+        </div>
+    </div>
+{% endif %}
+
+{% if compra_y_descubre.descripcion_larga %}
+    <div class="container-fluid bg-light pt-2 pt-sm-2 pt-md-3 pt-lg-3 pt-xl-4 m-0">
+        <div class="container-fluid mt-3">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-12 border-left-evento align-content-start inside-primary-color">
+                    {% autoescape on %}
+                        {{ compra_y_descubre.descripcion_larga | safe }}
+                    {% endautoescape %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<div class="container-fluid bg-gray py-2 py-sm-2 py-md-3 py-lg-4 py-xl-5 m-0 py-3">
+    <div class="container-fluid mt-3">
+        <div class="col-12 py-3">
+            <h2 class="text-center h2 primary-color">
+                Vols Tenir Més Informació per participar?
+            </h2>
+        </div>
+        <div class="col-12 justify-content-center py-2 py-sm-2 py-md-3 py-lg-4 py-xl-5 m-0 py-3">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6">
+                    <div class="col-12">
+                        <p class="header-text">
+                            Si ets <span class="secondary-color h1">comerciant</span>, adhereix el teu negoci a la campanya…
+                        </p>
+                    </div>
+                    <div class="col-12 text-center">
+                        {% if compra_y_descubre.comerciante %}
+                            <a href="{{ compra_y_descubre.comerciante }}" class="link text-center" target="_blank">Adhereix-te</a>
+                        {% else %}
+                            <a href="https://xarxabarris.cat/" class="link text-center" target="_blank">Adhereix-te</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6">
+                    <div class="col-12">
+                        <p class="header-text">
+                            Si vols <span class="secondary-color h1">participar</span>, completa el registre a xarxabarris.cat
+                        </p>
+                    </div>
+                    <div class="col-12 text-center">
+                        {% if compra_y_descubre.participante %}
+                            <a href="{{ compra_y_descubre.participante }}" class="link" target="_blank">Participa</a>
+                        {% else %}
+                            <a href="https://xarxabarris.cat/" class="link" target="_blank">Participa</a>
+                        {% endif %}
+                    </div>
+                <div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block asides %}
+
+    {% if compra_y_descubre.negocis %}
+        {% include 'compra_y_descubre/negocis_selection.html' %}
+    {% endif %}
+
+{% endblock asides %}

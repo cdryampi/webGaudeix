@@ -31,7 +31,10 @@ class SubBlogImagenInline(admin.TabularInline):
                 postimagen__isnull=True,
                 postgaleriaimagen__isnull=True,
                 subbloggaleriaimagen__isnull= True,
-                eventoespecialgaleriaimagen__isnull=True
+                eventoespecialgaleriaimagen__isnull=True,
+                diversidadimagenbanner__isnull=True,
+                compadescubrepasosimagen__isnull=True,
+                compradescubreimagen__isnull=True,
             )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -54,6 +57,9 @@ class SubblogGaleriaImagenInline(admin.TabularInline):
                     Q(postgaleriaimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
+                    Q(diversidadimagenbanner__isnull=True),
+                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True),
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -65,7 +71,7 @@ class SubBlogAdmin(admin.ModelAdmin):
     list_filter = ('publicado',)
     search_fields = ('titulo', 'contenido')
     inlines = [SubBlogImagenInline, SubblogGaleriaImagenInline]
-    search_fields = ['tags']
+    filter_horizontal = ('tags',)
     
     fieldsets = [
         (None, {

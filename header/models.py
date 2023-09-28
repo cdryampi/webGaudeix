@@ -3,11 +3,14 @@ from django.db import models
 from singleton_model import SingletonModel
 
 from blog.models import Post, Categoria, SubBlog
+
 from subvenciones.models import SubvencionDescripcion
 
 from paginas_estaticas.models import Contacto, PuntoInformacion
 
 from eventos_especiales.models import EventoEspecial
+
+from compra_y_descubre.models import CompraDescubre
 
 from django.core.exceptions import ValidationError
 
@@ -87,31 +90,36 @@ class EnlaceExterno(models.Model):
 
 class Referencia(models.Model):
     TIPOS_REFERENCIA = (
-        ('post', 'Post'),
+        ('post', 'entrada'),
         ('categoria', 'Categoría'),
         ('subblog', 'SubBlog'),
-        ('externo', 'Enlace Externo'),
-        ('contacto','Contacto'),
-        ('evento_especial','evento_especial'),
-        ('subvencion','Subvencion'),
-        ('punt_informacio', 'punt_informació')
+        ('externo', 'Enllaç Extern'),
+        ('contacto','Contacte'),
+        ('evento_especial','esdeveniment especial'),
+        ('compra_y_descubre','Compra i Descobreix'),
+        ('subvencion','Subvenció'),
+        ('punt_informacio', "punt d'informació")
     )
 
     tipo = models.CharField(
         max_length=30,
-        choices=TIPOS_REFERENCIA
+        choices=TIPOS_REFERENCIA,
+        help_text="selecciona el tipus de referencia que vols",
+        verbose_name="Tipus"
     )
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        verbose_name="Entrada"
     )
     categoria = models.ForeignKey(
         Categoria,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        verbose_name= "categoría"
     )
     subblog = models.ForeignKey(
         SubBlog,
@@ -123,49 +131,63 @@ class Referencia(models.Model):
         EnlaceExterno,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        verbose_name="extern"
     )
     contacto = models.ForeignKey(
         Contacto,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        verbose_name="contacte"
     )
     evento_especial = models.ForeignKey(
         EventoEspecial,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        verbose_name="esdeveniment"
     )
     orden = models.PositiveIntegerField(
-        default=0
+        default=0,
+        verbose_name="ordre"
     )
     punt_informacio = models.ForeignKey(
         PuntoInformacion,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        verbose_name="punt d'informació"
     )
     header = models.ForeignKey(
         Header,
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        default=1
+        default=1,
+        verbose_name="capcelera"
     )
     header_footer = models.ForeignKey(
         HeaderFooter,
         on_delete=models.CASCADE,
         null=True,
         blank=True,
+        verbose_name="capcelera inferior"
     )
     subvencion = models.ForeignKey(
         SubvencionDescripcion,
         on_delete=models.CASCADE,
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="subvenció"
     )
-    
+    compra_y_descubre = models.ForeignKey(
+        CompraDescubre,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        verbose_name="compra i descobreix"
+    )
     def __str__(self):
         tipo = self.get_tipo_display()
         titulo = ""
@@ -187,6 +209,8 @@ class Referencia(models.Model):
             titulo = self.subvencion.titulo
         elif self.punt_informacio:
             titulo = self.punt_informacio.titulo
+        elif self.compra_y_descubre:
+            titulo = self.compra_y_descubre.titulo
 
         return f"{tipo}: {titulo}"
 
@@ -202,6 +226,7 @@ class Referencia(models.Model):
             self.evento_especial = None
             self.subvencion = None
             self.punt_informacio = None
+            self.compra_y_descubre = None
 
         elif self.tipo == 'categoria':
 
@@ -212,6 +237,7 @@ class Referencia(models.Model):
             self.evento_especial = None
             self.subvencion = None
             self.punt_informacio = None
+            self.compra_y_descubre = None
 
         elif self.tipo == 'subblog':
 
@@ -222,6 +248,7 @@ class Referencia(models.Model):
             self.evento_especial = None
             self.subvencion = None
             self.punt_informacio = None
+            self.compra_y_descubre = None
 
         elif self.tipo == 'externo':
             
@@ -232,6 +259,7 @@ class Referencia(models.Model):
             self.evento_especial = None
             self.subvencion = None
             self.punt_informacio = None
+            self.compra_y_descubre = None
 
         elif self.tipo == 'contacto':  # Nueva condición para el tipo 'contacto'
 
@@ -242,6 +270,7 @@ class Referencia(models.Model):
             self.evento_especial = None
             self.subvencion = None
             self.punt_informacio = None
+            self.compra_y_descubre = None
 
         elif self.tipo == 'evento_especial':
 
@@ -252,6 +281,7 @@ class Referencia(models.Model):
             self.contacto = None
             self.subvencion = None
             self.punt_informacio = None
+            self.compra_y_descubre = None
 
         elif self.tipo == 'subvencion':
             self.post = None
@@ -261,6 +291,7 @@ class Referencia(models.Model):
             self.contacto = None
             self.evento_especial = None
             self.punt_informacio = None
+            self.compra_y_descubre = None
 
         elif self.punt_informacio == 'punt_informacio':
 
@@ -271,8 +302,20 @@ class Referencia(models.Model):
             self.contacto = None
             self.evento_especial = None
             self.subvencion = None
+            self.compra_y_descubre = None
 
-        if not self.post and not self.categoria and not self.subblog and not self.externo and not self.contacto and not self.evento_especial and not self.subvencion and not self.punt_informacio:
+        elif self.compra_y_descubre == 'compra_y_descubre':
+            self.post = None
+            self.categoria = None
+            self.subblog = None
+            self.externo = None
+            self.contacto = None
+            self.evento_especial = None
+            self.subvencion = None
+            self.punt_informacio = None
+
+
+        if not self.post and not self.categoria and not self.subblog and not self.externo and not self.contacto and not self.evento_especial and not self.compra_y_descubre and not self.subvencion and not self.punt_informacio:
             return
             
         if self.header and self.header_footer:

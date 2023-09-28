@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from blog.models import Post, Categoria, SubBlog
+from blog.models import Post, Categoria, SubBlog, Tag
 from multimedia_manager.models import Video
+from topbar.models import Topbar
 
 from .utils import get_parallax_image_path
 
@@ -122,23 +123,76 @@ class Parallax(models.Model):
 
 
 class VideosEmbed(models.Model):
-    titulo = titulo = models.CharField(max_length=100)
+    titulo = models.CharField(
+        max_length=100,
+    )
     publicado = models.BooleanField(default=False)
-    videos = models.ForeignKey(Video, on_delete=models.CASCADE, null=True)
+    video = models.OneToOneField(Video, on_delete=models.SET_NULL, null=True)
     def __str__(self):
         return f"Portada de video: {self.titulo}"
 
 
 class Personalizacion(models.Model):
-    # Atributos del modelo
-    favicon = models.OneToOneField(Favicon, on_delete=models.SET_NULL, null=True, blank=True)
+    # modelo que representa la personalización del sitio.
 
+    favicon = models.OneToOneField(
+        Favicon,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Favicon",
+        help_text="Selecciona el favicon per al lloc (si n'hi ha un)."
+    )
+    parallax_portada = models.OneToOneField(
+        Parallax,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Parallax de portada",
+        help_text="Selecciona el parallax per a la portada (si n'hi ha un)."
+    )
+    video_portada = models.OneToOneField(
+        Video,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Vídeo de portada",
+        help_text="Selecciona el vídeo per a la portada (si n'hi ha un)."
+    )
+    topbar = models.OneToOneField(
+        Topbar,
+        on_delete= models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Topbar del portal",
+        help_text= "Selecciona el topbar que vols per la portada"
+    )
+    analytics_script = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name="Script de Google Analytics",
+        help_text="Col·loca aquí el teu codi de Google Analytics."
+    )
+    meta_description_portada = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name="Meta descripció de portada",
+        help_text="Especifica una descripció meta per a la portada del lloc."
+    )
+    meta_keywords = models.ManyToManyField(
+        Tag,
+        verbose_name="Paraules clau meta",
+        help_text="Selecciona les paraules clau meta relacionades amb el lloc.",
+        blank=True,
+    )
     objects = PersonalizacionManager()
 
     class Meta:
-        verbose_name = "Personalización"
-        verbose_name_plural = "Personalización"
-
+        verbose_name = "Personalització"
+        verbose_name_plural = "Personalitzacions"
+    def __str__(self):
+        return "Personalització del portal"
+    
     def save(self, *args, **kwargs):
         # Solo se permite guardar una única instancia de Personalizacion
         if Personalizacion.objects.exists() and not self.pk:

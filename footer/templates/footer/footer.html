@@ -49,6 +49,11 @@
               {% endif %}
             </div>
             {% endfor %}
+            <div class="footer-item">
+              {% if diversidad %}
+                <p class="mb-1"><a href="{% url 'paginas_estaticas:igualtat' %}">diversitat e inclusió</a></p>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>

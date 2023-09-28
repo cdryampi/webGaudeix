@@ -23,11 +23,14 @@ class EventoFicheroInline(admin.TabularInline):
 
             kwargs['queryset'] = Fichero.objects.filter(
                 Q(eventofichero__isnull=True) | Q(eventofichero__id=evento_id),
-                Q(eventofichero__isnull=False) | Q(postfichero__isnull=True),
+                Q(eventofichero__isnull=True), 
+                Q(postfichero__isnull=True),
                 Q(pdfcollectionresoluciofichero__isnull =True),
                 Q(pdfcollectionjustificaciofichero__isnull=True),
                 Q(pdfcollectionconvocatoriafichero__isnull=True),
                 Q(pdfcollectiontotesfichero__isnull = True),
+                Q(pdfdiversidadfichero__isnull=True),
+                Q(compadescubrefichero__isnull=True),
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
 
@@ -50,22 +53,16 @@ class EventoEspecialGaleriaImagenInline(admin.TabularInline):
                     Q(postimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
                     Q(subbloggaleriaimagen__isnull=True),
+                    Q(diversidadimagenbanner__isnull=True),
+                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True) | Q(eventoespecialgaleriaimagen__evento_especial_id=evento_especial)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-class EventoEspecialAdminForm(forms.ModelForm):
-    class Meta:
-        model = EventoEspecial
-        fields = '__all__'
 
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        widget=FilteredSelectMultiple("Tags", is_stacked=False),
-        required=False,
-    )
 
 
 @admin.register(EventoEspecial)
@@ -73,9 +70,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
     list_display = ['titulo', 'fecha_evento', 'publicado']
     list_filter = ['fecha_evento', 'publicado']
     search_fields = ['titulo']
-    filter_horizontal = ('agendas', 'videos', 'carruseles')
-
-    form = EventoEspecialAdminForm
+    filter_horizontal = ('agendas', 'videos', 'carruseles','tags')
 
     fieldsets = [
         (None, {

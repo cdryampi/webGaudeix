@@ -4,6 +4,10 @@ from ckeditor.fields import RichTextField
 from core.models import MetadataModel
 from map.models import MapPoint
 from django.contrib.auth import get_user_model
+from blog.models import Post
+from multimedia_manager.models import Imagen, Fichero
+
+
 
 User = get_user_model()
 
@@ -33,6 +37,7 @@ class PaginaLegal(models.Model):
     titulo = models.CharField(max_length=255)
     encabezado = models.CharField(max_length=200) # Campo para el encabezado de la página
     imagen = models.ImageField(upload_to='legal_images/', null=True, blank=True) # Campo para la imagen asociada a la página
+
     contenido = RichTextField()
     # Otros campos necesarios para tu modelo
     def clean(self):
@@ -42,6 +47,157 @@ class PaginaLegal(models.Model):
         
     def __str__(self):
         return self.titulo
+
+
+
+
+
+
+
+class Diversidad(MetadataModel):
+    titulo = models.CharField(
+        max_length=255,
+        help_text= "afegeix el titul principal",
+        verbose_name= "títul"
+    )
+    sub_titulo = models.CharField(
+        max_length=255,
+        help_text= "afegeix un subtitul per la landing de igualtat",
+        verbose_name="subtítul",
+        null=True,
+        blank=True
+    )
+    logros = models.ManyToManyField(
+        Post,
+        blank=True,
+        help_text="Afegeix els èxits que hem obtingut PE (punt lila o els punts segurs)",
+        verbose_name="èxits",
+        related_name="logros_diversidad"  # Related name personalizado para la relación logros
+    )
+    planes = models.ManyToManyField(
+        Post,
+        blank=True,
+        help_text="Afegeix els plans que estem seguint per arribar a la igualtat.",
+        verbose_name="plans",
+        related_name="planes_diversidad"  # Related name personalizado para la relación planes
+    )
+    descripcion_auxiliar = RichTextField(
+        help_text= "Explica a el pla de igualtat",
+        verbose_name= "descripció auxiliar",
+        blank= True,
+        null= True
+    )
+
+    def save(self, *args, **kwargs):
+        # Verificar si ya existe una instancia activa
+        if Diversidad.objects.exists() and not self.pk:
+            raise ValidationError("Ja existeix una instància de Diversitat. No es pot crear una altra.")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.titulo
+    
+    def delete(self, *args, **kwargs):
+        # Evitar que se elimine la instancia
+        pass
+    
+    class Meta:
+        verbose_name = "diversitat"
+        verbose_name_plural = "diversitat"
+
+class PDFDiversidadFichero(models.Model):
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Introdueix el títol.",
+        verbose_name="títul"
+    )
+    diversidad = models.ForeignKey(
+        Diversidad,
+        on_delete=models.CASCADE,
+        default=None,
+        verbose_name="diversitat"
+    )
+    fichero = models.ForeignKey(
+        Fichero,
+        on_delete=models.CASCADE,
+        verbose_name= "fitxer"
+    )
+
+    def __str__(self):
+        return f"diversitat: {self.diversidad.titulo} - fichero: {self.fichero}"
+    
+
+    def delete(self, *args, **kwargs):
+        self.fichero.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = PDFDiversidadFichero.objects.get(pk=self.pk)
+            if old_instance.fichero != self.fichero and old_instance.fichero:
+                old_instance.fichero.delete()
+        super().save(*args, **kwargs)
+
+
+
+
+
+class DiversidadImagenBanner(models.Model):
+    """
+    Modelo que representa a la imagen de un post
+    """
+    nombre = models.CharField(
+        max_length=255,
+        help_text= "afegeix el nom de la entitat",
+        verbose_name= "nom"
+    )
+    enlace = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Enllaç a cap el lloc virtual de l'entitat",
+        verbose_name="Enllaç de l'entitat"
+    )
+    diversidad = models.ForeignKey(
+        Diversidad,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name="Entrada del Bloc"
+    )
+    imagen = models.OneToOneField(
+        Imagen,
+        on_delete=models.CASCADE,
+        verbose_name="Imatge"
+    )
+
+
+    class Meta:
+        verbose_name = "Imatge de l'entitat"
+        verbose_name_plural = "Imatges de les entitats"
+    
+    def __str__(self):
+        return f"Post: {self.diversidad} - Imagen: {self.imagen}"
+
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = DiversidadImagenBanner.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
+
+
+
+
+
+
+
+
+
 
 class PaginaEstatica(SingletonModel):
     pass

@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     'django_user_agents',
     'selecciones',
     'subvenciones',
+    'compra_y_descubre'
     #'corsheaders',
     #'admin_tree'
     #'filters'

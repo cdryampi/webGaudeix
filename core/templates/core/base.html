@@ -14,15 +14,24 @@
 
     {% block meta_description %}
         {% if portada %}
-            <meta name="description" content="Explora la riquesa cultural de Cabrera de Mar amb les nostres propostes. Descobreix l'art, la història i les tradicions en aquesta localitat de la costa catalana.">
+            {% if portada_meta_description %}
+                <meta name="description" content="{{ portada_meta_description }}">
+            {% else %}
+                <meta name="description" content="Explora la riquesa cultural de Cabrera de Mar amb les nostres propostes. Descobreix l'art, la història i les tradicions en aquesta localitat de la costa catalana.">
+            {% endif %}
         {% endif %}
     {% endblock meta_description%}
     
     {% block meta_keywords %}
         {% if portada %}
-            <meta name="Keywords" content="Cabrera de Mar, que fer, on menjar, festes, tradicions, turisme, patrimoni, platges, visites guiades, cultura">
+            {% if portada_meta_keywords %}
+            <meta name="Keywords" content="{% for keyword in portada_meta_keywords %}{{ keyword.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+            {% else %}
+                <meta name="Keywords" content="Cabrera de Mar, que fer, on menjar, festes, tradicions, turisme, patrimoni, platges, visites guiades, cultura">
+            {% endif %}
         {% endif %}
     {% endblock meta_keywords %}
+
 
 
     <meta name="robots" content="all">

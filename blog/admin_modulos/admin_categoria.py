@@ -29,7 +29,10 @@ class CategoriaBannerImagenInline(admin.TabularInline):
                 postimagen__isnull=True,
                 postgaleriaimagen__isnull = True,
                 subbloggaleriaimagen__isnull=True,
-                eventoespecialgaleriaimagen__isnull=True
+                eventoespecialgaleriaimagen__isnull=True,
+                diversidadimagenbanner__isnull=True,
+                compadescubrepasosimagen__isnull=True,
+                compradescubreimagen__isnull=True,
             )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -55,6 +58,9 @@ class CategoriaGaleriaImagenInline(admin.TabularInline):
                     Q(postimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
                     Q(subbloggaleriaimagen__isnull=True),
+                    Q(diversidadimagenbanner__isnull=True),
+                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True),
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -70,7 +76,7 @@ class CategoriaAdmin(admin.ModelAdmin):
     inlines = [CategoriaBannerImagenInline,CategoriaGaleriaImagenInline]
     actions = ['refresh_cache']
     autocomplete_fields = ['subblog']
-    search_fields = ['tags']
+    filter_horizontal = ('tags',)
     fieldsets = [
         (None, {
             'fields': ['titulo', 'metatitulo', 'subtitulo', 'descripcion', 'metadescripcion', 'especial', 'tipo', 'color', 'publicado', 'subblog','tags'],

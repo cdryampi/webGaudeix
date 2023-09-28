@@ -7,7 +7,7 @@ from redes_sociales.models import RedSocial
 from agenda.models import VariationAgenda
 from django.utils import timezone
 from django.db.models import Q
-from paginas_estaticas.models import Cookies, PaginaLegal
+from paginas_estaticas.models import Cookies, PaginaLegal, Diversidad
 
 class BaseContextMixin:
     def get_context_data(self, **kwargs):
@@ -24,7 +24,7 @@ class BaseContextMixin:
             (Q(fecha=now.date(), hora__gte=now.time()) | Q(fecha__gt=now.date()))
         ).order_by('fecha', 'hora')[:4]
 
-        
+        context['diversidad'] = Diversidad.objects.filter().first()
         context['header_footer'] = HeaderFooter.objects.first()
         context['header'] = Header.objects.first()
         categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)

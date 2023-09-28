@@ -36,7 +36,8 @@ urlpatterns = [
     path('', include('paginas_estaticas.urls')),
     path('s/', include('eventos_especiales.urls')),
     path('api/', include('api.urls')),
-    path('sv/',include('subvenciones.urls'))
+    path('sv/',include('subvenciones.urls')),
+    path('c-d/', include('compra_y_descubre.urls'))
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),

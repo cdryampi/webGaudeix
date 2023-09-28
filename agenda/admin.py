@@ -11,28 +11,6 @@ from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from django.utils.html import format_html
 
-class AgendaAdminForm(forms.ModelForm):
-    class Meta:
-        model = Agenda
-        fields = '__all__'
-
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        widget=FilteredSelectMultiple("Tags", is_stacked=False),
-        required=False,
-    )
-
-class RutaAdminForm(forms.ModelForm):
-    class Meta:
-        model = Ruta
-        fields = '__all__'
-
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        widget=FilteredSelectMultiple("Tags", is_stacked=False),
-        required=False,
-    )
-
 
 class PostGaleriaImagenInline(admin.TabularInline):
     model = PostGaleriaImagen
@@ -52,6 +30,9 @@ class PostGaleriaImagenInline(admin.TabularInline):
                 Q(categoriagaleriaimagen__isnull=True),
                 Q(postimagen__isnull=True),
                 Q(eventoespecialgaleriaimagen__isnull=True),
+                Q(diversidadimagenbanner__isnull=True),
+                Q(compadescubrepasosimagen__isnull=True),
+                Q(compradescubreimagen__isnull=True),
             )
             kwargs['empty_label'] = 'Sin imagen asociada'
 
@@ -78,6 +59,9 @@ class PostFicheroImagenInline(admin.TabularInline):
                 Q(pdfcollectionjustificaciofichero__isnull=True),
                 Q(pdfcollectionconvocatoriafichero__isnull=True),
                 Q(pdfcollectiontotesfichero__isnull = True),
+                Q(pdfdiversidadfichero__isnull=True),
+                Q(compadescubrefichero__isnull=True),
+                
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
 
@@ -114,6 +98,9 @@ class PostImagenInlineRuta(admin.TabularInline):
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
+                    Q(diversidadimagenbanner__isnull=True),
+                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -127,7 +114,7 @@ class PostImagenInlineRuta(admin.TabularInline):
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
     autocomplete_fields = ['ubicacion']
-    form = AgendaAdminForm
+    filter_horizontal = ('tags',)
 
     fieldsets = [
         (None, {
@@ -142,6 +129,7 @@ class AgendaAdmin(admin.ModelAdmin):
                 'ubicacion',
                 'entradas',
                 'tipo_evento',
+                'tags'
                 ],
 
             'description': (
@@ -176,17 +164,9 @@ class AgendaAdmin(admin.ModelAdmin):
         return field
 
 
-
-
 class VisitaGuidadaForm(forms.ModelForm):
     duracion_dias = forms.IntegerField(help_text="Duració en dies", required=False)
     duracion_horas = forms.IntegerField(help_text="Duració en hores", required=False)
-    
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        widget=FilteredSelectMultiple("Tags", is_stacked=False),
-        required=False,
-    )
 
 
     class Meta:
@@ -294,7 +274,7 @@ class RutaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, PostFicheroImagenInline, PostImagenInlineRuta]
     exclude = ['duracion']  # Excluir el campo duracion en el administrador
     autocomplete_fields = ['categoria','punto_inicio','mapas_itinerario']
-    form = RutaAdminForm
+    filter_horizontal = ('tags',)
 
     fieldsets = [
         (None,{

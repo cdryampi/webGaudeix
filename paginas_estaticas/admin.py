@@ -1,8 +1,91 @@
 from django.contrib import admin
+
+from blog.models import Post
 from .models import  PuntoInformacion, Contacto
-from .models import PaginaLegal, Cookies
+from .models import PaginaLegal, Cookies, Diversidad, PDFDiversidadFichero, DiversidadImagenBanner
+from multimedia_manager.models import Fichero, Imagen
+from django.db.models import Q
 
 # Register your models here.
+
+
+
+
+class PDFDiversidadFicheroFicheroInline(admin.TabularInline):
+    model = PDFDiversidadFichero
+    extra = 1
+
+    verbose_name_plural = "Fitxers PDF de l'igualtat"
+    verbose_name = "Fitxer PDF de l'igualtat"
+    help_text = "Aquí podeu pujar fitxers PDF relacionats amb l'igualtat."
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'fichero':
+            diversidad_id = None
+            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
+                diversidad_id = request.resolver_match.kwargs['object_id']
+
+            kwargs['queryset'] = Fichero.objects.filter(
+                Q(pdfdiversidadfichero__isnull=True) | Q(pdfdiversidadfichero__diversidad__id=diversidad_id),
+                Q(pdfcollectionconvocatoriafichero__isnull=True),
+                Q(eventofichero__isnull=True),
+                Q(postfichero__isnull=True),
+                Q(pdfcollectionjustificaciofichero__isnull=True),
+                Q(pdfcollectionresoluciofichero__isnull =True),
+                Q(pdfcollectiontotesfichero__isnull = True)
+            )
+            kwargs['empty_label'] = 'Sin fichero asociado'
+            kwargs['help_text'] = "Selecciona un fitxer PDF associat amb el context de l'igualtat."
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+class DiversidadImagenBannerInline(admin.TabularInline):
+    model = DiversidadImagenBanner
+    extra = 1
+    readonly_fields = ['imagen_preview']
+
+    def imagen_preview(self, instance):
+        if instance.imagen:
+            return instance.imagen.imagen_thumbnail()
+        return '(Cap imatge associada)'
+
+    imagen_preview.short_description = 'Imatge associada'
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'imagen':
+            diversidad_id = None
+            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
+                diversidad_id = request.resolver_match.kwargs['object_id']
+                kwargs['queryset'] = Imagen.objects.filter(
+                    Q(diversidadimagenbanner__isnull=True) | Q(diversidadimagenbanner__diversidad_id=diversidad_id),
+                    Q(postimagen__isnull=True),
+                    Q(eventoespecialgaleriaimagen__isnull=True),
+                    Q(categoriabannerimagen__isnull=True),
+                    Q(subblogimagen__isnull=True),
+                    Q(categoriagaleriaimagen__isnull=True),
+                    Q(postgaleriaimagen__isnull=True),
+                    Q(subbloggaleriaimagen__isnull=True),
+                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True),
+
+                )
+            kwargs['empty_label'] = 'Sense imatge associada'
+            
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
+
+
+
+
+
+@admin.register(Diversidad)
+class DiversidadAdmin(admin.ModelAdmin):
+    filter_horizontal = ('logros','planes',)
+    inlines = [PDFDiversidadFicheroFicheroInline, DiversidadImagenBannerInline]
+
+
 @admin.register(PaginaLegal)
 class PaginaLegalAdmin(admin.ModelAdmin):
     fieldsets = [

@@ -19,7 +19,7 @@ from django_user_agents.utils import get_user_agent
 from gaudeix.settings import TIEMPO_EXPIRACION
 from .utils import generate_cache_key
 from django.core.cache import caches
-
+from personalizacion.models import Personalizacion
 
 app_name = 'core'
 
@@ -67,13 +67,18 @@ def home(request):
         return cached_page
 
 
-    
+    personalizacion = Personalizacion.objects.filter().first()
+
+    meta_description = personalizacion.meta_description_portada
+    meta_keywords = personalizacion.meta_keywords.all()
+
+
     categorias = Categoria.objects.filter(publicado=True)
     ultimos_eventos = get_ultimos_eventos()
     header = Header.objects.first()
     header_footer = HeaderFooter.objects.first()
     referencias = Referencia.objects.filter(header=header)
-    topbar = Topbar.objects.filter(publicado=True).last()
+    
     portada = True
     agenda = Categoria.objects.filter(tipo='agenda').first()
     redes_sociales = RedSocial.objects.all()
@@ -83,13 +88,32 @@ def home(request):
     map_points = get_map_points()
     coleccion_destacados = get_coleccion_destacados()
     evento = EventoEspecial.objects.filter(publicado=True).first()
-    portada_video = VideosEmbed.objects.filter(publicado=True).first()
+
+    if personalizacion and personalizacion.video_portada:
+        portada_video = personalizacion.video_portada.videosembed.video.videosembed
+    else:    
+        portada_video = VideosEmbed.objects.filter(publicado=True).first()
+    
+
+    if personalizacion and personalizacion.parallax_portada:
+        parallax = personalizacion.parallax_portada
+    else:
+        parallax = Parallax.objects.filter(publicado =True).first()
+
+
+    if personalizacion and personalizacion.topbar:
+        topbar = personalizacion.topbar
+    else:
+        topbar = Topbar.objects.filter(publicado=True).last()
+
+
     categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
     parallax = Parallax.objects.filter(publicado=True).first()
     user_agent = get_user_agent(request)
     cookies = Cookies.objects.filter().first()
     cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
     current_url = request.build_absolute_uri()
+
     response = render(
         request,
         'core/home/home.html',
@@ -116,6 +140,8 @@ def home(request):
             'cookies': cookies,
             'cookie_page': cookie_page,
             'current_url': current_url,
+            'portada_meta_description': meta_description,
+            'portada_meta_keywords': meta_keywords,
         }
     )
     

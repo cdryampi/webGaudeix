@@ -17,34 +17,163 @@
 
 {% block title %}
     {% autoescape off %}
-        {{ ruta.titulo |striptags | safe  }}
+        {{ post.titulo |striptags | safe  }}
     {% endautoescape %}
 {% endblock title %}
 
+
+{% block extra_css %}
+<style>
+    .carousel-control-prev{
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+
+
+    .carousel-inner.text-center {
+        text-align: center;
+    }
+
+    .image-container {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Cambia el valor de opacidad según tu preferencia */
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: auto;
+        transition: filter 0.3s ease;
+    }
+    
+    .card-post:hover .card-img-top {
+        filter: brightness(70%); /* Cambia el valor de brillo según tu preferencia */
+    }
+
+    .card-post {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .card-post::before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 5px;
+        width: 101%;
+        height: 100%;
+        background-color: {{ categoria.color }};
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -100;
+    }
+    
+    .card-post:hover::before {
+        opacity: 0.3;
+    }
+    .card-post .url-link{
+        font-size:1.3rem;
+        color: #31C6F8 !important;
+
+    }
+
+    .card-post:hover .url-link{
+        font-weight: bold;
+    }
+    .img-cat-banner{
+        max-height: 50vh !important;
+        width: 100%;
+        object-fit: cover;
+    }
+
+</style>
+{% endblock extra_css %}
+
+
+
+{% block media %}
+  {% if post.postgaleriaimagen_set.count > 1 %}
+    <section class="container-fluid px-0 py-0">
+        <div id="categoria-carrusel-{{ post.slug }}" class="carousel slide categoria-carrusel" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for imagen in post.postgaleriaimagen_set.all %}
+                <li data-target="#categoria-carrusel-{{ post.slug }}" data-slide-to="{{ forloop.counter0 }}"
+                    {% if forloop.first %}class="active"{% endif %}></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner text-center">
+                {% for imagen in post.postgaleriaimagen_set.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="categoria-{{ post.slug }}">
+                        <picture>
+                            <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                            <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                            <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
+                            <img src="" 
+                                data-src="{{ imagen.image.large_thumbanil.url }}"
+                                alt="{{ post.titulo }}" 
+                                class="img-fluid align-middle lazy-load-img">
+                        </picture>
+                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ post.titulo }}" class="img-fluid img-cat-banner">
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#categoria-carrusel-{{ post.slug }}" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#categoria-carrusel-{{ post.slug }}" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <div class="col-12">
+            <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+        </div>
+    </section>
+
+    {% else %}
+
+    {% if post.postgaleriaimagen_set.first.imagen %}
+        <div class="text-center">
+            <img src="{{ post.postgaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ post.titulo }}"
+                class="img-fluid img-cat-banner">
+        </div>
+    {% endif %}
+
+    </div>
+  {% endif %}
+{% endblock media %}
+
 {% block content %}
 <section class="pb-5 px-0 container-fluid">
-    <div class="text-center">
-        <div class="banner mb-5">
-            <div class="banner-text">
-              <h1 class="main-title">
-                {% autoescape on %}
-                  {{post.titulo | truncatewords_html:5 |striptags |safe }}
-                {% endautoescape %}
-
-              </h1>
-              <h2 class="sub-title">
-                {% autoescape on %}
-                
-                {% endautoescape %}
-                {{post.descripcion |striptags |truncatewords_html:10 | safe }}
-              </h2>
-            </div>
-            <div class="banner-highlight">#gaudeixCabrera</div>
-          </div>
-          
-    </div>
-
-
     <div class="pb-5">
         <h1 class="text-center p-3 h2">
           {% autoescape on %}
@@ -54,7 +183,7 @@
         </h1>
     </div>
 
-  <div class="container-fuild p-5 content-agenda-detail-container">
+  <div class="container-fuild content-agenda-detail-container">
     <div class="container p-2">
     <div class="row">
         

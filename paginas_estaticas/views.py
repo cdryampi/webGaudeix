@@ -1,4 +1,4 @@
-from .models import PaginaLegal, Contacto, PuntoInformacion
+from .models import PaginaLegal, Contacto, PuntoInformacion, Diversidad
 from django.views.generic import TemplateView
 from core.mixin.base import BaseContextMixin
 from django.http import JsonResponse
@@ -47,6 +47,7 @@ class PuntInformacioView(BaseContextMixin,TemplateView):
         context = super().get_context_data(**kwargs)
         context['punt'] = PuntoInformacion.objects.all().first()
         return context
+
 
 
 class ContactoView(BaseContextMixin, TemplateView):
@@ -130,3 +131,12 @@ class ContactoView(BaseContextMixin, TemplateView):
             }
             print(str(e))
         return JsonResponse(response_data)
+
+class IguadadView(BaseContextMixin,TemplateView):
+    template_name = 'paginas_estaticas/igualtat.html'
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['diversidad'] = Diversidad.objects.all().first()
+        return context
