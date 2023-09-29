@@ -29,9 +29,46 @@ class ReferenciaAdmin(admin.TabularInline):
 class HeaderAdmin(admin.ModelAdmin):
      inlines = [ReferenciaAdmin]
      
+     fieldsets = [
+        (None, {
+            'fields': [
+                'logo',
+                'color_fondo_header',
+                'color_letra',
+            ],
+               'description': (
+                    "<p><strong>Aquesta és la pàgina d'edició de la capçalera superior.</strong></p>"
+                    "<p><em>Pots seleccionar el tipus de referència que vols tenir a la capçalera superior del lloc web.</em></p>"
+                    "<p>Tingues en compte que una referència només pot tenir una sola vinculació.</p>"
+                    "<p><em>Assegura't d'afegir referències que consideris rellevants.</em></p>"
+                    "<p><em>Les <strong>referències</strong> que es generen automàticament s'han d'eliminar si no les fas servir per evitar problemes en desar-les.</em></p>"
+               ),
+
+        }),
+        # Otras secciones de fieldsets aquí si es necesario
+    ]
+     
 @admin.register(HeaderFooter)
 class HeaderFooterAdmin(admin.ModelAdmin):
      inlines = [ReferenciaAdmin]
+     
+     fieldsets = [
+        (None, {
+            'fields': [
+                'color_fondo_header',
+                'color_letra',
+            ],
+               'description': (
+                    "<p><strong>Aquesta és la pàgina d'edició de la capçalera inferior.</strong></p>"
+                    "<p><em>Pots seleccionar el tipus de referència que vols tenir a la capçalera inferior del lloc web.</em></p>"
+                    "<p>Tingues en compte que una referència només pot tenir una sola vinculació.</p>"
+                    "<p><em>Assegura't d'afegir referències que consideris rellevants.</em></p>"
+                    "<p><em>Les <strong>referències</strong> que es generen automàticament s'han d'eliminar si no les fas servir per evitar problemes en desar-les.</em></p>"
+               ),
+
+        }),
+        # Otras secciones de fieldsets aquí si es necesario
+    ]
 
 @admin.register(Referencia)  # Quita el comentario para registrar el modelo Referencia
 class ReferenciaAdminWeb(admin.ModelAdmin):
