@@ -1,0 +1,25 @@
+{% if compra_y_descubre.compradescubregaleriaimagen_set.all %}
+
+    <section class="container-fluid py-3" id="guanyadors">
+        
+        <div class="col-12 p-3">
+            <h2 class="text-center h2 primary-color">
+                Llista dels guanyadors de l'última edició.
+            </h2>
+        </div>
+        <div class="row justify-content-center">
+            {% for image in compra_y_descubre.compradescubregaleriaimagen_set.all %}
+                {% if image.imagen %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 col-12">
+                        <div class="img-container">
+                            <a href="{{ image.imagen.archivo.url }}" class="fancybox">
+                                <img src="{{ image.imagen.archivo.url }}" alt="{{ compra_y_descubre.titulo }}" class="img-fluid" />
+                            </a>
+
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

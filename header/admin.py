@@ -38,6 +38,8 @@ class HeaderAdmin(admin.ModelAdmin):
             ],
                'description': (
                     "<p><strong>Aquesta és la pàgina d'edició de la capçalera superior.</strong></p>"
+                    "<p>Afegeix un logotip sense fons o juga amb els colors de la capçalera.</p>"
+                    "<p>Tingues en compte els colors que fas servir; el text de la capçalera ha de ser llegible.</p>"
                     "<p><em>Pots seleccionar el tipus de referència que vols tenir a la capçalera superior del lloc web.</em></p>"
                     "<p>Tingues en compte que una referència només pot tenir una sola vinculació.</p>"
                     "<p><em>Assegura't d'afegir referències que consideris rellevants.</em></p>"
@@ -61,6 +63,8 @@ class HeaderFooterAdmin(admin.ModelAdmin):
                'description': (
                     "<p><strong>Aquesta és la pàgina d'edició de la capçalera inferior.</strong></p>"
                     "<p><em>Pots seleccionar el tipus de referència que vols tenir a la capçalera inferior del lloc web.</em></p>"
+                    "<p>Afegeix un logotip sense fons o juga amb els colors de la capçalera.</p>"
+                    "<p>Tingues en compte els colors que fas servir; el text de la capçalera ha de ser llegible.</p>"
                     "<p>Tingues en compte que una referència només pot tenir una sola vinculació.</p>"
                     "<p><em>Assegura't d'afegir referències que consideris rellevants.</em></p>"
                     "<p><em>Les <strong>referències</strong> que es generen automàticament s'han d'eliminar si no les fas servir per evitar problemes en desar-les.</em></p>"

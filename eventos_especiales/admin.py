@@ -30,7 +30,7 @@ class EventoFicheroInline(admin.TabularInline):
                 Q(pdfcollectionconvocatoriafichero__isnull=True),
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(pdfdiversidadfichero__isnull=True),
-                Q(compadescubrefichero__isnull=True),
+                Q(compradescubrefichero__isnull=True),
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
 
@@ -54,8 +54,9 @@ class EventoEspecialGaleriaImagenInline(admin.TabularInline):
                     Q(postgaleriaimagen__isnull=True),
                     Q(subbloggaleriaimagen__isnull=True),
                     Q(diversidadimagenbanner__isnull=True),
-                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubrepasosimagen__isnull=True),
                     Q(compradescubreimagen__isnull=True),
+                    Q(compradescubregaleriaimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True) | Q(eventoespecialgaleriaimagen__evento_especial_id=evento_especial)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'

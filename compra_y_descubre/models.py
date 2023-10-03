@@ -12,6 +12,29 @@ from colorfield.fields import ColorField
 from core.models import BaseModel, MetadataModel
 
 # Create your models here.
+class EntidadComprayParticipa(models.Model):
+    """
+        modelo que representa una entidad que participa en 'Compra y participa'
+    """
+    
+    nombre = models.CharField(
+        max_length=255,
+        help_text="Títol per l'entitat compra i descobreix. PE: La mer",
+        verbose_name="Títol"
+    )
+    enllace = models.URLField(
+        blank=True,
+        help_text="Afegeix el link de la fitxa per l'entitat ",
+        verbose_name="Comerciant"
+    )
+    
+    def __str__(self):
+        return self.nombre
+    
+    class Meta:
+        verbose_name_plural = "Entitats"
+
+
 
 class CompraDescubre(BaseModel, MetadataModel):
     titulo = models.CharField(
@@ -60,8 +83,8 @@ class CompraDescubre(BaseModel, MetadataModel):
         blank=True,
         verbose_name="Descripció curta"
     )
-    negocis = models.ManyToManyField(
-        MapPoint,
+    entidades = models.ManyToManyField(
+        EntidadComprayParticipa,
         blank=True,
         help_text="Selecciona tots els comerços vinculats amb l'event Compra i descobreix",
         verbose_name="Comerços Compra i descobreix"
@@ -81,6 +104,11 @@ class CompraDescubre(BaseModel, MetadataModel):
         help_text="Afegeix el link per els comerciants",
         verbose_name="Comerciant"
     )
+    sorteo = models.URLField(
+        blank=True,
+        help_text="Afegeix el link del sorteig",
+        verbose_name= "sorteix"
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug or not self.id:
@@ -92,6 +120,7 @@ class CompraDescubre(BaseModel, MetadataModel):
                 timestamp = timezone.now().strftime("%Y%m%d%H%M%S")
                 self.slug = f"{self.slug}-{timestamp}"
         super().save(*args, **kwargs)
+    
     def is_now(self):
         """
         reporta si hemos superado el tiempo limite del evento
@@ -117,8 +146,8 @@ class CompraDescubre(BaseModel, MetadataModel):
 
 
 
-class CompaDescubrePasosImagen(models.Model):
-    compadescubre = models.ForeignKey(
+class CompraDescubrePasosImagen(models.Model):
+    compradescubre = models.ForeignKey(
         CompraDescubre,
         on_delete=models.CASCADE,
         default=None
@@ -140,7 +169,7 @@ class CompaDescubrePasosImagen(models.Model):
     )
 
     def __str__(self):
-        return f"Post: {self.compadescubre.titulo} - Imagen: {self.imagen}"
+        return f"Post: {self.compradescubre.titulo} - Imagen: {self.imagen}"
     
     def delete(self, *args, **kwargs):
         self.imagen.delete()
@@ -149,19 +178,47 @@ class CompaDescubrePasosImagen(models.Model):
     def save(self, *args, **kwargs):
         # Eliminar la imagen anterior si se cambia la imagen
         if self.pk:
-            old_instance = CompaDescubrePasosImagen.objects.get(pk=self.pk)
+            old_instance = CompraDescubrePasosImagen.objects.get(pk=self.pk)
             if old_instance.imagen != self.imagen and old_instance.imagen:
                 old_instance.imagen.delete()
         super().save(*args, **kwargs)
 
 
+class CompraDescubreGaleriaImagen(models.Model):
+    compradescubre = models.ForeignKey(
+        CompraDescubre,
+        on_delete=models.CASCADE,
+        default=None
+    )
+    imagen = models.ForeignKey(
+        Imagen,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f"Post: {self.compradescubre.titulo} - Imagen: {self.imagen}"
+    
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = CompraDescubreGaleriaImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name_plural = "Galeria dels guanyadors de l'esdeveniment 'compra i descobreix'."
 
 
 class CompraDescubreImagen(models.Model):
     """
     Modelo para asociar una imagen a un CompraDescubre.
     """
-    compadescubre = models.OneToOneField(
+    compradescubre = models.OneToOneField(
         CompraDescubre,
         on_delete=models.CASCADE, null=True,
         verbose_name="CompraDescubre"
@@ -173,7 +230,7 @@ class CompraDescubreImagen(models.Model):
     )
 
     def __str__(self):
-        return f"CompraDescubre: {self.compadescubre} - Imagen: {self.imagen}"
+        return f"CompraDescubre: {self.compradescubre} - Imagen: {self.imagen}"
 
     def delete(self, *args, **kwargs):
         self.imagen.delete()
@@ -189,7 +246,7 @@ class CompraDescubreImagen(models.Model):
 
 
 
-class CompaDescubreFichero(models.Model):
+class CompraDescubreFichero(models.Model):
     compradescubre = models.OneToOneField(
         CompraDescubre,
         on_delete=models.CASCADE,
@@ -209,3 +266,5 @@ class CompaDescubreFichero(models.Model):
         # self.evento.delete() .-.
         self.fichero.delete()
         super().delete(*args, **kwargs)
+
+

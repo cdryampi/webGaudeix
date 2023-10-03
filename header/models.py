@@ -41,6 +41,8 @@ class Header(SingletonModel):
             subblog=None,
             externo=None,
             evento_especial = None,
+            subvencion = None,
+            compra_y_descubre = None,
             contacto= None
         ).delete()
 
@@ -67,7 +69,8 @@ class HeaderFooter(SingletonModel):
             externo=None,
             evento_especial = None,
             contacto= None,
-            subvencion = None
+            subvencion = None,
+            compra_y_descubre= None
 
         ).delete()
 

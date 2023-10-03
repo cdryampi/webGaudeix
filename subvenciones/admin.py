@@ -29,7 +29,7 @@ class PDFCollectionConvocatoriaFicheroInline(admin.TabularInline):
                 Q(pdfcollectionresoluciofichero__isnull =True),
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(pdfdiversidadfichero__isnull=True),
-                Q(compadescubrefichero__isnull=True),
+                Q(compradescubrefichero__isnull=True),
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
             kwargs['help_text'] = 'Selecciona un fitxer PDF associat a aquesta convocatòria de subvenció.'

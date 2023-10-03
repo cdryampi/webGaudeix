@@ -33,8 +33,9 @@ class SubBlogImagenInline(admin.TabularInline):
                 subbloggaleriaimagen__isnull= True,
                 eventoespecialgaleriaimagen__isnull=True,
                 diversidadimagenbanner__isnull=True,
-                compadescubrepasosimagen__isnull=True,
+                compradescubrepasosimagen__isnull=True,
                 compradescubreimagen__isnull=True,
+                compradescubregaleriaimagen__isnull=True
             )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -58,8 +59,9 @@ class SubblogGaleriaImagenInline(admin.TabularInline):
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(diversidadimagenbanner__isnull=True),
-                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubrepasosimagen__isnull=True),
                     Q(compradescubreimagen__isnull=True),
+                    Q(compradescubregaleriaimagen__isnull=True)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)

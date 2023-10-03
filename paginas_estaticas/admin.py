@@ -65,9 +65,9 @@ class DiversidadImagenBannerInline(admin.TabularInline):
                     Q(categoriagaleriaimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
                     Q(subbloggaleriaimagen__isnull=True),
-                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubrepasosimagen__isnull=True),
                     Q(compradescubreimagen__isnull=True),
-
+                    Q(compradescubregaleriaimagen__isnull=True)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
             

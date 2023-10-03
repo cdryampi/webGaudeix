@@ -31,8 +31,9 @@ class PostGaleriaImagenInline(admin.TabularInline):
                 Q(postimagen__isnull=True),
                 Q(eventoespecialgaleriaimagen__isnull=True),
                 Q(diversidadimagenbanner__isnull=True),
-                Q(compadescubrepasosimagen__isnull=True),
+                Q(compradescubrepasosimagen__isnull=True),
                 Q(compradescubreimagen__isnull=True),
+                Q(compradescubregaleriaimagen__isnull=True)
             )
             kwargs['empty_label'] = 'Sin imagen asociada'
 
@@ -60,7 +61,7 @@ class PostFicheroImagenInline(admin.TabularInline):
                 Q(pdfcollectionconvocatoriafichero__isnull=True),
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(pdfdiversidadfichero__isnull=True),
-                Q(compadescubrefichero__isnull=True),
+                Q(compradescubrefichero__isnull=True),
                 
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
@@ -99,8 +100,9 @@ class PostImagenInlineRuta(admin.TabularInline):
                     Q(postgaleriaimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(diversidadimagenbanner__isnull=True),
-                    Q(compadescubrepasosimagen__isnull=True),
+                    Q(compradescubrepasosimagen__isnull=True),
                     Q(compradescubreimagen__isnull=True),
+                    Q(compradescubregaleriaimagen__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -220,7 +222,7 @@ class VisitaGuidadaForm(forms.ModelForm):
 class VisitaGuidadaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostImagenInlineRuta, PostGaleriaImagenInline, PostFicheroImagenInline]
-    filter_horizontal = ('agendas',)
+    filter_horizontal = ('agendas','tags')
     autocomplete_fields = ['mapa', 'categoria']
     
     fieldsets = [
@@ -231,6 +233,7 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
                 'descripcion',
                 'metadescripcion',
                 'publicado',
+                'categoria',
                 'precio',
                 'fecha_inicio',
                 'fecha_fin',

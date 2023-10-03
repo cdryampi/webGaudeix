@@ -1,6 +1,6 @@
 from django.contrib import admin
 from multimedia_manager.models import Fichero
-from .models import CompraDescubre, CompaDescubreFichero, CompaDescubrePasosImagen, CompraDescubreImagen
+from .models import CompraDescubre, CompraDescubreFichero, CompraDescubrePasosImagen, CompraDescubreImagen, CompraDescubreGaleriaImagen, EntidadComprayParticipa
 from django.db.models import Q
 from multimedia_manager.models import Imagen
 from django.contrib.admin.widgets import FilteredSelectMultiple
@@ -9,7 +9,7 @@ from blog.models import Tag, Categoria
 # Register your models here.
 
 class CompraDescubreFicheroInline(admin.TabularInline):
-    model = CompaDescubreFichero
+    model = CompraDescubreFichero
     extra = 1
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -19,7 +19,7 @@ class CompraDescubreFicheroInline(admin.TabularInline):
                 evento_id = request.resolver_match.kwargs['object_id']
 
             kwargs['queryset'] = Fichero.objects.filter(
-                Q(compadescubrefichero__isnull=True) | Q(compadescubrefichero__id= evento_id),
+                Q(compradescubrefichero__isnull=True) | Q(compradescubrefichero__id= evento_id),
                 Q(eventofichero__isnull=True),
                 Q(postfichero__isnull=True),
                 Q(pdfcollectionresoluciofichero__isnull =True),
@@ -34,8 +34,8 @@ class CompraDescubreFicheroInline(admin.TabularInline):
 
 
 
-class CompaDescubrePasosImagenInline(admin.TabularInline):
-    model = CompaDescubrePasosImagen
+class CompraDescubrePasosImagenInline(admin.TabularInline):
+    model = CompraDescubrePasosImagen
     extra = 1
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -54,7 +54,37 @@ class CompaDescubrePasosImagenInline(admin.TabularInline):
                     Q(diversidadimagenbanner__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(compradescubreimagen__isnull=True),
-                    Q(compadescubrepasosimagen__isnull=True) | Q(compadescubrepasosimagen__compadescubre_id=evento_especial)
+                    Q(compradescubregaleriaimagen__isnull=True),
+                    Q(compradescubrepasosimagen__isnull=True) | Q(compradescubrepasosimagen__compradescubre_id=evento_especial)
+                    )
+            kwargs['empty_label'] = 'Sense imatge associada'
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
+
+class CompraDescubreGaleriaImagenInline(admin.TabularInline):
+    model = CompraDescubreGaleriaImagen
+    extra = 1
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'imagen':
+            evento_especial = None
+            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
+                evento_especial = request.resolver_match.kwargs['object_id']
+                #print(categoria_id)
+                kwargs['queryset'] = Imagen.objects.filter(
+                    Q(categoriabannerimagen__isnull=True),
+                    Q(subblogimagen__isnull=True),
+                    Q(categoriagaleriaimagen__isnull=True),
+                    Q(postimagen__isnull=True),
+                    Q(postgaleriaimagen__isnull=True),
+                    Q(subbloggaleriaimagen__isnull=True),
+                    Q(diversidadimagenbanner__isnull=True),
+                    Q(eventoespecialgaleriaimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True),
+                    Q(compradescubrepasosimagen__isnull=True),
+                    Q(compradescubregaleriaimagen__isnull=True) | Q(compradescubregaleriaimagen__compradescubre_id=evento_especial)
                     )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -85,8 +115,9 @@ class CompraDescubreImagenInline(admin.TabularInline):
                     Q(subbloggaleriaimagen__isnull=True),
                     Q(diversidadimagenbanner__isnull=True),
                     Q(postimagen__isnull=True),
-                    Q(compadescubrepasosimagen__isnull=True),
-                    Q(compradescubreimagen__isnull=True) | Q(compradescubreimagen__compadescubre_id = evento_especial)
+                    Q(compradescubrepasosimagen__isnull=True),
+                    Q(compradescubregaleriaimagen__isnull=True),
+                    Q(compradescubreimagen__isnull=True) | Q(compradescubreimagen__compradescubre_id = evento_especial)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
             
@@ -99,7 +130,7 @@ class CompraDescubreAdmin(admin.ModelAdmin):
     list_display = ['titulo', 'fecha_inicio', 'publicado']
     list_filter = ['fecha_inicio', 'publicado']
     search_fields = ['titulo']
-    filter_horizontal = ('negocis','tags')
+    filter_horizontal = ('tags','entidades')
 
 
     fieldsets = [
@@ -117,8 +148,9 @@ class CompraDescubreAdmin(admin.ModelAdmin):
                 'secondary_color',
                 'participante',
                 'comerciante',
-                'negocis',
                 'tags',
+                'entidades',
+                'sorteo'
             ],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'un esdeveniment Compra i descobreix.</strong></p>"
@@ -132,6 +164,9 @@ class CompraDescubreAdmin(admin.ModelAdmin):
         # Otras secciones de fieldsets aquí si es necesario
     ]
 
-    inlines = [CompaDescubrePasosImagenInline, CompraDescubreImagenInline, CompraDescubreFicheroInline]
+    inlines = [CompraDescubrePasosImagenInline, CompraDescubreImagenInline, CompraDescubreFicheroInline, CompraDescubrePasosImagenInline, CompraDescubreGaleriaImagenInline]
 
 
+@admin.register(EntidadComprayParticipa)
+class EntidadComprayParticipaAdmin(admin.ModelAdmin):
+    pass

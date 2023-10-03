@@ -11,7 +11,7 @@ from map.models import MapPoint
 from personalizacion.models import VideosEmbed
 from selecciones.models import SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
-from paginas_estaticas.models import Cookies, PaginaLegal
+from paginas_estaticas.models import Cookies, PaginaLegal, Diversidad
 from django.utils import timezone
 from django.db.models import Q
 from django.views.decorators.cache import cache_page
@@ -20,7 +20,6 @@ from gaudeix.settings import TIEMPO_EXPIRACION
 from .utils import generate_cache_key
 from django.core.cache import caches
 from personalizacion.models import Personalizacion
-
 app_name = 'core'
 
 # Función para obtener las últimas agendas del portal
@@ -71,7 +70,7 @@ def home(request):
 
     meta_description = personalizacion.meta_description_portada
     meta_keywords = personalizacion.meta_keywords.all()
-
+    diversidad = Diversidad.objects.filter().first()
 
     categorias = Categoria.objects.filter(publicado=True)
     ultimos_eventos = get_ultimos_eventos()
@@ -138,6 +137,7 @@ def home(request):
             'user_agent': user_agent,
             'parallax':parallax,
             'cookies': cookies,
+            'diversidad': diversidad,
             'cookie_page': cookie_page,
             'current_url': current_url,
             'portada_meta_description': meta_description,
@@ -173,6 +173,7 @@ def error_404(request, exception):
     user_agent = get_user_agent(request)
     cookies = Cookies.objects.filter().first()
     cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
+    diversidad = Diversidad.objects.filter().first()
 
     response = render(
         request,
@@ -198,6 +199,7 @@ def error_404(request, exception):
             'parallax':parallax,
             'cookies': cookies,
             'cookie_page': cookie_page,
+            'diversidad': diversidad
         }
     )
 
@@ -226,6 +228,7 @@ def error_500(request):
     user_agent = get_user_agent(request)
     cookies = Cookies.objects.filter().first()
     cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
+    diversidad = Diversidad.objects.filter().first()
 
     response = render(
         request,
@@ -251,6 +254,7 @@ def error_500(request):
             'parallax':parallax,
             'cookies': cookies,
             'cookie_page': cookie_page,
+            'diversidad': diversidad
         }
     )
 

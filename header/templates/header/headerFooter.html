@@ -40,7 +40,7 @@
                             
                             {% elif referencia.tipo == 'compra_y_descubre' %}
                                 {% if referencia.compra_y_descubre %}
-                                    <a class="nav-link text-white" href="{% url 'compra_y_descubre:compra_y_descubre' slug=referencia.compra_y_descubre.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.compra_y_descubre.titulo }}</a>
+                                    <a class="nav-link text-white text-uppercase" href="{% url 'compra_y_descubre:compra_y_descubre' slug=referencia.compra_y_descubre.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.compra_y_descubre.titulo }}</a>
                                 {% endif %}
                             {% endif %}
                         </li>

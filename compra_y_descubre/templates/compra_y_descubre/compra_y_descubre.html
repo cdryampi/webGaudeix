@@ -80,6 +80,16 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
+        p.int-value{
+            color: {{ compra_y_descubre.primary_color | safe }}; /* Color primario */
+            font-weight: bold;
+            font-size: 6.5rem;
+        }
+        p.string-value{
+            font-weight: bold;
+            font-size: 3.5rem;
+        }
+
         .link:hover {
             background-color: {{ compra_y_descubre.primary_color | safe }};
             color: white !important;
@@ -99,7 +109,36 @@
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
         }
-
+        .title-countdown{
+            font-size: 6.5rem;
+          }
+    
+          @media screen and (max-width: 768px) {
+            .titulo-principal {
+                font-size: 4rem;
+                margin-bottom: 35px;
+                text-align: center;
+              }
+            .border-left-evento{
+                border: none;
+                text-align: center;
+            }
+            .title-countdown{
+                font-size: 4rem;
+            }
+            p.int-value{
+                text-align: center;
+            }
+            p.string-value{
+                text-align: center;
+            }
+            .event-container .collage-img{
+                margin: 5px;
+            }
+            .evento_especial_link {
+                padding: .5rem;
+            }
+          }
     </style>
 {% endblock extra_css %}
 
@@ -228,8 +267,132 @@
 
 {% block asides %}
 
-    {% if compra_y_descubre.negocis %}
+    {% if compra_y_descubre.has_ended %}
+        <div class="container-fluid bg-light p-0 m-0 py-5">
+            <div class="jumbotron jumbotron-fluid bg-light text-center">
+                <div class="container">
+                <p class="lead">Gràcies per participar.</p>
+                <p class="lead">L'esdeveniment Compra i descobreix ha finalitzat!</p>
+                </div>
+            </div>
+        </div>
+    {% elif compra_y_descubre.is_now %}
+        <div class="container-fluid bg-light p-0 m-0 py-5">
+            <div class="container mt-3">
+                <div class="row" id="countdown">
+                    <div class="col-12 text-center py-3">
+                        <h2 class="title-countdown" >Encara / Només falten</h2>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6" >
+                        <div class="container">
+                            <p class="int-value"><span id="days"></span></p>
+                            <p class="string-value">dies</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="container">
+                            <p class="int-value"><span id="hours"></span></p>
+                            <p class="string-value">hores</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6 ">
+                        <div class="container">
+                            <p class="int-value"><span id="minutes"></span></p>
+                            <p class="string-value">minuts</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="container">
+                            <p class="int-value"><span id="seconds"></span></p>
+                            <p class="string-value">segons</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="container-fluid bg-gray p-0 m-0 py-5">
+            <div class="jumbotron jumbotron-fluid bg-light text-center">
+                <div class="container">
+                <h1 class="titulo-principal text-center">{{compra_y_descubre.titulo}} ha començat!</h1>
+                <p class="lead">Gaudeix de l'event que has estat esperant.</p>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+
+
+    {% if compra_y_descubre.entidades %}
         {% include 'compra_y_descubre/negocis_selection.html' %}
     {% endif %}
 
+    {% if compra_y_descubre.sorteo %}
+        {% include "compra_y_descubre/link_youtube.html" %}
+    {% endif %}
+
+    {% if compra_y_descubre.compradescubregaleriaimagen_set.all %}
+        {% include 'compra_y_descubre/galeria_ganadores.html' %}
+    {% endif %}
+
+
+
+
 {% endblock asides %}
+
+{% block extra_script %}
+<script>
+    // Funció per actualitzar el compte enrere
+    function updateCountdown() {
+
+        // Obtingu la data de l'esdeveniment especial i la data actual
+        var eventDate = new Date("{{ compra_y_descubre.fecha_inicio|date:'Y-m-d' }}");
+        var currentDate = new Date();
+        // Calcula la diferència en mil·lisegons entre les dues dates
+        var difference = eventDate.getTime() - currentDate.getTime();
+
+        if (difference <= 0) {
+            // Si el temps restant és 0 o negatiu, mostra un missatge o realitza alguna acció
+            document.getElementById("countdown").innerHTML = "¡L'esdeveniment ha començat!";
+            // Atura el compte enrere si ja ha arribat a 0
+            clearInterval(countdownInterval);
+            return;
+        }
+
+        // Calcula els dies, hores, minuts i segons restants
+        var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        // Actualitza els elements HTML amb els valors calculats
+        document.getElementById("days").innerHTML = days;
+        document.getElementById("hours").innerHTML = hours;
+        document.getElementById("minutes").innerHTML = minutes;
+        document.getElementById("seconds").innerHTML = seconds;
+    }
+
+    // Espera que s'hagi carregat completament l'HTML
+    document.addEventListener("DOMContentLoaded", function() {
+        // Crida a la funció updateCountdown() inicialment per mostrar el compte enrere
+        let countdownElement = document.getElementById("countdown")
+        if(countdownElement){
+            updateCountdown();
+
+            // Actualitza el compte enrere cada segon
+            var countdownInterval = setInterval(updateCountdown, 1000);
+    
+            // Atura el compte enrere si ja ha arribat a 0
+            if (document.getElementById("countdown").innerHTML === "¡L'esdeveniment ha començat!") {
+                clearInterval(countdownInterval);
+            }
+        }
+
+    });
+
+</script>
+{% endblock extra_script %}
