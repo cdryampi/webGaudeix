@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carrusel, Slide, InternalLink, Parallax, VideosEmbed, Personalizacion
+from .models import Carrusel, Slide, InternalLink, Parallax, VideosEmbed, Personalizacion, TrenPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, AutoPistaPersonalizacion
 from blog.models import Tag
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from .forms import CarruselForm
@@ -9,6 +9,22 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from django import forms
 
 
+
+class TrenPersonalizacionAdminInLine(admin.StackedInline):
+    model = TrenPersonalizacion
+    extra = 1
+
+class BusPersonalizacionAdminInLine(admin.StackedInline):
+    model = BusPersonalizacion
+    extra = 1
+
+class AeropuertoPErsonalizacionAdminInLine(admin.StackedInline):
+    model = AeropuertoPersonalizacion
+    extra = 1
+
+class AutoPistaPersonalizacionAdminInLine(admin.StackedInline):
+    model = AutoPistaPersonalizacion
+    extra = 1
 
 class InternalLinkInline(admin.StackedInline):
     model = InternalLink
@@ -47,6 +63,8 @@ class PersonalizacionAdmin(admin.ModelAdmin):
 
         }),
     ]
+    
+    inlines = [TrenPersonalizacionAdminInLine, BusPersonalizacionAdminInLine, AeropuertoPErsonalizacionAdminInLine, AutoPistaPersonalizacionAdminInLine]
 
 admin.site.register(Personalizacion, PersonalizacionAdmin)
 admin.site.register(Carrusel, CarruselAdmin)

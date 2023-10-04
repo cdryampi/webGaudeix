@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from blog.models import Post, Categoria, SubBlog, Tag
 from multimedia_manager.models import Video
 from topbar.models import Topbar
-
+from ckeditor.fields import RichTextField
 from .utils import get_parallax_image_path
 
 
@@ -23,7 +23,12 @@ class PersonalizacionManager(models.Manager):
 
 
 class Favicon(models.Model):
-    image = models.ImageField(upload_to='favicons/', blank=True, null=True)
+    image = models.ImageField(
+        upload_to='favicons/',
+        blank=True,
+        null=True,
+        verbose_name="Imatge"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -35,7 +40,7 @@ class Favicon(models.Model):
 
     @property
     def description(self):
-        return "Este favicon se utiliza como icono de la pestaña del navegador para identificar tu sitio web."
+        return "Aquest Favicon el sistema el fa servir per a la imatge representativa del lloc web."
 
 
 
@@ -43,9 +48,20 @@ class Favicon(models.Model):
 
 
 class Slide(models.Model):
-    imagen = models.ImageField(upload_to='slides/')
-    titulo = models.CharField(max_length=100)
-    descripcion = models.TextField(max_length=100,help_text="Texto que aparecerá en el centro del carrusel", null=True, blank=True)
+    imagen = models.ImageField(
+        upload_to='slides/',
+        verbose_name="Imatge"
+    )
+    titulo = models.CharField(
+        max_length=100,
+        verbose_name='Títol'
+    )
+    descripcion = models.TextField(
+        max_length=100,
+        help_text="Text que apareix el centre de la imatge.",
+        null=True,
+        blank=True
+    )
     def __str__(self):
         return self.titulo
 
@@ -58,14 +74,38 @@ class InternalLink(models.Model):
         ('subblog', 'SubBlog')
     )
 
-    tipo = models.CharField(max_length=10, choices=TIPOS_REFERENCIA)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, blank=True, null=True)
-    subblog = models.ForeignKey(SubBlog, on_delete=models.CASCADE, blank=True, null=True)
-    slide = models.OneToOneField(Slide, on_delete=models.CASCADE)
+    tipo = models.CharField(
+        max_length=10,
+        choices=TIPOS_REFERENCIA,
+        verbose_name="Tipus"
+    )
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        verbose_name="entrada"
+    )
+    categoria = models.ForeignKey(
+        Categoria,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        verbose_name="Categoría"
+    )
+    subblog = models.ForeignKey(
+        SubBlog,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+    slide = models.OneToOneField(
+        Slide,
+        on_delete=models.CASCADE
+    )
     
     def __str__(self):
-        tipo = self.get_tipo_display()
+        tipo = self.tipo
         titulo = ""
 
         # Comprueba cada atributo en el orden deseado para encontrar el título
@@ -97,13 +137,23 @@ class InternalLink(models.Model):
 
 
 class Carrusel(models.Model):
-    nombre = models.CharField(max_length=100)
-    publicado = models.BooleanField(default=False)
-    slides = models.ManyToManyField(Slide, related_name='carruseles', blank=True)
+    nombre = models.CharField(
+        max_length=100,
+        verbose_name="Títol"
+    )
+    publicado = models.BooleanField(
+        default=False,
+        verbose_name="Publicat"
+    )
+    slides = models.ManyToManyField(
+        Slide,
+        related_name='carruseles',
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'Carrusel'
-        verbose_name_plural = 'Carruseles'
+        verbose_name_plural = 'Carrusels'
 
     def __str__(self):
         return self.nombre
@@ -112,10 +162,24 @@ class Carrusel(models.Model):
 
 class Parallax(models.Model):
     
-    titulo = models.CharField(max_length=100)
-    descripcion_corta = models.CharField(max_length=200, null= True, blank= True)
-    imagen = models.ImageField(upload_to=get_parallax_image_path)
-    publicado = models.BooleanField(default=False)
+    titulo = models.CharField(
+        max_length=100,
+        verbose_name="Títol"
+    )
+    descripcion_corta = models.CharField(
+        max_length=200,
+        null= True,
+        blank= True,
+        verbose_name="Descripció curta"
+    )
+    imagen = models.ImageField(
+        upload_to=get_parallax_image_path,
+        verbose_name="Imatge"
+    )
+    publicado = models.BooleanField(
+        default=False,
+        verbose_name="Publicat"
+    )
 
     def __str__(self):
         return self.titulo
@@ -125,8 +189,13 @@ class Parallax(models.Model):
 class VideosEmbed(models.Model):
     titulo = models.CharField(
         max_length=100,
+        help_text="Títol del Vídeo.",
+        verbose_name="Títol"
     )
-    publicado = models.BooleanField(default=False)
+    publicado = models.BooleanField(
+        default=False,
+        verbose_name="Publicat"
+    )
     video = models.OneToOneField(Video, on_delete=models.SET_NULL, null=True)
     def __str__(self):
         return f"Portada de video: {self.titulo}"
@@ -190,6 +259,7 @@ class Personalizacion(models.Model):
     class Meta:
         verbose_name = "Personalització"
         verbose_name_plural = "Personalitzacions"
+
     def __str__(self):
         return "Personalització del portal"
     
@@ -203,3 +273,152 @@ class Personalizacion(models.Model):
         # No se permite eliminar la instancia de Personalizacion
         raise ValueError("No se puede eliminar la instancia de Personalizacion.")
 
+
+class TrenPersonalizacion(models.Model):
+    """
+    Modelo que representa un modo de llegar a Cabrera de Mar por tren.
+    """
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Títol de 'com arribar a Cabrera amb tren'.",
+        verbose_name="Títol"
+    )
+    
+    descripcion = RichTextField(
+        help_text="Descripció de com arribar a Cabrera de Mar amb tren.",
+        null=True,
+        blank=True,
+        verbose_name="Descripció"
+    )
+
+    enlace =  models.URLField(
+        blank=True,
+        help_text="enllaç cap a els horaris del tren",
+        verbose_name="enllaç"
+    )
+
+    personalizacion = models.OneToOneField(
+        Personalizacion,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name="Personalització",
+    )
+
+    def __str__(self):
+        return f"{self.titulo}"
+    
+    class Meta:
+        verbose_name = "Tren"
+        verbose_name_plural = "Trens"
+
+class AutoPistaPersonalizacion(models.Model):
+    """
+    Modelo que representa un modo de llegar a Cabrera de Mar por Autopista.
+    """
+
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Títol de 'com arribar a Cabrera per autopista'.",
+        verbose_name="Títol"
+    )
+    descripcion = RichTextField(
+        help_text="Explicació de com arribar a Cabrera de Mar per autopista.",
+        null=True,
+        blank=True,
+        verbose_name="Descripció"
+    )
+    enlace = models.URLField(
+        blank= True,
+        help_text="enllaç cap a Cabrera de Mar.",
+        verbose_name="enllaç"
+    )
+    personalizacion = models.OneToOneField(
+        Personalizacion,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name="Personalització",
+    )
+
+    def __str__(self):
+        return f"{self.titulo}"
+    
+    class Meta:
+        verbose_name = "Autopista"
+        verbose_name_plural = "Autopistes"
+
+class BusPersonalizacion(models.Model):
+    """
+    Modelo que representa un modo de llegar a Cabrera de Mar por bus.
+    """
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Títol de 'com arribar a Cabrera de Mar amb bus'.",
+        verbose_name="Títol"
+    )
+    descripcion = RichTextField(
+        help_text="Explicació de com arribar a Cabrera de Mar amb bus.",
+        null=True,
+        blank=True,
+        verbose_name="Descripció"
+    )
+    enlace = models.URLField(
+        blank= True,
+        help_text="enllaç cap els horaris del bus.",
+        verbose_name="enllaç"
+    )
+    personalizacion = models.OneToOneField(
+        Personalizacion,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name="Personalització",
+    )
+
+    def __str__(self):
+        return f"{self.titulo}"
+    
+    class Meta:
+        verbose_name = "Bus"
+        verbose_name_plural = "Busos"
+
+class AeropuertoPersonalizacion(models.Model):
+    """
+    Modelo que representa un modo de llegar a Cabrera de Mar por Avión.
+    """
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Títol de 'com arribar a Cabrera de Mar amb avió'.",
+        verbose_name="Títol"
+    )
+    descripcion = RichTextField(
+        help_text="Explicació de com arribar a Cabrera de Mar amb avió.",
+        null=True,
+        blank=True,
+        verbose_name="Descripció"
+    )
+    enlace_principal = models.URLField(
+        blank= True,
+        help_text="enllaç cap els horaris del bus.",
+        verbose_name="enllaç principal"
+    )
+    enlace_secundario = models.URLField(
+        blank= True,
+        help_text="enllaç cap els horaris del bus.",
+        verbose_name="enllaç secundari"
+    )
+    personalizacion = models.OneToOneField(
+        Personalizacion,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name="Personalització",
+    )
+
+    def __str__(self):
+        return f"{self.titulo}"
+    
+    class Meta:
+        verbose_name = "Aeroport"
+        verbose_name_plural = "Aeroports"

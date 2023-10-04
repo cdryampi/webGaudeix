@@ -8,6 +8,7 @@ from .models import EventoEspecial
 from redes_sociales.models import RedSocial
 from personalizacion.models import Parallax
 from django.db.models import F
+from personalizacion.models import Personalizacion
 import random
 from django.utils import timezone
 
@@ -32,9 +33,35 @@ class EventoEspecialView(BaseContextMixin,DetailView):
         evento_especial = self.object
         parallax = evento_especial.parallax
         
+        personalizacion = Personalizacion.objects.filter().first()
+
+        # com arribar
+        tren = None
+        autopista = None
+        bus =  None
+        aeroport = None
+
+        if personalizacion and personalizacion.trenpersonalizacion:
+            tren = personalizacion.trenpersonalizacion
+    
+        if personalizacion and personalizacion.autopistapersonalizacion:
+            autopista = personalizacion.autopistapersonalizacion
+
+        if personalizacion and personalizacion.buspersonalizacion:
+            bus = personalizacion.buspersonalizacion
+        
+        if personalizacion and personalizacion.aeropuertopersonalizacion:
+            aeroport = personalizacion.aeropuertopersonalizacion
 
         redes_sociales= RedSocial.objects.filter().all()
+        
+        context['tren'] = tren
+        context['autopista'] = autopista
+        context['bus'] =  bus
+        context['aeroport'] = aeroport
+
         context['redes_sociales'] = redes_sociales
         context['parallax'] = parallax
         context['now'] = timezone.now()
+
         return context

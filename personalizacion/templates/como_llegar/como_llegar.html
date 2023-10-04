@@ -1,0 +1,107 @@
+{% if tren and autopista and bus and aeroport %}
+    <aside class="container-fluid py-3">
+        <div class="col-12 p-3">
+            <h3 class="text-center h3 py-5">Com Arribar a Cabrera de Mar</h3>
+        </div>
+
+        <div class="col-12">
+            <div class="row justify-content-center">
+                {% if tren %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 text-center">
+                        <div class="p-3 comarribar-container">
+                            <p class="text-center">
+                                <a class="" target="_blank" href="{{ tren.enlace }}" rel="noopener">
+                                    <i class="fas fa-train fa-4x" style="color:{{header.color_fondo_header}};">
+
+                                    </i>
+                                </a>
+                            </p>
+                            {% autoescape on %}
+                                <div class="text-center">
+                                    {{ tren.descripcion | safe }}
+                                </div>
+                            {% endautoescape %}
+                            <p class="text-center">
+                                <a class="btn btn-light" target="_blank" href="{{ tren.enlace }}" rel="noopener">
+                                    Horaris de tren
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if autopista %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 text-center">
+                        <div class="p-3 comarribar-container">
+                            <p class="text-center">
+                                <a class="" target="_blank" href="{{ autopista.enlace }}" rel="noopener">
+                                    <i class="fas fa-car fa-4x" style="color:{{header.color_fondo_header}};">
+
+                                    </i>
+                                </a>
+                            </p>
+                            {% autoescape on %}
+                                <div class="text-center">
+                                    {{ autopista.descripcion | safe }}
+                                </div>
+                            {% endautoescape %}
+                            <p class="text-center">
+                                <a class="btn btn-light" target="_blank" href="{{ autopista.enlace }}" rel="noopener">
+                                    Busca la millor Ruta
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if bus %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 text-center">
+                    <div class="p-3 comarribar-container">
+                        <p class="text-center">
+                            <a class="" target="_blank" href="{{ bus.enlace }}" rel="noopener">
+                                <i class="fas fa-bus fa-4x" style="color:{{header.color_fondo_header}};">
+                                </i>
+                            </a>
+                        </p>
+                        {% autoescape on %}
+                            <div class="text-center">
+                                {{ bus.descripcion | safe }}
+                            </div>
+                        {% endautoescape %}
+                        <p class="text-center">
+                            <a class="btn btn-light" target="_blank" href="{{ bus.enlace }}" rel="noopener">
+                                Horaris de Bus
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+                {% if aeroport %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 text-center">
+                    <div class="p-3 comarribar-container">
+                        <p class="text-center">
+                            <a class="" target="_blank" href="{{ aeroport.enlace }}" rel="noopener">
+                                <i class="fas fa-plane-arrival fa-4x" style="color:{{header.color_fondo_header}};">
+                                </i>
+                            </a>
+                        </p>
+                        {% autoescape on %}
+                            <div class="text-center">
+                                {{ aeroport.descripcion | safe }}
+                            </div>
+                        {% endautoescape %}
+                        <p class="text-center">
+                            <a class="btn btn-light" target="_blank" href="{{ aeroport.enlace_principal }}" rel="noopener">
+                                Aeroport del Prat
+                            </a>
+                        </p>
+                        <p class="text-center">
+                            <a class="btn btn-light" target="_blank" href="{{ aeroport.enlace_secundario }}" rel="noopener" >
+                                Aeroport de Girona
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </aside>
+{% endif %}

@@ -60,6 +60,7 @@ def home(request):
 
 
 
+
     # Intentar obtener la página desde la caché
     cached_page = cache.get(cache_key)
     if cached_page is not None:
@@ -88,6 +89,12 @@ def home(request):
     coleccion_destacados = get_coleccion_destacados()
     evento = EventoEspecial.objects.filter(publicado=True).first()
 
+    # com arribar
+    tren = None
+    autopista = None
+    bus =  None
+    aeroport = None
+
     if personalizacion and personalizacion.video_portada:
         portada_video = personalizacion.video_portada.videosembed.video.videosembed
     else:    
@@ -104,6 +111,19 @@ def home(request):
         topbar = personalizacion.topbar
     else:
         topbar = Topbar.objects.filter(publicado=True).last()
+
+    if personalizacion and personalizacion.trenpersonalizacion:
+        tren = personalizacion.trenpersonalizacion
+    
+    if personalizacion and personalizacion.autopistapersonalizacion:
+        autopista = personalizacion.autopistapersonalizacion
+
+    if personalizacion and personalizacion.buspersonalizacion:
+        bus = personalizacion.buspersonalizacion
+    
+    if personalizacion and personalizacion.aeropuertopersonalizacion:
+        aeroport = personalizacion.aeropuertopersonalizacion
+
 
 
     categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
@@ -140,6 +160,12 @@ def home(request):
             'diversidad': diversidad,
             'cookie_page': cookie_page,
             'current_url': current_url,
+
+            'tren': tren,
+            'autopista': autopista,
+            'bus': bus,
+            'aeroport': aeroport,
+            
             'portada_meta_description': meta_description,
             'portada_meta_keywords': meta_keywords,
         }

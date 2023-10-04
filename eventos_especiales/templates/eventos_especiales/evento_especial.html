@@ -314,6 +314,10 @@
 
 {% block asides %}
 
+    {% if tren and autopista and bus and aeroport %}
+        {% include "como_llegar/como_llegar.html" %}
+    {% endif %}
+
     {% if evento_especial.agendas  %}
         {% include 'eventos_especiales/agenda_selection.html' %}
     {% endif %}
