@@ -169,4 +169,17 @@ class CompraDescubreAdmin(admin.ModelAdmin):
 
 @admin.register(EntidadComprayParticipa)
 class EntidadComprayParticipaAdmin(admin.ModelAdmin):
-    pass
+
+    fieldsets = [
+        (None, {
+            'fields': [
+                'nombre',
+                'enllace',
+            ],
+            'description': (
+                "<p><strong>Aquesta és la pàgina d'edició d'una entitat(comerç) per l'esdeveniment Compra i descobreix.</strong></p>"
+                "<p><em>Les entitats de 'Compra i descobreix' són una part auxiliar del lloc web, només afecten un esdeveniment 'compra i descobreix'.</em></p>"
+            ),
+        }),
+        # Otras secciones de fieldsets aquí si es necesario
+    ]

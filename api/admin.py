@@ -7,6 +7,27 @@ import csv
 class TeenvioAdmin(admin.ModelAdmin):
     list_display = ['gid', 'user', 'plan']
 
+    fieldsets = [
+        (None, {
+            'fields': [
+                'gid',
+                'user',
+                'password',
+                'plan',
+                'url',
+                'action'
+                ],
+
+            'description': (
+                "<p><strong><em>Aquesta és l'administració de Teenvio.</em></strong></p>"
+                "<p><em>En aquesta secció, pots gestionar l'API del teu usuari de Teenvío.</em></p>"
+                "<p><em>Assegura't d'omplir tots els camps.</em></p>"
+                "<p><em>Només pots tenir una instància d'aquest model.</em></p>"
+                "<p><em>Enllaç d'accés cap Teenvio: <a href='https://app.teenvio.com/v4/public/login/' target='_blank'>https://app.teenvio.com/v4/public/login/</a>.</em></p>"
+            ),
+        }),
+        # Resto de los fieldsets
+    ]
 
 
 
@@ -14,6 +35,29 @@ class TeenvioAdmin(admin.ModelAdmin):
 @admin.register(Subscriptor)
 class SubscriptorAdmin(admin.ModelAdmin):
     list_display = ['name', 'email']  # Mostrar campos en la lista del admin
+
+
+    fieldsets = [
+        (None, {
+            'fields': [
+                'name',
+                'email',
+                'exportable',
+                'sincronizado',
+                'created_at'
+                ],
+
+            'description': (
+                "<p><strong><em>Aquesta és l'administració dels subscriptors.</em></strong></p>"
+                "<p><em>En aquesta secció, pots gestionar els subscriptors que s'han donat d'alta pel formulari de la web.</em></p>"
+                "<p><em>Assegura't de no repetir els subscriptors.</em></p>"
+                "<p><em>Pots tornar a sincronitzar els subscriptors amb Teenvio.</em></p>"
+                "<p><em>Pots seleccionar els subscriptors que vols per una sincronització parcial.</em></p>"
+            ),
+        }),
+        # Resto de los fieldsets
+    ]
+
 
     def formatted_email(self, obj):
         return f'\t{obj.email}'  # Agrega una tabulación al inicio del correo electrónico

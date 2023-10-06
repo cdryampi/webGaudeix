@@ -32,11 +32,15 @@ class EntidadComprayParticipa(models.Model):
         return self.nombre
     
     class Meta:
+        verbose_name = "Entitat"
         verbose_name_plural = "Entitats"
 
 
 
 class CompraDescubre(BaseModel, MetadataModel):
+    """
+        modelo que representa una entidad compra y descubre pensada para las campañas de 'xarxabarris.cat' .
+    """
     titulo = models.CharField(
         max_length=255,
         help_text="Títol pel compra i descobreix. PE: Compra i descobreix 2023",
@@ -140,7 +144,8 @@ class CompraDescubre(BaseModel, MetadataModel):
         return self.titulo
     
     class Meta:
-        verbose_name_plural = "Esdeveniments Especials Compra i descubre"
+        verbose_name = "Esdeveniment Especial 'Compra i descubre'."
+        verbose_name_plural = "Esdeveniments Especials 'Compra i descubre'."
 
 
 
@@ -247,6 +252,9 @@ class CompraDescubreImagen(models.Model):
 
 
 class CompraDescubreFichero(models.Model):
+    """
+        modelo que representa un fichero PDF o siminar que sirva como instructivo para el evento de 'compra y descubre'
+    """
     compradescubre = models.OneToOneField(
         CompraDescubre,
         on_delete=models.CASCADE,

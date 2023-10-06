@@ -288,6 +288,7 @@ class RutaAdmin(admin.ModelAdmin):
                 'metadescripcion',
                 'publicado',
                 'pendiente',
+                'categoria',
                 'distancia',
                 'tema',
                 'actividad',

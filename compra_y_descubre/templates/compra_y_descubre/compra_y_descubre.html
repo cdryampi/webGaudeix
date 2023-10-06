@@ -326,6 +326,19 @@
     {% endif %}
 
 
+    {% if compra_y_descubre.compradescubrefichero %}
+    <aside class="container-fuild  py-0 my-0" style="background-color:{{compra_y_descubre.primary_color}}">
+        <div class="col-md-12 col-lg-12 agenda-special-categories p-5">
+            <div class="text-center m-0 p-2" style="background-color:{{compra_y_descubre.primary_color}} !important">
+                <a href="{{ compra_y_descubre.compradescubrefichero.fichero.archivo.url }}" target="_blank" class="btn btn-outline-dark btn-lg" >
+                    <i class="fas fa-file-download"></i>
+                    Descàrrega material addicional en PDF
+                </a>
+            </div>
+        </div>
+    </aside>
+    
+    {% endif %}
 
     {% if compra_y_descubre.entidades %}
         {% include 'compra_y_descubre/negocis_selection.html' %}
@@ -390,6 +403,13 @@
             if (document.getElementById("countdown").innerHTML === "¡L'esdeveniment ha començat!") {
                 clearInterval(countdownInterval);
             }
+        }
+
+        const refrescar = document.getElementById("refresh_youtube_link");
+        if(refrescar){
+            refrescar.addEventListener('click', function(){
+                location.reload();
+            })
         }
 
     });

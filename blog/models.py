@@ -547,7 +547,8 @@ class Noticia(MetadataModel):
     )
     fecha = models.DateField(
         default=timezone.now,
-        help_text="Data de la notícia"
+        help_text="Data de la notícia",
+        verbose_name="Data de publicació."
     )
     imagen_url = models.URLField(
         blank=True,

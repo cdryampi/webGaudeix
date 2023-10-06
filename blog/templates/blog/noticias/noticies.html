@@ -43,36 +43,71 @@
     .noticia-contenido {
       margin-bottom: 20px;
     }
+    .banner-container {
+      position: relative;
+    }
+    
+    .banner-img {
+      width: 100%;
+      object-fit: cover;
+      max-height: 600px;
+    }
+    
+    .banner-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .banner-title {
+      color: #31C6F8;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    .img-noticia{
+      width: 100%;
+      max-height: 324px;
+      object-fit: cover;
+    }
+
   </style>
 {% endblock extra_css %}
 {% load static %}
 {% block content %}
 <section class="mx-0 px-0 pb-5 container-fluid">
-    <div class="text-center">
-        <div class="banner m-0 p-0">
-            <div class="banner-text">
-              <h1 class="main-title">Noticies</h1>
-              <h2 class="sub-title">Descobreix l'ultim de Cabrera de Mar</h2>
-            </div>
-            <div class="banner-highlight">#visitesculturals</div>
-          </div>
+  <div class="text-center">
+    <div class="container-fluid p-0 m-0 banner-container">
+      <img src="{% static 'core/img/sample/cabrera-team.jpg' %}" alt="Cabrera de Mar notícies" class="banner-img">
+      <div class="banner-content">
+        <h1 class="banner-title text-center">Descobreix l'últim de Cabrera de Mar</h1>
+      </div>
     </div>
-    <div class="container pt-5">
-        <div class="row">
-          {% for noticia in noticias %}
-          <div class="col-12">
-            <div class="noticia-container">
-              <h2 class="noticia-titulo">{{ noticia.titulo }}</h2>
-              <p class="noticia-fecha">Fecha: {{ noticia.fecha }}</p>
-              <p class="noticia-contenido">{{ noticia.contenido }}</p>
-              {% if noticia.imagen_url %}
-                <img src="{{ noticia.imagen_url }}" alt="Imagen de la noticia" class="img-fluid" style="max-width: 100%;">
-              {% endif %}
-              <a href="{% url 'blog:noticia' slug=noticia.slug %}">Ver más</a>
-            </div>
+  </div>
+  <div class="container pt-5">
+    <div class="row">
+      {% for noticia in noticias|dictsortreversed:"fecha" %}
+      <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-3">
+        <div>
+          {% if noticia.imagen_url %}
+          <div class="image-container">
+            <img src="{{ noticia.imagen_url }}" alt="Imagen de la noticia" class="img-fluid img-noticia">
           </div>
-          {% endfor %}
+          {% endif %}
+        </div>
+        <div>
+          <h2 class="noticia-titulo">{{ noticia.titulo }}</h2>
+          <p class="noticia-fecha">
+            <span class="text-dark">Publicació:</span> {{ noticia.fecha }}
+          </p>
+          <p class="noticia-contenido">{{ noticia.contenido }}</p>
+          <p>
+            <a href="https://www.cabrerademar.cat/actualitat/noticies" target="_blank">Saber més</a>
+          </p>
         </div>
       </div>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 {% endblock content %}

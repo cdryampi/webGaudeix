@@ -42,6 +42,14 @@
                                     <div class="image-container image-container-agenda">
                                         <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
                                     </div>
+                                {% else %}
+                                    {% with imagenPost=agenda.postimagen %}
+                                        {% if imagenPost %}
+                                            <div class="image-container image-container-agenda">
+                                                <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
                                 {% endif %}
                             {% endwith %}
                         {% endif %}

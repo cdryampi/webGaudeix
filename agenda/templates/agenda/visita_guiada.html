@@ -367,7 +367,7 @@
     {% if agendas_relacionadas %}
     <aside class="container p-3">
       <div class="py-3">
-          <h4 class="related-activities-title">Activitats relacionades:</h4>
+          <h4 class="related-activities-title">Esdeveniments de la visita guiada:</h4>
       </div>
       <div class="row row-inline-cards justify-content-center px-0">
           {% for objeto in agendas_relacionadas %}
@@ -378,22 +378,23 @@
                 {% endspaceless %}" class="related-activity-link my-1">
 
                   <article class="card related-activity-card mb-3 h-100">
-                      {% with imagen=objeto.postgaleriaimagen_set.first %}
-                        {% if imagen %}
+                    {% with imagen=objeto.postgaleriaimagen_set.first %}
+                    {% if not imagen %}
+                      {% with imagenPost=objeto.postimagen %}
+                        {% if imagenPost %}
                           <div class="image-container">
-                              <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
+                            <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
                           </div>
-                        {% else %}
-                          {% with imagenPost=objeto.postimagen %}
-                            {% if imagenPost %}
-                              <div class="image-container">
-                                <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
-                              </div>
-                            {% endif %}
-
-                          {% endwith %}
                         {% endif %}
                       {% endwith %}
+                    {% else %}
+                      <div class="image-container">
+                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
+                      </div>
+                    {% endif %}
+                  {% endwith %}
+                  
+
                       <div class="card-body text-center">
                           <h5 class="card-title related-activity-title">{{ objeto.titulo }}</h5>
                           <p class="card-text related-activity-description">

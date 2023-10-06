@@ -10,6 +10,9 @@ from django import forms
 
 
 
+
+
+
 class TrenPersonalizacionAdminInLine(admin.StackedInline):
     model = TrenPersonalizacion
     extra = 1

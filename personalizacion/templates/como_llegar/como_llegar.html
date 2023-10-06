@@ -11,7 +11,7 @@
                         <div class="p-3 comarribar-container">
                             <p class="text-center">
                                 <a class="" target="_blank" href="{{ tren.enlace }}" rel="noopener">
-                                    <i class="fas fa-train fa-4x" style="color:{{header.color_fondo_header}};">
+                                    <i class="fas fa-train fa-4x" style="color: {% if evento_especial %}{{ evento_especial.color }}{% else %}{{ header.color_fondo_header }}{% endif %};">
 
                                     </i>
                                 </a>
@@ -34,7 +34,7 @@
                         <div class="p-3 comarribar-container">
                             <p class="text-center">
                                 <a class="" target="_blank" href="{{ autopista.enlace }}" rel="noopener">
-                                    <i class="fas fa-car fa-4x" style="color:{{header.color_fondo_header}};">
+                                    <i class="fas fa-car fa-4x" style="color: {% if evento_especial %}{{ evento_especial.color }}{% else %}{{ header.color_fondo_header }}{% endif %};">
 
                                     </i>
                                 </a>
@@ -57,7 +57,7 @@
                     <div class="p-3 comarribar-container">
                         <p class="text-center">
                             <a class="" target="_blank" href="{{ bus.enlace }}" rel="noopener">
-                                <i class="fas fa-bus fa-4x" style="color:{{header.color_fondo_header}};">
+                                <i class="fas fa-bus fa-4x" style="color: {% if evento_especial %}{{ evento_especial.color }}{% else %}{{ header.color_fondo_header }}{% endif %};">
                                 </i>
                             </a>
                         </p>
@@ -79,7 +79,7 @@
                     <div class="p-3 comarribar-container">
                         <p class="text-center">
                             <a class="" target="_blank" href="{{ aeroport.enlace }}" rel="noopener">
-                                <i class="fas fa-plane-arrival fa-4x" style="color:{{header.color_fondo_header}};">
+                                <i class="fas fa-plane-arrival fa-4x" style="color: {% if evento_especial %}{{ evento_especial.color }}{% else %}{{ header.color_fondo_header }}{% endif %};">
                                 </i>
                             </a>
                         </p>

@@ -10,6 +10,28 @@ from ..utils import sincronizar_noticias
 class NoticiaAdmin(admin.ModelAdmin):
     actions = ['sincronizar_feed','refresh_cache']
 
+
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'contenido',
+                'fecha',
+                'imagen_url',
+                'publicado',
+                'categoria',
+                ],
+
+            'description': (
+                "<p><strong><em>Aquesta és l'administració d'una notícia.</em></strong></p>"
+                "<p><em>En aquesta secció, pots gestionar una notícia de forma individual, si vols que aparegui al portal has de posar-les a la categoria de notícies.</em></p>"
+                "<p><em>Assegura't d'eliminar les notícies que no interessen.</em></p>"
+                "<p><em>Si s'actualitza el RRSS del ajuntament, doncs es poden crear les notícies manualment assegura't d'omplir tots els camps.</em></p>"
+            ),
+        }),
+        # Resto de los fieldsets
+    ]
+
     def sincronizar_feed(self, request, queryset):
         if queryset.exists():
             try:

@@ -243,8 +243,8 @@ class DetalleNoticiaView(BaseContextMixin, DetailView):
     model = Noticia  # Modelo que se utilizará para obtener la noticia
     template_name = 'blog/noticias/noticia.html'  # Plantilla HTML para la página
     context_object_name = 'noticia'  # Nombre con el que se pasará el objeto noticia a la plantilla
-
-class ListarNoticiaView(ListView):
+    
+class ListarNoticiaView(BaseContextMixin, ListView):
     """
     Vista basada en clase para listar las noticias.
     Utiliza una plantilla 'noticies.html' para mostrar la lista de noticias.
@@ -252,10 +252,13 @@ class ListarNoticiaView(ListView):
     model = Noticia  # Modelo que se utilizará para obtener los subblogs
     template_name = 'blog/noticias/noticies.html'  # Plantilla HTML para la página
     context_object_name = 'noticias'  # Nombre con el que se pasará la lista de subblogs a la plantilla
+    queryset = Noticia.objects.filter(publicado=True).order_by("fecha")
 
-    def get_queryset(self):
+
+    def get_context_data(self, **kwargs):
         """
-        Devuelve la queryset de noticias filtrada para mostrar solo los publicados.
+        Agrega datos adicionales al contexto de la plantilla.
         """
-        queryset = super().get_queryset().filter(publicado=True)
-        return queryset
+        context = super().get_context_data(**kwargs)
+
+        return context
