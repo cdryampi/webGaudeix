@@ -7,6 +7,7 @@
     {% autoescape on %}
       {{ legal.contenido | safe  | truncatewords:60  |striptags }}
     {% endautoescape %}">
+    <meta property="og:description" content="{{ legal.contenido | striptags | truncatewords_html:150 | safe }}">
   {% endif %}
 {% endblock meta_description %}
 

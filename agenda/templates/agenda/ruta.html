@@ -1,8 +1,17 @@
 {% extends 'core/base.html' %}
 
 {% block meta_description %}
-    <meta name="Description" content="{{ruta.metadescripcion |safe }}">
+  {% if ruta.metadescripcion %}
+    <meta name="Description" content="{{ ruta.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ ruta.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if ruta.descripcion %}
+      <meta name="Description" content="{{ ruta.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ ruta.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
 {% endblock meta_description%}
+
 
 {% block meta_keywords %}
   {% if ruta.tags.all %}

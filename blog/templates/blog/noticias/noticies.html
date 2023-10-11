@@ -1,7 +1,15 @@
 {% extends "core/base.html" %}
 
 {% block meta_description %}
-    <meta name="Description" content="{{categoria.metadescripcion |safe }}">
+  {% if categoria.metadescripcion %}
+    <meta name="Description" content="{{ categoria.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ categoria.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if categoria.descripcion %}
+      <meta name="Description" content="{{ categoria.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ categoria.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
 {% endblock meta_description%}
 
 {% block meta_keywords %}

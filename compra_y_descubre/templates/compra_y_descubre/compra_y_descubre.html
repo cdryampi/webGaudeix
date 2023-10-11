@@ -1,13 +1,16 @@
 {% extends "core/base.html" %}
 {% load static %}
+
 {% block meta_description %}
-
-    {% if compra_y_descubre.metadescripcion %}
-        <meta name="Description" content="{{ compra_y_descubre.metadescripcion | safe | striptags }}">
-    {% else %}
-        <meta name="Description" content="{{ compra_y_descubre.contenido | safe | striptags }}">
+  {% if compra_y_descubre.metadescripcion %}
+    <meta name="Description" content="{{ compra_y_descubre.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ compra_y_descubre.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if compra_y_descubre.descripcion %}
+      <meta name="Description" content="{{ compra_y_descubre.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ compra_y_descubre.descripcion | striptags | truncatewords_html:150 | safe }}">
     {% endif %}
-
+  {% endif %}
 {% endblock meta_description%}
 
 {% block meta_keywords %}

@@ -162,7 +162,10 @@ class EventoEspecial(BaseModel, MetadataModel):
         return self.titulo
     
     def get_logo_absolute_url(self):
-        return settings.DOMAIN_URL + self.logo_especial.url
+        if self.logo_especial.url:
+            return settings.DOMAIN_URL + self.logo_especial.url
+        else:
+            return None
     
     class Meta:
         verbose_name_plural = "Esdeveniments Especials"

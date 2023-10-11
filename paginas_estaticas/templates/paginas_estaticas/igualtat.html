@@ -2,7 +2,13 @@
 {% load static %}
 {% block meta_description %}
     {% if diversidad.metadescripcion %}
-    <meta name="description" content="{{diversidad.metadescripcion |safe | striptags}}">
+        <meta name="description" content="{{diversidad.metadescripcion |safe | striptags}}">
+        <meta property="og:description" content="{{ diversidad.metadescripcion |safe | striptags }}">
+    {% else %}
+        {% if diversidad.descripcion_auxiliar %}
+            <meta name="Description" content="{{ diversidad.descripcion_auxiliar | safe | striptags | truncatewords_html:150 }}">
+            <meta property="og:description" content="{{ diversidad.descripcion_auxiliar | striptags | truncatewords_html:150 | safe }}">
+        {% endif %}
     {% endif %}
 {% endblock meta_description %}
 

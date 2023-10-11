@@ -2,7 +2,16 @@
 {% load static %}
 
 {% block meta_description %}
-    <meta name="Description" content="{{local_agenda.metadescripcion | safe | striptags }}">
+  {% if local_agenda.metadescripcion %}
+    <meta name="Description" content="{{ local_agenda.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ local_agenda.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if local_agenda.descripcion %}
+      <meta name="Description" content="{{ local_agenda.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ local_agenda.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
+    
 {% endblock meta_description%}
 
 {% block meta_keywords %}

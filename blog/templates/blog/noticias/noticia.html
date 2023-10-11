@@ -5,10 +5,12 @@
 {% block meta_description %}
   {% if noticia.metadescripcion %}
     <meta name="Description" content="{{noticia.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{noticia.metadescripcion | safe | striptags }}">
     {% else %}
-    <meta name="Description" content=" {% autoescape on %}
-      {{noticia.contenido | safe | striptags |truncatechars:60  }}
-    {% endautoescape %}">
+      <meta name="Description" content=" {% autoescape on %}
+        {{noticia.contenido | safe | striptags }}
+      {% endautoescape %}">
+      <meta property="og:description" content="{{noticia.contenido | safe | striptags }}">
   {% endif %}
     
 {% endblock meta_description%}

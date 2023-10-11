@@ -3,8 +3,12 @@
 {% block meta_description %}
     {% if subblog.metadescripcion %}
         <meta name="Description" content="{{ subblog.metadescripcion | safe | striptags }}">
+        <meta property="og:description" content="{{ subblog.metadescripcion | safe | striptags }}">
     {% else %}
-        <meta name="Description" content="{{ subblog.contenido | safe | striptags }}">
+        {% if subblog.contenido %}
+            <meta name="Description" content="{{ subblog.contenido | safe | striptags | truncatewords_html:150 }}">
+            <meta property="og:description" content="{{ subblog.contenido | striptags | truncatewords_html:150 | safe }}">
+        {% endif %}
     {% endif %}
 
 {% endblock meta_description%}

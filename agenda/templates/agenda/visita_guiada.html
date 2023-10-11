@@ -3,7 +3,15 @@
 {% load custom_filters %}
 
 {% block meta_description %}
-    <meta name="Description" content="{{visites.metadescripcion | safe | striptags }}">
+  {% if visites.metadescripcion %}
+    <meta name="Description" content="{{ visites.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ visites.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if visites.descripcion %}
+      <meta name="Description" content="{{ visites.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ visites.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
 {% endblock meta_description%}
 
 {% block meta_keywords %}

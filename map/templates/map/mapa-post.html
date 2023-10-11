@@ -2,13 +2,15 @@
 {% load static %}
 
 {% block meta_description %}
-
     {% if map.metadescripcion %}
         <meta name="Description" content="{{ map.metadescripcion | safe | striptags }}">
+        <meta property="og:description" content="{{ map.metadescripcion }}">
     {% else %}
-        <meta name="Description" content="{{ map.contenido | safe | striptags }}">
+        {% if map.contenido %}
+            <meta name="Description" content="{{ map.contenido | safe | striptags | truncatewords_html:150 }}">
+            <meta property="og:description" content="{{ map.contenido | striptags | truncatewords_html:150 | safe }}">
+        {% endif %}
     {% endif %}
-
 {% endblock meta_description%}
 
 {% block meta_keywords %}
