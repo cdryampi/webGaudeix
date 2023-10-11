@@ -16,6 +16,8 @@ from django.core.exceptions import ValidationError
 
 from colorfield.fields import ColorField
 
+from django.conf import settings
+
 import pdb
 
 class Header(SingletonModel):
@@ -47,6 +49,9 @@ class Header(SingletonModel):
         ).delete()
 
         super().save(*args, **kwargs)
+    
+    def get_logo_absolute_url(self):
+        return settings.DOMAIN_URL + self.logo.url
 
 class HeaderFooter(SingletonModel):
     color_fondo_header = ColorField(
@@ -77,19 +82,28 @@ class HeaderFooter(SingletonModel):
         super().save(*args, **kwargs)
 
 class EnlaceExterno(models.Model):
+    """
+        Modelo que representa una enlace externo.
+    """
     titulo = models.CharField(
         max_length=35,
-        help_text="Títol de l'enllaç"
+        help_text="Títol de l'enllaç",
+        verbose_name="títol"
     )
     enlace = models.URLField(
         blank=True,
         null=True,
-        help_text="Enllaç extern"
+        help_text="Enllaç extern",
+        verbose_name="enllaç"
     )
 
 
     def __str__(self):
         return self.titulo
+    
+    class Meta:
+        verbose_name_plural = "Enllaços externs"
+        verbose_name = "Enllaç extern"
 
 class Referencia(models.Model):
     TIPOS_REFERENCIA = (

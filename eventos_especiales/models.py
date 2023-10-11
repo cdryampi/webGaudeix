@@ -10,10 +10,14 @@ from ckeditor.fields import RichTextField
 from django.utils import timezone
 from django.urls import reverse
 from blog.models import Tag, Categoria, Post
+from django.conf import settings
+
 # Create your models here.
 
 class EventoEspecial(BaseModel, MetadataModel):
-    
+    """
+        Modelo que representa a un Evento especial
+    """
     
     titulo = models.CharField(
         max_length=255,
@@ -156,6 +160,9 @@ class EventoEspecial(BaseModel, MetadataModel):
     
     def __str__(self):
         return self.titulo
+    
+    def get_logo_absolute_url(self):
+        return settings.DOMAIN_URL + self.logo_especial.url
     
     class Meta:
         verbose_name_plural = "Esdeveniments Especials"

@@ -22,8 +22,7 @@ class EventoFicheroInline(admin.TabularInline):
                 evento_id = request.resolver_match.kwargs['object_id']
 
             kwargs['queryset'] = Fichero.objects.filter(
-                Q(eventofichero__isnull=True) | Q(eventofichero__id=evento_id),
-                Q(eventofichero__isnull=True), 
+                Q(eventofichero__isnull=True) | Q(eventofichero__evento_id=evento_id),
                 Q(postfichero__isnull=True),
                 Q(pdfcollectionresoluciofichero__isnull =True),
                 Q(pdfcollectionjustificaciofichero__isnull=True),

@@ -10,14 +10,25 @@
     
     <!--metas-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta property="og:type" content="website">
     <meta content="GaudeixCabreradeMar" name="author">
+
+
+    {% block meta_title %}
+        {% if portada %}
+            <meta property="og:title" content="Gaudeix Cabrera de Mar">
+        {% endif %}
+    {% endblock meta_title %}
+
 
     {% block meta_description %}
         {% if portada %}
             {% if portada_meta_description %}
                 <meta name="description" content="{{ portada_meta_description }}">
+                <meta property="og:description" content="{{ portada_meta_description }}">
             {% else %}
                 <meta name="description" content="Explora la riquesa cultural de Cabrera de Mar amb les nostres propostes. Descobreix l'art, la història i les tradicions en aquesta localitat de la costa catalana.">
+                <meta property="og:description" content="Explora la riquesa cultural de Cabrera de Mar amb les nostres propostes. Descobreix l'art, la història i les tradicions en aquesta localitat de la costa catalana.">
             {% endif %}
         {% endif %}
     {% endblock meta_description%}
@@ -32,6 +43,19 @@
         {% endif %}
     {% endblock meta_keywords %}
 
+    {% block meta_image %}
+        {% if portada %}
+            {% if header.logo %}
+                <meta property="og:image" content="{{ header.get_logo_absolute_url }}">
+            {% endif %}
+        {% else %}
+            {% if header.logo %}
+                <meta property="og:image" content="{{ header.get_logo_absolute_url }}">
+            {% endif %}
+        {% endif %}
+    {% endblock meta_image %}
+
+
 
 
     <meta name="robots" content="all">
@@ -42,6 +66,7 @@
     {% block canonical %}
         {% if portada %}
             <link rel="canonical" href="{{ current_url }}"/>
+            <meta property="og:url" content="{{ current_url }}">
         {% endif %}
 
     {% endblock canonical %}

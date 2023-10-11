@@ -56,7 +56,7 @@
                         
                         {% elif referencia.tipo == 'evento_especial' %}
                             {% if referencia.evento_especial.publicado %}
-                                <li class="nav-item active bg-white rounded-bottom shadow">
+                                <li class="nav-item active bg-white rounded-bottom shadow mx-0 mx-md-0 mx-sm-0 mx-lg-2 mx-xl-3 my-2 my-md-2 my-sm-2 my-lg-0 my-xl-0">
                                     <a class="nav-link text-black font-weight-bold evento_especial_link" href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}" style="color: {{ header.color_fondo_header}} !important;">
                                         {{ referencia.evento_especial.titulo }}
                                     </a>

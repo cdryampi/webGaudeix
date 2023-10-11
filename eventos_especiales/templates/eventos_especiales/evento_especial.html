@@ -19,6 +19,18 @@
 
 {% endblock meta_keywords %}
 
+{% block meta_image %}
+    {% if evento_especial %}
+        {% if evento_especial.imagen_especial %}
+            <meta property="og:image" content="{{ evento_especial.get_logo_absolute_url }}">
+        {% else %}
+            {% if header.logo %}
+                <meta property="og:image" content="{{ header.get_logo_absolute_url }}">
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock meta_image %}
+
 {% block canonical %}
   <link rel="canonical" href="{{ canonical_url }}"/>
 {% endblock canonical %}
@@ -299,16 +311,19 @@
 
 
 
+{% if not  evento_especial.has_ended %}
+    <div class="container-fluid bg-gray p-0 m-0 pb-5">
+        <div class="container mt-3">
+            <div class="row justify-content-center">
+                <div class="link-div">
+                    <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" target="_blank" class="link">Obtén les teves entrades aquí!</a>
+                </div>              
+            </div>
+        <div>
+    </div>
+{% endif %}
 
-<div class="container-fluid bg-gray p-0 m-0 pb-5">
-    <div class="container mt-3">
-        <div class="row justify-content-center">
-            <div class="link-div">
-                <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" target="_blank" class="link">Obtén les teves entrades aquí!</a>
-              </div>              
-        </div>
-    <div>
-</div>
+
 
 {% endblock content %}
 

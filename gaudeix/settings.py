@@ -36,6 +36,8 @@ with open(settings_file_path, 'r') as settings_file:
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config['SECRET_KEY']
 
+DOMAIN_URL = config['DOMAIN_URL']
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = settings["DEBUG"]
 

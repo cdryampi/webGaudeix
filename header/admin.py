@@ -80,4 +80,18 @@ class ReferenciaAdminWeb(admin.ModelAdmin):
 
 @admin.register(EnlaceExterno)
 class EnlaceExternoAdminWeb(admin.ModelAdmin):
-     pass
+     fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'enlace',
+            ],
+               'description': (
+                    "<p><strong>Aquesta és la pàgina d'edició d'un enllaç extern.</strong></p>"
+                    "<p><em>En aquests enllaços pots afegir referències externes cap a altres webs.</em></p>"
+                    "<p><em>Els camps són obligatoris i has de posar el títol i l'enllaç.</em></p>"
+               ),
+
+        }),
+        # Otras secciones de fieldsets aquí si es necesario
+    ]

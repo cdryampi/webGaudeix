@@ -1,7 +1,7 @@
 {% if coleccion_destacados %}
 <section class="container-fluid py-3 bg-light" id="destacats">
     <div class="py-3">
-        <h4 class="related-activities-title text-center h2 custom-title">Destacats</h4>
+        <h3 class="related-activities-title text-center h2 custom-title">Destacats</h3>
     </div>
     <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -36,7 +36,7 @@
                                     {% endwith %}
                             {% endif %}
                             <div class="card-body text-center">
-                                <h5 class="card-title related-activity-title">{{ evento.titulo }}</h5>
+                                <h4 class="card-title related-activity-title">{{ evento.titulo }}</h4>
                             </div>
                         </div>
                     </a>
@@ -84,7 +84,7 @@
                         {% endif %}
                         {% endwith %}
                         <div class="card-body text-center">
-                            <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
+                            <h4 class="card-title related-activity-title">{{ post.titulo }}</h4>
                         </div>
                     </div>
                 </a>
