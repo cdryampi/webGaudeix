@@ -184,7 +184,9 @@
                 <div class="row">
 
                     {% for festa in festes %}
-                        <div class="col-md-6 p-3">
+                    <a href="{% url 'eventos_especiales:evento_especial' slug=festa.slug %}" 
+                    class="col-md-6 p-3">
+                        <div class="">
                             <div class="card mb-3 h-100 card-post">
                                 <div class="image-container">
                                     {% if festa.imagen_especial %}
@@ -203,12 +205,14 @@
                                             {{ festa.descripcion_corta |striptags |truncatewords:30 | safe }}
                                         {% endautoescape %}
                                     </p>
-                                    <a href="{% url 'eventos_especiales:evento_especial' slug=festa.slug %}" 
-                                    class="text-primary text-left mt-auto url-link">Saber més</a>
-
+                                    <p>
+                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
+                        
+                    </a>
                     {% endfor %}
                     {% for post in posts %}
                     <div class="col-md-6 p-3">

@@ -10,7 +10,7 @@
             {% for imagen in visites.postgaleriaimagen_set.all %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                 <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="gallery">
-                    <img src="{{ imagen.imagen.archivo.url }}" alt="{{ imagen.titulo }}" class="img-fluid fancybox">
+                    <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.titulo }}" alt="{{ imagen.titulo }}" class="img-fluid fancybox">
                 </a>
             </div>
             {% endfor %}

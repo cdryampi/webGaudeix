@@ -191,59 +191,63 @@
               </div>              
             {% if categoria.tipo == 'visitas_guiadas' %}
             {% for visita in visitas_guiadas %}
-            <div class="card visita-guiada-card pt-3 col-12">
-                <div class="tipo-visita {% if visita.publico_recomendado == 'nens' %}tipo-visita-agenda{% elif visita.publico_recomendado == 'adults' %}tipo-visita-guiada{% else %}tipo-visita-otro{% endif %}">
-                    {% if visita.publico_recomendado == 'nens' %}
-                    <i class="fas fa-child"></i>
-                    {% elif visita.publico_recomendado == 'adults' %}
-                    <i class="fas fa-user"></i>
-                    {% else %}
-                    <i class="fas fa-users"></i>
-                    {% endif %}
-                    {{ visita.get_publico_recomendado_display }}
-                    <span class="duracion-visita">
-                        <i class="fas fa-clock"></i>
-                        {{ visita.duracion|format_duration }}
-                    </span>
-                    
-                </div>
-
-                <div class="row p-3">
-                    {% if visita.postimagen.imagen %}
-                        {% with imagen=visita.postimagen.imagen %}
-                            <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
-                                <img src="{{ imagen.archivo.url }}" alt="Imagen de la visita"
-                                    class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
-                            </div>
-                        {% endwith %}
-                    {% else %}
-                        {% if visita.postgaleriaimagen_set.exists %}
-                            {% with imagen=visita.postgaleriaimagen_set.first %}
-                                {% if imagen %}
-                                    <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
-                                        <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
-                                            class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
-                                    </div>
-                                {% endif %}
-                            {% endwith %}
+            <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="card visita-guiada-card pt-3 col-12">
+                <div class="">
+                    <div class="tipo-visita {% if visita.publico_recomendado == 'nens' %}tipo-visita-agenda{% elif visita.publico_recomendado == 'adults' %}tipo-visita-guiada{% else %}tipo-visita-otro{% endif %}">
+                        {% if visita.publico_recomendado == 'nens' %}
+                        <i class="fas fa-child"></i>
+                        {% elif visita.publico_recomendado == 'adults' %}
+                        <i class="fas fa-user"></i>
+                        {% else %}
+                        <i class="fas fa-users"></i>
                         {% endif %}
-                    {% endif %}
-                    <div class="col-lg-8 col-md-6 col-sm-12">
-                        <div class="card-body" style="padding: 20px;">
-                            <h2 class="card-title">{{ visita.titulo }}</h2>
-                            <div class="card-text">
-                                {% autoescape on %}
-                                    {{ visita.descripcion |truncatewords_html:50 | safe }}
-                                {% endautoescape %}
+                        {{ visita.get_publico_recomendado_display }}
+                        <span class="duracion-visita">
+                            <i class="fas fa-clock"></i>
+                            {{ visita.duracion|format_duration }}
+                        </span>
+                        
+                    </div>
+
+                    <div class="row p-3">
+                        {% if visita.postimagen.imagen %}
+                            {% with imagen=visita.postimagen.imagen %}
+                                <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                    <img src="{{ imagen.archivo.url }}" alt="Imagen de la visita"
+                                        class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
+                                </div>
+                            {% endwith %}
+                        {% else %}
+                            {% if visita.postgaleriaimagen_set.exists %}
+                                {% with imagen=visita.postgaleriaimagen_set.first %}
+                                    {% if imagen %}
+                                        <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                            <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
+                                                class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endif %}
+                        <div class="col-lg-8 col-md-6 col-sm-12">
+                            <div class="card-body" style="padding: 20px;">
+                                <h2 class="card-title">{{ visita.titulo }}</h2>
+                                <div class="card-text">
+                                    {% autoescape on %}
+                                        {{ visita.descripcion |truncatewords_html:50 | safe }}
+                                    {% endautoescape %}
+                                </div>
+                                <!-- Afegeix aquí altres detalls rellevants per a la carta -->
+                                <p>
+                                    <span class="text-primary text-left mt-auto url-link">Saber més <i class="fas fa-arrow-right"></i></span>
+                                </p>
+                                    
+                            
                             </div>
-                            <!-- Afegeix aquí altres detalls rellevants per a la carta -->
-                            <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="visita-guiada-link btn btn-link text-primary">
-                                Veure més <i class="fas fa-arrow-right"></i>
-                            </a>                            
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
             {% endif %}
         </div>

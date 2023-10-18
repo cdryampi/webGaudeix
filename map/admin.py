@@ -73,11 +73,43 @@ class PostGaleriaImagenInline(admin.TabularInline):
 
 
 class MapPointAdmin(admin.ModelAdmin):
+
+
     inlines = [PostImagenInline, PostGaleriaImagenInline]
     list_display = ('titulo', 'latitud', 'longitud', 'icono')
     list_filter = ('icono',)
     search_fields = ('titulo', 'latitud', 'longitud')
     autocomplete_fields = ['categoria']
     actions = [export_map_points_csv]
+    
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'metatitulo',
+                'descripcion',
+                'metadescripcion',
+                'publicado',
+                'categoria',
+                'latitud',
+                'longitud',
+                'icono',
+                'calle',
+                'enlace_google_maps',
+            ],
+            'description': (
+                "<p><strong>Aquesta és la pàgina d'edició d'un Map Point.</strong></p>"
+                "<p><em>Els <u>llocs(Map points)</u> són una part auxiliar del lloc web i es poden afegir totes les direccions que tinguin relació amb Cabrera de Mar.</em></p>"
+                "<p>Assegura't de completar els camps i de marcar l'opció <strong>publicat</strong> perquè es mostri a la web.</p>"
+                "<p>Pots tenir dos tipus d'imatges, el banner que surt la imatge petita al costat de la descripció i la galeria que pots posar totes les imatges que vols (és una galeria d'imatges a la part superior de la landing).</p>"
+                "<p>Has de tenir en compte que les coordinades de latitud i longitud són les de Google Maps i pots afegir també un enllaç cap a la posició exacte o el sistema generarà una amb les coordenades.</p>"
+                "<p>Tenim un camp opcional per afegir informació addicional a la part inferior del mapa, fes-ho servir com a advertiment o com vulguis.</p>"
+                "<p><strong>Nota:</strong> Abans d'eliminar un Map Point, verifica que no el necessitis, ja que es pot despublicar i no afectar a les rutes de la categoria a senderisme si el tenim relacionat.</p>"
+            ),
+        }),
+        # Otras secciones de fieldsets aquí si es necesario
+    ]
+
+
 
 admin.site.register(MapPoint, MapPointAdmin)

@@ -27,8 +27,14 @@
 <aside class="container-fluid">
   <div class="container-fluid mt-5 p-3">
     <div class="row row-inline-cards justify-content-center" id="agenda-section">
+      <div id="spinner-container">
+        <div class="spinner"></div>
+      </div>
       <div class="container-fluid" id="agenda-resultados">
         <!-- Aquí se mostrarán los resultados del filtro -->
+        <!-- spinner.html -->
+
+
       </div>
     </div>
   </div>
@@ -86,7 +92,7 @@
     // Agrega la fecha al formulario
     formData.set('year', currentYear);
     formData.set('month', currentMonth);
-
+    mostrarSpinner();
     // Realiza la llamada a la API para obtener los resultados filtrados
     fetch('/api/filtrar-agenda/', {
       method: 'POST',
@@ -96,6 +102,7 @@
       body: formData,
     })
       .then((response) => {
+        
         if (response.ok) {
           return response.json();
         } else {
@@ -104,11 +111,21 @@
       })
       .then((data) => {
         // Muestra los resultados en la página
+        ocultarSpinner();
         mostrarResultados(data);
+        
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+  // JavaScript para mostrar y ocultar el spinner
+  function mostrarSpinner() {
+    document.getElementById('spinner-container').style.display = 'block';
+  }
+
+  function ocultarSpinner() {
+    document.getElementById('spinner-container').style.display = 'none';
   }
 
   function obtenerEventosPorDia(agendas) {

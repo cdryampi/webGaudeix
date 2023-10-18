@@ -1037,6 +1037,7 @@ table.table-custom tr.even {
 
 .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after, .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
   color: #3EBFAB;
+  font-weight: bolder;
 }
 
 .swiper-container .card.related-activity-card.mb-3.h-100 {

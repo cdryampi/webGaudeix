@@ -6,7 +6,8 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="topbar-description">
                     {% if topbar %}
-                        <p class="hidden-lg hidden-md">
+                        <!-- Versión para pantallas pequeñas -->
+                        <p class="d-lg-none d-md-none">
                             {{ topbar.descripcion_corta_movil }} 
                             {% if topbar.enlace_externo %}
                                 {% if topbar.titulo_externo %}
@@ -16,7 +17,8 @@
                                 {% endif %}
                             {% endif %}
                         </p>
-                        <p class="hidden-xs d-none">
+                        <!-- Versión para pantallas grandes -->
+                        <p class="d-none d-lg-block d-md-block">
                             {{ topbar.descripcion }} 
                             {% if topbar.enlace_externo %}
                                 {% if topbar.titulo_externo %}
@@ -28,16 +30,12 @@
                         </p>
                     {% else %}
                         <!-- Contenido estático relacionado con el clima -->
-                        <p class="hidden-lg hidden-md">
-                            ¡Consulta el clima actual en nuestra ubicación!
-                            <a class="topbar-link" href="#">Ver clima</a>
-                        </p>
-                        <p class="hidden-xs d-none">
-                            ¡Consulta el clima actual en nuestra ubicación!
-                            <a class="topbar-link" href="#">Ver clima</a>
+                        <p class="d-lg-none d-md-none">
+                            Gaudeix de Cabrera de Mar
                         </p>
                     {% endif %}
                 </div>
+                
             </div>
         </div>
     </div>

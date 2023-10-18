@@ -30,7 +30,7 @@
                             {% with imagen=agenda.agenda.postgaleriaimagen_set.first %}
                             {% if imagen %}
                             <div class="image-container image-container-agenda">
-                                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.agenda.titulo }}" class="img-fluid">
+                                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.agenda.titulo }}" title="{{ imagen.imagen.titulo }}" class="img-fluid">
                             </div>
                             {% endif %}
                             {% endwith %}

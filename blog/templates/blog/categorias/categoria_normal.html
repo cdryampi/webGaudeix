@@ -181,7 +181,18 @@
                 <h3>Contingut relacionat</h3>
                 <div class="row">
                     {% for post in posts %}
-                    <div class="col-md-6 p-3">
+                    <a href="
+                    {% if post.agenda %} 
+                        {% url 'agenda:detalle_agenda' slug=post.agenda.slug %}
+                    {% elif post.visitaguiada %}
+                        {% url 'agenda:visites-guiades' slug=post.agenda.slug %}
+                    {% elif post.mappoint %}
+                        {% url 'map:mapa' slug=post.slug %}
+                    {% else %}
+                        {{ post.get_absolute_url }}
+                    {% endif %}" 
+                    class="col-md-6 p-3">
+                    <div class="">
                         <div class="card mb-3 h-100 card-post">
                             <div class="image-container">
                                 {% if post.postimagen.imagen %}
@@ -202,22 +213,17 @@
                                         {{ post.descripcion |striptags |truncatewords:30 | safe }}
                                     {% endautoescape %}
                                 </p>
-                                <a href="
-                                {% if post.agenda %} 
-                                    {% url 'agenda:detalle_agenda' slug=post.agenda.slug %}
-                                {% elif post.visitaguiada %}
-                                    {% url 'agenda:visites-guiades' slug=post.agenda.slug %}
-                                {% elif post.mappoint %}
-                                    {% url 'map:mapa' slug=post.slug %}
-                                {% else %}
-                                    {{ post.get_absolute_url }}
-                                {% endif %}" 
-                                class="text-primary text-left mt-auto url-link">Saber més</a>
+                                <p>
+                                    <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                </p>
+
+
 
                             </div>
                         </div>
                     </div>
-                    
+                </a>
+
                     {% empty %}
                         <div class="col">
                             <div class="card">

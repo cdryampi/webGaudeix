@@ -15,7 +15,7 @@ import itertools
 import emoji
 import re
 from blog.models import Categoria
-
+from personalizacion.models import Personalizacion
 
 # Create your views here.
 class VisitaGuiadaView(BaseContextMixin, DetailView):
@@ -103,28 +103,45 @@ class AgendaDetailView(BaseContextMixin, DetailView):
                 show_ticket_section = True
                 break
         # Filtrar los eventos futuros utilizando objetos Q y obtener el primer objeto VariationAgenda de cada Agenda
-        
-
         variation_agendas = VariationAgenda.objects.filter(
-            Q(agenda__publicado=True) &
-            ~Q(agenda__pk=current_object.pk)
-        ).order_by('fecha', 'hora')
+            Q(agenda__publicado=True)
+        ).order_by('-fecha', '-hora')
 
-        future_events = []
+        same_type_event = []
+        future_events_near = []
+        future_events_distant = []
         past_events = []
 
         for event in variation_agendas:
-            if event.fecha >= now.date():
-                future_events.append(event)
+            if event.agenda.tipo_evento == current_object.tipo_evento:   
+                same_type_event.append(event)
+            elif event.fecha >= now.date():
+                # Calcular la diferencia en días desde la fecha actual
+                days_difference = (event.fecha - now.date()).days
+                if days_difference <= 7:
+                    future_events_near.append(event)  # Futuros cercanos
+                else:
+                    future_events_distant.append(event)  # Futuros lejanos
             else:
                 past_events.append(event)
 
-        grouped_events = [future_events, past_events]
+        # Concatenar los eventos agrupados en una lista plana en el orden deseado
+        all_events = same_type_event + future_events_near + future_events_distant + past_events
 
-        # Concatenar los eventos agrupados en una lista plana
-        all_events = list(itertools.chain(*grouped_events))
+        # coger el parallax de personalización
 
-        context['coleccion_destacados'] = all_events
+        parallax = Personalizacion.objects.filter().first()
+
+        if parallax is not None:
+            if parallax.parallax_agenda:
+                parallax = parallax.parallax_agenda.parallax_agenda
+            else:
+                parallax = None
+        else:
+            parallax = None
+        
+        context['parallax'] = parallax
+        context['coleccion_destacados'] = all_events[:20]
         context['entrades'] = show_ticket_section
         return context
 

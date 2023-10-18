@@ -1,20 +1,28 @@
 {% load static %}
 <section class="container-fluid p-0 m-0">
     <div class="parallax-container parallax-container-banner-agenda">
-        <div class="parallax" style="background-image: url('/static/core/img/banners/img-agenda.jpg');">
-            <div class="banner-icons">
-                <span class="fa fa-music"></span>
-                <span class="fa fa-theater-masks"></span>
-                <span class="fa fa-palette"></span>
-                <span class="fa fa-glass-cheers"></span>
-                <span class="fa fa-film"></span>
-                <span class="fa fa-running"></span>
-                <span class="fa fa-map-signs"></span>
-                <span class="fa fa-camera"></span>
-                <span class="fa fa-comments"></span>
-                <span class="fa fa-question"></span>
-              </div>
-        </div>
+        {% if parallax %}
+            {% if parallax.imagen.url %}
+                <div class="parallax" style="background-image: url('{{ parallax.imagen.url }}');">
+            {% else %}
+                <div class="parallax" style="background-image: url('/static/core/img/banners/img-agenda.jpg');">
+            {% endif %}
+        {% else %}
+            <div class="parallax" style="background-image: url('/static/core/img/banners/img-agenda.jpg');">
+        {% endif %}
+                <div class="banner-icons">
+                    <span class="fa fa-music"></span>
+                    <span class="fa fa-theater-masks"></span>
+                    <span class="fa fa-palette"></span>
+                    <span class="fa fa-glass-cheers"></span>
+                    <span class="fa fa-film"></span>
+                    <span class="fa fa-running"></span>
+                    <span class="fa fa-map-signs"></span>
+                    <span class="fa fa-camera"></span>
+                    <span class="fa fa-comments"></span>
+                    <span class="fa fa-question"></span>
+                </div>
+            </div>
     
         <div class="parallax-content">
     
@@ -23,7 +31,7 @@
         <a href="javascript:void(0)" title="Anar a la secció de l'Agenda cultural" aria-label="Anar a la secció de l'Agenda cultural" id="banner-parallax">
         <div class="parallax-flecha">
     
-                <img src="{% static "core/img/parallax/down-arrow.svg"%}"/>
+                <img src="{% static "core/img/parallax/down-arrow.svg"%}" alt="flexta" title="flexta"/>
     
         </div>
     </a>

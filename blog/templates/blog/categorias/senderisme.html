@@ -179,27 +179,29 @@
                 <h3>Rutes:</h3>
                 <div class="row">
                     {% for post in rutes %}
-                    <div class="col-md-6 p-3">
-                        <div class="card mb-3 h-100">
-                            <div class="image-container">
-                                {% if post.postimagen.imagen %}
-                                    <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}">
-                                {% endif %}
-                                <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">{{ post.titulo }}</h5>
-                                <p class="card-text flex-grow-1">
-                                    {% autoescape on %}
-                                        {{ post.descripcion|striptags|truncatewords:30|safe }}
-                                    {% endautoescape %}
-                                    
-                                </p>
-                                <a href="{% url 'agenda:ruta' slug=post.slug %}" class="text-primary text-left mt-auto url-link">Veure més</a>
+                    <a href="{% url 'agenda:ruta' slug=post.slug %}" class="col-md-6 p-3">
+                        <div class="">
+                            <div class="card mb-3 h-100">
+                                <div class="image-container">
+                                    {% if post.postimagen.imagen %}
+                                        <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}">
+                                    {% endif %}
+                                    <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">{{ post.titulo }}</h5>
+                                    <p class="card-text flex-grow-1">
+                                        {% autoescape on %}
+                                            {{ post.descripcion|striptags|truncatewords:30|safe }}
+                                        {% endautoescape %}
+                                    </p>
+                                    <p>
+                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
+                    </a>
                     {% empty %}
                         <div class="col">
                             <div class="card">

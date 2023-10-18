@@ -117,7 +117,7 @@ class AgendaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
     autocomplete_fields = ['ubicacion']
     filter_horizontal = ('tags',)
-
+    search_fields = ['titulo']
     fieldsets = [
         (None, {
             'fields': [

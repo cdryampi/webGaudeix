@@ -201,9 +201,34 @@ class VideosEmbed(models.Model):
         return f"Portada de video: {self.titulo}"
 
 
+
+class AgendaParallax(models.Model):
+    """
+        Modelo que representa la imagen de la agenda.
+    """
+    
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Títol del parallax.",
+        verbose_name="Títol"
+    )
+    parallax_agenda = models.OneToOneField(
+        Parallax,
+        on_delete=models.CASCADE,
+        verbose_name="Parallax de l'agenda",
+        help_text="Selecciona el parallax per a l'agenda (si n'hi ha un)."
+    )
+
+    def __str__(self):
+        return f"Parallax {self.titulo}"
+
+    class Meta:
+        verbose_name = "Imatge per l'agenda"
+        verbose_name_plural = "Imatges per l'agenda"
+
+
 class Personalizacion(models.Model):
     # modelo que representa la personalización del sitio.
-
     favicon = models.OneToOneField(
         Favicon,
         on_delete=models.SET_NULL,
@@ -219,6 +244,14 @@ class Personalizacion(models.Model):
         blank=True,
         verbose_name="Parallax de portada",
         help_text="Selecciona el parallax per a la portada (si n'hi ha un)."
+    )
+    parallax_agenda = models.OneToOneField(
+        AgendaParallax,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Parallax de l'agenda",
+        help_text="Selecciona el parallax per l'agenda (si n'hi ha un)."
     )
     video_portada = models.OneToOneField(
         Video,
@@ -272,6 +305,10 @@ class Personalizacion(models.Model):
     def delete(self, *args, **kwargs):
         # No se permite eliminar la instancia de Personalizacion
         raise ValueError("No se puede eliminar la instancia de Personalizacion.")
+
+
+
+
 
 
 class TrenPersonalizacion(models.Model):

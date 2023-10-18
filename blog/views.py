@@ -12,6 +12,9 @@ import json
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from eventos_especiales.models import EventoEspecial
+from personalizacion.models import Personalizacion
+
+
 
 class ListarPostsView(ListView):
     """
@@ -117,7 +120,16 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         if categoria.tipo == 'agenda':
             # Si la categoría es de tipo 'agenda', obtener la lista de agendas relacionadas
             agendas = Agenda.objects.filter(publicado=True).all()
-            parallax = Parallax.objects.filter(publicado= True).first()
+            parallax = Personalizacion.objects.filter().first()
+
+            if parallax is not None:
+                if parallax.parallax_agenda:
+                    parallax = parallax.parallax_agenda.parallax_agenda
+                else:
+                    parallax = None
+            else:
+                parallax = Parallax.objects.filter().first()
+            
             redes_sociales= RedSocial.objects.filter().all()
             categorias = Categoria.objects.filter(publicado=True)
             context['redes_sociales'] = redes_sociales

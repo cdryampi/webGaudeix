@@ -95,25 +95,27 @@
   <div class="container pt-5">
     <div class="row">
       {% for noticia in noticias|dictsortreversed:"fecha" %}
-      <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-3">
-        <div>
-          {% if noticia.imagen_url %}
-          <div class="image-container">
-            <img src="{{ noticia.imagen_url }}" alt="Imagen de la noticia" class="img-fluid img-noticia">
+      <a href="https://www.cabrerademar.cat/actualitat/noticies" target="_blank" class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 py-3">
+          <div >
+            <div>
+              {% if noticia.imagen_url %}
+              <div class="image-container">
+                <img src="{{ noticia.imagen_url }}" alt="Imagen de la noticia" class="img-fluid img-noticia">
+              </div>
+              {% endif %}
+            </div>
+            <div>
+              <h2 class="noticia-titulo">{{ noticia.titulo }}</h2>
+              <p class="noticia-fecha">
+                <span class="text-dark">Publicació:</span> {{ noticia.fecha }}
+              </p>
+              <p class="noticia-contenido">{{ noticia.contenido }}</p>
+              <p>
+                Saber més
+              </p>
+            </div>
           </div>
-          {% endif %}
-        </div>
-        <div>
-          <h2 class="noticia-titulo">{{ noticia.titulo }}</h2>
-          <p class="noticia-fecha">
-            <span class="text-dark">Publicació:</span> {{ noticia.fecha }}
-          </p>
-          <p class="noticia-contenido">{{ noticia.contenido }}</p>
-          <p>
-            <a href="https://www.cabrerademar.cat/actualitat/noticies" target="_blank">Saber més</a>
-          </p>
-        </div>
-      </div>
+      </a>
       {% endfor %}
     </div>
   </div>
