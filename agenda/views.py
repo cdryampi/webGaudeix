@@ -16,6 +16,7 @@ import emoji
 import re
 from blog.models import Categoria
 from personalizacion.models import Personalizacion
+from gaudeix.settings import DOMAIN_URL
 
 # Create your views here.
 class VisitaGuiadaView(BaseContextMixin, DetailView):
@@ -243,10 +244,15 @@ class PDFView(View):
 
         # Obtener la plantilla HTML
         template = get_template('agenda/agenda_pdf.html')
+
+        # contexto para el logo de Cabrera de Mar
+        logo_imagen = DOMAIN_URL+'/static/core/img/logos/logo-cabrera-main.png'
+
         # Crear el diccionario de contexto
         context = {
             'anio_actual': anio_actual,
-            'agendas': agendas_por_mes
+            'agendas': agendas_por_mes,
+            'logo_imagen': logo_imagen
         }
         rendered_template = template.render(context)
 
