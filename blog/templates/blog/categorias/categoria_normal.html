@@ -134,9 +134,11 @@
             <div class="carousel-inner text-center">
                 {% for imagen in categoria.categoriagaleriaimagen_set.all %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="categoria-{{ categoria.slug }}">
-                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid img-cat-banner">
-                    </a>
+                    {% if  %}
+                        <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="categoria-{{ categoria.slug }}">
+                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid img-cat-banner">
+                        </a>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -155,10 +157,12 @@
     </section>
     
     {% else %}
-        <div class="text-center">
-            <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}"
-                class="img-fluid img-cat-banner">
-        </div>
+        {% if categoria.categoriagaleriaimagen_set.first.imagen and categoria.categoriagaleriaimagen_set.first.imagen.archivo.url %}
+            <div class="text-center">
+                <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.categoriagaleriaimagen_set.first.imagen.titulo }}"
+                class="img-fluid img-cat-banner" title="{{ categoria.categoriagaleriaimagen_set.first.imagen.titulo }}">
+            </div>
+        {% endif %}
     </div>
 {% endif %}
 
@@ -195,14 +199,17 @@
                     <div class="">
                         <div class="card mb-3 h-100 card-post">
                             <div class="image-container">
-                                {% if post.postimagen.imagen %}
-                                    <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}" style="height: 350px;">
+                                {% if post.postimagen.imagen and post.postimagen.imagen.archivo.url %}
+                                    <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" title="{{ post.postimagen.imagen.titulo }}" alt="{{ post.postimagen.imagen.titulo }}" style="height: 350px;">
                                 {% else %}
-                                    {% with imagen=post.postgaleriaimagen_set.first %}
-                                    {% if imagen %}
-                                        <img src="{{ imagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}" style="height: 350px;">
-                                    {% endif %}
-                                    {% endwith %}
+                                    {% if post.postgaleriaimagen_set.first and post.postgaleriaimagen_set.first.imagen.imagen.archivo.url %}
+                                        {% with imagen=post.postgaleriaimagen_set.first %}
+                                            {% if imagen %}
+                                                <img src="{{ imagen.imagen.archivo.url }}" class="card-img-top" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" style="height: 350px;">
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% else %}
+
                                 {% endif %}
                                 <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
                             </div>

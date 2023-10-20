@@ -133,9 +133,12 @@
             <div class="carousel-inner text-center">
                 {% for imagen in categoria.categoriagaleriaimagen_set.all %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="categoria-{{ categoria.slug }}">
-                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid img-cat-banner">
-                    </a>
+                    {% if imagen and imagen.imagen.archivo.url %}
+                        <a href="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" class="fancybox" data-fancybox="categoria-{{ categoria.slug }}">
+                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid img-cat-banner">
+                        </a>
+                    {% endif %}
+
                 </div>
                 {% endfor %}
             </div>
@@ -154,9 +157,9 @@
     </section>
     
     {% else %}
-        {% if categoria.categoriagaleriaimagen_set.first.imagen %}
+        {% if categoria.categoriagaleriaimagen_set.first.imagen and categoria.categoriagaleriaimagen_set.first.imagen.archivo.url %}
             <div class="text-center">
-                <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}"
+                <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.categoriagaleriaimagen_set.first.imagen.titulo }}"
                     class="img-fluid img-cat-banner">
             </div>
         {% endif %}
@@ -190,10 +193,10 @@
                             <div class="card mb-3 h-100 card-post">
                                 <div class="image-container">
                                     {% if festa.imagen_especial %}
-                                        <img src="{{ festa.imagen_especial.url }}" class="card-img-top" alt="{{ festa.titulo }}" style="height: 350px;">
+                                        <img src="{{ festa.imagen_especial.url }}" class="card-img-top" title="{{ festa.titulo }}" alt="{{ festa.titulo }}" style="height: 350px;">
                                     {% else %}
                                         {% if festa.eventoespecialgaleriaimagen_set.first %}
-                                            <img src="{{ festa.eventoespecialgaleriaimagen_set.first.imagen.archivo.url }}" class="card-img-top" alt="{{ festa.titulo }}" style="height: 350px;">
+                                            <img src="{{ festa.eventoespecialgaleriaimagen_set.first.imagen.archivo.url }}" class="card-img-top" title="{{ festa.titulo }}" alt="{{ festa.titulo }}" style="height: 350px;">
                                         {% endif %}
                                     {% endif %}
                                     <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
@@ -218,8 +221,8 @@
                     <div class="col-md-6 p-3">
                         <div class="card mb-3 h-100 card-post">
                             <div class="image-container">
-                                {% if post.postimagen.imagen %}
-                                    <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}" style="height: 350px;">
+                                {% if post.postimagen.imagen and post.postimagen.imagen.archivo.url %}
+                                    <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.postimagen.imagen.titulo }}" title="{{ post.postimagen.imagen.titulo }}" style="height: 350px;">
                                 {% endif %}
                                 <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
                             </div>

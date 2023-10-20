@@ -67,7 +67,7 @@
                       <td class="font-weight-bold"><i class="fas fa-map-marker-alt"></i> Ubicació:</td>
                       <td>
                         <p>
-                          <a href="{% url 'map:mapa' slug=local_agenda.ubicacion.slug %}" class="font-weight-bold">{{ local_agenda.ubicacion.titulo }}</a>{% if local_agenda.ubicacion.calle %} - <span>{{ local_agenda.ubicacion.calle }}</span>{% endif %},
+                          <a href="{% url 'map:mapa' slug=local_agenda.ubicacion.slug %}" class="font-weight-bold" title="{{ local_agenda.ubicacion.titulo }}">{{ local_agenda.ubicacion.titulo }}</a>{% if local_agenda.ubicacion.calle %} - <span>{{ local_agenda.ubicacion.calle }}</span>{% endif %},
                           <span>{{ local_agenda.ubicacion.codigo_postal }}</span> <span>{{ local_agenda.ubicacion.comunidad_autonoma }}</span>
                         </p>
                       </td>
@@ -79,12 +79,12 @@
                       </td>
                     </tr>
                     {% endfor %}
-                    {% if local_agenda.postfichero %}
+                    {% if local_agenda.postfichero and local_agenda.postfichero.fichero.archivo.url %}
                     <tr>
                       <td colspan="1" style="border-left:0px;">
                       <i class="fas fa-file-pdf"></i>
                       <strong>PDF:</strong> 
-                      <a href="{{ local_agenda.postfichero.fichero.archivo.url }}" class="text-black" download>
+                      <a href="{{ local_agenda.postfichero.fichero.archivo.url }}" class="text-black" title="{{ local_agenda.postfichero.fichero.titulo }}" download>
                         descarregar
                       </a>
                       <td>
@@ -92,10 +92,7 @@
                     {% endif %}
                   </tbody>
                 </table>
-                
-                
-                
-                                   
+
             
             <div class="social-share-buttons">
                 <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
@@ -109,9 +106,8 @@
                 </a>
             </div>
           </div>
+
           <div class="col-md-6 agenda-img-container">
-
-
             {% if local_agenda.postgaleriaimagen_set.count > 1 %}
               <div class="container-fluid px-0 py-0">
                   <div id="post-carrusel-{{ local_agenda.slug }}" class="carousel slide post-carrusel" data-ride="carousel">
@@ -123,20 +119,23 @@
                       </ol>
                       <div class="carousel-inner text-center">
                           {% for imagen in local_agenda.postgaleriaimagen_set.all %}
-                          <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                              <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="post-{{ local_agenda.slug }}">
-                                  <picture>
-                                      <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
-                                      <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
-                                      <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
-                                      <img src="{{ imagen.image.large_thumbanil.url }}"
-                                          data-src="{{ imagen.image.large_thumbanil.url }}"
-                                          alt="{{ local_agenda.titulo }}" 
-                                          class="img-fluid align-middle lazy-load-img">
-                                  </picture>
-                                  <img src="{{ imagen.imagen.archivo.url }}" alt="{{ local_agenda.titulo }}" class="img-fluid img-cat-banner">
-                              </a>
-                          </div>
+                            {% if imagen and imagen.imagen.archivo.url %}
+                              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                  <a href="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" class="fancybox" data-fancybox="post-{{ local_agenda.slug }}">
+                                      <picture>
+                                          <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                          <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                                          <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
+                                          <img src="{{ imagen.image.large_thumbanil.url }}"
+                                              data-src="{{ imagen.image.large_thumbanil.url }}"
+                                              alt="{{ imagen.imagen.titulo }}"
+                                              title="{{ imagen.imagen.titulo }}"
+                                              class="img-fluid align-middle lazy-load-img">
+                                      </picture>
+                                      <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid img-cat-banner">
+                                  </a>
+                              </div>
+                            {% endif %}
                           {% endfor %}
                       </div>
                       <a class="carousel-control-prev" href="#post-carrusel-{{ local_agenda.slug }}" role="button" data-slide="prev">
@@ -155,10 +154,10 @@
             
             {% else %}
               {% with imagen=local_agenda.postgaleriaimagen_set.first %}
-                {% if imagen %}
+                {% if imagen and imagen.imagen.archivo.url %}
                   <div class="fancybox-carousel">
-                    <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="carousel" data-caption="{{ local_agenda.titulo }}">
-                      <img src="{{ imagen.imagen.archivo.url }}" alt="{{ local_agenda.titulo }}" class="img-fluid">
+                    <a href="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" class="fancybox" data-fancybox="carousel" data-caption="{{ imagen.imagen.titulo }}">
+                      <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid">
                     </a>
                   </div>
                   <div class="col-12">
@@ -178,7 +177,6 @@
 
 
 {% if entrades %}
-
             <div class="jumbotron jumbotron-fluid bg-light text-center mb-0">
               <div class="container">
                 <h4 class="display-4">Compra les teves entrades</h4>

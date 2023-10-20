@@ -11,17 +11,18 @@
                 {% for imagen in categoria.categoriagaleriaimagen_set.all %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         {% if imagen.imagen and imagen.imagen.archivo %}
-                            <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="categoria-{{ categoria.slug }}">
+                            <a href="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" class="fancybox" data-fancybox="categoria-{{ categoria.slug }}">
                                 <picture>
                                     <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
                                     <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
                                     <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
                                     <img src="" 
                                         data-src="{{ imagen.image.large_thumbnail.url }}"
-                                        alt="{{ categoria.titulo }}" 
+                                        alt="{{ imagen.image.titulo }}"
+                                        title="{{ imagen.image.titulo }}"
                                         class="img-fluid align-middle lazy-load-img">
                                 </picture>
-                                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid img-cat-banner">
+                                <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid img-cat-banner">
                             </a>
                         {% else %}
                             <p>Aquesta imatge no està disponible.</p>
@@ -45,8 +46,8 @@
 {% else %}
     {% if categoria.categoriagaleriaimagen_set.first.imagen and categoria.categoriagaleriaimagen_set.first.imagen.archivo %}
         <div class="text-center">
-            <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.titulo }}"
-                class="img-fluid img-cat-banner">
+            <img src="{{ categoria.categoriagaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ categoria.categoriagaleriaimagen_set.first.imagen.titulo }}"
+                class="img-fluid img-cat-banner" title="{{ categoria.categoriagaleriaimagen_set.first.imagen.titulo }}">
         </div>
     {% else %}
         <p>No hi ha imatges disponibles per a aquesta categoria.</p>

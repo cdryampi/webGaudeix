@@ -8,11 +8,13 @@
         </ol>
         <div class="carousel-inner">
             {% for imagen in visites.postgaleriaimagen_set.all %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="gallery">
-                    <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.titulo }}" alt="{{ imagen.titulo }}" class="img-fluid fancybox">
-                </a>
-            </div>
+                {% if imagen and imagen.imagen.archivo.url %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="gallery" title="{{ imagen.imagen.titulo }}">
+                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid fancybox">
+                        </a>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
         <a class="carousel-control-prev" href="#carouselVisites" role="button" data-slide="prev">

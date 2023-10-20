@@ -397,8 +397,20 @@ div.hover .card-img-top {
       
     function initMap() {
         const mapContainer = document.getElementById('map');
-        const latitudInicio = parseFloat('{{ ruta.punto_inicio.latitud|stringformat:".6f" }}'.replace(',', '.'));
-        const longitudInicio = parseFloat('{{ ruta.punto_inicio.longitud|stringformat:".6f" }}'.replace(',', '.'));
+        {% if ruta.punto_inicio %}
+            const latitudInicio = parseFloat('{{ ruta.punto_inicio.latitud|stringformat:".6f" }}'.replace(',', '.'));
+            const longitudInicio = parseFloat('{{ ruta.punto_inicio.longitud|stringformat:".6f" }}'.replace(',', '.'));
+        {% else %}
+            {% if puntos_itinerario %}
+            
+                {% for mapa in puntos_itinerario|slice:":1" %}
+                    const latitudInicio = parseFloat('{{ mapa.punto_inicio.latitud|stringformat:".6f" }}'.replace(',', '.'));
+                    const longitudInicio = parseFloat('{{ mapa.punto_inicio.longitud|stringformat:".6f" }}'.replace(',', '.'));
+                {% endfor %}
+            {% endif %}
+            
+        {% endif %}
+
 
         const map = new google.maps.Map(mapContainer, {
             center: { lat: latitudInicio, lng: longitudInicio },

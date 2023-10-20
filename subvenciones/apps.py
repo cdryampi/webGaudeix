@@ -4,3 +4,4 @@ from django.apps import AppConfig
 class SubvencionesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'subvenciones'
+    verbose_name = "SUBVENCIONS"

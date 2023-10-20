@@ -343,3 +343,5 @@ class Referencia(models.Model):
 
     class Meta:
         ordering = ['orden']
+        verbose_name_plural = "Referència"
+        verbose_name = "Referències"

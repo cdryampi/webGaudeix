@@ -10,11 +10,11 @@
                 <a href="{{ objeto.agenda.get_absolute_url }}" class="related-activity-link my-1">
                     <article class="card related-activity-card mb-3 h-100">
                         {% with imagen=objeto.agenda.postgaleriaimagen_set.first %}
-                        {% if imagen %}
+                        {% if imagen and imagen.imagen.archivo.url %}
                         <div class="image-container">
                             <picture>
                                 <source srcset="{{ imagen.imagen.small_thumbnail.url }}" media="(max-width: 575px)">
-                                <img src="{{ imagen.imagen.small_thumbnail.url }}" alt="{{ objeto.agenda.titulo }}" class="img-fluid lazy-load-img" width="{{ imagen.imagen.large_thumbnail.width }}" height="{{ imagen.imagen.large_thumbnail.height }}" loading="lazy">
+                                <img src="{{ imagen.imagen.small_thumbnail.url }}" title="imagen.imagen.titulo" alt="{{ imagen.imagen.titulo }}" class="img-fluid lazy-load-img" width="{{ imagen.imagen.large_thumbnail.width }}" height="{{ imagen.imagen.large_thumbnail.height }}" loading="lazy">
                             </picture>
                         </div>
                         {% endif %}
@@ -43,9 +43,9 @@
     <div class="container">
         <div class="col-12 py-3 text-center">
             {% if local_agenda.categoria %}
-              <a href="{% url 'blog:categoria' slug=local_agenda.categoria.slug %}" class="btn btn-light btn-custom py-3 px-4">Tota l'agenda</a>
+              <a href="{% url 'blog:categoria' slug=local_agenda.categoria.slug %}" class="btn btn-light btn-custom py-3 px-4" title="Obre tota l'agenda de Cabrera de Mar">Tota l'agenda</a>
             {% else %}
-              <a href="{% url 'blog:categoria' slug=agenda.slug %}" class="btn btn-light btn-custom py-3 px-4">Tota l'agenda</a>
+              <a href="{% url 'blog:categoria' slug=agenda.slug %}" class="btn btn-light btn-custom py-3 px-4" title="Obre tota l'agenda de Cabrera de Mar">Tota l'agenda</a>
             {% endif %}
         </div>
     </div>

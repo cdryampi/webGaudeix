@@ -209,11 +209,11 @@
                                             <i class="fas fa-users"></i>
                                             <strong>Públic recomanat:</strong> {{ visites.get_publico_recomendado_display }}
                                         </li>
-                                        {% if visites.postfichero %}
+                                        {% if visites.postfichero and visites.postfichero.fichero.archivo.url %}
                                         <li class="mb-3">
                                           <i class="fas fa-file-pdf"></i>
                                           <strong>PDF:</strong> 
-                                          <a href="{{ visites.postfichero.fichero.archivo.url }}" class="text-black" download>
+                                          <a href="{{ visites.postfichero.fichero.archivo.url }}" title="{{ visites.postfichero.fichero.titulo }}" class="text-black" download>
                                             descarregar
                                           </a>
                                         </li>
@@ -259,7 +259,7 @@
                     <div class="col-md-6 col-lg-6 col-12 pt-5 pt-lg-0 pt-sm-0 pt-xl-0 pt-md-5">
                       {% if visites.postimagen %}
                           <a href="{{ visites.postimagen.imagen.archivo.url }}" data-fancybox="single-image">
-                              <img src="{{ visites.postimagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid fancybox">
+                              <img src="{{ visites.postimagen.imagen.archivo.url }}" title="{{ visites.postimagen.imagen.titulo }}" alt="{{ visites.postimagen.imagen.titulo }}" class="img-fluid fancybox">
                           </a>
                           <div class="col-12">
                             <small class="text-center">Fes clic a l'imatge per veure-la en resolució completa</small>
@@ -267,12 +267,15 @@
                       {% else %}
                           {% with imagenes=visites.postgaleriaimagen_set.all %}
                               {% if imagenes %}
-                                  <a href="{{ imagenes.first.imagen.archivo.url }}" data-fancybox="single-image">
-                                      <img src="{{ imagenes.first.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid fancybox">
-                                  </a>
+                                  {% if imagenes.first and imagenes.first.imagen.archivo.url %}
+                                    <a href="{{ imagenes.first.imagen.archivo.url }}" data-fancybox="single-image">
+                                      <img src="{{ imagenes.first.imagen.archivo.url }}" alt="{{ imagenes.first.imagen.titulo }}" class="img-fluid fancybox">
+                                    </a>
                                   <div class="col-12">
                                     <small class="text-center">Fes clic a l'imatge per veure-la en resolució completa</small>
-                                </div>
+                                  </div>
+                                  {% endif %}
+
                               {% endif %}
                           {% endwith %}
                       {% endif %}
@@ -283,10 +286,6 @@
             </div>
         </div>
     </div>
-
-
-
-
 
     </div>
 </section>
@@ -389,20 +388,22 @@
                     {% with imagen=objeto.postgaleriaimagen_set.first %}
                     {% if not imagen %}
                       {% with imagenPost=objeto.postimagen %}
-                        {% if imagenPost %}
+                        {% if imagenPost and imagenPost.imagen.archivo.url %}
                           <div class="image-container">
-                            <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
+                            <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ imagenPost.imagen.titulo }}" title="{{ imagenPost.imagen.titulo }}" class="img-fluid">
                           </div>
                         {% endif %}
                       {% endwith %}
                     {% else %}
-                      <div class="image-container">
-                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ objeto.titulo }}" class="img-fluid">
-                      </div>
+                        {% if imagen and imagen.imagen.archivo.url %}
+                          <div class="image-container">
+                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid">
+                          </div>
+                        {% endif %}
+
                     {% endif %}
                   {% endwith %}
                   
-
                       <div class="card-body text-center">
                           <h5 class="card-title related-activity-title">{{ objeto.titulo }}</h5>
                           <p class="card-text related-activity-description">

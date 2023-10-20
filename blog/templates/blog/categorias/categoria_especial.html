@@ -11,7 +11,9 @@
             <div class="col-especial-subBlog p-1" data-color="{{ categoria.color }}">
                 <div class="categoria-especial mx-auto text-center" style="background-color: {{ categoria.color }}">
                     <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="text-white d-block">
-                        <img src="{{ categoria.categoriabannerimagen.imagen.archivo.url }}" alt="{{ categoria.titulo }}" class="img-fluid align-middle">
+                        {% if categoria.categoriabannerimagen.imagen and categoria.categoriabannerimagen.imagen.archivo.url %}
+                            <img src="{{ categoria.categoriabannerimagen.imagen.archivo.url }}" title="{{ categoria.categoriabannerimagen.imagen.titulo }}" alt="{{ categoria.categoriabannerimagen.imagen.titulo }}" class="img-fluid align-middle">
+                        {% endif %}
                         <div class="caption">
                             <h2>{{ categoria.titulo }}</h2>
                         </div>

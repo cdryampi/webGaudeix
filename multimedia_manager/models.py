@@ -52,6 +52,9 @@ class Video(BaseModel):
 
     def __str__(self):
         return self.titulo
+    class Meta:
+        verbose_name = 'Vídeo'
+        verbose_name_plural = 'vídeos'
 
 
 
@@ -100,6 +103,9 @@ class Fichero(BaseModel):
 
     def __str__(self):
         return self.titulo
+    class Meta:
+        verbose_name = 'Fitxer'
+        verbose_name_plural = 'Fitxers'
 
 
 
@@ -158,5 +164,7 @@ class Imagen(BaseModel):
             raise ValidationError(str(e))
     def __str__(self) -> str:
         return self.titulo
-
+    class Meta:
+        verbose_name = 'Imatge'
+        verbose_name_plural = 'Imatges'
 

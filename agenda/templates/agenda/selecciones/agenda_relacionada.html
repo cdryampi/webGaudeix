@@ -28,25 +28,25 @@
                         {% if agenda.agenda %}
 
                             {% with imagen=agenda.agenda.postgaleriaimagen_set.first %}
-                            {% if imagen %}
-                            <div class="image-container image-container-agenda">
-                                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.agenda.titulo }}" title="{{ imagen.imagen.titulo }}" class="img-fluid">
-                            </div>
-                            {% endif %}
+                                {% if imagen and imagen.imagen.archivo.url %}
+                                    <div class="image-container image-container-agenda">
+                                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ imagen.imagen.titulo }}" title="{{ imagen.imagen.titulo }}" class="img-fluid">
+                                    </div>
+                                {% endif %}
                             {% endwith %}
 
                         {% else %}
 
                             {% with imagen=agenda.postgaleriaimagen_set.first %}
-                                {% if imagen %}
+                                {% if imagen and imagen.imagen.archivo.url %}
                                     <div class="image-container image-container-agenda">
-                                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+                                        <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid">
                                     </div>
                                 {% else %}
                                     {% with imagenPost=agenda.postimagen %}
-                                        {% if imagenPost %}
+                                        {% if imagenPost and imagenPost.imagen.archivo.url %}
                                             <div class="image-container image-container-agenda">
-                                                <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+                                                <img src="{{ imagenPost.imagen.archivo.url }}" title="{{ imagenPost.imagen.titulo }}" alt="{{ imagenPost.imagen.titulo }}" class="img-fluid">
                                             </div>
                                         {% endif %}
                                     {% endwith %}
