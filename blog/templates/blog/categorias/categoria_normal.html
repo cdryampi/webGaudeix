@@ -134,7 +134,7 @@
             <div class="carousel-inner text-center">
                 {% for imagen in categoria.categoriagaleriaimagen_set.all %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    {% if imagen and imagen.imagen.archivo.url  %}
+                    {% if imagen and imagen.imagen.archivo.url %}
                         <a href="{{ imagen.imagen.archivo.url }}" class="fancybox" data-fancybox="categoria-{{ categoria.slug }}">
                             <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid img-cat-banner">
                         </a>
@@ -202,14 +202,11 @@
                                 {% if post.postimagen.imagen and post.postimagen.imagen.archivo.url %}
                                     <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" title="{{ post.postimagen.imagen.titulo }}" alt="{{ post.postimagen.imagen.titulo }}" style="height: 350px;">
                                 {% else %}
-                                    {% if post.postgaleriaimagen_set.first and post.postgaleriaimagen_set.first.imagen.imagen.archivo.url %}
-                                        {% with imagen=post.postgaleriaimagen_set.first %}
-                                            {% if imagen %}
-                                                <img src="{{ imagen.imagen.archivo.url }}" class="card-img-top" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" style="height: 350px;">
-                                            {% endif %}
-                                        {% endwith %}
-                                    {% else %}
-
+                                    {% with imagen=post.postgaleriaimagen_set.first %}
+                                    {% if imagen %}
+                                        <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" class="card-img-top" alt="{{ post.titulo }}" style="height: 350px;">
+                                    {% endif %}
+                                    {% endwith %}
                                 {% endif %}
                                 <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
                             </div>
@@ -223,14 +220,10 @@
                                 <p>
                                     <span class="text-primary text-left mt-auto url-link">Saber més</span>
                                 </p>
-
-
-
                             </div>
                         </div>
                     </div>
                 </a>
-
                     {% empty %}
                         <div class="col">
                             <div class="card">
@@ -241,16 +234,9 @@
                         </div>
                     {% endfor %}
                 </div>
-
-
             </div>
-
-            
-            
-            
         </div>
     </div>
-
 </section>
 
 {% endblock %}
