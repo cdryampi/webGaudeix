@@ -144,8 +144,8 @@ class CompraDescubre(BaseModel, MetadataModel):
         return self.titulo
     
     class Meta:
-        verbose_name = "Esdeveniment Especial 'Compra i descubre'."
-        verbose_name_plural = "Esdeveniments Especials 'Compra i descubre'."
+        verbose_name = "Esdeveniment Especial 'Compra i descobreix'."
+        verbose_name_plural = "Esdeveniments Especials 'Compra i descobreix'."
 
 
 

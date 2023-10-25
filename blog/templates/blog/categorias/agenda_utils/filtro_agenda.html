@@ -92,6 +92,7 @@
     // Agrega la fecha al formulario
     formData.set('year', currentYear);
     formData.set('month', currentMonth);
+
     mostrarSpinner();
     // Realiza la llamada a la API para obtener los resultados filtrados
     fetch('/api/filtrar-agenda/', {
@@ -313,30 +314,33 @@
     // Obtén el número de días en el mes
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     let calendar = document.getElementById('calendar');
+
+
     // Crea los días del calendario utilizando las clases de Bootstrap
     let calendarDays = '';
     for (let i = 1; i <= daysInMonth; i++) {
       let dayClass = 'calendar-day';
+      let currentDate = new Date();
+      let currentYear = currentDate.getFullYear();
+      let currentMonth = currentDate.getMonth();
+      let currentDay = currentDate.getDate();
+
+
       if (eventos.includes(i.toString())) {
         dayClass += ' event-day';
-
         // Actualizar el calendario de eventos más amigable.
-
         if(calendar.getAttribute('data-year') < currentYear){
           dayClass += ' past-day';
         }else{
           if(calendar.getAttribute('data-month') < currentMonth){
             dayClass += ' past-day';
-          }else{
-            if (isPastDay(currentYear, currentMonth, i)) {
-              dayClass += ' past-day';
-            }
+          }else if(calendar.getAttribute('data-month') == currentMonth){
+              if(currentDay>i){
+                dayClass += ' past-day';
+              }
           }
-
         }
-
       }
-
       calendarDays += `<div class="${dayClass}">${i}</div>`;
     }
   
@@ -365,16 +369,6 @@
     calendarElement.dataset.year = year;
     calendarElement.dataset.month = month;
   }
-
-  function isPastDay(year, month, day) {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth();
-    const currentDay = currentDate.getDate();
-    return year < currentYear || (year === currentYear && month < currentMonth) || (year === currentYear && month === currentMonth && day < currentDay);
-  }
-  
-
   // Función para mostrar el calendario de un mes específico
   function mostrarCalendario(year, month) {
     generarCalendario(year, month, []);
