@@ -151,10 +151,9 @@ class AgendaDetailView(BaseContextMixin, DetailView):
 
 class PDFView(View):
     def get(self, request):
-        # Obtener el año y mes actual
-        anio_actual = datetime.now().year
-        mes_actual = datetime.now().month
-        # Eliminar emojis y iconos de las descripciones de las agendas
+
+        fecha_actual = datetime.now()
+        fecha_siguiente = fecha_actual + timedelta(days=30)
 
         emoji_pattern = re.compile("["
                            u"\U0001F600-\U0001F64F"  # emoticonos
@@ -205,34 +204,29 @@ class PDFView(View):
         agendas = VariationAgenda.objects.filter(
             Q(fecha__gte=datetime.now().date(), fecha__lte=datetime.now().date() + timedelta(days=30), agenda__publicado=True)
         ).order_by('fecha')
+        mes_actual = fecha_actual.month
+        mes_posterior = fecha_siguiente.month
+        # Crear un diccionario para agrupar las agendas por fecha
+        agendas_por_mes[meses_traduccion[mes_actual]] = {}
+        agendas_por_mes[meses_traduccion[mes_posterior]] = {}
 
-        for _ in range(2):  # Iterar dos veces para cubrir los próximos dos meses
-            if mes_actual == 11:
-                mes_actual += 1
-                if mes_actual > 12:
-                    mes_actual = 1
-                    anio_actual += 1
-
-            # Crear un diccionario para agrupar las agendas por fecha
-            agendas_por_mes[meses_traduccion[mes_actual]] = {}
-
-            for agenda in agendas:
-                fecha = agenda.fecha.strftime("%d")
-                day_of_the_week = agenda.fecha.isocalendar().weekday-1
-                agenda_mes = str(str(fecha) + " " + str(dias_letras[day_of_the_week]))
-
+        for agenda in agendas:
+            fecha = agenda.fecha.strftime("%d")
+            day_of_the_week = agenda.fecha.isocalendar().weekday-1
+            agenda_mes = str(str(fecha) + " " + str(dias_letras[day_of_the_week]))
+            try:
                 if mes_actual == agenda.fecha.month:
                     if agenda_mes not in agendas_por_mes[meses_traduccion[mes_actual]]:
                         agendas_por_mes[meses_traduccion[mes_actual]][agenda_mes] = []
                         agendas_por_mes[meses_traduccion[mes_actual]][agenda_mes].append(agenda)
                     else:
                         agendas_por_mes[meses_traduccion[mes_actual]][agenda_mes].append(agenda)
+                if mes_actual+1 == agenda.fecha.month:
+                    agendas_por_mes[meses_traduccion[agenda.fecha.month]][agenda_mes] = []
+                    agendas_por_mes[meses_traduccion[agenda.fecha.month]][agenda_mes].append(agenda)
+            except Exception as e:
+                pass
 
-            if mes_actual > 12:
-                mes_actual = 1
-                anio_actual += 1
-            else:
-                mes_actual += 1
 
         # Convertir los emojis y los iconos a texto plano
         for mes, agendas_mes in agendas_por_mes.items():
@@ -250,7 +244,7 @@ class PDFView(View):
 
         # Crear el diccionario de contexto
         context = {
-            'anio_actual': anio_actual,
+            'anio_actual': fecha_actual.year,
             'agendas': agendas_por_mes,
             'logo_imagen': logo_imagen
         }
