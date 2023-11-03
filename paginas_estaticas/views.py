@@ -4,7 +4,7 @@ from core.mixin.base import BaseContextMixin
 from django.http import JsonResponse
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from api.models import Teenvio
+from api.models import Teenvio, MailManager, GmailServer, OutlookServer
 from gaudeix.settings import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 import smtplib
 from email.mime.text import MIMEText
@@ -60,6 +60,7 @@ class ContactoView(BaseContextMixin, TemplateView):
     
     def post(self, request):
         # Obtener los datos del formulario
+
         name = escape(request.POST.get('name'))
         surname = escape(request.POST.get('surname'))
         email = escape(request.POST.get('email'))
@@ -103,28 +104,57 @@ class ContactoView(BaseContextMixin, TemplateView):
             El formulari de contacte de la web
         '''
 
-        # Crear el objeto EmailMessage y especificar la codificación
-        email = EmailMessage(
-            subject=subject,
-            body=body,
-            from_email=EMAIL_HOST_USER,
-            to=[EMAIL_HOST_USER],
-        )
-        email.encoding = 'utf-8'  # Especificar la codificación UTF-8
 
         # Configurar el servidor SMTP y enviar el correo electrónico
+
+        # recuperar la configuración del correo.
+        mail_manager = MailManager.objects.filter().first()
+
         try:
             if privacy_policy:
-                email.send()
-                response_data = {
+                mail_manager.mail_server
+                if mail_manager.mail_server =='gmail':
+                            # Crear el objeto EmailMessage y especificar la codificación
+                    gmail_server = GmailServer.objects.filter().first()
+                    email = EmailMessage(
+                        subject=subject,
+                        body=body,
+                        from_email=EMAIL_HOST_USER,
+                        to=[gmail_server.recipient_email],
+                    )
+                    email.encoding = 'utf-8'  # Especificar la codificación UTF-8
+                    email.send()
+
+                    response_data = {
                     'success': True,
-                    'message': 'Correo electrónico enviado exitosamente'
-                }
+                    'message': 'Missatge enviat correctament.'
+                    }
+
+                elif mail_manager.mail_server =='outlook':
+                    outlook_server = OutlookServer.objects.filter(mail_server=mail_manager).first()
+
+                    with smtplib.SMTP(outlook_server.smtp_server_url, outlook_server.smtp_server_port) as server:
+                        if outlook_server.use_tls:
+                            server.starttls()
+                        server.login(outlook_server.user, outlook_server.password)
+                        server.sendmail(outlook_server.user, outlook_server.recipient_email, body.encode('utf-8').strip())
+
+                        response_data = {
+                        'success': True,
+                        'message': 'Missatge enviat correctament.'
+                        }
+                else:
+                    response_data = {
+                        'success': False,
+                        'message': 'servidor no vàlid.'
+                    }
+                    return JsonResponse(response_data, status=400)
             else:
                 response_data = {
-                    'success': False,
-                    'message': 'Correo electrónico enviado exitosamente'
+                'success': False,
+                'message': 'No has aceptado la política de privacidad.'
                 }
+            
         except Exception as e:
             response_data = {
                 'error': str(e)

@@ -81,7 +81,9 @@ INSTALLED_APPS = [
     'django_user_agents',
     'selecciones',
     'subvenciones',
-    'compra_y_descubre'
+    'compra_y_descubre',
+    'admin_utils'
+
     #'corsheaders',
     #'admin_tree'
     #'filters'
@@ -264,3 +266,27 @@ TIEMPO_EXPIRACION = 2 * 60 * 60
 # Name of cache backend to cache user agents. If it not specified default
 # cache alias will be used. Set to `None` to disable caching.
 USER_AGENTS_CACHE = 'default'
+
+# Configuración del sistema de registro de Django
+
+LOGGING_DIR = os.path.join(BASE_DIR, 'logs')  # Directorio de logs
+os.makedirs(LOGGING_DIR, exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        '500_errors_apache': {  # Nuevo manejador para Django
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'django-500-errors.log'),  # Nuevo nombre de archivo de registro
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['500_errors_apache'],  # Usa solo el manejador '500_errors_apache'
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}

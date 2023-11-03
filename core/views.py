@@ -20,6 +20,10 @@ from gaudeix.settings import TIEMPO_EXPIRACION
 from .utils import generate_cache_key
 from django.core.cache import caches
 from personalizacion.models import Personalizacion
+from admin_utils.models import RegistroError
+import sys
+
+
 app_name = 'core'
 
 # Función para obtener las últimas agendas del portal
@@ -256,6 +260,15 @@ def error_500(request):
     cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
     diversidad = Diversidad.objects.filter().first()
 
+
+    exception_type, exception_value, traceback = sys.exc_info()
+    error_message = f"{exception_type.__name__}: {str(exception_value)}"
+    # Registra el error en la base de datos
+    registro_error = RegistroError(
+        descripcion=error_message,
+        titulo="Error 500 en la aplicación",
+    )
+    registro_error.save()
     response = render(
         request,
         'core/500/500.html',
