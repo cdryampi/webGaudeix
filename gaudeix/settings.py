@@ -268,25 +268,3 @@ TIEMPO_EXPIRACION = 2 * 60 * 60
 USER_AGENTS_CACHE = 'default'
 
 # Configuración del sistema de registro de Django
-
-LOGGING_DIR = os.path.join(BASE_DIR, 'logs')  # Directorio de logs
-os.makedirs(LOGGING_DIR, exist_ok=True)
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        '500_errors_apache': {  # Nuevo manejador para Django
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(LOGGING_DIR, 'django-500-errors.log'),  # Nuevo nombre de archivo de registro
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['500_errors_apache'],  # Usa solo el manejador '500_errors_apache'
-            'level': 'ERROR',
-            'propagate': False,
-        },
-    },
-}
