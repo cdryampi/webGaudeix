@@ -6,7 +6,16 @@ from multimedia_manager.models import Imagen
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django import forms
 from blog.models import Tag, Categoria
+
+from django.http import FileResponse
+import os
+from django.utils.safestring import mark_safe
+
+
+
 # Register your models here.
+
+
 
 class CompraDescubreFicheroInline(admin.TabularInline):
     model = CompraDescubreFichero
@@ -28,7 +37,7 @@ class CompraDescubreFicheroInline(admin.TabularInline):
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(pdfdiversidadfichero__isnull=True)
             )
-            kwargs['empty_label'] = 'Sin fichero asociado'
+            kwargs['empty_label'] = 'Sense fitxer asociat'
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -57,7 +66,7 @@ class CompraDescubrePasosImagenInline(admin.TabularInline):
                     Q(compradescubregaleriaimagen__isnull=True),
                     Q(compradescubrepasosimagen__isnull=True) | Q(compradescubrepasosimagen__compradescubre_id=evento_especial)
                     )
-            kwargs['empty_label'] = 'Sense imatge associada'
+            kwargs['empty_label'] = 'Sense fitxer asociat'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
@@ -146,6 +155,8 @@ class CompraDescubreAdmin(admin.ModelAdmin):
                 'publicado',
                 'primary_color',
                 'secondary_color',
+                'display_qr_code',
+                'download_qr_code',
                 'participante',
                 'comerciante',
                 'tags',
@@ -159,12 +170,48 @@ class CompraDescubreAdmin(admin.ModelAdmin):
                 "<p><em>Assegura't d'afegir tags amb sentit per què es farà servir per al <strong> SEO</strong>.</em></p>"
                 "<p><em>La <strong>categoria</strong> és opcional, però això determinarà on es vincularà. En aquest cas no cal que tingui res vinculat.</em></p>"
                 "<p><strong>Nota:</strong> Abans d'eliminar un esdeveniment 'Compra i descobreix', verifica que no el necessitis, ja que es pot despublicar i tenir un altre .</p>"
+                "<p><em>El codi QR es genera automàticament cada cop que es desa l'esdeveniment 'compra i descobreix'. Aquest codi sempre serà vàlid sempre que l'enllaç de l'esdeveniment no canvii, com per exemple: <strong>https://gaudeixcabrerademar.cat/c-d/compra-i-descobreix-2023</strong>.</em></p>"
+                "<p><em>El codi QR mantindrà la seva validesa sempre que el 'slug' de l'esdeveniment no es modifiqui, cosa que només passaria si es creen esdeveniments 'compra i descobreix' nous amb el mateix nom.</em></p>"
+                "<p><em><i>Si ets desenvolupador/a, no modifiquis el slug manualment o des del 'shell' del projecte, ja que els canvis es gestionen automàticament quan es desa l'esdeveniment des del formulari o a través de la funció 'save'.</i></em></p>"
             ),
         }),
         # Otras secciones de fieldsets aquí si es necesario
     ]
 
+
     inlines = [CompraDescubrePasosImagenInline, CompraDescubreImagenInline, CompraDescubreFicheroInline, CompraDescubrePasosImagenInline, CompraDescubreGaleriaImagenInline]
+
+    readonly_fields = ('display_qr_code','download_qr_code')
+
+
+
+
+
+    def display_qr_code(self, obj):
+        if obj.qr_code:
+            return mark_safe(f'<img src="{obj.qr_code.url}" width="100" height="100" />')
+        else:
+            return "Sense codi QR"
+
+    display_qr_code.allow_tags = True
+    display_qr_code.short_description = 'Codi QR'
+
+    def download_qr_code(self, obj):
+        if obj.qr_code:
+            # Obtenemos la ruta completa del archivo QR
+            qr_path = obj.qr_code.path
+            # Creamos un nombre de archivo para la descarga
+            download_filename = os.path.basename(qr_path)
+            # Creamos un enlace personalizado para la descarga
+            download_link = f'<a href="{obj.qr_code.url}" download="{download_filename}">Baixar QR</a>'
+            return mark_safe(download_link)
+        else:
+            return "Sense codi QR"
+
+    download_qr_code.short_description = 'Baixar QR'
+
+
+
 
 
 @admin.register(EntidadComprayParticipa)

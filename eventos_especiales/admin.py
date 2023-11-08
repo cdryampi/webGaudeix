@@ -9,6 +9,14 @@ from multimedia_manager.models import Imagen
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django import forms
 from blog.models import Tag, Categoria
+from django.http import HttpResponse
+
+
+from django.http import FileResponse
+import os
+
+
+from django.utils.safestring import mark_safe
 
 
 class EventoFicheroInline(admin.TabularInline):
@@ -85,6 +93,8 @@ class EventoEspecialAdmin(admin.ModelAdmin):
                 'publicado',
                 'categoria',
                 'color',
+                'display_qr_code',
+                'download_qr_code',
                 'agendas',
                 'logo_especial',
                 'imagen_especial',
@@ -95,19 +105,46 @@ class EventoEspecialAdmin(admin.ModelAdmin):
             ],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'un esdeveniment especial.</strong></p>"
-                "<p><em>Els <u>esdeveniments especials</u> són una part auxiliar del lloc web i es poden crear tants com desitgis.</em></p>"
-                "<p>Assegura't de completar els camps i de marcar l'opció <strong>publicat</strong> perquè es mostri destacat a la web. També pots afegir un<strong> logo especial</strong> si vols destacar encara més amb un logo (en negatiu) aquest esdeveniment al header (també s'ha d'afegir al header).</p>"
-                "<p>La <strong>imatge de l'especial</strong> només es fa servir com a miniatura per altres seccions de la web (categories relacionades i seleccions).</p>"
-                "<p>Tingues en compte que els canvis que facis aquí poden afectar la forma en què es presenta l'esdeveniment especial.</p>"
-                "<p><em>Assegura't d'afegir tags amb sentit per què es farà servir per al <strong> SEO</strong>.</em></p>"
-                "<p><em>La <strong>categoria</strong> és opcional, però això determinarà on es vincularà. En principi, es vincularà a una categoria de tipus 'festes i tradicions'.</em></p>"
-                "<p><strong>Nota:</strong> Abans d'eliminar un esdeveniment, verifica que no el necessitis, ja que es pot despublicar.</p>"
+                "<p><em>Els <u>esdeveniments especials</u> són una part auxiliar del lloc web i pots crear-ne tants com desitgis.</em></p>"
+                "<p>Assegura't de completar tots els camps i de marcar l'opció <strong>publicat</strong> perquè l'esdeveniment aparegui destacat a la web. També pots afegir un <strong>logo especial</strong> per destacar l'esdeveniment encara més, afegint un logo (en negatiu) al capçalera.</p>"
+                "<p>La <strong>imatge especial</strong> s'utilitza com a miniatura en altres seccions de la web (categories relacionades i seleccions).</p>"
+                "<p>Ten en compte que els canvis que realitzis aquí poden afectar la presentació de l'esdeveniment especial.</p>"
+                "<p><em>Afegeix etiquetes (tags) rellevants per millorar el <strong>SEO</strong> de l'esdeveniment.</em></p>"
+                "<p><em>La <strong>categoria</strong> és opcional; no obstant això, determinarà com es vincula l'esdeveniment. Per defecte, s'associarà a categories del tipus 'festes i tradicions'.</em></p>"
+                "<p><strong>Nota:</strong> Abans d'eliminar un esdeveniment, comprova que realment no el necessitis. Recordeu que també es pot despublicar en lloc d'eliminar-lo.</p>"
+                "<p><em>El codi QR es genera automàticament cada cop que es desa l'esdeveniment. Aquest codi sempre serà vàlid sempre que l'enllaç de l'esdeveniment no canvii, com per exemple: <strong>https://gaudeixcabrerademar.cat/s/ilturo</strong>.</em></p>"
+                "<p><em>El codi QR mantindrà la seva validesa sempre que el 'slug' de l'esdeveniment no es modifiqui, cosa que només passaria si es creen esdeveniments nous amb el mateix nom.</em></p>"
+                "<p><em><i>Si ets desenvolupador/a, no modifiquis el slug manualment o des del 'shell' del projecte, ja que els canvis es gestionen automàticament quan es desa l'esdeveniment des del formulari o a través de la funció 'save'.</i></em></p>"
             ),
         }),
         # Otras secciones de fieldsets aquí si es necesario
     ]
 
     inlines = [EventoFicheroInline, EventoEspecialGaleriaImagenInline]
+    readonly_fields = ('display_qr_code','download_qr_code')
+
+    def display_qr_code(self, obj):
+        if obj.qr_code:
+            return mark_safe(f'<img src="{obj.qr_code.url}" width="100" height="100" />')
+        else:
+            return "Sense codi QR"
+
+    display_qr_code.allow_tags = True
+    display_qr_code.short_description = 'Codi QR'
+
+    def download_qr_code(self, obj):
+        if obj.qr_code:
+            # Obtenemos la ruta completa del archivo QR
+            qr_path = obj.qr_code.path
+            # Creamos un nombre de archivo para la descarga
+            download_filename = os.path.basename(qr_path)
+            # Creamos un enlace personalizado para la descarga
+            download_link = f'<a href="{obj.qr_code.url}" download="{download_filename}">Baixar QR</a>'
+            return mark_safe(download_link)
+        else:
+            return "Sense codi QR"
+    
+    download_qr_code.short_description = 'Baixar QR'
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "categoria":

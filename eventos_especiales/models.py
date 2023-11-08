@@ -10,7 +10,16 @@ from ckeditor.fields import RichTextField
 from django.utils import timezone
 from django.urls import reverse
 from blog.models import Tag, Categoria, Post
+
 from django.conf import settings
+from gaudeix.settings import DOMAIN_URL
+#RQ
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw
+from django.core.files.base import ContentFile
+
 
 # Create your models here.
 
@@ -131,16 +140,80 @@ class EventoEspecial(BaseModel, MetadataModel):
         blank=True,
         verbose_name="Tags"
     )
-    
+
+    qr_code = models.ImageField(
+        upload_to='qr_codes/',  # Directorio donde se guardarán los códigos QR
+        null=True,
+        blank=True,
+        verbose_name="Codi QR"
+    )
+
     def save(self, *args, **kwargs):
         if not self.slug or not self.id:
             self.slug = slugify(self.titulo)
+            # Regenera el código QR y guarda los datos binarios en el campo qr_code
+            qr = qrcode.QRCode(
+                version=10,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=2,
+            )
+            qr.add_data(f'{DOMAIN_URL}{self.get_absolute_url()}')
+            qr.make(fit=True)
+            qr_image = qr.make_image(fill_color="black", back_color="white")
+            
+            # Crear un offset para centrar el código QR en una imagen de 310x310
+            qr_offset = Image.new('RGB', (750, 750), 'white')
+            qr_offset.paste(qr_image, (75, 75))
+            
+            # Guardar la imagen en un flujo de bytes en formato PNG
+            stream = BytesIO()
+            qr_offset.save(stream, 'PNG')
+            
+            # Crear un archivo ContentFile a partir de los datos binarios del flujo de bytes
+            file_name = f'{self.titulo}-{self.id}-qr.png'
+            content_file = ContentFile(stream.getvalue(), name=file_name)
+            
+            # Asignar el archivo al campo qr_code
+            self.qr_code.save(file_name, content_file, save=False)
+
         else:
             # Verificar si el slug ya existe y el objeto ya existe
             if EventoEspecial.objects.filter(slug=self.slug).exclude(id=self.id).exists():
                 # Generar un slug único basado en la fecha y hora actual
                 timestamp = timezone.now().strftime("%Y%m%d%H%M%S")
                 self.slug = f"{self.slug}-{timestamp}"
+
+
+            # Regenera el código QR y guarda los datos binarios en el campo qr_code
+            if self.qr_code:
+                self.qr_code.delete()
+            
+            qr = qrcode.QRCode(
+                version=10,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=2,
+            )
+            qr.add_data(f'{DOMAIN_URL}{self.get_absolute_url()}')
+            qr.make(fit=True)
+            qr_image = qr.make_image(fill_color="black", back_color="white")
+            
+            # Crear un offset para centrar el código QR en una imagen de 310x310
+            qr_offset = Image.new('RGB', (750, 750), 'white')
+            qr_offset.paste(qr_image, (75, 75))
+            
+            # Guardar la imagen en un flujo de bytes en formato PNG
+            stream = BytesIO()
+            qr_offset.save(stream, 'PNG')
+            
+            # Crear un archivo ContentFile a partir de los datos binarios del flujo de bytes
+            file_name = f'{self.titulo}-{self.id}-qr.png'
+            content_file = ContentFile(stream.getvalue(), name=file_name)
+            
+            # Asignar el archivo al campo qr_code
+            self.qr_code.save(file_name, content_file, save=False)
+
         super().save(*args, **kwargs)
     
     def is_now(self):
