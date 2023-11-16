@@ -1,0 +1,71 @@
+{% load static %}
+<section class="container-fluid p-0 m-0 bg-white">
+    {% if super_destacado.destacado.tipo == 'eventos_especiales' %}
+        <a href="{% url 'eventos_especiales:evento_especial' slug=super_destacado.destacado.evento_especial.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
+            {% if super_destacado.destacado.evento_especial.parallax%}
+                {% if super_destacado.destacado.evento_especial.parallax.imagen.url %}
+                    background-image: url('{{ super_destacado.destacado.evento_especial.parallax.imagen.url }}');
+                {% endif %}
+            {% else %}
+                {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.all.count >= 1 %}
+                    {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first %}
+                        {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first.imagen.archivo.url %}
+                            background-image: url('{{ super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first.imagen.archivo.url }}');
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    background-image: url('{% static 'core/img/banners/img-agenda.png' %}');
+                {% endif %}
+            {% endif %}
+        display: block;
+        ">
+            <div class="container-fluid p-0 m-0" style="background-color: rgba(0, 0, 0, 0.3); height: 100%;">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <div class="text-white text-center"> <!-- Agregado text-center para centrar el contenido textual horizontalmente -->
+                        <h2 class="mb-3 h2">
+                            {% if super_destacado.descripcion %}
+                                {{ super_destacado.descripcion }}
+                            {% else %}
+                                No et pots perdre
+                            {% endif %}
+
+                        </h2>
+                        <h3 class="mb-3 h1"> {{ super_destacado.titulo }} </h3>
+                        <span class="btn btn-outline-light btn-lg" role="button">Saber més</span>
+                    </div>
+                </div>
+            </div>
+        
+        </a>
+    {% elif super_destacado.destacado.tipo == 'compra_y_descubre' %}
+        <a href="{% url 'compra_y_descubre:compra_y_descubre' slug=super_destacado.destacado.compra_y_descubre.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
+            {% if super_destacado.destacado.compra_y_descubre.compradescubreimagen and super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url %}
+                background-image: url('{{ super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url }}');
+            {% else %}
+                background-image: url('{% static 'core/img/banners/img-agenda.png' %}')
+            {% endif %}
+            background-repeat: no-repeat;
+            display: block;
+            height: 70vh;
+        ">
+            <div class="container-fluid p-0 m-0" style="background-color: rgba(0, 0, 0, 0.3); height: 100%;">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <div class="text-white text-center"> <!-- Agregado text-center para centrar el contenido textual horizontalmente -->
+                        <h2 class="mb-3 h2">                            
+                            {% if super_destacado.descripcion %}
+                                {{ super_destacado.descripcion }}
+                            {% else %}
+                                No et pots perdre
+                            {% endif %}
+                        </h2>
+                        <h3 class="mb-3 h1"> {{ super_destacado.titulo }} </h3>
+                        <span class="btn btn-outline-light btn-lg" role="button">Saber més</span>
+                    </div>
+                </div>
+            </div>
+        
+        </a>
+    {% endif %}
+
+
+</section>

@@ -113,7 +113,6 @@
         <header>
             {% include 'header/header.html' %}
         </header>
-
         {% if portada %}
             {% comment %} {% include 'parallax/parallax.html' %} {% endcomment %}
             
@@ -135,10 +134,16 @@
 
             {% endif %}
 
-            
+
+
             {% if categorias_especiales %}
                 {% include 'blog/categorias/categoria_especial.html' %}
             {% endif %}
+
+            {% if super_destacado %}
+                {% include 'super_destacado/super_destacado.html' %}
+            {% endif %}
+
         {% endif %}
 
         {% block media %}
@@ -146,6 +151,7 @@
         {% endblock media %}
 
         {% if portada %}
+
             {% if coleccion_destacados  %}
                 {% include 'destacados/destacados.html' %}
             {% endif %}
@@ -157,6 +163,8 @@
             {% endif %}
 
         {% endif %}
+
+
     <main class="container-fluid p-0 m-0" id="main-content">
         <!-- Contenido específico de cada página se insertará aquí -->
         {% block content %}

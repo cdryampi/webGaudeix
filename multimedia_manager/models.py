@@ -13,7 +13,7 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill, ResizeToFit
 from imagekit.models import ImageSpecField
 from .utils import validar_tamanio_archivo, delete_file
-
+from personalizacion.utils import get_parallax_image_path
 
 
 
@@ -162,9 +162,55 @@ class Imagen(BaseModel):
             validar_tamanio_archivo(self.archivo)
         except TamanioArchivoExcedidoError as e:
             raise ValidationError(str(e))
-    def __str__(self) -> str:
+        
+
+    def __str__(self):
         return self.titulo
+    
     class Meta:
         verbose_name = 'Imatge'
         verbose_name_plural = 'Imatges'
 
+
+
+
+
+class Parallax(models.Model):
+    
+    titulo = models.CharField(
+        max_length=100,
+        verbose_name="Títola"
+    )
+    descripcion_corta = models.CharField(
+        max_length=200,
+        null= True,
+        blank= True,
+        verbose_name="Descripció curta"
+    )
+    imagen = models.ImageField(
+        upload_to=get_parallax_image_path,
+        verbose_name="Imatge"
+    )
+    publicado = models.BooleanField(
+        default=False,
+        verbose_name="Publicat"
+    )
+
+    def __str__(self):
+        return self.titulo
+
+
+
+class VideosEmbed(models.Model):
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Títol del Vídeo.",
+        verbose_name="Títola"
+    )
+    publicado = models.BooleanField(
+        default=False,
+        verbose_name="Publicat"
+    )
+    video = models.OneToOneField(Video, on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return f"Portada de video: {self.titulo}"

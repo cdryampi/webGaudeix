@@ -78,7 +78,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
     list_display = ['titulo', 'fecha_evento', 'publicado']
     list_filter = ['fecha_evento', 'publicado']
     search_fields = ['titulo']
-    filter_horizontal = ('agendas', 'videos', 'carruseles','tags')
+    filter_horizontal = ('agendas', 'videos','tags')
 
     fieldsets = [
         (None, {
@@ -93,15 +93,14 @@ class EventoEspecialAdmin(admin.ModelAdmin):
                 'publicado',
                 'categoria',
                 'color',
+                'parallax',
                 'display_qr_code',
                 'download_qr_code',
                 'agendas',
                 'logo_especial',
                 'imagen_especial',
                 'tags',
-                'parallax',
                 'videos',
-                'carruseles'
             ],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'un esdeveniment especial.</strong></p>"

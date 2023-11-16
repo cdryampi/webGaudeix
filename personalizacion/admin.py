@@ -1,12 +1,6 @@
 from django.contrib import admin
-from .models import Carrusel, Slide, InternalLink, Parallax, VideosEmbed, Personalizacion, TrenPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, AutoPistaPersonalizacion, AgendaParallax
-from blog.models import Tag
-from django.contrib.admin.widgets import FilteredSelectMultiple
-from .forms import CarruselForm
-from django.core.exceptions import ValidationError
-from multimedia_manager.models import Video
-from django.contrib.admin.widgets import FilteredSelectMultiple
-from django import forms
+from .models import InternalLink, Personalizacion, TrenPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, AutoPistaPersonalizacion, AgendaParallax, InternalLink, SuperDestacado
+
 
 
 
@@ -29,25 +23,61 @@ class AutoPistaPersonalizacionAdminInLine(admin.StackedInline):
     model = AutoPistaPersonalizacion
     extra = 1
 
-class InternalLinkInline(admin.StackedInline):
+class InternalLinkAdmin(admin.ModelAdmin):
     model = InternalLink
-    extra = 1
+    autocomplete_fields = ('evento_especial', 'compra_y_descubre')
+    fieldsets = [
+        (None, {
+            'fields': [
+                'tipo',
+                'evento_especial',
+                'compra_y_descubre',
+            ],
+            'description': (
+                "<p>Enllaç intern per afegir referències cap als models d''esdeveniments especials' i 'compra i descobreix'.</p>"
+                "<p>En aquest model pots afegir tantes referències com vulguis.</p>"
+                "<p>S'ha de tenir en compte que només es pot afegir els esdeveniments compra i descobreix.</p>"
+            ),
+        }),
+    ]
 
 
+class AgendaParallaxAdmin(admin.ModelAdmin):
+    model = AgendaParallax
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'parallax_agenda'
+            ],
+            'description': (
+                "<p>Parallax per l'agenda.</p>"
+                "<p>Aquest model fa que puguis fer servir els mateixos parallax dels altres models a personalització.</p>"
+                "<p>S'ha de tenir en compte fer servir títols descriptius amb coherència per poder identificar els parallax per l'agenda.</p>"
+            ),
+        }),
+    ]
 
 
-
-
-
-class SlideAdmin(admin.ModelAdmin):
-    inlines = [InternalLinkInline]
-
-class CarruselAdmin(admin.ModelAdmin):
-    form = CarruselForm
-
-
-
-
+class SuperDestacadoAdmin(admin.ModelAdmin):
+    model = SuperDestacado
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'descripcion',
+                'destacado',
+            ],
+            'description': (
+                "<p>Super destacta per l'inici.</p>"
+                "<p>Aquest model fa que puguis afegir una referència del model 'enllaç intern' cap personalització.</p>"
+                "<p>Pots afegir una descripció per l'encapçalament la secció del super destacat, si no poses res afegirà un 'No et pots perdre'.</p>"
+                "<p>S'ha de tenir en compte que s'ha pensat per poder destacar encara més els esdeveniments especials i els esdeveniments compra i descobreix.</p>"
+                "<p>El sistema agafarà en el cas dels esdeveniments especials la imatge del parallax que té assignat o la primera imatge de la seva galeria, en cas que no hi hagi imatges agafarà una per defecte.</p>"
+                "<p>El sistema agafarà en el cas dels esdeveniments de 'compra i descobreix' de la imatge principal en cas que no hi hagin vinculat les imatges, agafarà una imatge per defecte.</p>"
+            ),
+        }),
+    ]  
 
 
 class PersonalizacionAdmin(admin.ModelAdmin):
@@ -60,6 +90,7 @@ class PersonalizacionAdmin(admin.ModelAdmin):
                 'favicon',
                 'parallax_portada',
                 'parallax_agenda',
+                'super_destacado',
                 'video_portada',
                 'topbar',
                 'analytics_script',
@@ -78,12 +109,11 @@ class PersonalizacionAdmin(admin.ModelAdmin):
 
         }),
     ]
-    
+
     inlines = [TrenPersonalizacionAdminInLine, BusPersonalizacionAdminInLine, AeropuertoPErsonalizacionAdminInLine, AutoPistaPersonalizacionAdminInLine]
 
+
 admin.site.register(Personalizacion, PersonalizacionAdmin)
-admin.site.register(Carrusel, CarruselAdmin)
-admin.site.register(Slide,SlideAdmin)
-admin.site.register(Parallax)
-admin.site.register(AgendaParallax)
-admin.site.register(VideosEmbed)
+admin.site.register(AgendaParallax, AgendaParallaxAdmin)
+admin.site.register(SuperDestacado, SuperDestacadoAdmin)
+admin.site.register(InternalLink, InternalLinkAdmin)

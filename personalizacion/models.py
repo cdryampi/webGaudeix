@@ -1,10 +1,11 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from blog.models import Post, Categoria, SubBlog, Tag
-from multimedia_manager.models import Video
+from multimedia_manager.models import Video, Parallax, VideosEmbed
 from topbar.models import Topbar
 from ckeditor.fields import RichTextField
-from .utils import get_parallax_image_path
+from compra_y_descubre.models import CompraDescubre
+from eventos_especiales.models import EventoEspecial
 
 
 # Create your models here.
@@ -47,160 +48,86 @@ class Favicon(models.Model):
 
 
 
-class Slide(models.Model):
-    imagen = models.ImageField(
-        upload_to='slides/',
-        verbose_name="Imatge"
-    )
-    titulo = models.CharField(
-        max_length=100,
-        verbose_name='Títol'
-    )
-    descripcion = models.TextField(
-        max_length=100,
-        help_text="Text que apareix el centre de la imatge.",
-        null=True,
-        blank=True
-    )
-    def __str__(self):
-        return self.titulo
-
-
 
 class InternalLink(models.Model):
     TIPOS_REFERENCIA = (
-        ('post', 'Post'),
-        ('categoria', 'Categoría'),
-        ('subblog', 'SubBlog')
+        ('eventos_especiales', 'Esdeveniments especials'),
+        ('compra_y_descubre', 'Compra i descobreix')
     )
 
     tipo = models.CharField(
-        max_length=10,
+        max_length=20,
         choices=TIPOS_REFERENCIA,
         verbose_name="Tipus"
     )
-    post = models.ForeignKey(
-        Post,
+    evento_especial = models.ForeignKey(
+        EventoEspecial,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        verbose_name="entrada"
+        verbose_name='Esdeveniment especial' 
     )
-    categoria = models.ForeignKey(
-        Categoria,
+    compra_y_descubre = models.ForeignKey(
+        CompraDescubre,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        verbose_name="Categoría"
+        verbose_name='Compra i descobreix' 
     )
-    subblog = models.ForeignKey(
-        SubBlog,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True
-    )
-    slide = models.OneToOneField(
-        Slide,
-        on_delete=models.CASCADE
-    )
+
     
     def __str__(self):
         tipo = self.tipo
         titulo = ""
 
         # Comprueba cada atributo en el orden deseado para encontrar el título
-        if self.post:
-            titulo = self.post.titulo
-        elif self.categoria:
-            titulo = self.categoria.titulo
-        elif self.subblog:
-            titulo = self.subblog.titulo
+        if self.evento_especial:
+            titulo = self.evento_especial.titulo
+        elif self.compra_y_descubre:
+            titulo = self.compra_y_descubre.titulo
 
         return f"{tipo}: {titulo}"
 
 
     def save(self, *args, **kwargs):
-        if self.tipo == 'post':
-            self.categoria = None
-            self.subblog = None
-        elif self.tipo == 'categoria':
-            self.post = None
-            self.subblog = None
-        elif self.tipo == 'subblog':
-            self.post = None
-            self.categoria = None
 
+        if self.tipo == 'eventos_especiales':
+            self.compra_y_descubre = None
+        
+        elif self.tipo == 'compra_y_descubre':
+            self.evento_especial = None
 
+        
         super().save(*args, **kwargs)
 
 
 
+class SuperDestacado(models.Model):
 
-class Carrusel(models.Model):
-    nombre = models.CharField(
+    titulo = models.CharField(
         max_length=100,
+        help_text="Títol del super destacat.",
         verbose_name="Títol"
     )
-    publicado = models.BooleanField(
-        default=False,
-        verbose_name="Publicat"
+    descripcion = models.TextField(
+        help_text="Títol que sortirà com a encapçalament al superdestacat.",
+        null=True,
+        blank=True,
+        verbose_name="Descripció"
     )
-    slides = models.ManyToManyField(
-        Slide,
-        related_name='carruseles',
-        blank=True
+    destacado = models.OneToOneField(
+        InternalLink,
+        on_delete=models.CASCADE,
+        verbose_name="Destacat",
+        help_text="Selecciona un enllaç intern per fer la vinculació"
     )
+
+    def __str__(self):
+        return f"Super Descat: {self.titulo} - {self.destacado}"
 
     class Meta:
-        verbose_name = 'Carrusel'
-        verbose_name_plural = 'Carrusels'
-
-    def __str__(self):
-        return self.nombre
-
-
-
-class Parallax(models.Model):
-    
-    titulo = models.CharField(
-        max_length=100,
-        verbose_name="Títol"
-    )
-    descripcion_corta = models.CharField(
-        max_length=200,
-        null= True,
-        blank= True,
-        verbose_name="Descripció curta"
-    )
-    imagen = models.ImageField(
-        upload_to=get_parallax_image_path,
-        verbose_name="Imatge"
-    )
-    publicado = models.BooleanField(
-        default=False,
-        verbose_name="Publicat"
-    )
-
-    def __str__(self):
-        return self.titulo
-
-
-
-class VideosEmbed(models.Model):
-    titulo = models.CharField(
-        max_length=100,
-        help_text="Títol del Vídeo.",
-        verbose_name="Títol"
-    )
-    publicado = models.BooleanField(
-        default=False,
-        verbose_name="Publicat"
-    )
-    video = models.OneToOneField(Video, on_delete=models.SET_NULL, null=True)
-    def __str__(self):
-        return f"Portada de video: {self.titulo}"
-
-
+        verbose_name = "Super destacat"
+        verbose_name_plural = "Super destacats"
 
 class AgendaParallax(models.Model):
     """
@@ -269,6 +196,15 @@ class Personalizacion(models.Model):
         verbose_name="Topbar del portal",
         help_text= "Selecciona el topbar que vols per la portada"
     )
+    super_destacado = models.OneToOneField(
+        SuperDestacado,
+        on_delete=models.SET_NULL,
+        null= True,
+        blank= True,
+        verbose_name="super destacat",
+        help_text="Selecciona un superdestacat si existeix."
+    )
+
     analytics_script = models.TextField(
         null=True,
         blank=True,

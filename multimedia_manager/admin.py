@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Imagen, Fichero, Video
+from .models import Imagen, Fichero, Video, Parallax, VideosEmbed
 
 
 
@@ -44,10 +44,16 @@ class FicheroAdmin(admin.ModelAdmin):
 class VideoAdmin(admin.ModelAdmin):
     model = Video
 
+class ParallaxAdmin(admin.ModelAdmin):
+    model = Parallax
+
+class VideosEmbedAdmin(admin.ModelAdmin):
+    model = VideosEmbed
+
 admin.site.register(Fichero, FicheroAdmin)
 
 admin.site.register(Imagen, ImagenAdmin)
 admin.site.register(Video, VideoAdmin)
-
-
+admin.site.register(Parallax, ParallaxAdmin)
+admin.site.register(VideosEmbed, VideosEmbedAdmin)
 

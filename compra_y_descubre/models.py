@@ -1,5 +1,4 @@
 from django.db import models
-from personalizacion.models import Parallax, Video, Carrusel
 from multimedia_manager.models import Fichero, Imagen
 from django.utils import timezone
 from django.urls import reverse

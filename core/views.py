@@ -8,7 +8,7 @@ from redes_sociales.models import RedSocial
 from footer.models import Footer
 from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
-from personalizacion.models import VideosEmbed
+from multimedia_manager.models import VideosEmbed
 from selecciones.models import SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
 from paginas_estaticas.models import Cookies, PaginaLegal, Diversidad
@@ -93,6 +93,10 @@ def home(request):
     coleccion_destacados = get_coleccion_destacados()
     evento = EventoEspecial.objects.filter(publicado=True).first()
 
+    super_destacado = None
+
+    if personalizacion and personalizacion.super_destacado:
+        super_destacado = personalizacion.super_destacado
     # com arribar
     tren = None
     autopista = None
@@ -100,16 +104,18 @@ def home(request):
     aeroport = None
 
     if personalizacion and personalizacion.video_portada:
-        portada_video = personalizacion.video_portada.videosembed.video.videosembed
-    else:    
-        portada_video = VideosEmbed.objects.filter(publicado=True).first()
+        portada_video = personalizacion.video_portada
+    else:
+        if VideosEmbed.objects.filter(publicado=True).first():
+            portada_video = VideosEmbed.objects.filter(publicado=True).first()
+        else:
+            portada_video = None
     
 
     if personalizacion and personalizacion.parallax_portada:
         parallax = personalizacion.parallax_portada
     else:
         parallax = Parallax.objects.filter(publicado =True).first()
-
 
     if personalizacion and personalizacion.topbar:
         topbar = personalizacion.topbar
@@ -131,7 +137,6 @@ def home(request):
 
 
     categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
-    parallax = Parallax.objects.filter(publicado=True).first()
     user_agent = get_user_agent(request)
     cookies = Cookies.objects.filter().first()
     cookie_page = PaginaLegal.objects.filter(tipo="cookies").first()
@@ -150,6 +155,7 @@ def home(request):
             'topbar': topbar,
             'portada': portada,
             'redes_sociales': redes_sociales,
+            'super_destacado': super_destacado,
             'color_red_social': redes_color,
             'categorias_especiales': categorias_especiales,
             'footer': footer,

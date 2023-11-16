@@ -1479,3 +1479,19 @@ table.table-custom tr.even {
 }
 
 /* end generic */
+
+/* personalización */
+.super_destacado_container_image_parallax {
+  background-size: cover;
+  height: 70vh;
+  object-fit: cover;
+  background-attachment: fixed;
+}
+
+@media screen and (max-width: 768px) {
+  .super_destacado_container_image_parallax {
+      height: 40vh;
+      background-attachment: scroll;
+  }
+}
+/* end personalización */

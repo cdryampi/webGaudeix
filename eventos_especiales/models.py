@@ -3,8 +3,8 @@ from django.db import models
 from django.utils.text import slugify
 from colorfield.fields import ColorField
 from core.models import BaseModel, MetadataModel
-from multimedia_manager.models import Fichero, Imagen
-from personalizacion.models import Parallax, Video, Carrusel
+from multimedia_manager.models import Fichero, Imagen, Parallax
+from multimedia_manager.models import Video
 from agenda.models import Agenda
 from ckeditor.fields import RichTextField
 from django.utils import timezone
@@ -126,13 +126,6 @@ class EventoEspecial(BaseModel, MetadataModel):
         blank=True,
         help_text="Videos relacionats amb l'esdeveniment especial (opcional)",
         verbose_name="Vídeos"
-    )
-
-    carruseles = models.ManyToManyField(
-        Carrusel,
-        blank=True,
-        help_text="Carrussells relacionats amb l'esdeveniment especial (opcional)",
-        verbose_name="Carrussells"
     )
 
     tags = models.ManyToManyField(

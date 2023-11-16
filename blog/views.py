@@ -4,7 +4,6 @@ from agenda.models import Agenda, VisitaGuiada, Ruta, VariationAgenda
 from django.http import JsonResponse
 from django.views.generic import View
 from core.mixin.base import BaseContextMixin
-from personalizacion.models import Parallax, Carrusel
 from redes_sociales.models import RedSocial
 from .utils import agrupar_eventos_por_dia
 from django.db.models import Q
@@ -13,7 +12,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from eventos_especiales.models import EventoEspecial
 from personalizacion.models import Personalizacion
-
+from multimedia_manager.models import Parallax
 
 
 class ListarPostsView(ListView):
