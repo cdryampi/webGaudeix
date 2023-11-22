@@ -157,7 +157,7 @@ class AgendaDetailView(BaseContextMixin, DetailView):
 
         ics_events = {}
         variations =  self.get_object().variationagenda_set.all()
-        horari = Personalizacion.objects.first().horario
+        horario = Personalizacion.objects.first().horario
         data_fin = Personalizacion.objects.first().hora_agenda_fin
 
         if variations:
@@ -167,8 +167,8 @@ class AgendaDetailView(BaseContextMixin, DetailView):
                 horario = personalizacion.horario
                 data_fin = personalizacion.hora_agenda_fin
                 
-                fecha_inicio = next_variation.fecha
-                hora_inicio = next_variation.hora
+                fecha_inicio = variation.fecha
+                hora_inicio = variation.hora
                 
                 fecha_hora_inicio = datetime.combine(fecha_inicio, hora_inicio)
                 
@@ -278,7 +278,6 @@ class AgendaDetailView(BaseContextMixin, DetailView):
         context['coleccion_destacados'] = all_events[:20]
         context['entrades'] = show_ticket_section
 
-        print(google_calendar_link)
         
         return context
 
