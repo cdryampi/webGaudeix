@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
 from multimedia_manager.models import Imagen, Fichero
-from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible
 from map.models import MapPoint
 from django.forms import DurationField
 from blog.models import PostImagen, PostGaleriaImagen, PostFichero, Categoria, Tag
@@ -222,7 +222,7 @@ class VisitaGuidadaForm(forms.ModelForm):
 class VisitaGuidadaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostImagenInlineRuta, PostGaleriaImagenInline, PostFicheroImagenInline]
-    filter_horizontal = ('agendas','tags')
+    filter_horizontal = ('agendas','tags','certificados')
     autocomplete_fields = ['mapa', 'categoria']
     
     fieldsets = [
@@ -235,6 +235,7 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
                 'publicado',
                 'categoria',
                 'precio',
+                'certificados',
                 'fecha_inicio',
                 'fecha_fin',
                 'duracion_dias',
@@ -319,7 +320,35 @@ class RutaAdmin(admin.ModelAdmin):
     ]
 
 
+class CertificadoTurismoSostenibleAdmin(admin.ModelAdmin):
+
+    fieldsets = [
+        (None,{
+            'fields':[
+                'nombre',
+                'descripcion',
+                'logo',
+                'ods_relacionados',
+                'enlace_externo'
+            ],
+            'description': (
+            "<p><strong><em>Aquesta és l'administració dels certificats.</em></strong></p>"
+            "<p><em>Aquí pots afegir un logo de turisme sostenible que apliquen a aquesta visita guiada.</em></p>"
+            "<p><em>Recorda que aquests camps estan destinats a recollir informació sobre el certificat.</em></p>"
+            "<p><em>També pots assignar un ODS que té relació amb el certificat.</p>"
+            "<p><em>Pots afegir un enllaç extern cap a l'empresa certificadora.</em></p>"
+        ),
+
+        })
+    ]
+
+
+
+
+
+
 
 admin.site.register(Ruta, RutaAdmin)
 admin.site.register(Agenda, AgendaAdmin)
 admin.site.register(VisitaGuiada, VisitaGuidadaAdmin)
+admin.site.register(CertificadoTurismoSostenible, CertificadoTurismoSostenibleAdmin)

@@ -6,8 +6,10 @@ from multimedia_manager.models import Imagen
 from map.models import MapPoint
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
-from datetime import timedelta
+from datetime import timedelta, datetime, time
 from django.utils import timezone
+
+
 
 User = get_user_model()
 
@@ -87,6 +89,38 @@ class VariationAgenda(models.Model):
         default=timezone.now,
         verbose_name="Hora"
     )
+
+
+    def generate_google_calendar_link(self):
+        # Obtener la fecha y hora de inicio
+        from personalizacion.models import Personalizacion
+
+        personalizacion = Personalizacion.objects.first()
+        horario = personalizacion.horario
+        data_fin = personalizacion.hora_agenda_fin
+        fecha_inicio = self.fecha  # Fecha en tu modelo
+        hora_inicio = self.hora  # Hora en tu modelo
+
+        # Combinar la fecha y hora para obtener la fecha y hora de inicio completa
+        fecha_hora_inicio = datetime.combine(fecha_inicio, hora_inicio)
+
+        if horario == 'hivern':
+            # Convertir data_fin (TimeField) a timedelta
+            
+            fecha_hora_inicio = fecha_hora_inicio + timedelta(hours=-1)
+
+        # Calcular la fecha y hora de fin sumando 2 horas
+        data_fin_timedelta = timedelta(hours=data_fin.hour, minutes=data_fin.minute)
+        fecha_hora_fin = fecha_hora_inicio + data_fin_timedelta
+
+        if fecha_hora_fin.time() >= time(23,59):
+            fecha_hora_fin = fecha_hora_inicio
+        # Formatear las fechas y horas en el formato adecuado
+        fecha_hora_inicio_str = fecha_hora_inicio.strftime("%Y%m%dT%H%M%SZ")
+        fecha_hora_fin_str = fecha_hora_fin.strftime("%Y%m%dT%H%M%SZ")
+
+        # Crear el enlace de Google Calendar
+        return f"https://calendar.google.com/calendar/render?action=TEMPLATE&text={self.agenda.titulo}&dates={fecha_hora_inicio_str}/{fecha_hora_fin_str}&details={self.agenda.descripcion_corta}&location={self.agenda.ubicacion}"
 
 
     def __str__(self):
@@ -194,6 +228,67 @@ class Ruta(Post):
     def __str__(self):
         return f"Ruta: {self.titulo}"
 
+
+class CertificadoTurismoSostenible(models.Model):
+    ODS_CHOICES = (
+        ('ods_1', "Fi de la pobresa"),
+        ('ods_2', "Fam zero"),
+        ('ods_3', "Salut i benestar"),
+        ('ods_4', "Educació de qualitat"),
+        ('ods_5', "Igualtat de gènere"),
+        ('ods_6', "Aigua neta i sanejament"),
+        ('ods_7', "Energia assequible i no contaminant"),
+        ('ods_8', "Treball decent i creixement econòmic"),
+        ('ods_9', "Indústria, innovació i infraestructura"),
+        ('ods_10', "Reducció de les desigualtats"),
+        ('ods_11', "Ciutats i comunitats sostenibles"),
+        ('ods_12', "Consum i produccions responsables"),
+        ('ods_13', "Acció pel clima"),
+        ('ods_14', "Vida submarina"),
+        ('ods_15', "Vida d'ecosistemes terrestres"),
+        ('ods_16', "Pau, justícia i institucions sòlides"),
+        ('ods_17', "Aliances per assolir els objectius"),
+        ('altres', "Altres")
+    )
+
+    nombre = models.CharField(
+         max_length=100,
+         verbose_name='títol',
+         help_text='Nom del certificat del certificat.'
+    )
+    descripcion = models.TextField(
+        verbose_name="Descripció",
+        help_text="Afegeix una descripció pel certificat.",
+        null=True,
+        blank=True
+    )
+    logo = models.ImageField(
+        upload_to='logos_certificados/',
+        verbose_name="Logo",
+        help_text="Afegeix un Logo pel certificat.",
+    )
+    ods_relacionados = models.CharField(
+        choices= ODS_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="ODS relacionat",
+        help_text="Vincula amb el ODS que té relació el certificat"
+    )
+    enlace_externo = models.URLField(
+        null=True,
+        blank=True,
+        help_text="Enllaç extern",
+        verbose_name="Enllaç extern"
+    )  # Enllaç extern (opcional)
+
+    class Meta:
+        verbose_name = "Certificat"
+        verbose_name_plural = "Certificats"
+
+    def __str__(self):
+        return self.nombre
+
+
 class VisitaGuiada(Post):
 
     PUBLICO_RECOMENDADO_CHOICES = (
@@ -265,6 +360,13 @@ class VisitaGuiada(Post):
         blank=True,
         help_text="Agendes relacionades amb la visita",
         verbose_name="Agendes"
+    )
+
+    certificados = models.ManyToManyField(
+        CertificadoTurismoSostenible,
+        blank=True,
+        help_text="Afegeix els certificats de turisme sostenible que fas servir per la visita guiada.",
+        verbose_name="Certificat"
     )
 
     # Resto de campos adicionales de VisitaGuidada

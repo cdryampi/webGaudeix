@@ -1,5 +1,8 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load custom_filters %}
+
+
 
 {% block meta_description %}
   {% if local_agenda.metadescripcion %}
@@ -31,6 +34,17 @@
     {% endautoescape %}
 {% endblock title %}
 
+{% block extra_css %}
+
+  <style>
+      .oculto {
+        display:none;
+      }
+
+  </style>
+{% endblock %}
+
+
 {% block media %}
 
       {% include 'agenda/parallax-banner/banner.html' %}
@@ -44,7 +58,7 @@
         <p class="text-center italic lead">{{ local_agenda.descripcion_corta }}</p>
     </div>
 
-  <div class="container-fuild p-5 content-agenda-detail-container">
+  <div class="container-fuild p-xl-5 p-lg-5 p-sm-2 p-md-3 p-3 content-agenda-detail-container">
     <div class="container p-2">
     <div class="row">
         
@@ -56,43 +70,72 @@
                     {{ local_agenda.descripcion | safe }}
                 {% endautoescape %}
 
-                <table class="table table-bordered table-custom">
-                  <thead>
-                    <tr>
-                      <th colspan="2" class="table-header bg-dark text-white">Dades adicionals</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="font-weight-bold"><i class="fas fa-map-marker-alt"></i> Ubicació:</td>
-                      <td>
-                        <p>
-                          <a href="{% url 'map:mapa' slug=local_agenda.ubicacion.slug %}" class="font-weight-bold" title="{{ local_agenda.ubicacion.titulo }}">{{ local_agenda.ubicacion.titulo }}</a>{% if local_agenda.ubicacion.calle %} - <span>{{ local_agenda.ubicacion.calle }}</span>{% endif %},
-                          <span>{{ local_agenda.ubicacion.codigo_postal }}</span> <span>{{ local_agenda.ubicacion.comunidad_autonoma }}</span>
-                        </p>
-                      </td>
-                    </tr>
-                    {% for variation in local_agenda.variationagenda_set.all %}
-                    <tr>
-                      <td colspan="2" class="{% cycle 'odd' 'even' %} combined-cell">
-                        <i class="fas fa-calendar-alt"></i> <strong>Data:</strong> {{ variation.fecha }} | <strong>Hora:</strong> {{ variation.hora }}
-                      </td>
-                    </tr>
-                    {% endfor %}
-                    {% if local_agenda.postfichero and local_agenda.postfichero.fichero.archivo.url %}
-                    <tr>
-                      <td colspan="1" style="border-left:0px;">
-                      <i class="fas fa-file-pdf"></i>
-                      <strong>PDF:</strong> 
-                      <a href="{{ local_agenda.postfichero.fichero.archivo.url }}" class="text-black" title="{{ local_agenda.postfichero.fichero.titulo }}" download>
-                        descarregar
-                      </a>
-                      <td>
-                    </tr>
-                    {% endif %}
-                  </tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-custom">
+                    <thead>
+                      <tr>
+                        <th colspan="2" class="table-header bg-dark text-white">Dades adicionals</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="font-weight-bold"><i class="fas fa-map-marker-alt"></i> Ubicació:</td>
+                        <td>
+                          <p>
+                            <a href="{% url 'map:mapa' slug=local_agenda.ubicacion.slug %}" class="font-weight-bold" title="{{ local_agenda.ubicacion.titulo }}">{{ local_agenda.ubicacion.titulo }}</a>{% if local_agenda.ubicacion.calle %} - <span>{{ local_agenda.ubicacion.calle }}</span>{% endif %},
+                            <span>{{ local_agenda.ubicacion.codigo_postal }}</span> <span>{{ local_agenda.ubicacion.comunidad_autonoma }}</span>
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="font-weight-bold"><label for="agenda-select-form"><i class="fas fa-calendar-alt"></i> Data:</label></td>
+                        <td>
+                          <p class="small"><small>Fes click al selector per veure altres dades.</small></p>
+                          <select name="event_date" class="form-control" id="agenda-select-form">
+                            {% for event in local_agenda.variationagenda_set.all %}
+                              {% with event_counter=forloop.counter %}
+                                <option value="{{ event_counter }}">
+                                  {{ event.fecha|date:'F j, Y' }} - {{ event.hora|time:'h:i A' }}
+                                </option>
+                              {% endwith %}
+                            {% endfor %}
+                          </select>
+                          {% for event in local_agenda.variationagenda_set.all %}
+                            {% with event_counter=forloop.counter %}
+                              <div id="{{ event_counter }}" class="event-div oculto">
+                                <p>
+                                  <a href="{{ event.generate_google_calendar_link }}" class="btn btn-outline-light p-3" target="_blank">
+                                    <i class="fab fa-google"></i><span class="text-muted"> Afegir l'esdeveniment a Google calendar</span>
+                                  </a>
+                                </p>
+                                {% with ics_event=ics_events|get_item:event_counter|stringformat:"s" %}
+                                  <p>
+                                    <a href="" data-link="{{ ics_event }}" class="btn btn-outline-light p-3 apple-ics-link" target="_blank">
+                                      <i class="fab fa-apple"></i><span class="text-muted"> Afegir l'esdeveniment a altres dispositius</span>
+                                    </a>
+                                  </p>
+                                {% endwith %}
 
+
+                              </div>
+                            {% endwith %}
+                          {% endfor %}
+                        </td>
+                      </tr>
+                      {% if local_agenda.postfichero and local_agenda.postfichero.fichero.archivo.url %}
+                      <tr>
+                        <td colspan="1" style="border-left:0px;">
+                          <i class="fas fa-file-pdf"></i>
+                          <strong>PDF:</strong>
+                          <a href="{{ local_agenda.postfichero.fichero.archivo.url }}" class="text-black" title="{{ local_agenda.postfichero.fichero.titulo }}" download>
+                            descarregar
+                          </a>
+                        </td>
+                      </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
             
             <div class="social-share-buttons">
                 <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
@@ -176,6 +219,22 @@
 </section>
 
 
+{% if google_calendar_link %}
+  <!-- Dentro de tu archivo de plantilla HTML -->
+  <div class="text-center p-5" style="background-color: {% if header.color_fondo_header %}{{ header.color_fondo_header }}{% else %}#4CAA66{% endif %};">
+    <p class="text-center lead">Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu.</p>
+    <a href="{{ google_calendar_link }}" class="btn btn-outline-light p-3" target="_blank">
+      <i class="fab fa-google"></i><span> Afegir a Google calendar</span>
+    </a>
+    <!-- Enlace de descarga del archivo .ics -->
+    {% if ics_file_url %}
+      <a href="{{ ics_file_url  }}" class="btn btn-outline-light p-3" target="_blank" download>
+        <i class="fab fa-apple"></i><span> Descarregar per altres dispositius</span>
+      </a>
+    {% endif %}
+  </div>
+{% endif %}
+
 {% if entrades %}
             <div class="jumbotron jumbotron-fluid bg-light text-center mb-0">
               <div class="container">
@@ -192,7 +251,7 @@
         <div class="text-center  m-0 p-2 bg-light agenda-pdf-link">
             <a href="{% url 'agenda:calendario_pdf' %}" class="btn btn-outline-dark btn-lg">
                 <i class="fas fa-file-download"></i>
-                Descarrega l'agenda en PDF
+                Descarrega tota l'agenda en PDF
             </a>
         </div>
     </div>
@@ -215,3 +274,60 @@
     {% endif %}
 
 {% endblock asides %}
+
+{% block extra_script %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const agendaSelectForm = document.getElementById("agenda-select-form");
+    const divsToDisplay = document.querySelectorAll(".event-div"); // Replace with the actual class of your divs
+  
+    // Function to show the selected div
+    function showSelectedDiv() {
+      const selectedOption = agendaSelectForm.value; // Get the selected option value (div ID)
+  
+      // Hide all divs
+      divsToDisplay.forEach((div) => {
+        div.classList.add("oculto");
+
+      });
+  
+      // Show the selected div
+      // Show the selected div
+      const divToShow = document.getElementById(selectedOption);
+      if (divToShow) {
+        divToShow.classList.remove("oculto");
+        const icsUrl = divToShow.querySelector('.apple-ics-link');
+        
+        if (icsUrl) {
+          const linkString = icsUrl.getAttribute("data-link");
+          
+          // Remove single quotes from the string
+          const cleanedLinkString = linkString.replace(/'/g, '"');
+          
+          // Parse the cleaned string to a JSON object
+          try {
+            const link = JSON.parse(cleanedLinkString);
+            
+            // Check if the parsed link object has the 'ics_url' property
+            if (link && link.ics_url) {
+              icsUrl.setAttribute("href", link.ics_url);
+            }
+          } catch (error) {
+            console.error("Error parsing data-link:", error);
+          }
+        }
+      }
+
+    }
+  
+    // Add change event listener to the form
+    agendaSelectForm.addEventListener("change", showSelectedDiv);
+  
+    // Show the initially selected div
+    showSelectedDiv();
+  });
+</script>
+
+
+{% endblock extra_script %}

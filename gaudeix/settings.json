@@ -2,7 +2,7 @@
     "DEBUG": true,
     "ALLOWED_HOSTS": ["*"],
     "LANGUAGE_CODE": "ca",
-    "TIME_ZONE": "Europe/Andorra",
+    "TIME_ZONE": "Europe/Madrid",
     "EMAIL_BACKEND": "django.core.mail.backends.smtp.EmailBackend",
     "EMAIL_HOST": "smtp.gmail.com",
     "EMAIL_PORT": 587,

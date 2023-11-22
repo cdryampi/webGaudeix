@@ -8,15 +8,23 @@ from xhtml2pdf import pisa
 from django.template.loader import get_template
 from io import BytesIO
 from django.db.models import Q, Max
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta, time
 from core.mixin.base import BaseContextMixin
 from django.utils import timezone
 import itertools
 import emoji
 import re
+import os
 from blog.models import Categoria
 from personalizacion.models import Personalizacion
 from gaudeix.settings import DOMAIN_URL
+from icalendar import Calendar, Event as iCalEvent
+from io import BytesIO
+from django.http import HttpResponse
+from django.urls import reverse
+from gaudeix import settings
+
+
 
 # Create your views here.
 class VisitaGuiadaView(BaseContextMixin, DetailView):
@@ -42,6 +50,8 @@ class VisitaGuiadaView(BaseContextMixin, DetailView):
        
         visita_guiadas = VisitaGuiada.objects.filter(publicado=True).exclude(pk=current_object.pk)
         categorias = Categoria.objects.filter(publicado= True).all()
+
+        print(self.get_object().certificados.all())
         #print("Agendas Relacionadas:", agendas_relacionadas)
 
         context['coleccion_destacados'] = visita_guiadas
@@ -140,10 +150,136 @@ class AgendaDetailView(BaseContextMixin, DetailView):
                 parallax = None
         else:
             parallax = None
+
+        # Obtener la próxima variación más cercana
+        next_variation = self.get_object().variationagenda_set.filter(fecha__gte=timezone.now()).order_by('fecha', 'hora').first()
+
+
+        ics_events = {}
+        variations =  self.get_object().variationagenda_set.all()
+        horari = Personalizacion.objects.first().horario
+        data_fin = Personalizacion.objects.first().hora_agenda_fin
+
+        if variations:
+            personalizacion = Personalizacion.objects.first()
+            for index, variation in enumerate(variations):
+                # Formatear la fecha y hora de inicio
+                horario = personalizacion.horario
+                data_fin = personalizacion.hora_agenda_fin
+                
+                fecha_inicio = next_variation.fecha
+                hora_inicio = next_variation.hora
+                
+                fecha_hora_inicio = datetime.combine(fecha_inicio, hora_inicio)
+                
+                if horario == 'hivern':
+                    # Convertir data_fin (TimeField) a timedelta
+                    fecha_hora_inicio = fecha_hora_inicio + timedelta(hours=-1)
+                
+                data_fin_timedelta = timedelta(hours=data_fin.hour, minutes=data_fin.minute)
+                fecha_hora_fin = fecha_hora_inicio + data_fin_timedelta
+
+                if fecha_hora_fin.time() >= time(23,59):
+                    fecha_hora_fin = fecha_hora_inicio
+
+
+                # Crear el archivo .ics
+                event = iCalEvent()
+                event.add('summary', self.get_object().titulo)
+                event.add('description', self.get_object().descripcion_corta)
+                event.add('dtstart', fecha_hora_inicio)
+                event.add('dtend', fecha_hora_fin)
+                event.add('location', self.get_object().ubicacion)
+
+                cal = Calendar()
+                cal.add_component(event)
+
+                # Generar el contenido del archivo .ics
+                ics_content = cal.to_ical()
+                ics_buffer = BytesIO(ics_content)
+
+                # Guardar el archivo .ics temporalmente (en la carpeta media)
+                filename = f"{self.get_object().slug}_variation_{index}_{variation.fecha.strftime('%Y%m%d')} .ics"
+                ics_path = os.path.join(settings.MEDIA_ROOT, filename)
+                with open(ics_path, 'wb') as ics_file:
+                    ics_file.write(ics_content)
+
+                # Obtener la URL del archivo .ics
+                ics_url = os.path.join(settings.MEDIA_URL, filename)
+
+                # Almacenar en el diccionario
+                ics_events[index] = {
+                    'ics_url': ics_url,
+                }
+
+        if ics_events:
+            context['ics_events'] = ics_events
+            print(ics_events)
         
+        if next_variation:
+            # Formatear la fecha y hora de inicio
+            personalizacion = Personalizacion.objects.first()
+
+            horario = personalizacion.horario
+            data_fin = personalizacion.hora_agenda_fin
+            
+            fecha_inicio = next_variation.fecha
+            hora_inicio = next_variation.hora
+
+            fecha_hora_inicio = datetime.combine(fecha_inicio, hora_inicio)
+            
+            if horario == 'hivern':
+                # Convertir data_fin (TimeField) a timedelta
+                fecha_hora_inicio = fecha_hora_inicio + timedelta(hours=-1)
+            
+            data_fin_timedelta = timedelta(hours=data_fin.hour, minutes=data_fin.minute)
+            fecha_hora_fin = fecha_hora_inicio + data_fin_timedelta
+
+            if fecha_hora_fin.time() >= time(23,59):
+                fecha_hora_fin = fecha_hora_inicio
+            # Crear el enlace de Google Calendar
+            google_calendar_link = next_variation.generate_google_calendar_link()
+            context['google_calendar_link'] = google_calendar_link
+
+            # Crear el archivo .ics
+            event = iCalEvent()
+            event.add('summary', self.get_object().titulo)
+            event.add('description', self.get_object().descripcion_corta)
+            event.add('dtstart', fecha_hora_inicio)
+            event.add('dtend', fecha_hora_fin)
+            event.add('location', self.get_object().ubicacion)
+
+            cal = Calendar()
+            cal.add_component(event)
+
+            # Generar el contenido del archivo .ics
+            ics_content = cal.to_ical()
+            ics_buffer = BytesIO(ics_content)
+
+            # Guardar el archivo .ics temporalmente (en la carpeta media)
+            filename = f"{self.get_object().slug}.ics"
+            ics_path = os.path.join(settings.MEDIA_ROOT, filename)
+            with open(ics_path, 'wb') as ics_file:
+                ics_file.write(ics_content)
+
+            # Obtener la URL del archivo .ics
+            ics_url = os.path.join(settings.MEDIA_URL, filename)
+
+            # Configurar la respuesta HTTP para el archivo .ics
+            response = HttpResponse(ics_buffer.getvalue(), content_type='text/calendar')
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+            # Proporcionar la URL del archivo .ics en el contexto
+            context['ics_file_url'] = ics_url
+
+
+
         context['parallax'] = parallax
         context['coleccion_destacados'] = all_events[:20]
         context['entrades'] = show_ticket_section
+
+        print(google_calendar_link)
+        
         return context
 
 
@@ -266,3 +402,5 @@ class PDFView(View):
         response.write(pdf_content)
 
         return response
+    
+

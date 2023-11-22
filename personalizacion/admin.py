@@ -93,6 +93,8 @@ class PersonalizacionAdmin(admin.ModelAdmin):
                 'super_destacado',
                 'video_portada',
                 'topbar',
+                'horario',
+                'hora_agenda_fin',
                 'analytics_script',
                 'meta_keywords',
                 'meta_description_portada'
@@ -105,6 +107,7 @@ class PersonalizacionAdmin(admin.ModelAdmin):
                 "<p>Crea una barra superior amb informació destacada i enllaços importants per als teus usuaris.</p>"
                 "<p>Recorda tenir només una barra superior activa a la vegada per evitar resultats no desitjats.</p>"
                 "<p><strong>Nota:</strong> Si utilitzes Google Analytics, assegura't de mantenir actualitzat el script de Google Analytics en el camp 'Script de Google Analytics' quan sigui necessari per a un seguiment precís.</p>"
+                "<p>Nota: a 2023 encara tenim el canvi d'horari, llavors per l'hivern fes servir l'horari de l'hivern que resta 1 hora de més els enllaços del Google Calendar que fem servir als esdeveniments.</p>"
             ),
 
         }),

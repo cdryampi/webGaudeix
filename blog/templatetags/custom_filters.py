@@ -28,3 +28,9 @@ def format_duration(duration):
         parts.append(f"{seconds} segons")
     
     return ' '.join(parts)
+
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

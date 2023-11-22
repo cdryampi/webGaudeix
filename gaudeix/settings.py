@@ -82,7 +82,8 @@ INSTALLED_APPS = [
     'selecciones',
     'subvenciones',
     'compra_y_descubre',
-    'admin_utils'
+    'admin_utils',
+    'gaudeix_utils'
 
     #'corsheaders',
     #'admin_tree'

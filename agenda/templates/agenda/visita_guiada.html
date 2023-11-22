@@ -338,36 +338,32 @@
                         <p class="card-text"><i class="fas fa-clock"></i>{{ visites.duracion|format_duration }}</p>
                     </div>
                 </div>
-                <div class="container-fluid mx-0 py-2 ">
 
+                {% if visites.certificados.exists %}
+                <div class="container-fluid mx-0 py-2">
                     <div class="row">
-                      <div class="col-12 py-3">
-                        <h4 class="titulo-certificados text-center">Certificats de Turisme Sostenible</h4>
-                      </div>
-                      <div class="col-lg-4 col-md-6 col-sm-12">
-                        <a href="https://www.biospheresustainable.com/" class="certificado-link">
-                          <div class="certificado">
-                            <img src="{% static 'core/img/certificados/LOGO-BIOSPHERE-COMMITTED-CERTIFIED.png' %}" alt="CERTIFICACIÓ BIOSPHERE" class="certificado-imagen img-thumbnail">
-                          </div>
-                        </a>
-                      </div>
-                      <div class="col-lg-4 col-md-6 col-sm-12">
-                        <a href="https://turismesostenible.barcelona/ca/comarques-de-barcelona/12/millora-el-posicionament-de-la-teva-entitat-situa-la-al-capdavant-del-turisme-sostenible" class="certificado-link">
-                          <div class="certificado">
-                            <img src="{% static 'core/img/certificados/Logo-platinum-vertical.png' %}" alt="COMPROMÍS PER A LA SOSTENIBILITAT TURÍSTICA COMARQUES DE BARCELONA BIOSPHERE" class="certificado-imagen img-thumbnail">
-                          </div>
-                        </a>
-                      </div>
-                      <div class="col-lg-4 col-md-6 col-sm-12">
-                        <a href="https://www.barcelonaesmoltmes.cat/turisme-sostenible" class="certificado-link">
-                          <div class="certificado">
-                            <img src="{% static 'core/img/certificados/turisme_sostenible_barcelona.png' %}" alt="MÀRQUETING TURÍSTIC" class="certificado-imagen img-thumbnail">
-                          </div>
-                        </a>
-                      </div>
+                        <div class="col-12 py-3">
+                            <h4 class="titulo-certificados text-center">Certificats de Turisme Sostenible</h4>
+                        </div>
+                        {% for certificado in visites.certificados.all %}
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                {% if certificado.enlace_externo and certificado.logo %}
+                                    <a href="{{ certificado.enlace_externo }}" class="link" title="{{ certificado.nombre }}">
+                                        <div class="certificado">
+                                            <img src="{{ certificado.logo.url }}" alt="{{ certificado.nombre }}" class="certificado-imagen img-thumbnail">
+                                        </div>
+                                    </a>
+                                {% elif certificado.logo %}
+                                    <div class="certificado">
+                                        <img src="{{ certificado.logo.url }}" alt="{{ certificado.nombre }}" class="certificado-imagen img-thumbnail">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                     </div>
-                  </div>
-                  
+                </div>
+            {% endif %}
+            
             </div>
         </div>
     </div>

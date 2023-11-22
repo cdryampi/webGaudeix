@@ -1,0 +1,10 @@
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+SUMMARY:XXXIV CICLE de CONCERTS d'ORGUE 2023!
+DTSTART:20231125T200000
+DTEND:20231125T220000
+DESCRIPTION:Des del 4 de novembre fins al 24 de desembre tindrem concerts 
+ d'orgue a l'Església Parroquial!
+LOCATION:Església Sant Feliu
+END:VEVENT
+END:VCALENDAR

@@ -6,6 +6,7 @@ from topbar.models import Topbar
 from ckeditor.fields import RichTextField
 from compra_y_descubre.models import CompraDescubre
 from eventos_especiales.models import EventoEspecial
+from datetime import time
 
 
 # Create your models here.
@@ -156,6 +157,23 @@ class AgendaParallax(models.Model):
 
 class Personalizacion(models.Model):
     # modelo que representa la personalización del sitio.
+    HORARIOS = (
+        ('estiu','estiu'),
+        ('hivern','hivern')
+    )
+    horario = models.CharField(
+        max_length=20,
+        choices=HORARIOS,
+        default="estiu",
+        verbose_name="Horari",
+        help_text="Selecciona el teu horari, serveix principalment per donar suport els components de la web amb el canvi d'horari quan fa falta."
+    )
+    hora_agenda_fin = models.TimeField(
+        default=time(2,0,0),
+        verbose_name="temps per defecte dels esdeveniments",
+        help_text="Durada dels esdeveniments de l'agenda."
+
+    )
     favicon = models.OneToOneField(
         Favicon,
         on_delete=models.SET_NULL,
