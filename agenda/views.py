@@ -23,6 +23,7 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.urls import reverse
 from gaudeix import settings
+from django.http import JsonResponse
 
 
 
@@ -154,67 +155,9 @@ class AgendaDetailView(BaseContextMixin, DetailView):
         # Obtener la próxima variación más cercana
         next_variation = self.get_object().variationagenda_set.filter(fecha__gte=timezone.now()).order_by('fecha', 'hora').first()
 
-
-        ics_events = {}
-        variations =  self.get_object().variationagenda_set.all()
         horario = Personalizacion.objects.first().horario
         data_fin = Personalizacion.objects.first().hora_agenda_fin
 
-        if variations:
-            personalizacion = Personalizacion.objects.first()
-            for index, variation in enumerate(variations):
-                # Formatear la fecha y hora de inicio
-                horario = personalizacion.horario
-                data_fin = personalizacion.hora_agenda_fin
-                
-                fecha_inicio = variation.fecha
-                hora_inicio = variation.hora
-                
-                fecha_hora_inicio = datetime.combine(fecha_inicio, hora_inicio)
-                
-                if horario == 'hivern':
-                    # Convertir data_fin (TimeField) a timedelta
-                    fecha_hora_inicio = fecha_hora_inicio + timedelta(hours=-1)
-                
-                data_fin_timedelta = timedelta(hours=data_fin.hour, minutes=data_fin.minute)
-                fecha_hora_fin = fecha_hora_inicio + data_fin_timedelta
-
-                if fecha_hora_fin.time() >= time(23,59):
-                    fecha_hora_fin = fecha_hora_inicio
-
-
-                # Crear el archivo .ics
-                event = iCalEvent()
-                event.add('summary', self.get_object().titulo)
-                event.add('description', self.get_object().descripcion_corta)
-                event.add('dtstart', fecha_hora_inicio)
-                event.add('dtend', fecha_hora_fin)
-                event.add('location', self.get_object().ubicacion)
-
-                cal = Calendar()
-                cal.add_component(event)
-
-                # Generar el contenido del archivo .ics
-                ics_content = cal.to_ical()
-                ics_buffer = BytesIO(ics_content)
-
-                # Guardar el archivo .ics temporalmente (en la carpeta media)
-                filename = f"{self.get_object().slug}_variation_{index}_{variation.fecha.strftime('%Y%m%d')} .ics"
-                ics_path = os.path.join(settings.MEDIA_ROOT, filename)
-                with open(ics_path, 'wb') as ics_file:
-                    ics_file.write(ics_content)
-
-                # Obtener la URL del archivo .ics
-                ics_url = os.path.join(settings.MEDIA_URL, filename)
-
-                # Almacenar en el diccionario
-                ics_events[index] = {
-                    'ics_url': ics_url,
-                }
-
-        if ics_events:
-            context['ics_events'] = ics_events
-            print(ics_events)
         
         if next_variation:
             # Formatear la fecha y hora de inicio
@@ -229,8 +172,9 @@ class AgendaDetailView(BaseContextMixin, DetailView):
             fecha_hora_inicio = datetime.combine(fecha_inicio, hora_inicio)
             
             if horario == 'hivern':
-                # Convertir data_fin (TimeField) a timedelta
-                fecha_hora_inicio = fecha_hora_inicio + timedelta(hours=-1)
+                # Convertir data_fin (TimeField) a timedelta # solo funiona mal el cambio de hora en google calendar
+                #fecha_hora_inicio = fecha_hora_inicio + timedelta(hours=-1)
+                pass
             
             data_fin_timedelta = timedelta(hours=data_fin.hour, minutes=data_fin.minute)
             fecha_hora_fin = fecha_hora_inicio + data_fin_timedelta
@@ -280,6 +224,93 @@ class AgendaDetailView(BaseContextMixin, DetailView):
 
         
         return context
+
+
+
+class ICSAgenda(View):
+    """
+        Clase que representa una vista para recuperar un fichero ICS
+    """
+
+    def get(self, request):
+
+        slug_agenda = request.GET.get('slug')
+        variation_pk = request.GET.get('variation_pk')
+
+
+        if slug_agenda and variation_pk:
+
+            agenda = Agenda.objects.filter(slug=slug_agenda).first()
+            variation = agenda.variationagenda_set.filter(id = variation_pk).first()
+
+            if variation:
+                personalizacion = Personalizacion.objects.first()
+                horario = personalizacion.horario
+                data_fin = personalizacion.hora_agenda_fin
+                
+                fecha_inicio = variation.fecha
+                hora_inicio = variation.hora
+
+                fecha_hora_inicio = datetime.combine(fecha_inicio, hora_inicio)
+                
+                if horario == 'hivern':
+                    # Convertir data_fin (TimeField) a timedelta # solo funiona mal el cambio de hora en google calendar
+                    #fecha_hora_inicio = fecha_hora_inicio + timedelta(hours=-1)
+                    pass
+                
+                data_fin_timedelta = timedelta(hours=data_fin.hour, minutes=data_fin.minute)
+                fecha_hora_fin = fecha_hora_inicio + data_fin_timedelta
+
+                if fecha_hora_fin.time() >= time(23,59):
+                    fecha_hora_fin = fecha_hora_inicio
+                # Crear el enlace de Google Calendar
+                google_calendar_link = variation.generate_google_calendar_link()
+
+                # Crear el archivo .ics
+                event = iCalEvent()
+                event.add('summary', agenda.titulo)
+                event.add('description', agenda.descripcion_corta)
+                event.add('dtstart', fecha_hora_inicio)
+                event.add('dtend', fecha_hora_fin)
+                event.add('location', agenda.ubicacion)
+
+                cal = Calendar()
+                cal.add_component(event)
+
+                # Generar el contenido del archivo .ics
+                ics_content = cal.to_ical()
+                ics_buffer = BytesIO(ics_content)
+
+                # Guardar el archivo .ics temporalmente (en la carpeta media)
+                filename = f"{agenda.slug}.ics"
+                ics_path = os.path.join(settings.MEDIA_ROOT, filename)
+                with open(ics_path, 'wb') as ics_file:
+                    ics_file.write(ics_content)
+
+                # Obtener la URL del archivo .ics
+                ics_url = os.path.join(settings.MEDIA_URL, filename)
+
+                # Configurar la respuesta HTTP para el archivo .ics
+                response = HttpResponse(ics_buffer.getvalue(), content_type='text/calendar')
+                response['Content-Disposition'] = f'attachment; filename={filename}'
+
+                # Proporcionar la URL del archivo .ics en el contexto
+                response_data = {
+                    'url_ics': ics_url,
+                    'google_calendar_link': google_calendar_link
+                }
+            else:
+                response_data = {
+                    'error': 'Error en la petición a ICS no hay fichero'
+                }
+        else:
+            response_data = {
+                'error': 'Error en la petición a ICS no hay fichero'
+            }
+        # Devolver una respuesta JSON indicando el resultado
+
+
+        return JsonResponse(response_data)
 
 
 

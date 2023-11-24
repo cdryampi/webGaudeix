@@ -16,6 +16,42 @@ User = get_user_model()
 # Create your models here.
 
 
+class Idioma(models.Model):
+    """
+        Modelo que representa un idioma o un lenguaje como el inclusivo.
+    """
+    IDIOMA_CHOICES = [
+        ('cat', 'Català', 'fa-icon-for-catalan'),  # Reemplaza con el ícono correcto
+        ('es', 'Espanyol', 'fa-flag-spain'),
+        ('en', 'Anglès', 'fa-flag-usa'),
+        ('fr', 'Francès', 'fa-flag-france'),
+        ('it', 'Italià', 'fa-flag-italy'),  # Asume un ícono para Italia
+        ('de', 'Alemany', 'fa-flag-germany'),  # Asume un ícono para Alemania
+        ('pt', 'Portuguès', 'fa-flag-portugal'),  # Asume un ícono para Portugal
+        ('ar', 'Àrab', 'fa-flag-saudi-arabia'),  # Asume un ícono para Arabia Saudita
+        ('fem', 'Feminista', 'fa-icon-for-feminista'),
+        ('fem_only', 'Només Dones', 'fa-icon-for-female-only'),
+        # ... más opciones según sea necesario
+    ]
+    nombre = models.CharField(
+        max_length = 100,
+        choices=[(code, f"{name} ({icon})") for code, name, icon in IDIOMA_CHOICES],
+        verbose_name="Nom de l'idioma.",
+        help_text="Nom de l'idioma PE: espanyol, català o altres com llenguatge inclusiu pels sords u/o altres llenguatges."
+    )
+    codigo = models.CharField(
+        max_length=10,
+        unique=True,
+        verbose_name="Codi",
+        help_text="Afegeix un codi únic per identificar l'idioma."
+    )
+
+    class Meta:
+        verbose_name = "Idioma"
+        verbose_name_plural = "Idiomes"
+
+
+
 
 class Agenda(Post):
 

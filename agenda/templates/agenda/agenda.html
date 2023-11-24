@@ -40,7 +40,20 @@
       .oculto {
         display:none;
       }
-
+      .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
   </style>
 {% endblock %}
 
@@ -93,33 +106,14 @@
                           <p class="small"><small>Fes click al selector per veure altres dades.</small></p>
                           <select name="event_date" class="form-control" id="agenda-select-form">
                             {% for event in local_agenda.variationagenda_set.all %}
-                              {% with event_counter=forloop.counter %}
-                                <option value="{{ event_counter }}">
+                              {% with event_counter=forloop.counter0 %}
+                                <option value="{{ event_counter }}" data-slug="{{ local_agenda.slug }}" data-variation-pk="{{ event.id }}">
                                   {{ event.fecha|date:'F j, Y' }} - {{ event.hora|time:'h:i A' }}
                                 </option>
                               {% endwith %}
                             {% endfor %}
                           </select>
-                          {% for event in local_agenda.variationagenda_set.all %}
-                            {% with event_counter=forloop.counter %}
-                              <div id="{{ event_counter }}" class="event-div oculto">
-                                <p>
-                                  <a href="{{ event.generate_google_calendar_link }}" class="btn btn-outline-light p-3" target="_blank">
-                                    <i class="fab fa-google"></i><span class="text-muted"> Afegir l'esdeveniment a Google calendar</span>
-                                  </a>
-                                </p>
-                                {% with ics_event=ics_events|get_item:event_counter|stringformat:"s" %}
-                                  <p>
-                                    <a href="" data-link="{{ ics_event }}" class="btn btn-outline-light p-3 apple-ics-link" target="_blank">
-                                      <i class="fab fa-apple"></i><span class="text-muted"> Afegir l'esdeveniment a altres dispositius</span>
-                                    </a>
-                                  </p>
-                                {% endwith %}
 
-
-                              </div>
-                            {% endwith %}
-                          {% endfor %}
                         </td>
                       </tr>
                       {% if local_agenda.postfichero and local_agenda.postfichero.fichero.archivo.url %}
@@ -138,6 +132,10 @@
                 </div>
             
             <div class="social-share-buttons">
+              <div class="">
+                <p class="badge">Comparteix l'acte:</p>
+              </div>
+              <div>
                 <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
                   <i class="fab fa-facebook-f fa-2x px-2"></i>
                 </a>
@@ -147,6 +145,8 @@
                 <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
                   <i class="fab fa-instagram fa-2x px-2"></i>
                 </a>
+              </div>
+
             </div>
           </div>
 
@@ -223,12 +223,12 @@
   <!-- Dentro de tu archivo de plantilla HTML -->
   <div class="text-center p-5" style="background-color: {% if header.color_fondo_header %}{{ header.color_fondo_header }}{% else %}#4CAA66{% endif %};">
     <p class="text-center lead">Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu.</p>
-    <a href="{{ google_calendar_link }}" class="btn btn-outline-light p-3" target="_blank">
+    <a href="{{ google_calendar_link }}" class="btn btn-outline-light p-3 m-2" target="_blank">
       <i class="fab fa-google"></i><span> Afegir a Google calendar</span>
     </a>
     <!-- Enlace de descarga del archivo .ics -->
     {% if ics_file_url %}
-      <a href="{{ ics_file_url  }}" class="btn btn-outline-light p-3" target="_blank" download>
+      <a href="{{ ics_file_url  }}" class="btn btn-outline-light p-3 m-2" target="_blank" download>
         <i class="fab fa-apple"></i><span> Descarregar per altres dispositius</span>
       </a>
     {% endif %}
@@ -277,55 +277,118 @@
 
 {% block extra_script %}
 
+<!-- Agrega este script al final de tu página HTML o en un archivo JavaScript separado -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const agendaSelectForm = document.getElementById("agenda-select-form");
-    const divsToDisplay = document.querySelectorAll(".event-div"); // Replace with the actual class of your divs
+    let spinnerTimeout;
+    function createSpinner() {
+      const spinnerDiv = document.createElement("div");
+      spinnerDiv.id = "spinner";
+      spinnerDiv.style.display = "none"; // Inicialmente oculto
+      spinnerDiv.classList.add('p-2');
+      spinnerDiv.classList.add('text-center');
+      spinnerDiv.innerHTML = '<div class="loader"></div>';
   
-    // Function to show the selected div
-    function showSelectedDiv() {
-      const selectedOption = agendaSelectForm.value; // Get the selected option value (div ID)
+      // Agregar el spinner como hermano del elemento agenda-select-form
+      agendaSelectForm.parentNode.insertBefore(spinnerDiv, agendaSelectForm.nextSibling);
   
-      // Hide all divs
-      divsToDisplay.forEach((div) => {
-        div.classList.add("oculto");
+      return spinnerDiv;
+    }
 
-      });
-  
-      // Show the selected div
-      // Show the selected div
-      const divToShow = document.getElementById(selectedOption);
-      if (divToShow) {
-        divToShow.classList.remove("oculto");
-        const icsUrl = divToShow.querySelector('.apple-ics-link');
+    const spinner = createSpinner(); // Crear y obtener la referencia al spinner
+
+
+    function removeEventLinks() {
+      const existingEventLinksDiv = document.getElementById("event-links");
+      if (existingEventLinksDiv) {
+        existingEventLinksDiv.remove();
+      }
+    }
+
+    function createOrUpdateEventLinks(googleCalendarLink, icsUrl) {
+      // Crear un nuevo div para los enlaces si no existe
+      
+      removeEventLinks();
+
+      let eventLinksDiv = document.createElement("div");
+      
+      eventLinksDiv.id = "event-links";
+      eventLinksDiv.classList.add('p-3');
+      eventLinksDiv.classList.add('text-center');
+
+      // Establecer el contenido del div con los enlaces
+      eventLinksDiv.innerHTML = `
+        <p>
+          <a href="${googleCalendarLink}" class="btn btn-outline-dark p-3" target="_blank">
+            <i class="fab fa-google"></i><span class="text-muted"> Afegir l'esdeveniment a Google calendar</span>
+          </a>
+        </p>
         
-        if (icsUrl) {
-          const linkString = icsUrl.getAttribute("data-link");
-          
-          // Remove single quotes from the string
-          const cleanedLinkString = linkString.replace(/'/g, '"');
-          
-          // Parse the cleaned string to a JSON object
-          try {
-            const link = JSON.parse(cleanedLinkString);
-            
-            // Check if the parsed link object has the 'ics_url' property
-            if (link && link.ics_url) {
-              icsUrl.setAttribute("href", link.ics_url);
-            }
-          } catch (error) {
-            console.error("Error parsing data-link:", error);
-          }
+        <p>
+          <a href="${icsUrl}" class="btn btn-outline-dark p-3" target="_blank">
+            <i class="fab fa-apple"></i><span class="text-muted"> Afegir l'esdeveniment a altres dispositius</span>
+          </a>
+        </p>
+      `;
+  
+      // Agregar el div de enlaces como hermano del select
+      agendaSelectForm.parentNode.insertBefore(eventLinksDiv, agendaSelectForm.nextSibling);
+    }
+
+
+
+    // Función para mostrar el spinner
+    function showSpinner() {
+      clearTimeout(spinnerTimeout); // Limpiar timeout anterior si existe
+      spinner.style.display = "block"; // Mostrar el spinner
+    }
+
+    // Función para ocultar el spinner con delay
+    function hideSpinner(callback) {
+      removeEventLinks();
+      // Asegurarse de que el spinner se muestre durante al menos 2 segundos
+      spinnerTimeout = setTimeout(() => {
+        spinner.style.display = "none";
+        if(callback){
+          callback()
         }
+      }, 1000); // 2000 milisegundos = 2 segundos
+    }
+
+
+    // Función para realizar la petición GET al servidor
+    async function fetchICSData(eventCounter) {
+      const selectedOption = agendaSelectForm.options[eventCounter];
+      const slug = selectedOption.dataset.slug;
+      const variationPk = selectedOption.dataset.variationPk;
+
+      showSpinner();
+      
+      try {
+
+        const response = await fetch(`/agenda/ics/?slug=${slug}&variation_pk=${variationPk}`);
+        const data = await response.json();
+
+        hideSpinner(() => createOrUpdateEventLinks(data.google_calendar_link, data.url_ics));
+
+      } catch (error) {
+
+        hideSpinner(); // Ocultar el spinner en caso de error
+        console.error("Error al obtener el archivo .ics:", error);
+
       }
 
     }
-  
-    // Add change event listener to the form
-    agendaSelectForm.addEventListener("change", showSelectedDiv);
-  
-    // Show the initially selected div
-    showSelectedDiv();
+
+    // Agregar el evento de cambio en el formulario
+    agendaSelectForm.addEventListener("change", function () {
+      const eventCounter = agendaSelectForm.selectedIndex;
+      fetchICSData(eventCounter);
+    });
+
+    // Realizar la primera llamada al cargar la página (puedes omitir esto si no es necesario)
+    fetchICSData(0);
   });
 </script>
 
