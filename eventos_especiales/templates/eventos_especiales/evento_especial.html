@@ -186,6 +186,32 @@
             padding: .5rem;
         }
       }
+
+      /* Estilos específicos para el Swiper */
+      #special-event.swiper-container {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+      }
+  
+      #special-event .swiper-wrapper {
+          width: 100%;
+          display: flex;
+          align-items: stretch; 
+      }
+  
+      #special-event .swiper-slide {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-center;
+          align-items: center;
+          text-align: center;
+      }
+
+
 </style>
 {% endblock extra_css %}
 
@@ -327,6 +353,7 @@
 
 
 
+
 {% endblock content %}
 
 {% block asides %}
@@ -339,7 +366,81 @@
         {% include 'eventos_especiales/agenda_selection.html' %}
     {% endif %}
 
+    {% if evento_especial.eventomensaje_set.all %}
+    <div class="swiper-container" id="special-event">
+        <div class="p-3 m-3">
+            <h1 class="h1 text-center" style="color:{{ evento_especial.color |safe }};">Missatges del Nostre Equip Municipal</h1>
+        </div>
+        <div class="swiper-wrapper">
+            {% for evento_mensaje in evento_especial.eventomensaje_set.all %}
+                <div class="swiper-slide mx-lg-2 p-lg-2">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            {% if evento_mensaje.mensaje.autor.foto %}
+                                <img src="{{ evento_mensaje.mensaje.autor.foto.url }}" alt="{{ evento_mensaje.mensaje.autor.nombre }}" class="card-img-top rounded-circle mx-auto d-block" style="width: 100px; height: 100px; object-fit: cover;">
+                                <p class="text-muted text-center text-black-50"><h5 style="color:{{ evento_especial.color |safe }};">{{ evento_mensaje.mensaje.autor.nombre }}</h5></p>
+                                <p class="text-center mt-2"><small class="text-muted">{{ evento_mensaje.mensaje.autor.cargo }}</small></p>
+                            {% endif %}
+                            {% if evento_mensaje.mensaje.titulo %}
+                                <h5 class="card-title text-center mt-3 h3" style="color:{{ evento_especial.color |safe }};">{{ evento_mensaje.mensaje.titulo }}</h5>
+                            {% endif %}
+                            <p class="card-text">
+                                {% autoescape on %}
+                                    {{ evento_mensaje.mensaje.contenido | safe }}
+                                {% endautoescape %}
+                            </p>
+                            {% if evento_mensaje.mensaje.mensaje_despedida %}
+                                <p class="text-muted text-right"><small style="color:{{ evento_especial.color |safe }};">{{ evento_mensaje.mensaje.mensaje_despedida }}</small></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- Añadir controles de navegación si hay más de un mensaje -->
+        {% if evento_especial.eventomensaje_set.all.count > 1 %}
+            <div class="swiper-button-prev custom-prev"></div>
+            <div class="swiper-button-next custom-next"></div>
+        {% endif %}
+    </div>
+{% endif %}
+
+
+
+
+    {% if evento_especial.mostrar_ahorro %}
+        <aside class="container-fluid m-0 p-0">
+                {% if evento_especial.medida_economica %}
+                    <div class="jumbotron jumbotron-fluid m-0" style="background: black;">
+                            <div class="container">
+                                <h3 class="display-4 text-center text-capitalize m-2 p-2 text-white">{{ evento_especial.medida_economica.titulo_html }}
+                                    <a href="javascript:void(0);" tabindex="0" class="btn btn-lg btn-link text-white" role="button" data-toggle="popover" data-trigger="focus" title="Detall de la mesura" data-content="{% autoescape off %}{{ evento_especial.medida_economica.descripcion | safe }} {% endautoescape %}">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </h3>
+
+                                <div class="container text-center mt-5">
+                                    <h2 class="mb-4 text-white">Ajust de Pressupost</h2>
+                                    <div class="display-4 display-3-md display-2-lg" style="color:{{ evento_especial.color |safe }};">
+                                        {% if evento_especial.medida_economica.impacto_economico < 0 %}
+                                            <span>-</span>
+                                        {% else %}
+                                            <span>+</span>
+                                        {% endif %}
+                                        <span class="font-weight-bolder" id="savingsCounter" data-target="{{ evento_especial.medida_economica.impacto_economico|floatformat:'2' }}">€0</span>
+                                    </div>
+                                </div>                          
+                            </div>
+                        </div>
+                {% endif %}
+        </aside>
+    {% endif %}
+
+
+
 {% endblock asides %}
+
+
 
 {% block extra_script %}
 <script>
@@ -419,7 +520,66 @@
         if(customTitle){
             customTitle.textContent = 'Activitats principals';
         }
-        
     });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const counterElement = document.getElementById('savingsCounter');
+        if (!counterElement) return;
+    
+        const targetValue = counterElement.getAttribute('data-target').replace(',', '.');
+        const target = Math.abs(parseFloat(targetValue)); // Siempre trabajar con el valor absoluto
+        let savings = 0;
+        const increment = target / 100; 
+        let hasStartedCounting = false;
+    
+        const startCounting = () => {
+            const timer = setInterval(() => {
+                savings += increment;
+                if (savings >= target) {
+                    clearInterval(timer);
+                    savings = target; // Asegurar que el valor final sea exactamente el target
+                }
+                counterElement.textContent = `${savings.toFixed(2).replace('.', ',')}€`;
+            }, 30);
+        };
+    
+        window.addEventListener('scroll', () => {
+            const rect = counterElement.getBoundingClientRect();
+            if (rect.top < window.innerHeight && !hasStartedCounting) {
+                hasStartedCounting = true;
+                startCounting();
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var eventoEspecialSwiper = new Swiper('#special-event', {
+            loop: true,
+            slidesPerView: 2,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                // Configuración para dispositivos móviles
+                374: {
+                    slidesPerView: 1,
+                },
+                767: {
+                    slidesPerView: 1,
+                },
+                // Configuración para tablets
+                991: {
+                    slidesPerView: 1,
+                },
+            },
+            // Otras opciones de configuración...
+        });
+    });
+
 </script>
 {% endblock extra_script %}

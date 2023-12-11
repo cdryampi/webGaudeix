@@ -1,10 +1,19 @@
 from django.contrib import admin
 from .models import InternalLink, Personalizacion, TrenPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, AutoPistaPersonalizacion, AgendaParallax, InternalLink, SuperDestacado
+from django.http import HttpResponseRedirect
+from django.core.files.storage import default_storage
+from gaudeix import settings
+import os
 
 
 
-
-
+def eliminar_archivos_ics(modeladmin, request, queryset):
+    directorio_ics = os.path.join(settings.BASE_DIR, 'media')  # Ajustar según la ubicación exacta
+    for archivo in os.listdir(directorio_ics):
+        if archivo.endswith('.ics'):
+            os.remove(os.path.join(directorio_ics, archivo))
+    modeladmin.message_user(request, "Fitxers '.ics' temporals eliminats.")
+eliminar_archivos_ics.short_description = "Eliminar fitxers ICS."
 
 
 class TrenPersonalizacionAdminInLine(admin.StackedInline):
@@ -23,6 +32,15 @@ class AutoPistaPersonalizacionAdminInLine(admin.StackedInline):
     model = AutoPistaPersonalizacion
     extra = 1
 
+
+
+
+
+
+
+
+
+
 class InternalLinkAdmin(admin.ModelAdmin):
     model = InternalLink
     autocomplete_fields = ('evento_especial', 'compra_y_descubre')
@@ -40,6 +58,8 @@ class InternalLinkAdmin(admin.ModelAdmin):
             ),
         }),
     ]
+
+
 
 
 class AgendaParallaxAdmin(admin.ModelAdmin):
@@ -114,6 +134,7 @@ class PersonalizacionAdmin(admin.ModelAdmin):
     ]
 
     inlines = [TrenPersonalizacionAdminInLine, BusPersonalizacionAdminInLine, AeropuertoPErsonalizacionAdminInLine, AutoPistaPersonalizacionAdminInLine]
+    actions = [eliminar_archivos_ics]
 
 
 admin.site.register(Personalizacion, PersonalizacionAdmin)

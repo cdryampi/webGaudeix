@@ -10,8 +10,15 @@
                 <div class="swiper-slide">
                     <a href="{% url 'eventos_especiales:evento_especial' slug=evento.slug %}" 
                     class="related-activity-link">
-                        
+                    <div class="coleccion_destacados"> 
                         <div class="card related-activity-card mb-3 h-100">
+
+                            {% if evento.medida_economica %}
+                                <div class="evento-economic-measure">
+                                   <small><strong>{{ evento.medida_economica.titulo }}</strong></small>
+                                </div>
+                            {% endif %}
+
                             {% if evento.imagen_especial %}
                                 {% with imagen=evento.imagen_especial %}
                                     {% if imagen %}
@@ -39,6 +46,7 @@
                                 <h4 class="card-title related-activity-title">{{ evento.titulo }}</h4>
                             </div>
                         </div>
+                    </div>
                     </a>
                 </div>
             {% endfor %}

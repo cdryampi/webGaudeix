@@ -3,20 +3,78 @@ from django.contrib import admin
 # Register your models here.
 
 from multimedia_manager.models import Fichero
-from .models import EventoFichero, EventoEspecial, EventoEspecialGaleriaImagen
+from .models import EventoFichero, EventoEspecial, EventoEspecialGaleriaImagen, MedidaEconomica, Autor, Mensaje, EventoMensaje
 from django.db.models import Q
 from multimedia_manager.models import Imagen
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django import forms
 from blog.models import Tag, Categoria
 from django.http import HttpResponse
-
-
 from django.http import FileResponse
 import os
-
-
 from django.utils.safestring import mark_safe
+
+
+
+class AutorAdmin(admin.ModelAdmin):
+    model = Autor
+    fieldsets = [
+        (None, {
+            'fields': [
+                'nombre',
+                'cargo',
+                'foto'
+            ],
+            'description': (
+                "<p>Mesures econòmiques per l'esdeveniment especials pensat pel programa d'estabilització econòmica sostenible.</p>"
+                "<p>En aquest model pots afegir les mesures que vols.</p>"
+                "<p>Aquest model el fem servir el popup que explica les mesures d'estalvi o d'altres tipus.</p>"
+            ),
+        }),
+    ]
+
+class MensajeAdmin(admin.ModelAdmin):
+    model = Mensaje
+    fieldsets = [
+        (None, {
+            'fields': [
+                'autor',
+                'nombre_interno',
+                'titulo',
+                'contenido',
+                'mensaje_despedida'
+            ],
+            'description': (
+                "<p>Aquesta és la pàgina d'administració dels missatges.</p>"
+                "<p>Aquí pots gestionar els missatges individuals que es vinculen amb els esdeveniments especials.</p>"
+                "<p>Cada missatge ara inclou un títol, que pot ser una frase o una declaració impactant com 'Dies de família, dies de poble' o 'Les entitats, pilar fonamental de Nadal'.</p>"
+                "<p>A més, pots afegir un missatge de comiat personalitzat a cada missatge, com 'Bon Nadal' o 'Bon Nadal i feliç 2023!', per donar un toc final més càlid i proper.</p>"
+                "<p>Recorda que és important mantenir els missatges actuals, pertinents i ben redactats, reflectint adequadament l'essència de cada esdeveniment especial.</p>"
+                "<p>Aquesta interfície et permet gestionar fàcilment aquesta informació, assegurant que tots els detalls dels missatges estiguin ben presentats.</p>"
+                "<p>No oblidis guardar els canvis després de realitzar qualsevol actualització o modificació en els missatges.</p>"
+            ),
+        }),
+    ]
+
+
+class MedidaEconomicaAdmin(admin.ModelAdmin):
+    model = MedidaEconomica
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'titulo_html',
+                'descripcion',
+                'impacto_economico',
+                'publicado'
+            ],
+            'description': (
+                "<p>Mesures econòmiques per l'esdeveniment especials pensat pel programa d'estabilització econòmica sostenible.</p>"
+                "<p>En aquest model pots afegir les mesures que vols.</p>"
+                "<p>Aquest model el fem servir el popup que explica les mesures d'estalvi o d'altres tipus.</p>"
+            ),
+        }),
+    ]
 
 
 class EventoFicheroInline(admin.TabularInline):
@@ -73,6 +131,71 @@ class EventoEspecialGaleriaImagenInline(admin.TabularInline):
 
 
 
+class EventoMensajeAdmin(admin.ModelAdmin):
+    model = EventoMensaje
+    fieldsets = [
+        (None, {
+            'fields': [
+                'evento_especial',
+                'mensaje',
+            ],
+            'description': (
+                "<p>Aquesta és la pàgina d'edició d'un missatge vinculat.</p>"
+                "<p>En aquest model pots vincular els missatges amb l'esdeveniment especial.</p>"
+                "<p>S'ha pensat per afegir les paraules del batlle/alcade i pels regidors, permetent una gestió centralitzada i organitzada dels missatges clau de l'event.</p>"
+                "<p>Aquí pots seleccionar l'esdeveniment al qual pertany el missatge i l'autor del mateix. Això et permetrà crear una cronologia de missatges i comunicacions relacionades amb l'esdeveniment.</p>"
+                "<p>Utilitza aquesta interfície per gestionar eficaçment els missatges i assegurar-te que tota la informació important està accessible i ben organitzada per a l'esdeveniment especial.</p>"
+                "<p>Recorda guardar els canvis després de fer qualsevol modificació.</p>"
+            ),
+        }),
+    ]
+
+
+class AutorAdmin(admin.ModelAdmin):
+    model = Autor
+    fieldsets = [
+        (None, {
+            'fields': [
+                'nombre',
+                'cargo',
+                'foto',
+            ],
+            'description': (
+                "<p>Aquesta és la pàgina d'administració dels autors.</p>"
+                "<p>Aquí pots gestionar la informació dels autors dels missatges associats als esdeveniments especials.</p>"
+                "<p>Cada autor pot ser un batlle, un alcalde, un regidor, o qualsevol altra figura destacada que contribueixi amb paraules o discursos a l'esdeveniment.</p>"
+                "<p>En aquesta secció, pots afegir, editar o eliminar la informació dels autors, incloent el seu nom, càrrec i una foto opcional.</p>"
+                "<p>És important mantenir aquesta informació actualitzada i precisa, ja que ajuda a contextualitzar els missatges i aporta un toc personal a l'esdeveniment especial.</p>"
+                "<p>Aquesta interfície facilita la gestió dels autors, assegurant-te que cada missatge tingui la seva corresponent veu autèntica i reconeguda.</p>"
+                "<p>Recorda guardar els canvis després de realitzar les modificacions necessàries.</p>"
+            ),
+        }),
+    ]
+
+
+
+
+class EventoMensajeInline(admin.TabularInline):
+    model = EventoMensaje
+    extra = 1
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "mensaje":
+            evento_especial_id = request.resolver_match.kwargs.get('object_id')
+            if evento_especial_id:
+                # Filtra los mensajes que no están vinculados a un evento especial o están vinculados al evento especial actual.
+                kwargs["queryset"] = Mensaje.objects.filter(
+                    Q(eventomensaje__isnull=True) |
+                    Q(eventomensaje__evento_especial_id=evento_especial_id)
+                )
+            else:
+                # Filtra los mensajes que no están vinculados a ningún evento especial.
+                kwargs["queryset"] = Mensaje.objects.filter(eventomensaje__isnull=True)
+            kwargs['empty_label'] = 'Sense missatge associat'
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
 @admin.register(EventoEspecial)
 class EventoEspecialAdmin(admin.ModelAdmin):
     list_display = ['titulo', 'fecha_evento', 'publicado']
@@ -91,8 +214,10 @@ class EventoEspecialAdmin(admin.ModelAdmin):
                 'fecha_evento',
                 'fecha_fin',
                 'publicado',
+                'medida_economica',
                 'categoria',
                 'color',
+                'mostrar_ahorro',
                 'parallax',
                 'display_qr_code',
                 'download_qr_code',
@@ -119,7 +244,7 @@ class EventoEspecialAdmin(admin.ModelAdmin):
         # Otras secciones de fieldsets aquí si es necesario
     ]
 
-    inlines = [EventoFicheroInline, EventoEspecialGaleriaImagenInline]
+    inlines = [EventoFicheroInline, EventoEspecialGaleriaImagenInline, EventoMensajeInline]
     readonly_fields = ('display_qr_code','download_qr_code')
 
     def display_qr_code(self, obj):
@@ -149,3 +274,9 @@ class EventoEspecialAdmin(admin.ModelAdmin):
         if db_field.name == "categoria":
             kwargs["queryset"] = Categoria.objects.filter(tipo="festes_i_tradicions")
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
+admin.site.register(MedidaEconomica, MedidaEconomicaAdmin)
+admin.site.register(Mensaje, MensajeAdmin)
+admin.site.register(Autor, AutorAdmin)

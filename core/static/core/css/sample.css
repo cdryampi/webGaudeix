@@ -1044,8 +1044,43 @@ table.table-custom tr.even {
   max-height: 350px;
   overflow: hidden;
 }
-.swiper-container .agenda-relacionada-container{
+
+.swiper-container .swiper-slide {
+  height: auto !important;
+}
+
+.swiper-container-collage-categorias-seleccion .swiper-slide {
+  min-height: 150px;
+}
+
+
+
+.swiper-container .agenda-relacionada-container {
   max-height: 500px !important;
+}
+
+.swiper-slide .coleccion_destacados {
+  position: relative;
+}
+
+.swiper-container .coleccion_destacados .evento-economic-measure {
+  position: absolute; /* Posición absoluta para la franja */
+  top: -10px; /* Alineado a la parte superior del card */
+  left: 0; /* Alineado a la izquierda del card */
+  width: 100%; /* Ancho completo del card */
+  background-color: #3EBFAB; /* Color de fondo corporativo */
+  color: #fff; /* Texto en blanco */
+  padding: 5px 10px; /* Espaciado interno */
+  text-align: center; /* Alineación del texto */
+  font-size: 0.9em; /* Tamaño del texto */
+  border-top: 3px solid #FFB516; /* Borde superior decorativo */
+  transform: skew(-10deg); /* Inclinación discreta */
+  z-index: 100;
+}
+
+
+.swiper-container .coleccion_destacados .evento-economic-measure .evento-economic-measure small {
+  display: block; /* Ocupar el ancho completo de la franja */
 }
 
 
@@ -1057,6 +1092,14 @@ table.table-custom tr.even {
   .swiper-slide {
       width: 50%;
   }
+
+ #special-event .swiper-button-prev {
+    top: var(--swiper-navigation-top-offset,30%);
+ }
+ #special-event .swiper-button-next {
+    top: var(--swiper-navigation-top-offset,30%);
+ }
+ 
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -1220,6 +1263,10 @@ table.table-custom tr.even {
     align-items: center;
     font-size: 1.1rem;
     gap: 1.5rem;
+  }
+
+  footer .nav-link:hover{
+    text-decoration: underline !important;
   }
 
   .footer-container .footer-item {
@@ -1495,3 +1542,14 @@ table.table-custom tr.even {
   }
 }
 /* end personalización */
+
+/* freebox */
+
+#freebox-subblog-home .card .img-container {
+  max-height: 250px;
+  overflow: hidden;
+}
+#freebox-subblog-home .card .nav-link-freebox:hover {
+  text-decoration: underline !important;
+}
+/* end freebox */

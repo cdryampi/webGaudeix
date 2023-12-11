@@ -1,9 +1,10 @@
+{% load static %}
 <div id="calendar" class="row"></div>
 
 <form id="filtro-agenda-form">
   {% csrf_token %}
   <div class="form-group">
-    <label for="tipo-evento">Tipus d'esdeveniment:</label>
+    <label class="p-2" for="tipo-evento">Tipus d'esdeveniment:</label>
     <div id="tipo-evento" class="tipo-evento-buttons">
       <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="">Tots</button>
       {% if joves %}
@@ -204,7 +205,8 @@
           const descripcionCorta = agenda.descripcion_corta || 'Descripció no disponible';
           cardText.textContent = descripcionCorta;
           cardBody.appendChild(cardText);
-  
+          
+
           const eventDetails = document.createElement('div');
           eventDetails.classList.add('related-activity-details');
   
@@ -245,6 +247,26 @@
 
           eventDetails.appendChild(eventDateTime);
           cardBody.appendChild(eventDetails);
+
+          if(agenda.idiomas){
+            const divIdiomas = document.createElement('div');
+            divIdiomas.classList.add('d-flex', 'justify-content-center', 'p-0', 'm-0');
+        
+            agenda.idiomas.forEach(idioma => {
+                const img = document.createElement('img');
+                img.classList.add('img-fluid');
+                img.src = "{% static 'core/img/banderitas/' %}" + idioma + ".svg"; // Ajusta la ruta
+                img.setAttribute('height', '25px');
+                img.setAttribute('width', '25px');
+                img.style.marginRight = '10px';
+
+                divIdiomas.appendChild(img);
+            });
+            cardBody.appendChild(divIdiomas);
+            // Agrega divIdiomas al elemento del DOM donde quieras que aparezcan las banderas
+        }
+        
+
   
           const detallesLink = document.createElement('a');
           detallesLink.href = '/agenda/' + agenda.slug + '/';
@@ -354,7 +376,7 @@
           <button class="btn btn-link" onclick="mostrarCalendario(${year}, ${month + 1})"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div class="w-100 d-block"></div>
-        <div class="row">
+        <div class="row" id="calendar-agenda-gaudeix">
           ${calendarDays}
         </div>
       </div>

@@ -58,6 +58,7 @@ def agrupar_eventos_por_dia(eventos):
                     'fecha': agenda.fecha.isoformat() if agenda.fecha else '',
                     'entradas': agenda.agenda.entradas,
                     'hora': agenda.hora.strftime('%H:%M') if agenda.hora else '',
+                    'idiomas': [idioma.nombre for idioma in agenda.agenda.idiomas.all()]
                     # Agrega otros campos de Agenda que necesites
                 }
                 post = Post.objects.filter(agenda=agenda.agenda).first()

@@ -20,8 +20,115 @@ from django.core.files import File
 from PIL import Image, ImageDraw
 from django.core.files.base import ContentFile
 
+from decimal import Decimal
+
 
 # Create your models here.
+
+
+class Autor(models.Model):
+    """
+        Modelo que representa a un autor de un mensaje para el evento especial
+    """
+
+    nombre = models.CharField(
+        max_length=100,
+        verbose_name="Nom",
+        help_text="Afegix el nom i cognom."
+    )
+    cargo = models.CharField(
+        max_length=100,
+        verbose_name="càrrec"
+    )
+    foto = models.ImageField(
+        upload_to='autores/',
+        blank=True,
+        null=True,
+        verbose_name="Imatge",
+        help_text="Afegeix un foto per l'autor"
+    )
+
+    def __str__(self):
+        return f"{self.nombre} ({self.cargo})"
+
+
+
+class Mensaje(models.Model):
+    """
+        Modelo que representa a un mensaje de un usuario
+    """
+
+    autor = models.ForeignKey(
+        Autor,
+        on_delete=models.CASCADE,
+        verbose_name="Autor",
+        help_text="Afegeix un Autor del comentari"
+    )
+    nombre_interno = models.CharField(
+        max_length=255,
+        verbose_name="Nom intern",
+        help_text="Afegeix un nom intern per al missatge, per exemple: 'Missatge del Nadal 2023 de Sergi Teodoro'"
+    )
+    titulo = models.CharField(
+        max_length=255,
+        verbose_name="Títol",
+        help_text="Afegeix el títol del missatge, per exemple: 'Dies de família, dies de poble' o 'Les entitats, pilar fonamental de Nadal'"
+    )
+    contenido = RichTextField(
+        verbose_name="comentari",
+        help_text="Afegeix un missatge per l'esdeveniment"
+    )
+    mensaje_despedida = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Missatge de comiat",
+        help_text="Afegeix un missatge de comiat, per exemple: 'Bon Nadal' o 'Bon Nadal i feliç 2023!'"
+    )
+
+
+    def __str__(self):
+        return f"{self.nombre_interno} - {self.titulo}"
+
+
+class MedidaEconomica(models.Model):
+    """
+        Clase que representa una medida económica para los eventos especiales que representan el conjunto de las fiestas del pueblo.
+    """
+    titulo = models.CharField(
+        max_length=200,
+        verbose_name="Nom de la mesura",
+        help_text="Afegeix el nom de la mesura ."
+    )
+    titulo_html = models.CharField(
+        max_length=200,
+        verbose_name="Títol de la mesura",
+        help_text="Afegeix el títol de la mesura per la web."
+    )
+    descripcion = models.TextField(
+        verbose_name="Descripció",
+        help_text="Afegeix la descripció de la mesura econòmica per la web(sortirà el popup)."
+    )
+    impacto_economico = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="Impacte Econòmic Estimat",
+        help_text="Afegeix l'augment o l'estalvi de €."
+    )
+    publicado = models.BooleanField(
+        default=False,
+        verbose_name="Publicat",
+        help_text="Marca si la mesura està disponible."
+    )
+
+    def __str__(self):
+        return self.titulo
+
+    class Meta:
+        verbose_name = "Mesures Econòmica"
+        verbose_name_plural = "Mesures Econòmiques"
+
+
 
 class EventoEspecial(BaseModel, MetadataModel):
     """
@@ -103,6 +210,13 @@ class EventoEspecial(BaseModel, MetadataModel):
         blank=True,
         verbose_name="Miniatura d'esdeveniment especial"
     )
+
+
+    mostrar_ahorro = models.BooleanField(
+    default=False,
+    help_text="Marca si vols que es mostri els preus",
+    verbose_name="Mostrar l'estalvi"
+    )
     
     agendas = models.ManyToManyField(
         Post,
@@ -110,6 +224,15 @@ class EventoEspecial(BaseModel, MetadataModel):
         related_name="esdeveniment",
         help_text="Selecciona tots els esdeveniments vinculats amb l'event",
         verbose_name="esdeveniment"
+    )
+
+    medida_economica = models.ForeignKey(
+        MedidaEconomica,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Mesura o pla econòmic per l'esdeveniment especial (opcional)",
+        verbose_name="Mesura econòmica"
     )
 
     parallax = models.ForeignKey(
@@ -279,3 +402,29 @@ class EventoFichero(models.Model):
         # self.evento.delete() .-.
         self.fichero.delete()
         super().delete(*args, **kwargs)
+
+
+
+
+
+class EventoMensaje(models.Model):
+    """
+        Modelo que vincula el mensaje autor y el evento especial
+    """
+    evento_especial = models.ForeignKey(
+        EventoEspecial,
+        on_delete=models.CASCADE,
+        verbose_name="esdeveniment especial"
+    )
+    mensaje = models.ForeignKey(
+        Mensaje,
+        on_delete=models.CASCADE,
+        verbose_name="missatge"
+    )
+    def __str__(self):
+        return f"Esdeveniment: {self.evento_especial.titulo} - Autor: {self.mensaje.autor.nombre}"
+    class Meta:
+        unique_together = ('evento_especial', 'mensaje')  # Asegura que la combinación de evento y mensaje sea única
+
+    def __str__(self):
+        return f"{self.evento_especial.titulo} - {self.mensaje.titulo}"

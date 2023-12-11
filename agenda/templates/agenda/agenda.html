@@ -100,11 +100,48 @@
                           </p>
                         </td>
                       </tr>
+                      {% if local_agenda.idiomas.all %}
+                        {% for idioma in local_agenda.idiomas.all %}
+                          <tr>
+                            <td>
+                              {% if idioma.nombre == 'es' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/es.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'cat' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/cat.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'en' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/en.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'fr' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/fr.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'it' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/it.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'de' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/de.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'pt' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/pt.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'ar' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/ar.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'fem' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/fem.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'au' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/au.svg' %}" height="35px" width="35px" />
+                              {% elif idioma.nombre == 'inc' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/inc.svg' %}" height="35px" width="35px" />
+                              {% endif %}
+                            </td>
+                            <td>
+                              {% autoescape on %}
+                                {{ idioma.descripcion | safe }}
+                              {% endautoescape %}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      {% endif %}
                       <tr>
                         <td class="font-weight-bold"><label for="agenda-select-form"><i class="fas fa-calendar-alt"></i> Data:</label></td>
                         <td>
                           <p class="small"><small>Fes click al selector per veure altres dades.</small></p>
                           <select name="event_date" class="form-control" id="agenda-select-form">
+                            <option value="" selected disabled>Selecciona una data de l'esdeveniment</option>
                             {% for event in local_agenda.variationagenda_set.all %}
                               {% with event_counter=forloop.counter0 %}
                                 <option value="{{ event_counter }}" data-slug="{{ local_agenda.slug }}" data-variation-pk="{{ event.id }}">
@@ -142,9 +179,17 @@
                 <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ local_agenda.titulo }}" target="_blank">
                   <i class="fab fa-twitter fa-2x px-2"></i>
                 </a>
-                <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
-                  <i class="fab fa-instagram fa-2x px-2"></i>
-                </a>
+                {% if redes_sociales %}
+                  {% for social in redes_sociales %}
+                    {% if social.titulo|lower == "instagram" %}
+                      <a href="{{ social.link }}" target="_blank">
+                        <i class="fab fa-instagram fa-2x px-2"></i>
+                      </a>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+
+
               </div>
 
             </div>
@@ -388,7 +433,7 @@
     });
 
     // Realizar la primera llamada al cargar la página (puedes omitir esto si no es necesario)
-    fetchICSData(0);
+    // fetchICSData(0);
   });
 </script>
 

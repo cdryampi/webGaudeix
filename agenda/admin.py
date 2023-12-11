@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
 from multimedia_manager.models import Imagen, Fichero
-from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible, Idioma
 from map.models import MapPoint
 from django.forms import DurationField
 from blog.models import PostImagen, PostGaleriaImagen, PostFichero, Categoria, Tag
@@ -116,7 +116,7 @@ class PostImagenInlineRuta(admin.TabularInline):
 class AgendaAdmin(admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
     autocomplete_fields = ['ubicacion']
-    filter_horizontal = ('tags',)
+    filter_horizontal = ('tags','idiomas')
     search_fields = ['titulo']
     fieldsets = [
         (None, {
@@ -130,6 +130,7 @@ class AgendaAdmin(admin.ModelAdmin):
                 'publicado',
                 'ubicacion',
                 'entradas',
+                'idiomas',
                 'tipo_evento',
                 'tags'
                 ],
@@ -342,12 +343,30 @@ class CertificadoTurismoSostenibleAdmin(admin.ModelAdmin):
         })
     ]
 
+class IdiomaAdmin(admin.ModelAdmin):
+
+    fieldsets = [
+        (None,{
+            'fields':[
+                'nombre',
+                'codigo',
+                'descripcion'
+            ],
+            'description': (
+            "<p><strong><em>Aquesta és l'administració dels idiomes.</em></strong></p>"
+            "<p><em>Aquí pots afegir un idioma per ús exclusiu per l'agenda.</em></p>"
+            "<p><em>Recorda que tenim limitacions per afegir els idiomes.</em></p>"
+            "<p><em>Les banderes no ens podem escollir, fem servir les de 'font awesome'.</p>"
+            ),
+
+            }
+        )
+    ]
 
 
 
 
-
-
+admin.site.register(Idioma, IdiomaAdmin)
 admin.site.register(Ruta, RutaAdmin)
 admin.site.register(Agenda, AgendaAdmin)
 admin.site.register(VisitaGuiada, VisitaGuidadaAdmin)

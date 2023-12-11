@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+SUMMARY:Waterworld
+DTSTART:20230711T120000
+DTEND:20230711T140000
+DESCRIPTION:Una jornada d'aventura i diversió et espera a WaterWorld. Vin
+ e i deixa't envoltar per tobogans espectaculars\, piscines relaxants i atr
+ accions aquàtiques emocionants
+LOCATION:Can Martinet
+END:VEVENT
+END:VCALENDAR

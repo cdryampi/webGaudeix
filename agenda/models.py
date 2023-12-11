@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from datetime import timedelta, datetime, time
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 
 
@@ -30,7 +31,8 @@ class Idioma(models.Model):
         ('pt', 'Portuguès', 'fa-flag-portugal'),  # Asume un ícono para Portugal
         ('ar', 'Àrab', 'fa-flag-saudi-arabia'),  # Asume un ícono para Arabia Saudita
         ('fem', 'Feminista', 'fa-icon-for-feminista'),
-        ('fem_only', 'Només Dones', 'fa-icon-for-female-only'),
+        ('au', 'autisme', 'fa-icon-for-autisme'),
+        ('inc', 'inclusiu', 'fa-icon-for-inc')
         # ... más opciones según sea necesario
     ]
     nombre = models.CharField(
@@ -45,6 +47,22 @@ class Idioma(models.Model):
         verbose_name="Codi",
         help_text="Afegeix un codi únic per identificar l'idioma."
     )
+    descripcion = RichTextField(
+        help_text="Descripció pels usuaris a la plantilla de l'agenda.",
+        null=True,
+        blank=True,
+        verbose_name="Descripció"
+    )
+
+    def __str__(self):
+            return f"Idioma: {self.nombre}"
+
+    def get_icon_class(self):
+            for code, name, icon in self.IDIOMA_CHOICES:
+                if self.codigo == code:
+                    return icon
+            return ""  # Devuelve una cadena vacía si no se encuentra ninguna coincidencia
+
 
     class Meta:
         verbose_name = "Idioma"
@@ -98,7 +116,15 @@ class Agenda(Post):
         help_text="Selecciona el tipus d'esdeveniment",
         default='altres',
         verbose_name=_("Tipus d'esdeveniment")
-    )   
+    )
+
+    idiomas = models.ManyToManyField(
+        Idioma,
+        related_name='idiomes',
+        blank=True,
+        help_text="Idiomes que són disponibles per l'agenda.",
+        verbose_name="idiomes"
+    )
 
     class Meta:
         verbose_name = "Agenda"

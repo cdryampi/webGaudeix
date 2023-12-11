@@ -50,6 +50,11 @@ class Favicon(models.Model):
 
 
 
+
+
+
+
+
 class InternalLink(models.Model):
     TIPOS_REFERENCIA = (
         ('eventos_especiales', 'Esdeveniments especials'),

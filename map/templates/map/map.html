@@ -41,7 +41,7 @@
           <div class="card-header bg-light" data-toggle="collapse" data-target="#collapse_{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse_{{ forloop.counter }}" id="heading_{{ forloop.counter }}" style="border: 1px solid {% if group.grouper == 'platges' %}#007BFF{% elif group.grouper == 'informació' %}#17A2B8{% elif group.grouper == 'jaciments' %}#FFC107{% elif group.grouper == 'patrimoni' %}#6C757D{% else %}#000000{% endif %};">
             <h5 class="mb-0 d-flex align-items-center">
               <h5 class="btn btn-link text-white">
-                <span class="mr-2" style="color: {% if group.grouper == 'platges' %}#007BFF{% elif group.grouper == 'informació' %}#17A2B8{% elif group.grouper == 'jaciments' %}#FFC107{% elif group.grouper == 'patrimoni' %}#6C757D{% else %}#000000{% endif %};">{{ group.grouper }}</span>
+                <span class="mr-2 text-capitalize" style="color: {% if group.grouper == 'platges' %}#007BFF{% elif group.grouper == 'informació' %}#17A2B8{% elif group.grouper == 'jaciments' %}#FFC107{% elif group.grouper == 'patrimoni' %}#6C757D{% else %}#000000{% endif %};">{{ group.grouper }}</span>
               </h5>
               <span class="badge badge-secondary ml-auto">{{ group.list|length }}</span>
             </h5>

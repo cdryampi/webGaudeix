@@ -21,6 +21,8 @@ from .utils import generate_cache_key
 from django.core.cache import caches
 from personalizacion.models import Personalizacion
 from admin_utils.models import RegistroError
+from blog.models import SubBlog
+
 import sys
 
 
@@ -103,6 +105,9 @@ def home(request):
     bus =  None
     aeroport = None
 
+
+    subblog = SubBlog.objects.filter(publicado = True).all()
+
     if personalizacion and personalizacion.video_portada:
         portada_video = personalizacion.video_portada
     else:
@@ -175,6 +180,8 @@ def home(request):
             'autopista': autopista,
             'bus': bus,
             'aeroport': aeroport,
+
+            'subblogs': subblog,
             
             'portada_meta_description': meta_description,
             'portada_meta_keywords': meta_keywords,
