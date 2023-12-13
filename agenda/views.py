@@ -155,66 +155,10 @@ class AgendaDetailView(BaseContextMixin, DetailView):
         # Obtener la próxima variación más cercana
         next_variation = self.get_object().variationagenda_set.filter(fecha__gte=timezone.now()).order_by('fecha', 'hora').first()
 
-        horario = Personalizacion.objects.first().horario
-        data_fin = Personalizacion.objects.first().hora_agenda_fin
-
-        
         if next_variation:
-            # Formatear la fecha y hora de inicio
-            personalizacion = Personalizacion.objects.first()
-
-            horario = personalizacion.horario
-            data_fin = personalizacion.hora_agenda_fin
-            
-            fecha_inicio = next_variation.fecha
-            hora_inicio = next_variation.hora
-
-            fecha_hora_inicio = datetime.combine(fecha_inicio, hora_inicio)
-            
-            if horario == 'hivern':
-                # Convertir data_fin (TimeField) a timedelta # solo funiona mal el cambio de hora en google calendar
-                #fecha_hora_inicio = fecha_hora_inicio + timedelta(hours=-1)
-                pass
-            
-            data_fin_timedelta = timedelta(hours=data_fin.hour, minutes=data_fin.minute)
-            fecha_hora_fin = fecha_hora_inicio + data_fin_timedelta
-
-            if fecha_hora_fin.time() >= time(23,59):
-                fecha_hora_fin = fecha_hora_inicio
-            # Crear el enlace de Google Calendar
-            google_calendar_link = next_variation.generate_google_calendar_link()
-            context['google_calendar_link'] = google_calendar_link
-
-            # Crear el archivo .ics
-            event = iCalEvent()
-            event.add('summary', self.get_object().titulo)
-            event.add('description', self.get_object().descripcion_corta)
-            event.add('dtstart', fecha_hora_inicio)
-            event.add('dtend', fecha_hora_fin)
-            event.add('location', self.get_object().ubicacion)
-
-            cal = Calendar()
-            cal.add_component(event)
-
-            # Generar el contenido del archivo .ics
-            ics_content = cal.to_ical()
-            ics_buffer = BytesIO(ics_content)
-
-            # Guardar el archivo .ics temporalmente (en la carpeta media)
-            filename = f"{self.get_object().slug}.ics"
-            ics_path = os.path.join(settings.MEDIA_ROOT, filename)
-            with open(ics_path, 'wb') as ics_file:
-                ics_file.write(ics_content)
-
-            # Obtener la URL del archivo .ics
-            ics_url = os.path.join(settings.MEDIA_URL, filename)
-
-            # Configurar la respuesta HTTP para el archivo .ics
-            response = HttpResponse(ics_buffer.getvalue(), content_type='text/calendar')
-            response['Content-Disposition'] = f'attachment; filename="{filename}"'
-
             # Proporcionar la URL del archivo .ics en el contexto
-            context['ics_file_url'] = ics_url
+            context['ics_slug_url'] = self.get_object().slug
+            context['ics_variation_pk'] = next_variation.pk
 
 
 

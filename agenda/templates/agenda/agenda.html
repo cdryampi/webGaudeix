@@ -264,19 +264,22 @@
 </section>
 
 
-{% if google_calendar_link %}
+{% if ics_slug_url and ics_variation_pk %}
   <!-- Dentro de tu archivo de plantilla HTML -->
   <div class="text-center p-5" style="background-color: {% if header.color_fondo_header %}{{ header.color_fondo_header }}{% else %}#4CAA66{% endif %};">
     <p class="text-center lead">Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu.</p>
-    <a href="{{ google_calendar_link }}" class="btn btn-outline-light p-3 m-2" target="_blank">
-      <i class="fab fa-google"></i><span> Afegir a Google calendar</span>
-    </a>
-    <!-- Enlace de descarga del archivo .ics -->
-    {% if ics_file_url %}
+    <div class="container text-center justify-content-center" id="propera_activitat">
+      <button class="btn btn-outline-dark" id="descargarICS" role="button" data-slug="{{ ics_slug_url }}" data-variation-pk="{{ ics_variation_pk }}">
+        <i class="fas fa-download"></i> Generar els enllaços
+      </button>
+      {% comment %} <a href="{{ google_calendar_link }}" class="btn btn-outline-light p-3 m-2" target="_blank">
+        <i class="fab fa-google"></i><span> Afegir a Google calendar</span>
+      </a>
       <a href="{{ ics_file_url  }}" class="btn btn-outline-light p-3 m-2" target="_blank" download>
         <i class="fab fa-apple"></i><span> Descarregar per altres dispositius</span>
-      </a>
-    {% endif %}
+      </a> {% endcomment %}
+    </div>
+
   </div>
 {% endif %}
 
@@ -326,23 +329,43 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const agendaSelectForm = document.getElementById("agenda-select-form");
+    const downloadICSButton = document.getElementById("descargarICS");
+    const properaActivitat = document.getElementById("propera_activitat");
+    let syncControl = true;
     let spinnerTimeout;
-    function createSpinner() {
+
+
+    function disableSelectForm(disable) {
+      const options = agendaSelectForm.options;
+      for (let i = 0; i < options.length; i++) {
+          options[i].disabled = disable;
+      }
+    }
+
+
+    function createSpinner(option) {
+      // función que sirve para crear un spinner.
       const spinnerDiv = document.createElement("div");
       spinnerDiv.id = "spinner";
       spinnerDiv.style.display = "none"; // Inicialmente oculto
       spinnerDiv.classList.add('p-2');
       spinnerDiv.classList.add('text-center');
-      spinnerDiv.innerHTML = '<div class="loader"></div>';
+      spinnerDiv.innerHTML = '<div class="loader text-center"></div>';
   
       // Agregar el spinner como hermano del elemento agenda-select-form
-      agendaSelectForm.parentNode.insertBefore(spinnerDiv, agendaSelectForm.nextSibling);
-  
+
+      if(option == 0){
+        agendaSelectForm.parentNode.insertBefore(spinnerDiv, agendaSelectForm.nextSibling);
+      }else{
+        properaActivitat.innerHTML = '';
+        properaActivitat.parentNode.insertBefore(spinnerDiv, properaActivitat.nextSibling);
+      }
+
       return spinnerDiv;
     }
 
-    const spinner = createSpinner(); // Crear y obtener la referencia al spinner
-
+    // Crear y obtener la referencia al spinner
+    let spinner;
 
     function removeEventLinks() {
       const existingEventLinksDiv = document.getElementById("event-links");
@@ -351,35 +374,57 @@
       }
     }
 
-    function createOrUpdateEventLinks(googleCalendarLink, icsUrl) {
+    function createOrUpdateEventLinks(googleCalendarLink, icsUrl, option) {
       // Crear un nuevo div para los enlaces si no existe
-      
-      removeEventLinks();
+      if (option == 0) {
+          removeEventLinks();
+      }
 
       let eventLinksDiv = document.createElement("div");
-      
-      eventLinksDiv.id = "event-links";
+      if (option == 0) {
+        eventLinksDiv.id = "event-links";
+      }else{
+      eventLinksDiv.id = "event-links-propera-activitat";
+      }
+
+
       eventLinksDiv.classList.add('p-3');
       eventLinksDiv.classList.add('text-center');
-
+  
       // Establecer el contenido del div con los enlaces
-      eventLinksDiv.innerHTML = `
-        <p>
-          <a href="${googleCalendarLink}" class="btn btn-outline-dark p-3" target="_blank">
-            <i class="fab fa-google"></i><span class="text-muted"> Afegir l'esdeveniment a Google calendar</span>
-          </a>
-        </p>
-        
-        <p>
-          <a href="${icsUrl}" class="btn btn-outline-dark p-3" target="_blank">
-            <i class="fab fa-apple"></i><span class="text-muted"> Afegir l'esdeveniment a altres dispositius</span>
-          </a>
-        </p>
-      `;
+      if (option == 0) {
+          eventLinksDiv.innerHTML = `
+              <p>
+                <a href="${googleCalendarLink}" class="btn btn-outline-dark p-3" target="_blank">
+                  <i class="fab fa-google"></i><span class="text-muted"> Afegir l'esdeveniment a Google calendar</span>
+                </a>
+              </p>
+  
+              <p>
+                <a href="${icsUrl}" class="btn btn-outline-dark p-3" target="_blank">
+                  <i class="fab fa-apple"></i><span class="text-muted"> Afegir l'esdeveniment a altres dispositius</span>
+                </a>
+              </p>
+          `;
+      } else {
+          eventLinksDiv.innerHTML = `
+              <a href="${googleCalendarLink}" class="btn btn-outline-light p-3 m-2" target="_blank">
+                <i class="fab fa-google"></i><span> Afegir a Google calendar</span>
+              </a>
+              <a href="${icsUrl}" class="btn btn-outline-light p-3 m-2" target="_blank" download>
+                <i class="fab fa-apple"></i><span> Descarregar per altres dispositius</span>
+              </a>
+          `;
+      }
   
       // Agregar el div de enlaces como hermano del select
-      agendaSelectForm.parentNode.insertBefore(eventLinksDiv, agendaSelectForm.nextSibling);
-    }
+      if (option == 0) {
+          agendaSelectForm.parentNode.insertBefore(eventLinksDiv, agendaSelectForm.nextSibling);
+      } else {
+          properaActivitat.parentNode.insertBefore(eventLinksDiv, properaActivitat.nextSibling);
+      }
+  }
+  
 
 
 
@@ -390,50 +435,64 @@
     }
 
     // Función para ocultar el spinner con delay
-    function hideSpinner(callback) {
-      removeEventLinks();
+    function hideSpinner(callback, option) {
+      if(option==0){
+        removeEventLinks();
+      }
       // Asegurarse de que el spinner se muestre durante al menos 2 segundos
       spinnerTimeout = setTimeout(() => {
         spinner.style.display = "none";
         if(callback){
-          callback()
+          callback();
+          disableSelectForm(false);
         }
-      }, 1000); // 2000 milisegundos = 2 segundos
+        
+      }, 100); // 2000 milisegundos = 2 segundos
     }
 
 
     // Función para realizar la petición GET al servidor
-    async function fetchICSData(eventCounter) {
-      const selectedOption = agendaSelectForm.options[eventCounter];
-      const slug = selectedOption.dataset.slug;
-      const variationPk = selectedOption.dataset.variationPk;
-
-      showSpinner();
-      
-      try {
-
-        const response = await fetch(`/agenda/ics/?slug=${slug}&variation_pk=${variationPk}`);
-        const data = await response.json();
-
-        hideSpinner(() => createOrUpdateEventLinks(data.google_calendar_link, data.url_ics));
-
-      } catch (error) {
-
-        hideSpinner(); // Ocultar el spinner en caso de error
-        console.error("Error al obtener el archivo .ics:", error);
-
+    async function fetchICSData(slug, variationPk, option) {
+      if(syncControl == false){
+        console.log("Proceso ocupado");
+        return;
       }
-
+      if(option==0 || option ==1){
+        showSpinner();
+        syncControl = false;
+        try {
+          disableSelectForm(true); // Deshabilitar el select
+          const response = await fetch(`/agenda/ics/?slug=${slug}&variation_pk=${variationPk}`);
+          const data = await response.json();
+          hideSpinner(() => createOrUpdateEventLinks(data.google_calendar_link, data.url_ics, option), option);
+        } catch (error) {
+          hideSpinner(); // Ocultar el spinner en caso de error
+          console.error("Error al obtener el archivo .ics:", error);
+        }finally{
+          syncControl = true;
+        }
+      }
     }
 
     // Agregar el evento de cambio en el formulario
     agendaSelectForm.addEventListener("change", function () {
-      const eventCounter = agendaSelectForm.selectedIndex;
-      fetchICSData(eventCounter);
+      spinner = createSpinner(0);
+
+      const selectedOption = agendaSelectForm.options[agendaSelectForm.selectedIndex];
+      fetchICSData(selectedOption.dataset.slug, selectedOption.dataset.variationPk,0);
     });
 
-    // Realizar la primera llamada al cargar la página (puedes omitir esto si no es necesario)
-    // fetchICSData(0);
+    downloadICSButton.addEventListener("click", function () {
+      spinner = createSpinner(1);
+      const slug = downloadICSButton.getAttribute('data-slug');
+      const variationPk = downloadICSButton.getAttribute('data-variation-pk');
+      if (slug && variationPk) {
+        fetchICSData(slug, variationPk,1);
+      } else {
+          console.error("No se han seleccionado los datos necesarios para descargar el ICS.");
+      }
+    });
+
   });
 </script>
 
