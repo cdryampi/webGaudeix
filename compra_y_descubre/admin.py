@@ -179,7 +179,7 @@ class CompraDescubreAdmin(admin.ModelAdmin):
     ]
 
 
-    inlines = [CompraDescubrePasosImagenInline, CompraDescubreImagenInline, CompraDescubreFicheroInline, CompraDescubrePasosImagenInline, CompraDescubreGaleriaImagenInline]
+    inlines = [CompraDescubrePasosImagenInline, CompraDescubreImagenInline, CompraDescubreFicheroInline, CompraDescubreGaleriaImagenInline]
 
     readonly_fields = ('display_qr_code','download_qr_code')
 

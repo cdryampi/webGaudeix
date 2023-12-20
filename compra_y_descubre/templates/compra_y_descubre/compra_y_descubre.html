@@ -179,32 +179,35 @@
     </div>
 {% endif %}
 
-
-{% if compra_y_descubre.compadescubrepasosimagen_set.all.count >= 0 %}
-    <div class="container pt-3  event-container">
-        <div class="col-12 pt-3">
-            <h2 class="titulo-principal text-center h2">Vols participar?</h2>
-        </div>
-        <div class="row justify-content-center mt-2">
-            <div class="col-12 container-grid">
-                {% for imagen in compra_y_descubre.compadescubrepasosimagen_set.all %}
-                    <div class="paso-container">
-                        <img src="{{ imagen.imagen.archivo.url }}" alt="{{ compra_y_descubre.titulo }}" class="paso-img">
-                        <h3 class="h3 text-center secondary-color">
-                            {{ imagen.titulo }}
-                        </h3>
-                        <p class="text-center primary-color">
-                            {{ imagen.descripcion |safe}}
-                        </p>
-                    </div>
-                {% endfor %}
+{% if compra_y_descubre.compradescubrepasosimagen_set.all.count %}
+    {% if compra_y_descubre.compradescubrepasosimagen_set.all.count > 0 %}
+        <div class="container pt-3  event-container">
+            <div class="col-12 pt-3">
+                <h2 class="titulo-principal text-center h2">Vols participar?</h2>
+            </div>
+            <div class="row justify-content-center mt-2">
+                <div class="col-12 container-grid">
+                    {% for imagen in compra_y_descubre.compradescubrepasosimagen_set.all %}
+                        <div class="paso-container">
+                            <img src="{{ imagen.imagen.archivo.url }}" alt="{{ compra_y_descubre.titulo }}" class="paso-img">
+                            <h3 class="h3 text-center secondary-color">
+                                {{ imagen.titulo }}
+                            </h3>
+                            <p class="text-center primary-color">
+                                {{ imagen.descripcion |safe}}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-12 pt-3">
+                <p class="small text-center">Participar és molt fàcil, només has de comprar als teus negocis de confiança i omplir la butlleta.</p>
             </div>
         </div>
-        <div class="col-12 pt-3">
-            <p class="small text-center">Participar és molt fàcil, només has de comprar als teus negocis de confiança i omplir la butlleta.</p>
-        </div>
-    </div>
+    {% endif %}
 {% endif %}
+
+
 
 {% if compra_y_descubre.descripcion_larga %}
     <div class="container-fluid bg-light pt-2 pt-sm-2 pt-md-3 pt-lg-3 pt-xl-4 m-0">

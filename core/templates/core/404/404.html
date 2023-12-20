@@ -7,12 +7,43 @@
 {% block meta_keywords %}
     <meta name="Keywords" content="Cabrera de Mar, gaudeix, 404, pàgina no trobada, error">
 {% endblock meta_keywords %}
+{% block extra_css %}
+    <style>
+        .error-page {
+            /* Estilos personalizados para la página completa */
+        }
 
+        .error-404 {
+            /* Estilos personalizados para el jumbotron del error 404 */
+        }
+
+        .error-title {
+            font-size: 2.5rem; /* Tamaño de fuente más grande para el título */
+            color: #3EBFAB; /* Color del título, puedes cambiarlo según tu paleta de colores */
+        }
+        .error-404-color{
+            background-color: #3EBFAB;
+            color: #3EBFAB;
+        }
+
+        .error-message {
+            font-size: 1.2rem; /* Tamaño de fuente para el mensaje */
+            margin-bottom: 1.5rem; /* Espaciado debajo del mensaje */
+        }
+
+        .btn-home {
+            padding: .75rem 1.5rem; /* Padding más grande para el botón */
+            font-size: 1.1rem; /* Tamaño de fuente para el botón */
+            border-radius: .5rem; /* Bordes redondeados para el botón */
+        }
+    </style>
+{% endblock extra_css %}
 {% block content %}
-    <div class="container">
-        <div class="jumbotron text-center">
-            <h1 class="display-4">Error 404: Pàgina no trobada</h1>
-            <p class="lead">Ho sentim, la pàgina que estàs buscant no existeix.</p>
+    <div class="container error-page">
+        <div class="jumbotron text-center error-404 bg-white">
+            <h1 class="error-title">Error 404: Pàgina no trobada</h1>
+            <p class="error-message">Ho sentim, la pàgina que estàs buscant no existeix.</p>
+            <a href="{% url 'core:home' %}" class="btn error-404-color btn-home">Tornar a l'inici</a>
         </div>
     </div>
 {% endblock %}

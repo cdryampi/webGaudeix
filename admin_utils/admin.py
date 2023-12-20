@@ -6,15 +6,6 @@ from multimedia_manager.models import Imagen, Fichero, Video
 
 
 
-
-
-
-
-
-
-
-
-
 @admin.register(RegistroError)
 class RegistroErrorAdmin(admin.ModelAdmin):
 

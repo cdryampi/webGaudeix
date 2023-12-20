@@ -248,7 +248,7 @@ class CompraDescubrePasosImagen(models.Model):
     )
 
     def __str__(self):
-        return f"Post: {self.compradescubre.titulo} - Imagen: {self.imagen}"
+        return f"Post: {self.compradescubre.titulo} - Imatge: {self.imagen}"
     
     def delete(self, *args, **kwargs):
         self.imagen.delete()
@@ -275,7 +275,7 @@ class CompraDescubreGaleriaImagen(models.Model):
     )
 
     def __str__(self):
-        return f"Post: {self.compradescubre.titulo} - Imagen: {self.imagen}"
+        return f"Post: {self.compradescubre.titulo} - Imatge: {self.imagen}"
     
     def delete(self, *args, **kwargs):
         self.imagen.delete()
@@ -309,7 +309,7 @@ class CompraDescubreImagen(models.Model):
     )
 
     def __str__(self):
-        return f"CompraDescubre: {self.compradescubre} - Imagen: {self.imagen}"
+        return f"CompraDescubre: {self.compradescubre} - Imatge: {self.imagen}"
 
     def delete(self, *args, **kwargs):
         self.imagen.delete()

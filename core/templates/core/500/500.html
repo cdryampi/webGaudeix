@@ -7,15 +7,44 @@
 {% block meta_keywords %}
     <meta name="Keywords" content="Cabrera de Mar, gaudeix, 500, error intern del servidor">
 {% endblock meta_keywords %}
+{% block extra_css %}
+    <style>
+        .error-page {
+            /* Estilos personalizados para la página completa */
+        }
 
+        .error-404 {
+            /* Estilos personalizados para el jumbotron del error 404 */
+        }
+
+        .error-title {
+            font-size: 2.5rem; /* Tamaño de fuente más grande para el título */
+            color: #3EBFAB; /* Color del título, puedes cambiarlo según tu paleta de colores */
+        }
+        .error-404-color{
+            background-color: #3EBFAB;
+            color: #3EBFAB;
+        }
+
+        .error-message {
+            font-size: 1.2rem; /* Tamaño de fuente para el mensaje */
+            margin-bottom: 1.5rem; /* Espaciado debajo del mensaje */
+        }
+
+        .btn-home {
+            padding: .75rem 1.5rem; /* Padding más grande para el botón */
+            font-size: 1.1rem; /* Tamaño de fuente para el botón */
+            border-radius: .5rem; /* Bordes redondeados para el botón */
+        }
+    </style>
+{% endblock extra_css %}
 {% block content %}
-    <div class="container">
-        <div class="jumbotron text-center">
-            <h1 class="display-4">Error 500: Error Intern del Servidor</h1>
-            <p class="lead">Ho sentim, però ha succeït un problema en el nostre servidor.</p>
-            <p>Si us plau, intenta-ho de nou més tard o contacta amb el suport tècnic si el problema persisteix.</p>
-            <p>Torna a la <a href="/" class="btn btn-primary">pàgina d'inici</a>.</p>
-
-        </div>
+    <div class="container error-page">
+        <div class="jumbotron text-center error-500 bg-white">
+            <h1 class="error-title">Oops! Algo ha anat malament.</h1>
+            <p class="error-message">Sembla que hem tingut un petit problema tècnic.</p>
+            <p class="error-message">T'animem a tornar a provar en uns minuts. Si el problema continua, no dubtis a posar-te en contacte amb nosaltres per a més assistència.</p>
+            <a href="{% url 'core:home' %}" class="btn error-500-color btn-home">Tornar a la Pàgina Principal</a>
+        </div>        
     </div>
 {% endblock %}

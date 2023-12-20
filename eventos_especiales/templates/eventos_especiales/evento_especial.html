@@ -559,13 +559,16 @@
     document.addEventListener("DOMContentLoaded", function() {
         var eventoEspecialSwiper = new Swiper('#special-event', {
             loop: true,
-            slidesPerView: 2,
+            slidesPerView: 1,
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
             breakpoints: {
                 // Configuración para dispositivos móviles
+                320: {
+                    slidesPerView: 1,
+                },
                 374: {
                     slidesPerView: 1,
                 },

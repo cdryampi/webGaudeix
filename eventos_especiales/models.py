@@ -51,6 +51,7 @@ class Autor(models.Model):
     def __str__(self):
         return f"{self.nombre} ({self.cargo})"
 
+    
 
 
 class Mensaje(models.Model):
@@ -89,7 +90,10 @@ class Mensaje(models.Model):
 
     def __str__(self):
         return f"{self.nombre_interno} - {self.titulo}"
-
+    
+    class Meta:
+        verbose_name_plural = "Missatges de l'esdeveniment"
+        verbose_name = "missatge"
 
 class MedidaEconomica(models.Model):
     """
@@ -425,6 +429,6 @@ class EventoMensaje(models.Model):
         return f"Esdeveniment: {self.evento_especial.titulo} - Autor: {self.mensaje.autor.nombre}"
     class Meta:
         unique_together = ('evento_especial', 'mensaje')  # Asegura que la combinación de evento y mensaje sea única
-
+        
     def __str__(self):
         return f"{self.evento_especial.titulo} - {self.mensaje.titulo}"
