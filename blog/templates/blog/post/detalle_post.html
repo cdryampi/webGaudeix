@@ -227,18 +227,19 @@
       
   </div>
 </section>
-{% comment %} 
-{% if visites.postfichero %}
+
+{% if post.postfichero %}
     <aside class="mx-0 px-0 pb-5 container-fluid">
         <div class="row p-0 m-0">
             <div class="col-md-12 p-0 m-0">
-                <a href="{{ visites.postfichero.fichero.archivo.url }}" class="btn btn-primary btn-lg btn-block" download>
-                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                <a href="{{ post.postfichero.fichero.archivo.url }}" class="btn btn-light btn-lg btn-block" download>
+                    <i class="fas fa-file-pdf"></i> Descargar PDF "<b>{{ post.postfichero.fichero.titulo }}</b>"
                 </a>
             </div>
         </div>
     </aside>
-{% endif %} {% endcomment %}
+{% endif %}
+
 
 {% endblock %}
 

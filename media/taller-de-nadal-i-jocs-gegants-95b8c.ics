@@ -1,0 +1,9 @@
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+SUMMARY:Taller de nadal i jocs gegants
+DTSTART:20231230T110000
+DTEND:20231230T130000
+DESCRIPTION:Vine i gaudeix de l'esperit nadalenc
+LOCATION:Parc de la Nova cançó Catalana
+END:VEVENT
+END:VCALENDAR

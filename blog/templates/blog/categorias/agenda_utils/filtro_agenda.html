@@ -46,89 +46,74 @@
 {% block extra_script %}
 <script>
   // Obtén los elementos HTML necesarios
-
   const tipoEventoButtons = document.querySelectorAll('.tipo-evento-buttons button');
   const tipoEventoInput = document.getElementById('tipo_evento');
   const filtroForm = document.getElementById('filtro-agenda-form');
   const resultadosContainer = document.getElementById('agenda-resultados');
   const calendarElement = document.getElementById('calendar');
+  const spinnerContainer = document.getElementById('spinner-container');
 
-  // Agrega event listeners a los botones
-  tipoEventoButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const valor = button.value;
-      tipoEventoInput.value = valor;
 
-      // Cambia el color de los botones
-      tipoEventoButtons.forEach((btn) => {
-        btn.classList.remove('active');
-      });
-      button.classList.add('active');
-
-      // Realiza la acción de filtro
+  // Agrega event listeners a los botones de tipo de evento
+  document.querySelector('.tipo-evento-buttons').addEventListener('click', (event) => {
+    if (event.target.tagName === 'BUTTON') {
+      const button = event.target;
+      tipoEventoInput.value = button.value;
+      actualizarBotonesActivos(button);
       filtrarAgenda();
-    });
+    }
   });
 
 
+  // Función para actualizar el estado activo de los botones
+  function actualizarBotonesActivos(activeButton) {
+    tipoEventoButtons.forEach((btn) => {
+      btn.classList.remove('active');
+    });
+    activeButton.classList.add('active');
+  }
   // Agrega event listener al formulario de filtro
   filtroForm.addEventListener('submit', (event) => {
     event.preventDefault();
-
-    // Realiza la acción de filtro
     filtrarAgenda();
   });
 
   function filtrarAgenda() {
-    // Obtén los valores de los filtros seleccionados
-    const tipoEvento = tipoEventoInput.value;
-    const form = document.getElementById('filtro-agenda-form');
-    const formData = new FormData(form);
+    const formData = new FormData(filtroForm);
     const csrfToken = formData.get('csrfmiddlewaretoken');
 
-    // Obtén la fecha seleccionada en el calendario
     const currentYear = calendarElement.dataset.year;
     const currentMonth = calendarElement.dataset.month;
-
-    // Agrega la fecha al formulario
     formData.set('year', currentYear);
     formData.set('month', currentMonth);
 
     mostrarSpinner();
-    // Realiza la llamada a la API para obtener los resultados filtrados
     fetch('/api/filtrar-agenda/', {
       method: 'POST',
-      headers: {
-        'X-CSRFToken': csrfToken,
-      },
+      headers: { 'X-CSRFToken': csrfToken },
       body: formData,
     })
-      .then((response) => {
-        
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Error en la llamada a la API');
-        }
-      })
-      .then((data) => {
-        // Muestra los resultados en la página
-        ocultarSpinner();
-        mostrarResultados(data);
-        
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-  // JavaScript para mostrar y ocultar el spinner
-  function mostrarSpinner() {
-    document.getElementById('spinner-container').style.display = 'block';
+    .then(handleResponse)
+    .then(data => {
+      ocultarSpinner();
+      mostrarResultados(data);
+    })
+    .catch(handleFetchError);
   }
 
-  function ocultarSpinner() {
-    document.getElementById('spinner-container').style.display = 'none';
+  function handleResponse(response) {
+    if (!response.ok) throw new Error('Error en la llamada a la API');
+    return response.json();
   }
+
+  function handleFetchError(error) {
+    console.error('Error en fetch:', error);
+    ocultarSpinner();
+  }
+
+  function mostrarSpinner() { spinnerContainer.style.display = 'block'; }
+  function ocultarSpinner() { spinnerContainer.style.display = 'none'; }
+
 
   function obtenerEventosPorDia(agendas) {
     const eventosPorDia = {};
@@ -330,9 +315,17 @@
     year = parseInt(year);
     month = parseInt(month);
   
+    // Calcula el año y mes para el mes anterior
+    let prevYear = month === 0 ? year - 1 : year;
+    let prevMonth = month === 0 ? 11 : month - 1;
+
+    // Calcula el año y mes para el mes siguiente
+    let nextYear = month === 11 ? year + 1 : year;
+    let nextMonth = month === 11 ? 0 : month + 1;
+
     // Crea una nueva instancia de Date para el primer día del mes
     const firstDay = new Date(year, month, 1);
-  
+
     // Obtén el número de días en el mes
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     let calendar = document.getElementById('calendar');
@@ -342,45 +335,37 @@
     let calendarDays = '';
     for (let i = 1; i <= daysInMonth; i++) {
       let dayClass = 'calendar-day';
-      let currentDate = new Date();
-      let currentYear = currentDate.getFullYear();
-      let currentMonth = currentDate.getMonth();
-      let currentDay = currentDate.getDate();
+      let dateOfLoop = new Date(year, month, i);
 
-
-      if (eventos.includes(i.toString())) {
+      // Verificar si el día actual está en la lista de eventos
+      if (eventos.some(evento => evento.year === year && evento.month === month && evento.day === i)) {
         dayClass += ' event-day';
-        // Actualizar el calendario de eventos más amigable.
-        if(calendar.getAttribute('data-year') < currentYear){
-          dayClass += ' past-day';
-        }else{
-          if(calendar.getAttribute('data-month') < currentMonth){
-            dayClass += ' past-day';
-          }else if(calendar.getAttribute('data-month') == currentMonth){
-              if(currentDay>i){
-                dayClass += ' past-day';
-              }
-          }
-        }
       }
+
+      // Marcar eventos pasados
+      let currentDate = new Date();
+      if (dateOfLoop < currentDate) {
+        dayClass += ' past-day';
+      }
+
       calendarDays += `<div class="${dayClass}">${i}</div>`;
     }
   
-    // Combina los días del calendario
-    const calendarHTML = `
-    <div class="col-12">
-      <div class="calendar">
-        <div class="calendar-header">
-          <button class="btn btn-link" onclick="mostrarCalendario(${year}, ${month - 1})"><i class="fas fa-chevron-left"></i></button>
-          <h4>${new Date(year, month).toLocaleString('ca-ES', { month: 'long', year: 'numeric' })}</h4>
-          <button class="btn btn-link" onclick="mostrarCalendario(${year}, ${month + 1})"><i class="fas fa-chevron-right"></i></button>
-        </div>
-        <div class="w-100 d-block"></div>
-        <div class="row" id="calendar-agenda-gaudeix">
-          ${calendarDays}
-        </div>
+  // Combina los días del calendario
+  const calendarHTML = `
+  <div class="col-12">
+    <div class="calendar">
+      <div class="calendar-header">
+        <button class="btn btn-link" onclick="mostrarCalendario(${prevYear}, ${prevMonth})"><i class="fas fa-chevron-left"></i></button>
+        <h4>${firstDay.toLocaleString('ca-ES', { month: 'long', year: 'numeric' })}</h4>
+        <button class="btn btn-link" onclick="mostrarCalendario(${nextYear}, ${nextMonth})"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="w-100 d-block"></div>
+      <div class="row" id="calendar-agenda-gaudeix">
+        ${calendarDays}
       </div>
     </div>
+  </div>
   `;
   
   
@@ -391,25 +376,14 @@
     calendarElement.dataset.year = year;
     calendarElement.dataset.month = month;
   }
-  // Función para mostrar el calendario de un mes específico
+  // Función para inicializar y mostrar el calendario
   function mostrarCalendario(year, month) {
     generarCalendario(year, month, []);
-
-    // Llamada inicial para mostrar los eventos del mes actual
     filtrarAgenda();
-
-    // Actualizar los eventos cuando se cambie de mes
-    calendarElement.addEventListener('click', (event) => {
-
-      filtrarAgenda();
-    });
   }
 
-  // Llamar a la función para generar el calendario inicial
   const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  mostrarCalendario(currentYear, currentMonth);
+  mostrarCalendario(currentDate.getFullYear(), currentDate.getMonth());
   filtrarAgenda();
 
 </script>
