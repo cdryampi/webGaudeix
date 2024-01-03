@@ -3,6 +3,7 @@ from .models import InternalLink, Personalizacion, TrenPersonalizacion, BusPerso
 from django.http import HttpResponseRedirect
 from django.core.files.storage import default_storage
 from gaudeix import settings
+from newsletter.models import Newsletter
 import os
 
 
@@ -14,6 +15,27 @@ def eliminar_archivos_ics(modeladmin, request, queryset):
             os.remove(os.path.join(directorio_ics, archivo))
     modeladmin.message_user(request, "Fitxers '.ics' temporals eliminats.")
 eliminar_archivos_ics.short_description = "Eliminar fitxers ICS."
+
+
+def eliminar_archivos_html_newsletter(modeladmin, request, queryset):
+    directorio_newsletter = os.path.join(settings.MEDIA_ROOT, 'newsletters')  # Ajustar según la ubicación exacta
+    for archivo in os.listdir(directorio_newsletter):
+        if archivo.endswith('.html'):
+            os.remove(os.path.join(directorio_newsletter, archivo))
+    for newsletter in Newsletter.objects.all():
+        if newsletter.html_file:
+        # Si el archivo ya no existe, limpia la referencia en el modelo
+            path_archivo = os.path.join(directorio_newsletter, newsletter.html_file.name)
+            if not os.path.isfile(path_archivo):
+                newsletter.html_file = None
+                newsletter.save()
+    
+    modeladmin.message_user(request, "Fitxers '.html' de les plantilles eliminats.")
+eliminar_archivos_html_newsletter.short_description = "Eliminar fitxers HTML."
+
+
+
+
 
 
 class TrenPersonalizacionAdminInLine(admin.StackedInline):
@@ -134,7 +156,7 @@ class PersonalizacionAdmin(admin.ModelAdmin):
     ]
 
     inlines = [TrenPersonalizacionAdminInLine, BusPersonalizacionAdminInLine, AeropuertoPErsonalizacionAdminInLine, AutoPistaPersonalizacionAdminInLine]
-    actions = [eliminar_archivos_ics]
+    actions = [eliminar_archivos_ics,eliminar_archivos_html_newsletter]
 
 
 admin.site.register(Personalizacion, PersonalizacionAdmin)

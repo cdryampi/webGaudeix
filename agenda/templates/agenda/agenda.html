@@ -481,17 +481,19 @@
       const selectedOption = agendaSelectForm.options[agendaSelectForm.selectedIndex];
       fetchICSData(selectedOption.dataset.slug, selectedOption.dataset.variationPk,0);
     });
+    if(downloadICSButton){
+      downloadICSButton.addEventListener("click", function () {
+        spinner = createSpinner(1);
+        const slug = downloadICSButton.getAttribute('data-slug');
+        const variationPk = downloadICSButton.getAttribute('data-variation-pk');
+        if (slug && variationPk) {
+          fetchICSData(slug, variationPk,1);
+        } else {
+            console.error("No se han seleccionado los datos necesarios para descargar el ICS.");
+        }
+      });
+    }
 
-    downloadICSButton.addEventListener("click", function () {
-      spinner = createSpinner(1);
-      const slug = downloadICSButton.getAttribute('data-slug');
-      const variationPk = downloadICSButton.getAttribute('data-variation-pk');
-      if (slug && variationPk) {
-        fetchICSData(slug, variationPk,1);
-      } else {
-          console.error("No se han seleccionado los datos necesarios para descargar el ICS.");
-      }
-    });
 
   });
 </script>
