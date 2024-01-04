@@ -867,11 +867,28 @@ a {text-decoration: none;}
                                             <br>
                                             <br>
                                           </p>
+                                        {% elif post.visitaguiada.mapa %}
+                                          <p valign="top"
+                                          style="font-size: 18px; font-family: 'Quattrocento', Helvetica, Trebuchet, Arial, sans-serif; line-height: 22px; color: #000000;  text-decoration:none; text-transform: uppercase; margin: 0px 0px 20px 0px;  text-align: center; font-weight: normal!important; direction: ltr;"
+                                          class="fontsize16 center">
+                                          {{ post.visitaguiada.mapa.titulo }}
+                                          <br>
+                                          <br>
+                                          </p>
+                                        {% elif post.mappoint.calle %}
+                                          <p valign="top"
+                                          style="font-size: 18px; font-family: 'Quattrocento', Helvetica, Trebuchet, Arial, sans-serif; line-height: 22px; color: #000000;  text-decoration:none; text-transform: uppercase; margin: 0px 0px 20px 0px;  text-align: center; font-weight: normal!important; direction: ltr;"
+                                          class="fontsize16 center">
+                                          {{ post.mappoint.calle }}
+                                          <br>
+                                          <br>
+                                          </p>
                                         {% endif %}
-                                        <p valign="top"
+                                        <div valign="top"
                                         style="font-size: 16px; font-family: 'Quattrocento', Helvetica, Trebuchet, Arial, sans-serif; line-height: 22px; color: #000000;  text-decoration:none; margin: 0px 0px 20px 0px;  text-align: center; font-weight: normal!important; direction: ltr;"
-                                        class="fontsize16 center">{% if post.descripcion_corta|wordcount > 10 %}{{ post.descripcion_corta|truncatewords:10 }}...{% else %}{{ post.agenda.descripcion_corta }}{% endif %}<br>
-                                        </p>
+                                        class="fontsize16 center">{% autoescape on %}{% if post.agenda %}{{ post.agenda.descripcion_corta|truncatewords:20|safe }}{% elif post.mappoint %}{{ post.descripcion|truncatewords_html:20|safe }}{% elif post.visitaguiada %}{{ post.descripcion|truncatewords_html:20|safe }}{% else %}{{ post.descripcion|truncatewords_html:20|safe }}{% endif %}{% endautoescape %}
+                                        <br>
+                                        </div>
                                       </td>
                                     </tr>
 
@@ -895,7 +912,7 @@ a {text-decoration: none;}
                                 </th>
                                 <!-- Bloque de Imagen -->
                                 <th width="150" align="center" valign="middle" class="colsplit">
-                                  <a target="_blank" href="{{ url_domain }}{% if post.agenda %} {% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}">
+                                  <a target="_blank" href="{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}">
                                     <img src="{% with imagen=post.postgaleriaimagen_set.first %}{% if imagen %}{{ url_domain }}{{ imagen.imagen.medium_thumbnail.url |urlencode }}{% else %}{% with imagenbanner=post.postimagen %}{{ url_domain }}{{ imagenbanner.imagen.medium_thumbnail.url |urlencode }}{% endwith %}{% endif %}{% endwith %}" width="320" height="auto" border="0" style="display:block;">
                                   </a>
                                 </th>
@@ -916,7 +933,7 @@ a {text-decoration: none;}
                                       <td class="pt15">
                                         <h3 valign="top"
                                           style="font-size: 22px; text-align: center; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 26px; color: {% if evento_especial.color %}{{evento_especial.color}}{% else %}#000000{% endif %}; text-decoration: none; margin: 0 0 16px 0; letter-spacing: 2px; text-align: center; text-transform:uppercase; direction: ltr;"
-                                          class=" center"> <strong>{{ post.titulo }}</strong> </h3>
+                                          class="center"> <strong>{{ post.titulo }}</strong> </h3>
                                       </td>
                                     </tr>
                                     <tr>
@@ -929,12 +946,28 @@ a {text-decoration: none;}
                                             <br>
                                             <br>
                                           </p>
+                                        {% elif post.visitaguiada.mapa %}
+                                          <p valign="top"
+                                          style="font-size: 18px; font-family: 'Quattrocento', Helvetica, Trebuchet, Arial, sans-serif; line-height: 22px; color: #000000;  text-decoration:none; text-transform: uppercase; margin: 0px 0px 20px 0px;  text-align: center; font-weight: normal!important; direction: ltr;"
+                                          class="fontsize16 center">
+                                          {{ post.visitaguiada.mapa.titulo }}
+                                          <br>
+                                          <br>
+                                          </p>
+                                        {% elif post.mappoint.calle %}
+                                          <p valign="top"
+                                          style="font-size: 18px; font-family: 'Quattrocento', Helvetica, Trebuchet, Arial, sans-serif; line-height: 22px; color: #000000;  text-decoration:none; text-transform: uppercase; margin: 0px 0px 20px 0px;  text-align: center; font-weight: normal!important; direction: ltr;"
+                                          class="fontsize16 center">
+                                          {{ post.mappoint.calle }}
+                                          <br>
+                                          <br>
+                                          </p>
                                         {% endif %}
-                                        
-                                        <p valign="top"
+                                        <div valign="top"
                                         style="font-size: 16px; font-family: 'Quattrocento', Helvetica, Trebuchet, Arial, sans-serif; line-height: 22px; color: #000000;  text-decoration:none; margin: 0px 0px 20px 0px;  text-align: center; font-weight: normal!important; direction: ltr;"
-                                        class="fontsize16 center">{% if post.descripcion_corta|wordcount > 10 %}{{ post.descripcion_corta|truncatewords:10 }}...{% else %}{{ post.agenda.descripcion_corta }}{% endif %}<br>
-                                        </p>
+                                        class="fontsize16 center">{% autoescape on %}{% if post.agenda %}{{ post.agenda.descripcion_corta|truncatewords:20|safe }}{% elif post.mappoint %}{{ post.descripcion|truncatewords_html:20|safe }}{% elif post.visitaguiada %}{{ post.descripcion|truncatewords_html:20|safe }}{% else %}{{ post.descripcion|truncatewords_html:20|safe }}{% endif %}{% endautoescape %}
+                                        <br>
+                                        </div>
                                       </td>
                                     </tr>
 
@@ -1103,9 +1136,8 @@ a {text-decoration: none;}
                                       
                                       <td align="center" valign="middle"
                                         style="height:auto !important; font-size: 12px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 18px; color: #000000; text-decoration: none;">
-                                        <p style=" margin: 0; direction: ltr;"> <a target="_blank"
-                                            href=""
-                                            style="color: #ffff; text-decoration: none; text-align: center!important;">
+                                        <p style=" margin: 0; direction: ltr; color=#ffffff;"> <a target="_blank"
+                                            href="{{url_domain}}{% url 'blog:categoria' slug=especial.slug %}" style="color:#ffffff">
                                             {{ especial.titulo }} <br>
                                           </a> </p>
                                       </td>
@@ -1117,7 +1149,7 @@ a {text-decoration: none;}
                           </th>
                         {% endfor %}
                         <th width="112" align="center" valign="top" class="colsplit"
-                          style="font-weight: normal; padding:10px 0px 0px;background-color:{{header.color_fondo_header}}">
+                          style="font-weight: normal; padding:10px 10px 10px;background-color:{{header.color_fondo_header}}">
                           <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"
                             style="width: 100%;">
                             <tr>
@@ -1136,15 +1168,26 @@ a {text-decoration: none;}
                                     <!--[if !mso]><!-- -->
                                     </td>
 
-                                    <td align="center" valign="middle"
-                                      style="display: block;height:auto !important; font-size: 12px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 18px; color: #ffffff; text-decoration: none; ">
-                                      <p style=" margin: 0; direction: ltr;"> <a target="_blank" href="tel:{{ footer.footerinformacion.telefono }}"
-                                          style="color: #ffffff; text-decoration: none; text-align: center!important;">
-                                          Telèfon <br>
-                                          {{ footer.footerinformacion.telefono }}<br>
-                                          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                        </a> </p>
+                                    <td align="center" valign="middle" style="display:block;" class="unstack">
+                                      
+                                        <table role="presentation" width="100%" valign="middle" border="0" cellpadding="0"
+                                        cellspacing="0">
+                                        <tr>
+                                          
+                                          <td align="center" valign="middle"
+                                            style="height:auto !important; font-size: 12px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 18px; color: #000000; text-decoration: none;">
+                                              <p style=" margin: 0; direction: ltr;"> <a target="_blank" href="tel:{{ footer.footerinformacion.telefono }}"
+                                                style="color: #ffffff; text-decoration: none; text-align: center!important;">
+                                                Telèfon <br>
+                                                {{ footer.footerinformacion.telefono }}<br>
+                                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                              </a> </p>
+                                          </td>
+                                          
+                                        </tr>
+                                      </table>
+
                                     </td>
                                   </tr>
                                 </table>
