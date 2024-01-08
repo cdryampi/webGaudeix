@@ -20,19 +20,43 @@
           </div>
         </div>
       </form>
-      <div id="notification-messages" class="text-center mt-3"></div>
+      
     </div>
   </div>
+    <!-- Ventana modal para notificaciones -->
+  <div class="modal fade" id="notificacionEmailModal" tabindex="-1" role="dialog" aria-labelledby="notificacionEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="notificacionEmailModalLabel">Notificació:</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="notification-messages" class="text-center mt-3"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">tancar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </aside>
   
   <script>
     // JavaScript
     document.getElementById('newsletter-form').addEventListener('submit', function(event) {
       event.preventDefault();
-  
+
+      const notificacionEmailModal = document.getElementById("notificacionEmailModal");
+
       var emailInput = document.getElementById('emailNewsletter');
+      
       var email = emailInput.value;
-  
+      
+
       // Validar el correo electrónico
       if (!validateEmail(email)) {
         displayNotification('error', 'Direcció de correu electrònic invàlida');
@@ -40,7 +64,7 @@
       }
   
       // Obtener el token CSRF del formulario
-      var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+      var csrfToken = document.querySelector("#newsletter-form input[name='csrfmiddlewaretoken']").value
   
       // Crear un objeto FormData y agregar el correo electrónico
       var formData = new FormData();
@@ -63,13 +87,13 @@
       })
       .then(function(data) {
         if (data.success) {
-          displayNotification('success', 'Subscripció exitosa');
+          updateAndShowModal('Subscripció exitosa');
         } else {
-          displayNotification('error', 'Error en la petició');
+          updateAndShowModal('Error en la petició');
         }
       })
       .catch(function(error) {
-        displayNotification('error', error.message);
+        updateAndShowModal(error.message);
       });
   
       // Limpiar el campo de correo electrónico
@@ -81,19 +105,13 @@
       var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
-  
-    function displayNotification(type, message) {
-      var notificationDiv = document.createElement('div');
-      notificationDiv.className = 'notification ' + type;
-      notificationDiv.innerText = message;
-  
-      var notificationContainer = document.getElementById('notification-messages');
-      notificationContainer.appendChild(notificationDiv);
-  
-      // Eliminar el mensaje después de unos segundos
-      setTimeout(function() {
-        notificationDiv.remove();
-      }, 3000);
+
+    function updateAndShowModal(message) {
+      var modalBody = document.querySelector('#notificacionEmailModal .modal-body #notification-messages');
+      modalBody.innerText = message;
+      console.log(message);
+      $('#notificacionEmailModal').modal('show');
     }
+
   </script>
   
