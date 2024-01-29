@@ -1,0 +1,9 @@
+{% if subcategoria.tipo == 'normal' %}
+    {% include 'blog/subcategorias/subcategoria_normal.html' %}
+{% elif subcategoria.tipo == 'lloc' %}
+    {% include 'blog/subcategorias/lloc.html' %}
+{% elif subcategoria.tipo == 'senderisme' %}
+    {% include 'blog/subcategorias/senderisme.html' %}
+{% elif subcategoria.tipo == 'festes_i_tradicions' %}
+    {% include 'blog/subcategorias/festes-i-tradicions.html' %}
+{% endif %}

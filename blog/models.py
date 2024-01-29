@@ -13,6 +13,8 @@ from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 from core.utils import generate_short_slug
+from django.core.exceptions import ValidationError
+
 
 
 User = get_user_model()
@@ -242,6 +244,9 @@ class Categoria(MetadataModel, BaseModel):
         verbose_name="Tags"
     )
 
+    @property
+    def subcategorias(self):
+        return self.subcategorias.all()
 
     def get_absolute_url(self):
         return reverse('blog:categoria', kwargs={'slug': self.slug})
@@ -357,6 +362,179 @@ class CategoriaGaleriaImagen(models.Model):
 
 
 
+class SubCategoria(MetadataModel, BaseModel):
+    """
+        Modelo que representan una subcategoria.
+    """
+
+    TIPOS = (
+        ('normal', 'normal'),
+        ('visitas_guiadas', 'visitas guiadas'),
+        ('senderisme','senderisme'),
+        ('lloc','lloc'),
+        ('festes_i_tradicions','festes, tradicions i cultura')
+    )
+        
+    titulo = models.CharField(
+        max_length=255,
+        help_text="Títol de la subcategoría",
+        verbose_name="Títol"
+    )
+    subtitulo = models.CharField(
+        max_length=255,
+        help_text="Subtítol de categoria",
+        verbose_name="Subtítol",
+        null=True,
+        blank=True
+    )
+    descripcion = RichTextField(
+        help_text="Descripció de la subcategoría",
+        verbose_name="Descripció"
+    )
+    categoria = models.ForeignKey(
+        Categoria,
+        on_delete=models.CASCADE,
+        related_name="subcategorias",
+        verbose_name="Categoria"
+    )
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        editable=False
+    )
+    tipo = models.CharField(
+        max_length=50,
+        choices=TIPOS,
+        default='normal',
+        verbose_name="Tipus"
+    )
+    color = ColorField(
+        default='#FFFFFF'
+    )
+    publicado = models.BooleanField(
+        default=False,
+        help_text="Indica si la categoria està publicada o no. Si està publicada, es mostrarà en la llista de categories disponibles.",
+        verbose_name="Publicat"
+    )
+    tags = models.ManyToManyField(
+        Tag,
+        blank=True,
+        verbose_name="Tags"
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Si es un nuevo objeto, se establece la fecha de creación y el usuario actual
+            self.fecha_creacion = timezone.now()
+            self.creado_por = get_user_model().objects.first()
+            # Generar un valor hexadecimal único utilizando uuid4
+            unique_hex = generate_short_slug()
+            self.slug = f"{slugify(self.titulo)[:44]}-{unique_hex}"
+        else:
+            # Obtener el título anterior del objeto si existe
+            old_instance = self.__class__.objects.get(pk=self.pk)
+            old_titulo = old_instance.titulo if old_instance else None
+
+            if self.titulo != old_titulo:
+                unique_hex = generate_short_slug()
+                self.slug = f"{slugify(self.titulo)[:44]}-{unique_hex}"
+
+            if not self.creado_por:
+                self.creado_por = get_user_model().objects.first()
+
+        if not self.slug:
+            self.slug = f"{slugify(self.titulo)[:44]}-{unique_hex}"
+        # Siempre se actualiza la fecha de modificación y el usuario que modifica
+        self.modificado_por = get_user_model().objects.first()
+        self.fecha_modificacion = timezone.now()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.titulo
+
+    class Meta:
+        verbose_name = "Subcategoría"
+        verbose_name_plural = "Subcategorías"
+
+
+class SubCategoriaBannerImagen(models.Model):
+    """
+    Descripció de la classe SubCategoriaBannerImagen:
+    Aquest model representa les imatges de banner associades a les categories especials.
+    """
+    subcategoria = models.OneToOneField(
+        SubCategoria,
+        on_delete=models.CASCADE,
+        null=True, 
+        verbose_name="SubCategoria"
+    )
+    imagen = models.OneToOneField(
+        Imagen,
+        on_delete=models.CASCADE,
+        verbose_name="Imatge del Banner"
+    )
+
+    def __str__(self):
+        return f"SubCategoria: {self.subcategoria} - Imagen: {self.imagen}"
+
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = CategoriaBannerImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Imatge de Banner de la SubCategoria"
+        verbose_name_plural = "Imatges de Banner de les SubCategories"
+
+
+
+class SubCategoriaGaleriaImagen(models.Model):
+    """
+    Representa imágenes de galería asociadas a un subcategoria, usadas para generar miniaturas de contenido relacionado.
+    Se eliminan automáticamente junto a la categoría.
+    """
+    subcategoria = models.ForeignKey(
+        SubCategoria,
+        on_delete=models.CASCADE,
+        default=None,
+        verbose_name="SubCategoria"
+    )
+    imagen = models.ForeignKey(
+        Imagen,
+        on_delete=models.CASCADE,
+        verbose_name="Imatge de la Galeria"
+    )
+
+    class Meta:
+        verbose_name = "Imatge de Galeria de la SubCategoria"
+        verbose_name_plural = "Imatges de Galeria de les SubCategories"
+    
+    def __str__(self):
+        return f"SubCategoria: {self.subcategoria.titulo} - Imagen: {self.imagen}"
+    
+
+    def delete(self, *args, **kwargs):
+        self.imagen.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar la imagen anterior si se cambia la imagen
+        if self.pk:
+            old_instance = CategoriaGaleriaImagen.objects.get(pk=self.pk)
+            if old_instance.imagen != self.imagen and old_instance.imagen:
+                old_instance.imagen.delete()
+        super().save(*args, **kwargs)
+
+
+
+
 class Post(MetadataModel, BaseModel):
     """
     Representa una entrada del blog con título, descripción, categoría y etiquetas.
@@ -378,7 +556,16 @@ class Post(MetadataModel, BaseModel):
     categoria = models.ForeignKey(
         Categoria,
         on_delete=models.CASCADE,
-        verbose_name="Categoria"
+        verbose_name="Categoria",
+        null=True,
+        blank=True
+    )
+    subcategoria = models.ForeignKey(
+        SubCategoria,
+        on_delete=models.CASCADE,
+        verbose_name="SubCategoria",
+        null=True,
+        blank=True
     )
     publicado = models.BooleanField(
         default=False,
@@ -394,6 +581,14 @@ class Post(MetadataModel, BaseModel):
         verbose_name = "Post"
         verbose_name_plural = "Posts"
     
+    def clean(self):
+        # Validar que solo una de las dos (categoria o subcategoria) esté asignada
+        if self.categoria and self.subcategoria:
+            raise ValidationError("Un post només pot pertànyer a una categoria o a una subcategoria, no a ambdues.")
+        if not self.categoria and not self.subcategoria:
+            raise ValidationError("Un post ha de pertànyer a una categoria o a una subcategoria.")
+
+
     def save(self, *args, **kwargs):
         if not self.slug:
             # Generar el slug basado en el título
@@ -418,7 +613,7 @@ class Post(MetadataModel, BaseModel):
         # Siempre se actualiza la fecha de modificación y el usuario que modifica
         self.modificado_por = get_user_model().objects.first()
         self.fecha_modificacion = timezone.now()
-
+        self.clean()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -588,3 +783,4 @@ class Noticia(MetadataModel):
     class Meta:
         verbose_name = "Notícia"
         verbose_name_plural = "Notícies"
+

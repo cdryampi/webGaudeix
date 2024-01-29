@@ -1,5 +1,6 @@
-{% extends 'core/base.html' %}
 
+{% extends 'core/base.html' %}
+{% load static %}
 {% block meta_description %}
   {% if ruta.metadescripcion %}
     <meta name="Description" content="{{ ruta.metadescripcion | safe | striptags }}">
@@ -45,81 +46,51 @@ div#map {
     object-fit: contain;
 }
 
-.card-overlay {
-    position: relative;
-    z-index: 1;
-    opacity: 1;
+.audio-list {
+    display: grid;
+    gap: 15px; /* Espacio mayor entre elementos para un aspecto más limpio */
+    padding: 15px; /* Espaciado interno del contenedor aumentado */
 }
 
-.card-overlay::before {
-    content: "";
-    position: absolute;
-    top: 15px;
-    left: 5px;
-    width: 101%;
-    height: 100%;
-    background-color: {{ ruta.categoria.color }};
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
+.audio-item {
+    background-color: #ffffff; /* Fondo blanco para un aspecto más limpio */
+    padding: 15px;
+    border: 1px solid #e0e0e0; /* Borde sutil */
+    border-radius: 10px; /* Bordes más redondeados */
+    color: #333333; /* Color de texto más suave */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidad */
 }
 
-.card-overlay:hover::before {
-    opacity: 0.3;
-}
-div.hover::before{
-    opacity: 0.3;
-}
-
-.card-overlay .url-link {
-    font-size: 1.3rem;
-    color: #31C6F8 !important;
-}
-
-.card-overlay:hover .url-link,
-div.hover .url-link {
-    font-weight: bold;
-}
-
-.image-container {
-    position: relative;
-    overflow: hidden;
-}
-
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.card-overlay:hover .image-overlay,
-div.hover .image-overlay {
-    opacity: 1;
-}
-
-.card-img-top {
-    width: 100%;
-    height: auto;
-    transition: filter 0.3s ease;
-}
-
-.card-overlay:hover .card-img-top,
-div.hover .card-img-top {
-    filter: brightness(70%);
-}
-.itinerari-image-container{
-    height: 100px;
+.audio-container {
     width: 100%;
 }
 
-.image-container img{
-    height: 300px;
+audio {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 5px; /* Bordes redondeados para el reproductor de audio */
 }
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+    .audio-list {
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 10px;
+        padding: 10px;
+    }
+}
+
+/* Estilos para tabletas y escritorio */
+@media (min-width: 769px) {
+    .audio-container {
+        /* Opcional: Estilos específicos para tabletas y escritorio si es necesario */
+    }
+    audio {
+        /* Opcional: Estilos específicos para tabletas y escritorio si es necesario */
+    }
+}
+
+
 
 </style>
 {% endblock extra_css %}
@@ -207,34 +178,35 @@ div.hover .card-img-top {
     
                 </div>
                 <div class="tab-pane fade" id="itinerario" role="tabpanel" aria-labelledby="itinerario-tab">
-                    <div class="row">
+                    <div class="row row-inline-cards justify-content-center">
                         {% for mapa in puntos_itinerario %}
-                        <div class="col-md-6 p-3">
-                            <div class="card mb-3 h-100 card-overlay" id="{{ mapa.slug|stringformat:'s' }}">
-                                <div class="image-container itinerari-image-container">
-                                    {% if mapa.postimagen.imagen %}
-                                        <img src="{{ mapa.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ mapa.titulo }}" style="width: 100%; height: 100px; object-fit: cover;">
-                                    {% endif %}
-                                    <div class="image-overlay"></div>
-                                </div>
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">{{ mapa.titulo }}</h5>
-                                    <p class="card-text flex-grow-1">
-                                        {% autoescape on %}
-                                            {{ mapa.descripcion|striptags|truncatewords:30|safe }}
-                                        {% endautoescape %}
-                                    </p>
-                                    <p class="card-text">
-                                        <a href="{% url 'map:mapa' slug=mapa.slug %}" class="text-primary pr-2 url-link">Veure més</a>
-                                    </p>
-                                </div>
+                            <div class="col-12 col-md-6 col-lg-6 p-2">
+                                <a href="{% url 'map:mapa' slug=mapa.slug %}"  class="related-activity-link my-1">
+                                    <article class="card related-activity-card mb-3 h-100" id="{{ mapa.slug|stringformat:'s' }}">
+                                        <div class="image-container">
+                                            {% if mapa.postimagen.imagen %}
+                                                <img src="{{ mapa.postimagen.imagen.archivo.url }}" loading="lazy" class="img-fluid lazy-load-img" alt="{{ mapa.titulo }}">
+                                            {% endif %}
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title related-activity-title">{{ mapa.titulo }}</h5>
+                                            <p class="card-text related-activity-description">
+                                                {% autoescape on %}
+                                                    {{ mapa.descripcion|striptags|truncatewords:30|safe }}
+                                                {% endautoescape %}
+                                            </p>
+                                            <p>
+                                                <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                            </p>
+                                        </div>
+                                    </article>
+                                </a>
                             </div>
-                        </div>
                         {% empty %}
-                        <div class="col">
-                            <div class="card card-overlay">
+                        <div class="col-12">
+                            <div class="custom-card">
                                 <div class="card-body">
-                                    <p class="card-text">No hay mapas disponibles en el itinerario.</p>
+                                    <p class="card-text">No hi ha llocs disponibles.</p>
                                 </div>
                             </div>
                         </div>
@@ -242,6 +214,8 @@ div.hover .card-img-top {
                     </div>
                 </div>
             </div>
+
+
         </div>
         <div class="col-md-5">
             <aside class="container">
@@ -269,6 +243,110 @@ div.hover .card-img-top {
         </div>
     </div>
 </div>
+
+
+{% if ruta.playlist.all %}
+    <aside class="container-fluid py-3 my-3 d-flex justify-content-center">
+        <div class="container-fluid text-center p-0 m-0">
+            <h3 class="h3">
+                {% for playlist in ruta.playlist.all %}
+                    {% if playlist.idioma.codigo == 'es' %}
+                        Audioguías
+                    {% elif playlist.idioma.codigo == 'cat' %}
+                        Audioguies
+                    {% elif playlist.idioma.codigo == 'en' %}
+                        Audioguides
+                    {% elif playlist.idioma.codigo == 'fr' %}
+                        Audioguides
+                    {% elif playlist.idioma.codigo == 'it' %}
+                        Audioguide
+                    {% elif playlist.idioma.codigo == 'de' %}
+                        Audioguides
+                    {% elif playlist.idioma.codigo == 'pt' %}
+                        Audioguias
+                    {% elif playlist.idioma.codigo == 'ar' %}
+                        المرشدين الصوتيين
+                    {% elif playlist.idioma.codigo == 'fem' %}
+                        Audioguías Feministas
+                    {% elif playlist.idioma.codigo == 'au' %}
+                        Audioguías para el Autismo
+                    {% elif playlist.idioma.codigo == 'inc' %}
+                        Audioguías de Lenguaje Adaptado
+                    {% endif %}
+                    {% if not forloop.last %} 
+                        / 
+                    {% endif %}
+                {% endfor %}
+            </h3>
+
+
+            <ul class="nav nav-tabs" style="border: none;">
+                {% for playlist in ruta.playlist.all %}
+                    <li class="nav-item" style="margin-right: 10px;">
+                        <a class="nav-link {% if forloop.first %}active{% endif %}" id="{{playlist.idioma.codigo}}-tab" data-toggle="tab" href="#{{playlist.idioma.codigo}}" role="tab" aria-controls="{{playlist.idioma.codigo}}" aria-selected="true">
+                            {% if playlist.idioma.codigo == 'es' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/es.svg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'cat' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/cat.svg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'en' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/en.svg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'fr' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/fr.svg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'it' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/it.svg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'de' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/de.svg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'pt' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/pt.svg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'ar' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/ar.svg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'fem' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/fem.jpg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'au' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/au.jpg' %}" height="25px" width="25px" />
+                            {% elif playlist.idioma.codigo == 'inc' %}
+                                <img class="img-fluid" src="{% static 'core/img/banderitas/inc.png' %}" height="25px" width="25px" />
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content" style="border: none;">
+                {% for playlist in ruta.playlist.all %}
+                <div data-playlist-id="{{playlist.pk}}" class="playlist-container-tab tab-pane fade {% if forloop.first %}show active{% endif %}" id="{{playlist.idioma.codigo}}" role="tabpanel" aria-labelledby="{{playlist.idioma.codigo}}-tab">
+                    <div class="accordion" id="accordion{{playlist.id}}">
+                        {% for audio in playlist.audioruta_set.all %}
+                            <div class="card">
+                                <div class="card-header collapsed" id="heading{{audio.id}}" data-toggle="collapse" data-target="#collapse{{audio.id}}" aria-expanded="false" aria-controls="collapse{{audio.id}}" style="cursor: pointer;">
+                                    <h6 class="mb-0 text-black-50">
+                                        {{ audio.audio }}
+                                    </h6>
+                                </div>
+                                <div id="collapse{{audio.id}}" class="collapse" aria-labelledby="heading{{audio.id}}" data-parent="#accordion{{playlist.id}}">
+                                    <div class="card-body">
+                                        <audio controls>
+                                            <source src="{{audio.audio.archivo.url}}" type="audio/mpeg">
+                                            Tu navegador no soporta la reproducción de audio.
+                                        </audio>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+                <div class="container-fluid py-3">
+                    <button class="btn btn-outline-dark" id="descargarPlaylist" role="button" playlist-slug="{{ playlist.pk }}">
+                        <i class="fas fa-download"></i> descarregar playlist
+                    </button>
+                </div>
+            </div>
+        </div>
+    </aside>
+{% endif %}
+
+
+
 <aside class="container-fluid py-0 pt-5 my-0 d-flex justify-content-center align-items-center">
     <div class="ruta-banner">
         {% if ruta.postimagen %}
@@ -287,33 +365,32 @@ div.hover .card-img-top {
     <div class="container pt-3">
 
         <h3 class="pt-3 pb-4">Altres Rutes:</h3>
-        <div class="row">
+        <div class="row row-inline-cards justify-content-center">
             {% for post in rutes %}
-            <a href="{% url 'agenda:ruta' slug=post.slug %}" class="col-md-6 p-3">
-                <div class="">
-                    <div class="card mb-3 h-100 card-overlay">
-                        <div class="image-container">
-                            {% if post.postimagen.imagen %}
-                                <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}">
-                            {% endif %}
-                            <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ post.titulo }}</h5>
-                            <p class="card-text flex-grow-1">
-                                {% autoescape on %}
-                                {{ post.descripcion|striptags|truncatewords:30|safe }}
-                                {% endautoescape %}
-                            </p>
-                            <p>
-                                <span class="text-primary text-left mt-auto url-link">Saber més</span>
-                            </p>
-                        </div>
-                    </div>
+                <div class="col-12 col-md-6 col-lg-6 p-2">
+                    <a href="{% url 'agenda:ruta' slug=post.slug %}" class="related-activity-link my-1">
+                        <article class="card related-activity-card mb-3 h-100">
+                                <div class="image-container">
+                                    {% if post.postimagen.imagen %}
+                                        <img src="{{ post.postimagen.imagen.archivo.url }}" loading="lazy" class="img-fluid lazy-load-img" alt="{{ post.titulo }}">
+                                    {% endif %}
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
+                                    <p class="card-text related-activity-description">
+                                        {% autoescape on %}
+                                        {{ post.descripcion|striptags|truncatewords:30|safe }}
+                                        {% endautoescape %}
+                                    </p>
+                                    <p>
+                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                    </p>
+                                </div>
+                        </article>
+                    </a>
                 </div>
-            </a>
             {% empty %}
-                <div class="col">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-text">No hi ha rutes disponibles.</p>
@@ -330,6 +407,7 @@ div.hover .card-img-top {
 
 {% endif %}
 
+
 {% endblock %}
 
 
@@ -344,125 +422,165 @@ div.hover .card-img-top {
 
 {% block extra_script %}
 <script>
-    function loadGoogleMapsAPI(callback) {
-        var script = document.createElement('script');
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=' + callback;
-        script.defer = true;
-        script.async = true;
-        document.head.appendChild(script);
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const descargarPlaylist = document.getElementById('descargarPlaylist');
+        .addEventListener('click', async function() {
+            let activeTab = document.querySelector('.playlist-container-tab.active');
 
-    function openTabAndScroll(tabIndex) {
-        const tabContent = document.getElementById('rutaTabContent');
-        const tabLinks = document.getElementById('rutaTabs').getElementsByTagName('a');
-        const navbar = document.getElementById('navbar');
-      
-        // Desplazarse al contenido de la pestaña
-        const targetTab = document.getElementById(tabIndex);
-        if (targetTab) {
-          const headerHeight = navbar.classList.contains('fixed-top') ? 130 : 150; // Ajusta el valor según la altura de tu header fijo
-      
-          // Mostrar el contenido del tab de itinerario
-          tabContent.style.display = 'block';
-      
-          // Esperar un breve período para asegurarse de que el contenido esté visible antes de realizar el desplazamiento
-          setTimeout(() => {
-            targetTab.style.scrollMarginTop = '90px';
-            targetTab.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-      
-            // Aplicar un efecto visual para resaltar la tarjeta seleccionada
-            targetTab.classList.add('hover');
-            //console.log(targetTab)
-            // Eliminar el efecto de resaltado después de 2 segundos
-            setTimeout(() => {
-                targetTab.classList.remove('hover');
-            }, 2000);
-          }, 100);
-        } else {
-          console.log("RIP");
-        }
-      }
-      
-      function openItinerarioTab(tabIndex) {
-        const itinerarioTab = document.getElementById('itinerario-tab');
-        if (!itinerarioTab.classList.contains('active')) {
-          itinerarioTab.click();
-          setTimeout(() => {
-            openTabAndScroll(tabIndex);
-          }, 500);
-        } else {
-          openTabAndScroll(tabIndex);
-        }
-      }
-      
-    function initMap() {
-        const mapContainer = document.getElementById('map');
-        {% if ruta.punto_inicio %}
-            const latitudInicio = parseFloat('{{ ruta.punto_inicio.latitud|stringformat:".6f" }}'.replace(',', '.'));
-            const longitudInicio = parseFloat('{{ ruta.punto_inicio.longitud|stringformat:".6f" }}'.replace(',', '.'));
-        {% else %}
-            {% if puntos_itinerario %}
-            
-                {% for mapa in puntos_itinerario|slice:":1" %}
-                    const latitudInicio = parseFloat('{{ mapa.punto_inicio.latitud|stringformat:".6f" }}'.replace(',', '.'));
-                    const longitudInicio = parseFloat('{{ mapa.punto_inicio.longitud|stringformat:".6f" }}'.replace(',', '.'));
-                {% endfor %}
-            {% endif %}
-            
-        {% endif %}
+            if (activeTab) {
+                var playlistId = activeTab.getAttribute('data-playlist-id');
 
-
-        const map = new google.maps.Map(mapContainer, {
-            center: { lat: latitudInicio, lng: longitudInicio },
-            zoom: 14
+                if (playlistId) {
+                    try {
+                        const response = await fetch(`/agenda/descargar-playlist/?playlist_id=${playlistId}`);
+                        if (!response.ok) {
+                            throw new Error('La solicitud de descarga falló');
+                        }
+                        const blob = await response.blob();
+                        const downloadUrl = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = downloadUrl;
+                        a.download = `playlist_${playlistId}.m3u`; // Nombre del archivo para la descarga
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(downloadUrl);
+                        document.body.removeChild(a); // Limpiar el enlace temporal
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                } else {
+                    console.log("No se pudo encontrar el ID de la playlist.");
+                }
+            } else {
+                console.log("No se encontró el contenedor de la playlist.");
+            }
         });
-
-        const puntosItinerario = [
-            { latitud: {{ ruta.punto_inicio.latitud|stringformat:".6f" }}, longitud: {{ ruta.punto_inicio.longitud|stringformat:".6f" }} },
-            {% for mapa in puntos_itinerario %}
-            { 
-                latitud: {{ mapa.latitud|stringformat:".6f" }},
-                longitud: {{ mapa.longitud|stringformat:".6f" }},
-                titulo: '{{ mapa.titulo|stringformat:"s" }}',
-                imagen: '{{ mapa.postimagen.imagen.archivo.url|stringformat:"s"}}',
-                descripcion: "{{ mapa.descripcion|stringformat:"s"|safe|truncatewords_html:10| linebreaksbr  }}",
-                url_interno: '{% url 'map:mapa' slug=mapa.slug %}',
-                url_externo: '{{ ruta.enlace_natura_local|stringformat:"s" }}',
-                pk: '{{ mapa.slug|stringformat:"s" }}',
-            },
-            {% endfor %}
-        ];
-
-        puntosItinerario.forEach((point, index) => {
-            const marker = new google.maps.Marker({
-                position: { lat: parseFloat(point.latitud), lng: parseFloat(point.longitud) },
-                map: map,
-                title: `Marcador ${index + 1}`
-            });
-
-            const infoWindowContent = `<div class="info-window">
-                                          <h4 class="info-window-title">${point.titulo}</h4>
-                                          <p class="info-window-image"><img src="${point.imagen}" alt="${point.titulo}" style="width: 100%; height: 100px; object-fit: cover;"></p>
-                                          <p class="info-window-description">${point.descripcion}</p>
-                                          <p class="info-window-link">
-                                            <a href="#" class="text-danger pr-2" onclick="openItinerarioTab('${point.pk}')">Veure més</a>
-                                            <a href="${point.url_externo}" target="_blank" class="text-danger">Anar a la ruta</a>
-                                          </p>
-                                      </div>`;
-
-            const infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
-
-            marker.addListener('click', function() {
-                infoWindow.setContent(infoWindowContent); // Actualizar el contenido del infoWindow en cada clic
-                infoWindow.open(map, marker);
-            });
-        });
-
-        // Activar el carrusel
-        $('.ruta-carousel').carousel();
-    }
-
-    // Cargar el recurso del API de Google Maps y llamar a la función de inicialización
-    loadGoogleMapsAPI('initMap');
+    });
 </script>
+
+
+
+    <script>
+        function loadGoogleMapsAPI(callback) {
+            var script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=' + callback;
+            script.defer = true;
+            script.async = true;
+            document.head.appendChild(script);
+        }
+
+        function openTabAndScroll(tabIndex) {
+            const tabContent = document.getElementById('rutaTabContent');
+            const tabLinks = document.getElementById('rutaTabs').getElementsByTagName('a');
+            const navbar = document.getElementById('navbar');
+        
+            // Desplazarse al contenido de la pestaña
+            const targetTab = document.getElementById(tabIndex);
+            if (targetTab) {
+            const headerHeight = navbar.classList.contains('fixed-top') ? 130 : 150; // Ajusta el valor según la altura de tu header fijo
+        
+            // Mostrar el contenido del tab de itinerario
+            tabContent.style.display = 'block';
+        
+            // Esperar un breve período para asegurarse de que el contenido esté visible antes de realizar el desplazamiento
+            setTimeout(() => {
+                targetTab.style.scrollMarginTop = '90px';
+                targetTab.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        
+                // Aplicar un efecto visual para resaltar la tarjeta seleccionada
+                targetTab.classList.add('hover');
+                //console.log(targetTab)
+                // Eliminar el efecto de resaltado después de 2 segundos
+                setTimeout(() => {
+                    targetTab.classList.remove('hover');
+                }, 2000);
+            }, 100);
+            } else {
+            console.log("RIP");
+            }
+        }
+        
+        function openItinerarioTab(tabIndex) {
+            const itinerarioTab = document.getElementById('itinerario-tab');
+            if (!itinerarioTab.classList.contains('active')) {
+            itinerarioTab.click();
+            setTimeout(() => {
+                openTabAndScroll(tabIndex);
+            }, 500);
+            } else {
+            openTabAndScroll(tabIndex);
+            }
+        }
+        
+        function initMap() {
+            const mapContainer = document.getElementById('map');
+            {% if ruta.punto_inicio %}
+                const latitudInicio = parseFloat('{{ ruta.punto_inicio.latitud|stringformat:".6f" }}'.replace(',', '.'));
+                const longitudInicio = parseFloat('{{ ruta.punto_inicio.longitud|stringformat:".6f" }}'.replace(',', '.'));
+            {% else %}
+                {% if puntos_itinerario %}
+                
+                    {% for mapa in puntos_itinerario|slice:":1" %}
+                        const latitudInicio = parseFloat('{{ mapa.punto_inicio.latitud|stringformat:".6f" }}'.replace(',', '.'));
+                        const longitudInicio = parseFloat('{{ mapa.punto_inicio.longitud|stringformat:".6f" }}'.replace(',', '.'));
+                    {% endfor %}
+                {% endif %}
+                
+            {% endif %}
+
+
+            const map = new google.maps.Map(mapContainer, {
+                center: { lat: latitudInicio, lng: longitudInicio },
+                zoom: 14
+            });
+
+            const puntosItinerario = [
+                { latitud: {{ ruta.punto_inicio.latitud|stringformat:".6f" }}, longitud: {{ ruta.punto_inicio.longitud|stringformat:".6f" }} },
+                {% for mapa in puntos_itinerario %}
+                { 
+                    latitud: {{ mapa.latitud|stringformat:".6f" }},
+                    longitud: {{ mapa.longitud|stringformat:".6f" }},
+                    titulo: '{{ mapa.titulo|stringformat:"s" }}',
+                    imagen: '{{ mapa.postimagen.imagen.archivo.url|stringformat:"s"}}',
+                    descripcion: '{{ mapa.descripcion|stringformat:"s"|safe|truncatewords_html:10| linebreaksbr  }}',
+                    url_interno: '{% url 'map:mapa' slug=mapa.slug %}',
+                    url_externo: '{{ ruta.enlace_natura_local|stringformat:"s" }}',
+                    pk: '{{ mapa.slug|stringformat:"s" }}',
+                },
+                {% endfor %}
+            ];
+
+            puntosItinerario.forEach((point, index) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: parseFloat(point.latitud), lng: parseFloat(point.longitud) },
+                    map: map,
+                    title: `Marcador ${index + 1}`
+                });
+
+                const infoWindowContent = `<div class="info-window">
+                                            <h4 class="info-window-title">${point.titulo}</h4>
+                                            <p class="info-window-image"><img src="${point.imagen}" alt="${point.titulo}" style="width: 100%; height: 100px; object-fit: cover;"></p>
+                                            <p class="info-window-description">${point.descripcion}</p>
+                                            <p class="info-window-link">
+                                                <a href="#" class="text-danger pr-2" onclick="openItinerarioTab('${point.pk}')">Veure més</a>
+                                                <a href="${point.url_externo}" target="_blank" class="text-danger">Anar a la ruta</a>
+                                            </p>
+                                        </div>`;
+
+                const infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
+
+                marker.addListener('click', function() {
+                    infoWindow.setContent(infoWindowContent); // Actualizar el contenido del infoWindow en cada clic
+                    infoWindow.open(map, marker);
+                });
+            });
+
+            // Activar el carrusel
+            $('.ruta-carousel').carousel();
+        }
+
+        // Cargar el recurso del API de Google Maps y llamar a la función de inicialización
+        loadGoogleMapsAPI('initMap');
+
+    </script>
 {% endblock extra_script %}

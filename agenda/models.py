@@ -1,5 +1,5 @@
+import re
 from django.db import models
-
 from django.contrib.auth import get_user_model
 from blog.models import Post
 from multimedia_manager.models import Imagen
@@ -9,7 +9,9 @@ from django.urls import reverse
 from datetime import timedelta, datetime, time
 from django.utils import timezone
 from ckeditor.fields import RichTextField
-
+from multimedia_manager.models import Audio
+from django.core.exceptions import ValidationError
+from gaudeix.settings import DOMAIN_URL 
 
 
 User = get_user_model()
@@ -287,6 +289,12 @@ class Ruta(Post):
         verbose_name="Enllaç a Natura Local"
     )
 
+    playlist = models.ManyToManyField(
+        'PlaylistRuta',
+        verbose_name="Playlist",
+        blank=True,
+    )
+
     def __str__(self):
         return f"Ruta: {self.titulo}"
 
@@ -349,6 +357,96 @@ class CertificadoTurismoSostenible(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+
+
+
+
+class PlayListRuta(models.Model):
+    """
+        clase que reprsenta a una playlist
+    """
+    nom_intern = models.CharField(
+        help_text="Afegiex un nom intern",
+        verbose_name="nom intern",
+        max_length=100,
+    )
+
+    idioma = models.ForeignKey(
+        Idioma,
+        on_delete=models.CASCADE,
+        default = None,
+        verbose_name="Idioma"
+    )
+
+    orden = models.PositiveIntegerField(default=0, verbose_name="Ordre")
+
+
+    def __str__(self):
+        return f"{self.nom_intern} - Idioma: {self.idioma}"
+    
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "PlayList"
+        verbose_name_plural = "PlayList"
+
+class AudioRuta(models.Model):
+    
+    """
+        Clase que representa el vinculo entre Ruta y el audio
+    """
+
+    playlist = models.ForeignKey(
+         PlayListRuta,
+         on_delete=models.CASCADE,
+         verbose_name="playlist",
+         default =None
+    )
+
+    audio = models.ForeignKey(
+        Audio,
+        on_delete=models.CASCADE,
+        verbose_name="Àudio de la ruta"
+    )
+
+    link_unico = models.URLField(
+        unique=True,  # Hace que el campo sea único
+        blank=True,
+        null=True,
+        verbose_name="Afegeix un enllaç unic",
+        help_text="Afegeix un enllaç 'https://gaudeixcabrera.cat/redirect/meu_fitxer.mp3'",
+    )
+
+    orden = models.PositiveIntegerField(default=0, verbose_name="Ordre")
+
+    def __str__(self):
+        return f"Ruta: {self.playlist.nom_intern} - Àudio: {self.audio}"
+    
+
+    def delete(self, *args, **kwargs):
+        self.audio.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Eliminar el audio anterior si se cambia el audio
+        if self.pk:
+            old_instance = AudioRuta.objects.get(pk=self.pk)
+            if old_instance.audio != self.audio and old_instance.audio:
+                old_instance.audio.delete()
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        # Verificar que la URL cumple con el formato deseado
+        url_pattern = rf'^{re.escape(DOMAIN_URL)}/redirect/[\w.-]+\.\w{{2,4}}$'
+        if self.link_unico and not re.match(url_pattern, self.link_unico):
+            raise ValidationError("La URL no cumple con el formato requerido.")
+        
+    
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "Àudio"
+        verbose_name_plural = "Àudios"
 
 
 class VisitaGuiada(Post):

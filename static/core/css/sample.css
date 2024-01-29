@@ -24,6 +24,42 @@ header ul.navbar-nav.ml-auto {
     text-transform: capitalize;
 }
 
+header .dropdown-submenu {
+  position: relative;
+}
+
+header .dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
+
+
+@media (max-width: 991px) {
+  /* Muestra el botón de hamburguesa en pantallas pequeñas */
+  header .navbar-toggler {
+      display: block;
+  }
+
+  /* Ajusta los submenús para que se muestren de manera vertical en pantallas pequeñas */
+  header .dropdown-submenu .dropdown-menu {
+      position: static;
+      float: none;
+      width: 100%;
+      margin-left: 0;
+      left: 0;
+      background-color: #f8f9fa;
+  }
+
+  /* Estilos adicionales para el menú en modo móvil */
+  header .navbar-nav .dropdown-menu {
+      position: static;
+      float: none;
+  }
+}
+
+
+
 /* Custom */
 .btn-custom {
   color: #000;
@@ -1568,6 +1604,41 @@ table.table-custom tr.even {
   background-color: #4CAA66;
   width: 200px;
   border: none;
-  box-shadow: 0px 6px 10px -5px rgba(76,170,102)
+  box-shadow: 0px 6px 10px -5px rgba(76,170,102);
 }
+
+
+/* Estilo base para modal-dialog */
+.modal-dialog.modal-dialog-centered {
+  max-width: calc(70% - 30px);
+}
+
+/* Para pantallas medianas (md) */
+@media (max-width: 768px) {
+  .modal-dialog.modal-dialog-centered {
+    max-width: calc(80% - 30px);
+  }
+}
+
+/* Para pantallas pequeñas (sm) */
+@media (max-width: 576px) {
+  .modal-dialog.modal-dialog-centered {
+    max-width: calc(80% - 30px);
+  }
+}
+
+/* Para dispositivos móviles */
+@media (max-width: 480px) {
+  .modal-dialog.modal-dialog-centered {
+    max-width: calc(90% - 30px);
+  }
+
+}
+@media (max-width: 480px) {
+  .modal-dialog.modal-dialog-centered {
+    max-width: calc(100% - 30px);
+  }
+
+}
+
 /* end modal */

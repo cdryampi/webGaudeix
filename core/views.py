@@ -22,8 +22,14 @@ from django.core.cache import caches
 from personalizacion.models import Personalizacion
 from admin_utils.models import RegistroError
 from blog.models import SubBlog
-
+from alerta.models import Alerta
+from django.views import View
+from django.shortcuts import redirect
+from django.http import Http404
+from agenda.models import AudioRuta
 import sys
+
+
 
 
 app_name = 'core'
@@ -72,6 +78,7 @@ def home(request):
     if cached_page is not None:
         return cached_page
 
+    alert = Alerta.objects.filter(publicado=True).first()
 
     personalizacion = Personalizacion.objects.filter().first()
 
@@ -175,14 +182,12 @@ def home(request):
             'diversidad': diversidad,
             'cookie_page': cookie_page,
             'current_url': current_url,
-
+            'alert': alert,
             'tren': tren,
             'autopista': autopista,
             'bus': bus,
             'aeroport': aeroport,
-
             'subblogs': subblog,
-            
             'portada_meta_description': meta_description,
             'portada_meta_keywords': meta_keywords,
         }
@@ -311,3 +316,19 @@ def error_500(request):
     )
 
     return response
+
+
+
+
+
+# Create your views here.
+
+class RedirectMultimediaFile(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            current_url = request.build_absolute_uri()
+            audio_ruta = AudioRuta.objects.get(link_unico=current_url)
+        except AudioRuta.DoesNotExist:
+            raise Http404("El enlace no existe")  # Maneja el caso en el que el enlace no se encuentre en la base de datos
+        # Realiza el redireccionamiento al enlace único del audio
+        return redirect(audio_ruta.audio.archivo.url)

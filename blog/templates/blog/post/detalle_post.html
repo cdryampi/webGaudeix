@@ -53,77 +53,17 @@
         opacity: 0.9;
     }
 
-
     .carousel-inner.text-center {
         text-align: center;
     }
 
-    .image-container {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .image-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Cambia el valor de opacidad según tu preferencia */
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .card-img-top {
-        width: 100%;
-        height: auto;
-        transition: filter 0.3s ease;
-    }
-    
-    .card-post:hover .card-img-top {
-        filter: brightness(70%); /* Cambia el valor de brillo según tu preferencia */
-    }
-
-    .card-post {
-        position: relative;
-        z-index: 1;
-    }
-    
-    .card-post::before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        left: 5px;
-        width: 101%;
-        height: 100%;
-        background-color: {{ categoria.color }};
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: -100;
-    }
-    
-    .card-post:hover::before {
-        opacity: 0.3;
-    }
-    .card-post .url-link{
-        font-size:1.3rem;
-        color: #31C6F8 !important;
-
-    }
-
-    .card-post:hover .url-link{
-        font-weight: bold;
-    }
     .img-cat-banner{
-        max-height: 50vh !important;
-        width: 100%;
-        object-fit: cover;
+      max-height: 50vh !important;
+      width: 100%;
+      object-fit: cover;
     }
-
 </style>
 {% endblock extra_css %}
-
-
 
 {% block media %}
   {% if post.postgaleriaimagen_set.count > 1 %}
@@ -193,38 +133,44 @@
 
   <div class="container-fuild content-agenda-detail-container">
     <div class="container p-2">
-    <div class="row">
-        
-      <div class="col-md-12 col-lg-12">
-        <div class="row">
-          <div class="col-md-6">
-            
-            <p>{{ post.descripcion | safe }}</p>
-                     
-            <div class="social-share-buttons">
-                <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
-                  <i class="fab fa-facebook-f fa-2x px-2"></i>
-                </a>
-                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ agenda.titulo }}" target="_blank">
-                  <i class="fab fa-twitter fa-2x px-2"></i>
-                </a>
-                <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
-                  <i class="fab fa-instagram fa-2x px-2"></i>
-                </a>
+      <div class="row">
+          
+        <div class="col-md-12 col-lg-12">
+          <div class="row">
+            <div class="col-md-6">
+              
+              <p>{{ post.descripcion | safe }}</p>
+                      
+              <div class="social-share-buttons">
+                  <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+                    <i class="fab fa-facebook-f fa-2x px-2"></i>
+                  </a>
+                  <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ agenda.titulo }}" target="_blank">
+                    <i class="fab fa-twitter fa-2x px-2"></i>
+                  </a>
+                  <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
+                    <i class="fab fa-instagram fa-2x px-2"></i>
+                  </a>
+              </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            
-            {% with imagen=post.postimagen %}
-              {% if imagen %}
-                <img src="{{ imagen.imagen.archivo.url }}" alt="{{ agenda.titulo }}" class="img-fluid">
+
+            <div class="col-md-6">
+              {% if post.postimagen.imagen and post.postimagen.imagen.archivo.url %}
+                <div class="fancybox-carousel">
+                  <a href="{{ post.postimagen.imagen.archivo.url }}" title="{{ post.postimagen.imagen.titulo }}" class="fancybox" data-fancybox="carousel" data-caption="{{ post.postimagen.imagen.titulo }}">
+                    <img src="{{ post.postimagen.imagen.archivo.url }}" title="{{ post.postimagen.imagen.titulo }}" alt="{{ post.postimagen.imagen.titulo }}" class="img-fluid">
+                  </a>
+                </div>
+                <div class="col-12">
+                  <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+                </div>
               {% endif %}
-            {% endwith %}
+            </div>
+
           </div>
         </div>
-    </div>
       </div>
-      
+    </div>
   </div>
 </section>
 

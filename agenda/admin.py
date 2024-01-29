@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
-from multimedia_manager.models import Imagen, Fichero
-from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible, Idioma
+from multimedia_manager.models import Imagen, Fichero, Audio
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible, Idioma, AudioRuta, PlayListRuta
 from map.models import MapPoint
 from django.forms import DurationField
 from blog.models import PostImagen, PostGaleriaImagen, PostFichero, Categoria, Tag
@@ -12,9 +12,32 @@ from datetime import timedelta
 from django.utils.html import format_html
 
 
+
+class RutaAudioInline(admin.TabularInline):
+    model = AudioRuta
+    extra = 1
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'audio':
+            playlist_id = None
+            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
+                playlist_id = request.resolver_match.kwargs['object_id']
+            kwargs['queryset'] = Audio.objects.filter(
+                Q(audioruta__isnull=True) | Q(audioruta__playlist=playlist_id)
+            )
+            kwargs['empty_label'] = 'sense àudio viculat'
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+class PlayListRutaInline(admin.TabularInline):
+    model = PlayListRuta
+    extra = 1
+    inlines = [RutaAudioInline]
+
+
 class PostGaleriaImagenInline(admin.TabularInline):
     model = PostGaleriaImagen
-    extra = 1
+    extra = 0
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'imagen':
@@ -24,6 +47,8 @@ class PostGaleriaImagenInline(admin.TabularInline):
 
             kwargs['queryset'] = Imagen.objects.filter(
                 Q(postgaleriaimagen__isnull=True) | Q(postgaleriaimagen__post__id=agenda_id),
+                Q(subcategoriagaleriaimagen__isnull=True),
+                Q(subcategoriabannerimagen__isnull=True),
                 Q(categoriabannerimagen__isnull=True),
                 Q(subblogimagen__isnull=True),
                 Q(subbloggaleriaimagen__isnull=True),
@@ -33,7 +58,8 @@ class PostGaleriaImagenInline(admin.TabularInline):
                 Q(diversidadimagenbanner__isnull=True),
                 Q(compradescubrepasosimagen__isnull=True),
                 Q(compradescubreimagen__isnull=True),
-                Q(compradescubregaleriaimagen__isnull=True)
+                Q(compradescubregaleriaimagen__isnull=True),
+                Q(alerta__isnull=True)
             )
             kwargs['empty_label'] = 'Sin imagen asociada'
 
@@ -62,9 +88,9 @@ class PostFicheroImagenInline(admin.TabularInline):
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(pdfdiversidadfichero__isnull=True),
                 Q(compradescubrefichero__isnull=True),
-                
+                Q(alerta__isnull=True)
             )
-            kwargs['empty_label'] = 'Sin fichero asociado'
+            kwargs['empty_label'] = 'Sense fitxer associat'
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -93,10 +119,14 @@ class PostImagenInlineRuta(admin.TabularInline):
             if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
                 post_id = request.resolver_match.kwargs['object_id']
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(subcategoriagaleriaimagen__isnull=True),
+                    Q(subcategoriabannerimagen__isnull=True),
+                    Q(alerta__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
                     Q(subbloggaleriaimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
+                    Q(categoriabannerimagen__isnull=True),
                     Q(postgaleriaimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(diversidadimagenbanner__isnull=True),
@@ -109,6 +139,10 @@ class PostImagenInlineRuta(admin.TabularInline):
             
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+
+class PlayListAdmin(admin.ModelAdmin):
+    model = PlayListRuta
+    inlines = [RutaAudioInline]
 
 
 
@@ -278,8 +312,8 @@ class RutaAdmin(admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostGaleriaImagenInline, PostFicheroImagenInline, PostImagenInlineRuta]
     exclude = ['duracion']  # Excluir el campo duracion en el administrador
-    autocomplete_fields = ['categoria','punto_inicio','mapas_itinerario']
-    filter_horizontal = ('tags',)
+    autocomplete_fields = ['categoria','punto_inicio','mapas_itinerario', 'subcategoria']
+    filter_horizontal = ('tags', 'playlist')
 
     fieldsets = [
         (None,{
@@ -291,6 +325,7 @@ class RutaAdmin(admin.ModelAdmin):
                 'publicado',
                 'pendiente',
                 'categoria',
+                'subcategoria',
                 'distancia',
                 'tema',
                 'actividad',
@@ -299,6 +334,7 @@ class RutaAdmin(admin.ModelAdmin):
                 'dificultad',
                 'punto_inicio',
                 'mapas_itinerario',
+                'playlist',
                 'enlace_natura_local',
                 'tags',
             ],
@@ -319,6 +355,9 @@ class RutaAdmin(admin.ModelAdmin):
 
         })
     ]
+
+
+
 
 
 class CertificadoTurismoSostenibleAdmin(admin.ModelAdmin):
@@ -371,3 +410,4 @@ admin.site.register(Ruta, RutaAdmin)
 admin.site.register(Agenda, AgendaAdmin)
 admin.site.register(VisitaGuiada, VisitaGuidadaAdmin)
 admin.site.register(CertificadoTurismoSostenible, CertificadoTurismoSostenibleAdmin)
+admin.site.register(PlayListRuta, PlayListAdmin)

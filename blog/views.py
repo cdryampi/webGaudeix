@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia
+from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia, SubCategoria
 from agenda.models import Agenda, VisitaGuiada, Ruta, VariationAgenda
 from django.http import JsonResponse
 from django.views.generic import View
@@ -272,4 +272,91 @@ class ListarNoticiaView(BaseContextMixin, ListView):
         """
         context = super().get_context_data(**kwargs)
 
+        return context
+    
+
+
+
+
+class SubCategoriaDetailView(BaseContextMixin, DetailView):
+    """
+    Vista basada en clase para mostrar los detalles de una categoría específica.
+    Utiliza una plantilla 'detalle_categoria.html' para mostrar los detalles.
+    """
+    model = SubCategoria # Modelo que se utilizará para obtener la categoría
+    template_name = 'blog/subcategorias/detalle_subcategoria.html' # Plantilla HTML para la página
+    context_object_name = 'subcategoria' # Nombre con el que se pasará el objeto categoría a la plantilla
+    pk_url_kwarg = 'subcategoria_id' # Nombre del argumento de URL para identificar la categoría
+
+    def get_object(self, queryset=None):
+        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
+        slug = self.kwargs.get('slug')
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, slug=slug)
+        return obj
+
+
+    def get_context_data(self, **kwargs):
+        """
+        Agrega datos adicionales al contexto de la plantilla.
+        """
+        context = super().get_context_data(**kwargs)
+        # Obtener el objeto de la categoría actual
+        subcategoria = context['subcategoria']
+        subcategorias_hermanas = SubCategoria.objects.filter(publicado= True).exclude(id=subcategoria.id)
+        context['categorias'] = subcategorias_hermanas
+        now = timezone.now()
+        #Verificar si el tipo de categoría es "agenda"
+        if subcategoria.tipo == 'agenda':
+            # Si la categoría es de tipo 'agenda', obtener la lista de agendas relacionadas
+            agendas = Agenda.objects.filter(publicado=True).all()
+            parallax = Personalizacion.objects.filter().first()
+
+            if parallax is not None:
+                if parallax.parallax_agenda:
+                    parallax = parallax.parallax_agenda.parallax_agenda
+                else:
+                    parallax = None
+            else:
+                parallax = Parallax.objects.filter().first()
+            
+            redes_sociales= RedSocial.objects.filter().all()
+            categorias = SubCategoria.objects.filter(publicado=True)
+            context['redes_sociales'] = redes_sociales
+            context['parallax'] = parallax
+            context['agendas'] = agendas
+            context['joves'] = VariationAgenda.objects.filter(agenda__publicado= True, agenda__tipo_evento='joves',fecha__gt=now).first()
+            context['categorias'] = categorias
+
+        elif subcategoria.tipo == 'visitas_guiadas':
+            # Si la categoría es de tipo 'visitas_guiadas', obtener las visitas guiadas relacionadas
+            visitas_guiadas = VisitaGuiada.objects.filter(publicado=True, subcategoria = subcategoria).all()
+            context['visitas_guiadas'] = visitas_guiadas
+
+        elif subcategoria.tipo == 'noticies':
+            # Si la categoría es de tipo 'noticias', obtener las noticias relacionadas
+            noticias = Noticia.objects.filter(publicado=True, subcategoria=subcategoria).all()
+            context['noticias'] = noticias
+
+        elif subcategoria.tipo == 'senderisme':
+            # Si la categoría es de tipo 'senderisme', obtener las rutas relacionadas
+            rutes  = Ruta.objects.filter(publicado=True, subcategoria= subcategoria).all()
+            context['rutes'] = rutes
+
+        elif subcategoria.tipo == 'normal':
+            # Si la categoría es de tipo 'normal', obtener los posts relacionados
+            posts = Post.objects.filter(publicado = True, subcategoria = subcategoria)
+            context['posts'] = posts
+
+        elif subcategoria.tipo == 'lloc':
+            # Si la categoría es de tipo 'lloc', obtener los posts relacionados
+            posts = Post.objects.filter(publicado = True, subcategoria = subcategoria)
+            context['posts'] = posts
+        elif subcategoria.tipo == 'festes_i_tradicions':
+            # Si la categoría es de tipo 'festes_i_tradicions', obtener las festividades relacionadas
+            festes = EventoEspecial.objects.filter(categoria = self.get_object().categoria).all()
+            posts = Post.objects.filter(publicado = True, subcategoria = subcategoria)
+            context['posts'] = posts
+            context['festes'] = festes
+            
         return context

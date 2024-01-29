@@ -32,7 +32,8 @@ class PDFDiversidadFicheroFicheroInline(admin.TabularInline):
                 Q(postfichero__isnull=True),
                 Q(pdfcollectionjustificaciofichero__isnull=True),
                 Q(pdfcollectionresoluciofichero__isnull =True),
-                Q(pdfcollectiontotesfichero__isnull = True)
+                Q(pdfcollectiontotesfichero__isnull = True),
+                Q(alerta__isnull=True)
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
             kwargs['help_text'] = "Selecciona un fitxer PDF associat amb el context de l'igualtat."
@@ -67,7 +68,8 @@ class DiversidadImagenBannerInline(admin.TabularInline):
                     Q(subbloggaleriaimagen__isnull=True),
                     Q(compradescubrepasosimagen__isnull=True),
                     Q(compradescubreimagen__isnull=True),
-                    Q(compradescubregaleriaimagen__isnull=True)
+                    Q(compradescubregaleriaimagen__isnull=True),
+                    Q(alerta__isnull=True)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
             

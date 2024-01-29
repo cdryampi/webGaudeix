@@ -1,0 +1,43 @@
+{% if alert %}
+    {% if alert.has_init %}
+        <div class="modal fade" id="modal-alerta" tabindex="-1" role="dialog" aria-labelledby="modal-alerta" aria-modal="true" style="display: none;padding-left: 17px;">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="position: relative;">
+                    <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close" style="position: absolute;top: 0;right: 0;padding: 0;margin: 0;width: 40px;height: 40px;z-index: 1;text-shadow: none;background: {% if alert.color %}{{alert.color}}{% else %}#12d3cf{% endif %};color: #fff;opacity: 1;">
+                    <span aria-hidden="true" class="fas fa-times"></span>
+                    </button>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-6 d-flex">
+                        <div class="modal-body p-5 img d-flex" style="background-image: {% if alert.imagen %} url('{{alert.imagen.medium_thumbnail.url}}') {% else %}url('/static/core/img/banners/img-agenda.jpg'){% endif %};background-repeat: no-repeat;background-size: cover;">
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex">
+                        <div class="modal-body d-flex align-items-center">
+                        <div class="text w-100 text-center py-2 px-2">
+                            <h4 class="mb-0 py-3">{{alert.titulo}}</h4>
+                                <div class="text-center p-3" >
+                                    <p>{{ alert.descripcion|safe }}</p>
+                                </div>
+
+                                {% if alert.ver_mas %}
+                                    {% if alert.fichero.archivo.url %}
+                                        <a alt="{{alert.fichero.titulo}}" target="_blank" href="{{url_domain}}{{alert.fichero.archivo.url}}" class="btn btn-primary d-block py-3" style="background: {% if alert.color %}{{alert.color}}{% else %}#12d3cf{% endif %} !important;border: 1px solid {% if alert.color %}{{alert.color}}{% else %}#12d3cf{% endif %} !important;color: #fff !important;">Saber més</a>
+                                    {% endif %}
+
+                                {% elif alert.ver_mas %}
+                                    {% if alert.ver_mas %}
+                                        <a alt="{{alert.titulo}}" target="_blank" href="{{alert.ver_mas}}" class="btn btn-primary d-block py-3" style="background: {% if alert.color %}{{alert.color}}{% else %}#12d3cf{% endif %} !important;border: 1px solid {% if alert.color %}{{alert.color}}{% else %}#12d3cf{% endif %} !important;color: #fff !important;">Saber més</a>
+                                    {% endif %}
+                                {% endif %}
+                            
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

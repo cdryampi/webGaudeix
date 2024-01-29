@@ -1,0 +1,243 @@
+{% extends 'core/base.html' %}
+
+{% block meta_description %}
+  {% if subcategoria.metadescripcion %}
+    <meta name="Description" content="{{ subcategoria.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ subcategoria.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if subcategoria.descripcion %}
+      <meta name="Description" content="{{ subcategoria.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ subcategoria.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if subcategoria.tags.all %}
+    <meta name="Keywords" content="{% for tag in subcategoria.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ subcategoria.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+
+    .categoria-titulo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .categoria-subtitulo {
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .categoria-descripcion {
+        margin-bottom: 20px;
+    }
+
+    .categoria-carrusel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .categoria-carrusel img {
+        object-fit: cover;
+        max-height: 500px;
+    }
+
+    .carousel-control-prev{
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+
+
+    .carousel-inner.text-center {
+        text-align: center;
+    }
+
+    .img-cat-banner{
+        max-height: 50vh !important;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    
+      .categoria-especial img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+</style>
+{% endblock extra_css %}
+
+{% block media %}
+    {% include 'blog/subcategorias/utils/carrusel_subcategorias.html' %}
+{% endblock media %}
+
+{% block content %}
+    <section class="mx-0 px-0 py-5 container-fluid">
+        <div class="container">
+            <div class="categoria-container">
+                <h2 class="h1 text-center">{{ subcategoria.titulo }}</h2>
+                <p class="categoria-subtitulo  lead text-center">{{ subcategoria.subtitulo }}</p>
+                <p class="categoria-descripcion">
+                    {% autoescape on %}
+                        {{ subcategoria.descripcion | safe }}
+                    {% endautoescape %}
+                </p>
+
+                <div class="container pt-3">
+
+                    <h3>Principals llocs</h3>
+                    <div class="row">
+
+
+                        {% for post in posts %}
+                        <div class="col-12 col-md-6 col-lg-6 p-2">
+                            <a href="
+                            {% if post.agenda %} 
+                                {% url 'agenda:detalle_agenda' slug=post.agenda.slug %}
+                            {% elif post.visitaguiada %}
+                                {% url 'agenda:visites-guiades' slug=post.agenda.slug %}
+                            {% elif post.mappoint %}
+                                {% url 'map:mapa' slug=post.slug %}
+                            {% else %}
+                                {{ post.get_absolute_url }}
+                            {% endif %}" 
+                            class="related-activity-link my-1">
+                            <article class="card related-activity-card mb-3 h-100">
+                                <div class="image-container">
+                                    {% if post.postimagen.imagen and post.postimagen.imagen.archivo.url %}
+                                        <img src="{{ post.postimagen.imagen.archivo.url }}" class="img-fluid lazy-load-img" loading="lazy" title="{{ post.postimagen.imagen.titulo }}" alt="{{ post.postimagen.imagen.titulo }}" style="height: 350px;">
+                                    {% else %}
+                                        {% with imagen=post.postgaleriaimagen_set.first %}
+                                        {% if imagen %}
+                                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" class="img-fluid lazy-load-img" loading="lazy" alt="{{ post.titulo }}" style="height: 350px;">
+                                        {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="card-body text-center">
+                                    <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
+                                    <p class="card-text related-activity-description">
+                                        {% autoescape on %}
+                                            {{ post.descripcion |striptags |truncatewords:30 | safe }}
+                                        {% endautoescape %}
+                                    </p>
+                                    <p>
+                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                    </p>
+                                </div>
+                            </article>
+                        </a>
+                    </div>
+                        {% empty %}
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="card-text">No hi ha posts disponibles.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block asides %}
+
+    {% if subcategoria.subcategorias.all %}
+        <aside class="container-fluid py-3">
+            {% comment %} Inicio del bloque de tipos de rutas asignadas senderismo {% endcomment %}
+            <div class="col-12 py-2">
+                <h3 class="py-2 h3">També et pot interessar:</h3>
+                <div class="row row-inline-cards justify-content-center">
+                    {% for subcat in subcategoria.subcategorias.all %}
+                        <div class="col-12 col-md-6 col-lg-6 p-2">
+                            <a href="{% url 'blog:subcategoria' slug=subcat.slug %}" class="related-activity-link my-1">
+                                <article class="card related-activity-card mb-3 h-100">
+                                        {% if subcat.subcategoriabannerimagen %}
+                                            <div class="image-container">
+                                                <img src="{{ subcat.subcategoriabannerimagen.imagen.medium_thumbnail.url}}" alt="{{ subcat.subcategoriabannerimagen.archivo.titulo}}" class="img-fluid lazy-load-img" loading="lazy" style="height: 350px;">
+                                            </div>
+                                        {% else %}
+                                            {% if subcat.subcategoriagaleriaimagen_set.first.imagen %}
+                                                <div class="image-container">
+                                                    <img src="{{ subcat.subcategoriagaleriaimagen_set.first.imagen.medium_thumbnail.url}}" alt="{{ subcat.subcategoriagaleriaimagen_set.first.imagen.archivo.titulo}}" class="img-fluid lazy-load-img" loading="lazy" style="height: 350px;">
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title related-activity-title">{{ subcat.titulo }}</h5>
+                                            <p class="card-text related-activity-description">
+                                                {% autoescape on %}
+                                                    {{ subcat.descripcion|striptags|truncatewords:30|safe }}
+                                                {% endautoescape %}
+                                            </p>
+                                            <p>
+                                                <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                            </p>
+                                        </div>
+                                </article>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
+
+
+
+    {% if categorias %}
+        <div class="container">
+            <div class="col-12">
+                <h2 class="h2 text-center">
+                    Descobreix els Tresors de Cabrera de Mar
+                </h2>
+            </div>
+        </div>
+        {% include 'blog/subcategorias/utils/subcategorias_seleccion.html' %}
+    {% endif %}
+
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+    
+{% endblock asides %}

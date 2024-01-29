@@ -35,7 +35,8 @@ class CompraDescubreFicheroInline(admin.TabularInline):
                 Q(pdfcollectionjustificaciofichero__isnull=True),
                 Q(pdfcollectionconvocatoriafichero__isnull=True),
                 Q(pdfcollectiontotesfichero__isnull = True),
-                Q(pdfdiversidadfichero__isnull=True)
+                Q(pdfdiversidadfichero__isnull=True),
+                Q(alerta__isnull=True)
             )
             kwargs['empty_label'] = 'Sense fitxer asociat'
 
@@ -54,6 +55,9 @@ class CompraDescubrePasosImagenInline(admin.TabularInline):
                 evento_especial = request.resolver_match.kwargs['object_id']
                 #print(categoria_id)
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(subcategoriagaleriaimagen__isnull=True),
+                    Q(subcategoriabannerimagen__isnull=True),
+                    Q(alerta__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
@@ -83,6 +87,9 @@ class CompraDescubreGaleriaImagenInline(admin.TabularInline):
                 evento_especial = request.resolver_match.kwargs['object_id']
                 #print(categoria_id)
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(subcategoriagaleriaimagen__isnull=True),
+                    Q(subcategoriabannerimagen__isnull=True),
+                    Q(alerta__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),
@@ -116,6 +123,9 @@ class CompraDescubreImagenInline(admin.TabularInline):
             if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
                 evento_especial = request.resolver_match.kwargs['object_id']
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(subcategoriagaleriaimagen__isnull=True),
+                    Q(subcategoriabannerimagen__isnull=True),
+                    Q(alerta__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),

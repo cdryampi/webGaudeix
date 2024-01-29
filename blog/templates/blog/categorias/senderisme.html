@@ -57,108 +57,13 @@
     }
 
 
-    .categoria-titulo {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .categoria-subtitulo {
-        color: #666;
-        margin-bottom: 10px;
-    }
-
-    .categoria-descripcion {
-        margin-bottom: 20px;
-    }
-
-    main .categoria-container .card {
-        position: relative;
-        z-index: 1;
-    }
-    
-    main .categoria-container .card::before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        left: 5px;
-        width: 101%;
-        height: 100%;
-        background-color: {{ categoria.color }};
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: -100;
-    }
-    
-    main .categoria-container .card:hover::before {
-        opacity: 0.3;
-    }
-    main .categoria-container .card .url-link{
-        font-size:1.3rem;
-        color: #31C6F8 !important;
-
-    }
-
-    main .categoria-container .card:hover .url-link{
-        font-weight: bold;
-    }
-    .image-container {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .image-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Cambia el valor de opacidad según tu preferencia */
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .card:hover .image-overlay {
-        opacity: 1;
-    }
-    
-    .card-img-top {
-        width: 100%;
-        height: auto;
-        transition: filter 0.3s ease;
-    }
-    
-    .card:hover .card-img-top {
-        filter: brightness(70%); /* Cambia el valor de brillo según tu preferencia */
-    }
-
-      .categoria-especial {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        padding: 20px;
-        text-align: center;
-        color: #fff;
-        border-radius: 10px;
-        transition: background-color 0.3s ease;
-      }
-    
-      .categoria-especial:hover {
-        background-color: #333;
-      }
-    
-      .categoria-especial img {
-        max-width: 100%;
-        height: auto;
-        margin-bottom: 10px;
-      }
-      .img-cat-banner{
+    .img-cat-banner{
         max-height: 50vh !important;
         width: 100%;
         object-fit: cover;
     }
+
+
 </style>
 {% endblock extra_css %}
 
@@ -174,48 +79,92 @@
             <p class="categoria-subtitulo lead text-center">{{ categoria.subtitulo }}</p>
             <p class="categoria-descripcion">{{ categoria.descripcion | safe }}</p>
 
-            <div class="container pt-3">
+            <div class="container py-3">
+                {% comment %} Inicio del bloque de tipos de rutas asignadas senderismo {% endcomment %}
+                    <div class="col-12 py-2">
+                        <h3 class="py-2 h3">Rutes personalitzades de Cabrera de Mar:</h3>
+                        <div class="row row-inline-cards justify-content-center">
+                            {% for subcat in categoria.subcategorias.all %}
+                                <div class="col-12 col-md-6 col-lg-6 p-2">
+                                    <a href="{% url 'blog:subcategoria' slug=subcat.slug %}" class="related-activity-link my-1">
+                                        <article class="card related-activity-card mb-3 h-100">
+                                                {% if subcat.subcategoriabannerimagen %}
+                                                    <div class="image-container">
+                                                        <img src="{{ subcat.subcategoriabannerimagen.imagen.medium_thumbnail.url}}" alt="{{ subcat.subcategoriabannerimagen.archivo.titulo}}" class="img-fluid lazy-load-img" loading="lazy" style="height: 350px;">
+                                                    </div>
+                                                {% else %}
+                                                    {% if subcat.subcategoriagaleriaimagen_set.first.imagen %}
+                                                        <div class="image-container">
+                                                            <img src="{{ subcat.subcategoriagaleriaimagen_set.first.imagen.medium_thumbnail.url}}" alt="{{ subcat.subcategoriagaleriaimagen_set.first.imagen.archivo.titulo}}" class="img-fluid lazy-load-img" loading="lazy" style="height: 350px;">
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <div class="card-body text-center">
+                                                    <h5 class="card-title related-activity-title">{{ subcat.titulo }}</h5>
+                                                    <p class="card-text related-activity-description">
+                                                        {% autoescape on %}
+                                                            {{ subcat.descripcion|striptags|truncatewords:30|safe }}
+                                                        {% endautoescape %}
+                                                    </p>
+                                                    <p>
+                                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                                    </p>
+                                                </div>
+                                        </article>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        </div>
 
-                <h3>Rutes:</h3>
-                <div class="row">
-                    {% for post in rutes %}
-                    <a href="{% url 'agenda:ruta' slug=post.slug %}" class="col-md-6 p-3">
-                        <div class="">
-                            <div class="card mb-3 h-100">
-                                <div class="image-container">
-                                    {% if post.postimagen.imagen %}
-                                        <img src="{{ post.postimagen.imagen.archivo.url }}" class="card-img-top" alt="{{ post.titulo }}">
-                                    {% endif %}
-                                    <div class="image-overlay"></div> <!-- Nuevo div para el efecto de oscurecimiento -->
-                                </div>
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">{{ post.titulo }}</h5>
-                                    <p class="card-text flex-grow-1">
-                                        {% autoescape on %}
-                                            {{ post.descripcion|striptags|truncatewords:30|safe }}
-                                        {% endautoescape %}
-                                    </p>
-                                    <p>
-                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
-                                    </p>
+                {% comment %} Fin del bloque de tipos de rutas asignadas senderismo {% endcomment %}
+
+
+
+                {% comment %} Inicio del bloque de rutas asignadas senderismo {% endcomment %}
+                <div class="col-12 py-2">
+
+                    <h3 class="py-2 h3">Rutes principals:</h3>
+                    <div class="row row-inline-cards justify-content-center">
+                        {% for post in rutes %}
+                            <div class="col-12 col-md-6 col-lg-6 p-2">
+                                <a href="{% url 'agenda:ruta' slug=post.slug %}" class="related-activity-link my-1">
+                                    <article class="card related-activity-card mb-3 h-100">
+                                                {% if post.postimagen.imagen %}
+                                                    <div class="image-container">
+                                                        <img src="{{ post.postimagen.imagen.archivo.url }}" loading="lazy" class="img-fluid lazy-load-img" alt="{{ post.titulo }}">
+                                                    </div>
+                                                {% endif %}
+                                                <div class="card-body text-center">
+                                                    <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
+                                                    <p class="card-text related-activity-description">
+                                                        {% autoescape on %}
+                                                            {{ post.descripcion|striptags|truncatewords:30|safe }}
+                                                        {% endautoescape %}
+                                                    </p>
+                                                    <p>
+                                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                                    </p>
+                                                </div>
+                                    </article>
+                                </a>
+                            </div>
+                        {% empty %}
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="card-text">No hi ha rutes disponibles.</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                    {% empty %}
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <p class="card-text">No hi ha rutes disponibles.</p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
+
                 </div>
-
+                {% comment %} Fin del bloque de rutas asignadas senderismo {% endcomment %}
 
             </div>
-
+        </div>
             
             
             

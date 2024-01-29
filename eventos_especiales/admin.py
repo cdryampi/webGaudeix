@@ -96,6 +96,7 @@ class EventoFicheroInline(admin.TabularInline):
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(pdfdiversidadfichero__isnull=True),
                 Q(compradescubrefichero__isnull=True),
+                Q(alerta__isnull=True)
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
 
@@ -112,6 +113,9 @@ class EventoEspecialGaleriaImagenInline(admin.TabularInline):
                 evento_especial = request.resolver_match.kwargs['object_id']
                 #print(categoria_id)
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(subcategoriagaleriaimagen__isnull=True),
+                    Q(subcategoriabannerimagen__isnull=True),
+                    Q(alerta__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
                     Q(categoriagaleriaimagen__isnull=True),

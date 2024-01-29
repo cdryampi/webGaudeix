@@ -8,6 +8,7 @@ from agenda.models import VariationAgenda
 from django.utils import timezone
 from django.db.models import Q
 from paginas_estaticas.models import Cookies, PaginaLegal, Diversidad
+from alerta.models import Alerta
 
 class BaseContextMixin:
     def get_context_data(self, **kwargs):
@@ -15,7 +16,7 @@ class BaseContextMixin:
         # Agrega aquí las variables de contexto que deseas pasar a la plantilla
         #context['categorias'] = Categoria.objects.filter(publicado=True)
 
-    
+        alert = Alerta.objects.filter(publicado=True).first()
         # ultimos eventos del portal
         now = timezone.now()
         variation_agendas = VariationAgenda.objects.filter(
@@ -38,7 +39,7 @@ class BaseContextMixin:
         context['agenda'] = Categoria.objects.filter(publicado=True, tipo='agenda').first()
         context['cookies'] = Cookies.objects.filter().first()
         context['cookie_page'] = PaginaLegal.objects.filter(tipo="cookies").first()
-        
+        context['alert'] = alert
         # Obten la URL canónica y agrega al contexto
         canonical_url = self.get_canonical_url()
         context['canonical_url'] = canonical_url

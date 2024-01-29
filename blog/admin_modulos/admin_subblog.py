@@ -26,6 +26,8 @@ class SubBlogImagenInline(admin.TabularInline):
                 subblog_id = request.resolver_match.kwargs['object_id']
             kwargs['queryset'] = Imagen.objects.filter(
                 Q(subblogimagen__isnull=True) | Q(subblogimagen__subblog_id=subblog_id),
+                subcategoriabannerimagen__isnull=True,
+                subcategoriagaleriaimagen__isnull=True,
                 categoriabannerimagen__isnull=True,
                 categoriagaleriaimagen__isnull=True,
                 postimagen__isnull=True,
@@ -35,7 +37,8 @@ class SubBlogImagenInline(admin.TabularInline):
                 diversidadimagenbanner__isnull=True,
                 compradescubrepasosimagen__isnull=True,
                 compradescubreimagen__isnull=True,
-                compradescubregaleriaimagen__isnull=True
+                compradescubregaleriaimagen__isnull=True,
+                alerta__isnull=True
             )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -61,7 +64,11 @@ class SubblogGaleriaImagenInline(admin.TabularInline):
                     Q(diversidadimagenbanner__isnull=True),
                     Q(compradescubrepasosimagen__isnull=True),
                     Q(compradescubreimagen__isnull=True),
-                    Q(compradescubregaleriaimagen__isnull=True)
+                    Q(compradescubregaleriaimagen__isnull=True),
+                    Q(alerta__isnull=True),
+                    Q(subcategoriagaleriaimagen__isnull=True),
+                    Q(categoriagaleriaimagen__isnull=True),
+                    Q(subcategoriabannerimagen__isnull=True),
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
         return super().formfield_for_foreignkey(db_field, request, **kwargs)

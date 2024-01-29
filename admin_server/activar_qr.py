@@ -14,3 +14,7 @@ for evento in eventos:
 for c in compra_y_descubre:
     c.save()
 
+
+"""
+    Hay que ejecuta un script para cambiar los redirect del enlace de los ficheros multimedia.
+"""

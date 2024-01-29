@@ -1,4 +1,4 @@
-from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Idioma, AudioRuta, PlayListRuta
 from blog.models import Post
 from django.views import View
 from django.http import HttpResponse
@@ -27,7 +27,8 @@ from django.http import JsonResponse
 
 
 
-# Create your views here.
+
+
 class VisitaGuiadaView(BaseContextMixin, DetailView):
     model = VisitaGuiada
     template_name = 'agenda/visita_guiada.html'
@@ -82,11 +83,13 @@ class RutaView(BaseContextMixin, DetailView):
         rutes = Ruta.objects.filter(publicado = True).exclude(pk = current_object.pk)
         now = timezone.now()
         ultimos_post = Agenda.objects.filter(publicado = True)[:4]
-        
+        idiomas = Idioma.objects.filter()
+
         context['rutes'] = rutes
         context['puntos_itinerario'] = puntos_itinerario
         context['now'] = now
         context['posts'] = ultimos_post
+        context['idiomas'] = idiomas
 
         return context
 
@@ -378,3 +381,28 @@ class PDFView(View):
         return response
     
 
+
+
+class DescargarPlaylist(View):
+    """
+    Clase que representa una vista para descargar una playlist como un archivo M3U.
+    """
+
+    def get(self, request, *args, **kwargs):
+        playlist_id = request.GET.get('playlist_id')
+        
+        try:
+            playlist = PlayListRuta.objects.get(pk=playlist_id)
+        except PlayListRuta.DoesNotExist:
+            return HttpResponse("Playlist no encontrada", status=404)
+
+        # Crear el contenido del archivo M3U
+        content = "#EXTM3U\n"
+        for audio in AudioRuta.objects.filter(playlist=playlist).order_by('orden'):
+            content += f"#EXTINF:-1,{audio.audio.titulo}\n{DOMAIN_URL}{audio.audio.archivo.url}\n"
+
+        # Configurar la respuesta HTTP para descargar el archivo
+        response = HttpResponse(content, content_type='audio/x-mpegurl')
+        response['Content-Disposition'] = f'attachment; filename="{playlist.nom_intern}.m3u"'
+
+        return response

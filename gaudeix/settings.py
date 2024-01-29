@@ -84,7 +84,8 @@ INSTALLED_APPS = [
     'compra_y_descubre',
     'admin_utils',
     'gaudeix_utils',
-    'newsletter'
+    'newsletter',
+    'alerta'
 
     #'corsheaders',
     #'admin_tree'

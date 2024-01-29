@@ -39,6 +39,7 @@ window.addEventListener('scroll', function() {
 
   document.addEventListener("DOMContentLoaded", function () {
     // Obtenemos todos los elementos con la clase .col-especial-subBlog
+
     const elementos = document.querySelectorAll('.col-especial-subBlog');
 
     // Iteramos sobre cada elemento y asignamos los estilos correspondientes
@@ -58,3 +59,13 @@ window.addEventListener('scroll', function() {
       });
     });
   });
+
+
+
+$(document).ready(function(){
+    $('.dropdown-submenu a.dropdown-toggle').on("click", function(e){
+        $(this).next('ul').toggle();
+        e.stopPropagation();
+        e.preventDefault();
+    });
+});

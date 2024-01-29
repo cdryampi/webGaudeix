@@ -171,9 +171,14 @@
     <main class="container-fluid p-0 m-0" id="main-content">
         <!-- Contenido específico de cada página se insertará aquí -->
         {% block content %}
+
         {% endblock %}
     </main>
-    
+
+    {% if alert %}
+        {% include 'alerta/alerta.html' %}
+    {% endif %}
+
     {% if portada %}
         {% include 'map/map.html' %}
         {% include "como_llegar/como_llegar.html" %}

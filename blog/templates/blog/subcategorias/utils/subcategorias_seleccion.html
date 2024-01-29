@@ -1,0 +1,47 @@
+{% load static %}
+{% if categorias %}
+<section class="container-fluid py-3" id="collage-container-categorias-seleccion">
+    <div class="py-3">
+        <p class="collage-title-categorias-seleccion lead px-5 text-left">Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac, la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera. Aquests són només alguns dels llocs més emblemàtics del nostre municipi, on cada racó us farà viure una experiència única i inoblidable.</p>
+    </div>
+    <div class="col-12">
+        <div class="collage-container-categorias-seleccion py-5 swiper-container swiper-container-collage-categorias-seleccion">
+            <div class="swiper-wrapper">
+                {% for categoria in categorias %}
+                <div class="swiper-slide collage-card-categorias-seleccion">
+                    <a href="{% url 'blog:subcategoria' slug=categoria.slug %}" class="text-white d-block collage-link-categorias-seleccion">
+                        <div class="collage-image-container-categorias-seleccion">
+                            {% if categoria.subcategoriabannerimagen.imagen and categoria.subcategoriabannerimagen.imagen.archivo %}
+                                <div class="text-center">
+                                    <img src="{{ categoria.subcategoriabannerimagen.imagen.archivo.url }}" alt="{{  categoria.subcategoriabannerimagen.imagen.titulo }}"
+                                        class="img-fluid img-cat-banner" title="{{ categoria.subcategoriabannerimagen.imagen.titulo }}">
+                                </div>
+                            {% else %}
+                                {% with primera_imagen=categoria.subcategoriagaleriaimagen_set.first.imagen %}
+                                    {% if primera_imagen %}
+                                        <picture>
+                                            <source srcset="{{ primera_imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                            <source srcset="{{ primera_imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                                            <source srcset="{{ primera_imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
+                                            <img src="" 
+                                                data-src="{{ primera_imagen.medium_thumbnail.url }}"
+                                                alt="{{ categoria.titulo }}" 
+                                                class="img-fluid align-middle lazy-load-img">
+                                        </picture>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        </div>                                              
+                        <div class="collage-card-body-categorias-seleccion">
+                            <h3 class="collage-card-title-categorias-seleccion">{{ categoria.titulo }}</h3>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-button-prev custom-prev-2"></div>
+            <div class="swiper-button-next custom-next-2"></div>
+        </div>
+    </div>
+</section>
+{% endif %}

@@ -1,4 +1,5 @@
   // Función para guardar la cookie al hacer clic en el botón
+  
   function acceptCookies() {
     // Crea una nueva fecha con 365 días a partir de la fecha actual
     var expirationDate = new Date();
@@ -9,6 +10,14 @@
 
     // Oculta el mensaje de política de cookies
     document.querySelector(".cookies-message-container").style.display = "none";
+  }
+
+  function showAlert() {
+    if (!getCookieValue("alertShown")) {
+        $('#modal-alerta').modal('show');
+        $('#modal-alerta').css("display","block");
+        setCookie("alertShown", "true", 10); // Establece la cookie para 10 minutos
+    }
   }
 
   // Función que se ejecuta cuando el documento ha cargado completamente
@@ -28,6 +37,7 @@
       //acceptCookies();
       cookiesMessageContainer.classList.add("fixed-cookie-message");
     }
+    showAlert();
   }
 
   // Función para obtener el valor de una cookie por su nombre
@@ -40,6 +50,13 @@
       }
     }
     return null;
+  }
+
+
+  function setCookie(name, value, durationInMinutes) {
+    var expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + (durationInMinutes * 60 * 1000));
+    document.cookie = name + "=" + value + "; expires=" + expirationDate.toUTCString() + "; path=/";
   }
 
   // Agrega un event listener para el evento 'DOMContentLoaded' que llama a la función onDocumentLoad

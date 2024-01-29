@@ -9,7 +9,8 @@ from django.core.exceptions import ValidationError
 ALLOWED_EXTENSIONS = {
     'imagen': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg', 'webp'],
     'video': ['.mp4', '.avi', '.mov', '.mkv'],
-    'fichero': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.zip']
+    'fichero': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.zip'],
+    'audio': ['.mp3', '.wav', '.aac', '.ogg', '.flac'],
 }
 MAX_TAMANIO_ARCHIVO = 33485760  # 30 MB
 
@@ -57,12 +58,20 @@ def validar_tamanio_archivo(archivo):
     if tamanio_archivo > MAX_TAMANIO_ARCHIVO:
         raise TamanioArchivoExcedidoError('El tamaño del archivo excede el límite permitido')
 
+def validar_archivo_audio(archivo):
+    validar_tamanio_archivo(archivo)
+
 def upload_to_imagen(instance, filename):
     return generar_nombre_archivo(filename, tipo='imagen')
 
 
 def upload_to_fichero(instance, filename):
     return generar_nombre_archivo(filename, tipo='fichero')
+
+
+def upload_to_audio(instance, filename):
+    return generar_nombre_archivo(filename, tipo='audio')
+
 
 def upload_to_video(instance, filename):
     return generar_nombre_archivo(filename, tipo='video')

@@ -30,6 +30,8 @@ class PostImagenInline(admin.TabularInline):
             if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
                 post_id = request.resolver_match.kwargs['object_id']
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(subcategoriabannerimagen__isnull=True),
+                    Q(subcategoriagaleriaimagen__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
@@ -40,6 +42,7 @@ class PostImagenInline(admin.TabularInline):
                     Q(compradescubrepasosimagen__isnull=True),
                     Q(compradescubreimagen__isnull=True),
                     Q(compradescubregaleriaimagen__isnull=True),
+                    Q(alerta__isnull=True),
                     Q(postimagen__isnull=True) | Q(postimagen__post__id=post_id)
                 )
             kwargs['empty_label'] = 'Sense imatge associada'
@@ -66,7 +69,7 @@ class PostFicheroInline(admin.TabularInline):
                 Q(pdfcollectiontotesfichero__isnull = True),
                 Q(pdfdiversidadfichero__isnull=True),
                 Q(compradescubrefichero__isnull=True),
-                
+                Q(alerta__isnull=True)
             )
             kwargs['empty_label'] = 'Sin fichero asociado'
 
@@ -87,6 +90,9 @@ class PostGaleriaImagenInline(admin.TabularInline):
             
             # Filtrar las imágenes disponibles para seleccionar
                 kwargs['queryset'] = Imagen.objects.filter(
+                    Q(subcategoriabannerimagen__isnull=True),
+                    Q(subcategoriagaleriaimagen__isnull=True),
+                    Q(alerta__isnull=True),
                     Q(eventoespecialgaleriaimagen__isnull=True),
                     Q(categoriabannerimagen__isnull=True),
                     Q(subblogimagen__isnull=True),
@@ -112,12 +118,22 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('titulo', 'descripcion')
     inlines = [PostImagenInline, PostGaleriaImagenInline, PostFicheroInline]
     actions = ['refresh_cache']
-    autocomplete_fields = ['categoria']
+    autocomplete_fields = ['categoria','subcategoria']
     filter_horizontal = ('tags',)
 
     fieldsets = [
         (None, {
-            'fields': ['titulo', 'metatitulo', 'descripcion', 'metadescripcion', 'categoria', 'publicado','tags'],
+            'fields': 
+            [
+                'titulo',
+                'metatitulo',
+                'descripcion',
+                'metadescripcion',
+                'categoria',
+                'subcategoria',
+                'publicado',
+                'tags'
+            ],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'un Post.</strong></p>"
                 "<p><em><u>Un Post</u></em> és una entrada del blog que pot contenir diferents tipus de continguts. "
