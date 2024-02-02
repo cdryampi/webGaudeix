@@ -1,7 +1,8 @@
+{% load i18n %}
 {% if tren and autopista and bus and aeroport %}
     <aside class="container-fluid py-3">
         <div class="col-12 p-3">
-            <h3 class="text-center h3 py-5">Com Arribar a Cabrera de Mar</h3>
+            <h3 class="text-center h3 py-5">{% blocktrans %}Com Arribar a Cabrera de Mar{% endblocktrans %}</h3>
         </div>
 
         <div class="col-12">
@@ -12,7 +13,6 @@
                             <p class="text-center">
                                 <a class="" target="_blank" href="{{ tren.enlace }}" rel="noopener">
                                     <i class="fas fa-train fa-4x" style="color: {% if evento_especial %}{{ evento_especial.color }}{% else %}{{ header.color_fondo_header }}{% endif %};">
-
                                     </i>
                                 </a>
                             </p>
@@ -23,7 +23,7 @@
                             {% endautoescape %}
                             <p class="text-center">
                                 <a class="btn btn-light" target="_blank" href="{{ tren.enlace }}" rel="noopener">
-                                    Horaris de tren
+                                    {% blocktrans %}Horaris de tren{% endblocktrans %}
                                 </a>
                             </p>
                         </div>
@@ -46,7 +46,7 @@
                             {% endautoescape %}
                             <p class="text-center">
                                 <a class="btn btn-light" target="_blank" href="{{ autopista.enlace }}" rel="noopener">
-                                    Busca la millor Ruta
+                                    {% blocktrans %}Busca la millor Ruta{% endblocktrans %}
                                 </a>
                             </p>
                         </div>
@@ -68,7 +68,7 @@
                         {% endautoescape %}
                         <p class="text-center">
                             <a class="btn btn-light" target="_blank" href="{{ bus.enlace }}" rel="noopener">
-                                Horaris de Bus
+                                {% blocktrans %}Horaris de Bus{% endblocktrans %}
                             </a>
                         </p>
                     </div>
@@ -90,12 +90,12 @@
                         {% endautoescape %}
                         <p class="text-center">
                             <a class="btn btn-light" target="_blank" href="{{ aeroport.enlace_principal }}" rel="noopener">
-                                Aeroport del Prat
+                                {% blocktrans %}Aeroport del Prat{% endblocktrans %}
                             </a>
                         </p>
                         <p class="text-center">
                             <a class="btn btn-light" target="_blank" href="{{ aeroport.enlace_secundario }}" rel="noopener" >
-                                Aeroport de Girona
+                                {% blocktrans %}Aeroport de Girona{% endblocktrans %}
                             </a>
                         </p>
                     </div>

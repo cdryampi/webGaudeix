@@ -13,7 +13,7 @@ from django.utils.html import escape
 import json
 
 class TeenvioView(View):
-    template_name = 'teenvio_form.html'
+    template_name = 'api/teenvio_form.html'
 
     def get(self, request):
         return render(request, self.template_name)

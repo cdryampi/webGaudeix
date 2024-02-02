@@ -1,25 +1,26 @@
 {% load static %}
+{% load i18n %}
 <div id="calendar" class="row"></div>
 
 <form id="filtro-agenda-form">
   {% csrf_token %}
   <div class="form-group">
-    <label class="p-2" for="tipo-evento">Tipus d'esdeveniment:</label>
+    <label class="p-2" for="tipo-evento">{% blocktrans %}Tipus d'esdeveniment{% endblocktrans %}:</label>
     <div id="tipo-evento" class="tipo-evento-buttons">
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="">Tots</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="">{% blocktrans %}Tots{% endblocktrans %}</button>
       {% if joves %}
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="joves">Juliol jove</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="joves">{% blocktrans %}Juliol jove{% endblocktrans %}</button>
       {% endif %}
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="musica">Música</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="teatre">Teatre</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="exposicio">Exposició</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="festes">Festes</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="cinema">Cinema</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="dansa">Dansa</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="visites_guiades">Visites guiades</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="activitats_turistiques">Activitats turístiques</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="xarrades">Conferències</button>
-      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="altres">Altres</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="musica">{% blocktrans %}Música{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="teatre">{% blocktrans %}Teatre{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="exposicio">{% blocktrans %}Exposició{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="festes">{% blocktrans %}Festes{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="cinema">{% blocktrans %}Cinema{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="dansa">{% blocktrans %}Dansa{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="visites_guiades">{% blocktrans %}Visites guiades{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="activitats_turistiques">{% blocktrans %}Activitats turístiques{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="xarrades">{% blocktrans %}Conferències{% endblocktrans %}</button>
+      <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="altres">{% blocktrans %}Altres{% endblocktrans %}</button>
     </div>
     <input type="hidden" id="tipo_evento" name="tipo_evento" value="">
   </div>

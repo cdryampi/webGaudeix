@@ -1,9 +1,10 @@
 {% load static %}
+{% load i18n %}
 {% if coleccion_destacados %}
 <section class="container-fluid py-3 bg-light" id="destacats">
     <div class="py-3">
-        <h4 class="related-activities-title text-center h2">Activitats Relacionades</h4>
-        <p class="lead related-activities-subtitle text-center">Descobreix altres activitats interessants per a gaudir al màxim.</p>
+        <h4 class="related-activities-title text-center h2">{% blocktrans %}Activitats Relacionades{% endblocktrans %}</h4>
+        <p class="lead related-activities-subtitle text-center">{% blocktrans %}Descobreix altres activitats interessants per a gaudir al màxim{% endblocktrans %}.</p>
 
 
     </div>
@@ -131,7 +132,7 @@
                                         {% endif %}
                                         {% if agenda.precio == 0 %}
                                             <i class="fas fa-tag" style="color: #3ebfab;"></i>
-                                            <span class="event-price">Gratis</span>
+                                            <span class="event-price">{% blocktrans %}Gratis{% endblocktrans %}</span>
                                         {% elif agenda.precio %}
                                             <i class="fas fa-tag" style="color: #3ebfab;"></i>
                                             <span class="event-price">{{ agenda.precio }} €</span>

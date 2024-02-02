@@ -1,8 +1,10 @@
+{% load i18n %}
+
 <section class="container-fluid p-0 m-0 py-5 bg-light">
 
   <div class="row p-0 m-0">
     <div class="col-12">
-      <h3 class="h3 text-center py-5">Descobreix els llocs icònics de Cabrera de mar</h3>
+      <h3 class="h3 text-center py-5">{% blocktrans %}Descobreix els llocs icònics de Cabrera de mar{% endblocktrans %}</h3>
     </div>
 
     {% if user_agent.is_pc %}
@@ -10,23 +12,23 @@
 
         <div id="map-container" class="" style="height: 600px; width: 100%;"></div>
         <div id="legend-container" class="map-legend">
-          <h4>Leyenda</h4>
+          <h4>{% blocktrans %}Leyenda{% endblocktrans %}</h4>
       
           <div class="legend-item">
             <div class="legend-color bg-primary"></div>
-            <span class="legend-label">Platges</span>
+            <span class="legend-label">{% blocktrans %}Platges{% endblocktrans %}</span>
           </div>
           <div class="legend-item">
             <div class="legend-color bg-info"></div>
-            <span class="legend-label">Punt d'informació</span>
+            <span class="legend-label">{% blocktrans %}Punt d'informació{% endblocktrans %}</span>
           </div>
           <div class="legend-item">
             <div class="legend-color bg-warning"></div>
-            <span class="legend-label">Jaciments arqueològics</span>
+            <span class="legend-label">{% blocktrans %}Jaciments arqueològics{% endblocktrans %}</span>
           </div>
           <div class="legend-item">
             <div class="legend-color bg-secondary"></div>
-            <span class="legend-label">Patrimoni cultural</span>
+            <span class="legend-label">{% blocktrans %}Patrimoni cultural{% endblocktrans %}</span>
           </div>
         </div>
       </aside>
@@ -41,7 +43,7 @@
           <div class="card-header bg-light" data-toggle="collapse" data-target="#collapse_{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse_{{ forloop.counter }}" id="heading_{{ forloop.counter }}" style="border: 1px solid {% if group.grouper == 'platges' %}#007BFF{% elif group.grouper == 'informació' %}#17A2B8{% elif group.grouper == 'jaciments' %}#FFC107{% elif group.grouper == 'patrimoni' %}#6C757D{% else %}#000000{% endif %};">
             <h5 class="mb-0 d-flex align-items-center">
               <h5 class="btn btn-link text-white">
-                <span class="mr-2 text-capitalize" style="color: {% if group.grouper == 'platges' %}#007BFF{% elif group.grouper == 'informació' %}#17A2B8{% elif group.grouper == 'jaciments' %}#FFC107{% elif group.grouper == 'patrimoni' %}#6C757D{% else %}#000000{% endif %};">{{ group.grouper }}</span>
+                <span class="mr-2 text-capitalize" style="color: {% if group.grouper == 'platges' %}#007BFF{% elif group.grouper == 'informació' %}#17A2B8{% elif group.grouper == 'jaciments' %}#FFC107{% elif group.grouper == 'patrimoni' %}#6C757D{% else %}#000000{% endif %};">{% trans group.grouper %}</span>
               </h5>
               <span class="badge badge-secondary ml-auto">{{ group.list|length }}</span>
             </h5>
@@ -83,56 +85,54 @@
                                     <p class="related-activity-date-time py-3">
                                       {% if objeto.icono == 'station' %}
                                         <i class="fas fa-train" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Estació</span>
+                                        <span class="event-icon-label">{% blocktrans %}Estació{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'restaurant' %}
                                         <i class="fas fa-utensils" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Restaurant</span>
+                                        <span class="event-icon-label">{% blocktrans %}Restaurant{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'library' %}
                                         <i class="fas fa-book" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Biblioteca</span>
+                                        <span class="event-icon-label">{% blocktrans %}Biblioteca{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'hotel' %}
                                         <i class="fas fa-hotel" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Hotel</span>
+                                        <span class="event-icon-label">{% blocktrans %}Hotel{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'town-hall' %}
                                         <i class="fas fa-building" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Ajuntament</span>
+                                        <span class="event-icon-label">{% blocktrans %}Ajuntament{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'theater' %}
                                         <i class="fas fa-theater-masks" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Centre Cultural</span>
+                                        <span class="event-icon-label">{% blocktrans %}Centre Cultural{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'sport' %}
                                         <i class="fas fa-dumbbell" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Esports</span>
+                                        <span class="event-icon-label">{% blocktrans %}Esports{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'serveis' %}
                                         <i class="fas fa-concierge-bell" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Serveis</span>
+                                        <span class="event-icon-label">{% blocktrans %}Serveis{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'transports' %}
                                         <i class="fas fa-bus" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Transports</span>
+                                        <span class="event-icon-label">{% blocktrans %}Transports{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'aparcaments' %}
                                         <i class="fas fa-parking" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Aparcaments</span>
+                                        <span class="event-icon-label">{% blocktrans %}Aparcaments{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'platges' %}
                                         <i class="fas fa-umbrella-beach" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Platges</span>
+                                        <span class="event-icon-label">{% blocktrans %}Platges{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'informació' %}
                                         <i class="fas fa-info-circle" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Punt d'informació</span>
+                                        <span class="event-icon-label">{% blocktrans %}Punt d'informació{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'jaciments' %}
                                         <i class="fas fa-archway" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Jaciments arqueològics</span>
+                                        <span class="event-icon-label">{% blocktrans %}Jaciments arqueològics{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'patrimoni' %}
                                         <i class="fas fa-landmark" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Patrimoni cultural</span>
+                                        <span class="event-icon-label">{% blocktrans %}Patrimoni cultural{% endblocktrans %}</span>
                                       {% elif objeto.icono == 'flora-i-fauna' %}
                                         <i class="fas fa-tree" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Flora i fauna</span>
+                                        <span class="event-icon-label">{% blocktrans %}Flora i fauna{% endblocktrans %}</span>
                                       {% else %}
                                         <i class="fas fa-question-circle" style="color: #3ebfab;"></i>
-                                        <span class="event-icon-label">Icono desconocido</span>
+                                        <span class="event-icon-label">{% blocktrans %}Icono desconocido{% endblocktrans %}</span>
                                       {% endif %}
                                     </p>
-                                    
-                                    
                                 </div>
                             </div>
                         </article>

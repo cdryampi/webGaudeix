@@ -1,9 +1,10 @@
 {% load static %}
+{% load i18n %}
 <aside class="container-fluid">
     <div class="wrapper container">
         <div class="py-3">
-            <h3 class="related-activities-title h3 text-center">Agenda</h3>
-            <p class="lead text-center">No et perdis cap activitat, gaudeix Cabrera!</p>
+            <h3 class="related-activities-title h3 text-center">{% blocktrans %}Agenda{% endblocktrans %}</h3>
+            <p class="lead text-center">{% blocktrans %}No et perdis cap activitat, gaudeix Cabrera!{% endblocktrans %}</p>
         </div>
         <div class="row row-inline-cards justify-content-center">
             {% for objeto in ultimos_eventos %}
@@ -73,9 +74,9 @@
     <div class="container">
         <div class="col-12 py-3 text-center">
             {% if local_agenda.categoria %}
-              <a href="{% url 'blog:categoria' slug=local_agenda.categoria.slug %}" class="btn btn-light btn-custom py-3 px-4" title="Obre tota l'agenda de Cabrera de Mar">Tota l'agenda</a>
+              <a href="{% url 'blog:categoria' slug=local_agenda.categoria.slug %}" class="btn btn-light btn-custom py-3 px-4" title="Obre tota l'agenda de Cabrera de Mar">{% blocktrans %}Tota l'agenda{% endblocktrans %}</a>
             {% else %}
-              <a href="{% url 'blog:categoria' slug=agenda.slug %}" class="btn btn-light btn-custom py-3 px-4" title="Obre tota l'agenda de Cabrera de Mar">Tota l'agenda</a>
+              <a href="{% url 'blog:categoria' slug=agenda.slug %}" class="btn btn-light btn-custom py-3 px-4" title="Obre tota l'agenda de Cabrera de Mar">{% blocktrans %}Tota l'agenda{% endblocktrans %}</a>
             {% endif %}
         </div>
     </div>

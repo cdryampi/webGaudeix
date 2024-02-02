@@ -10,7 +10,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from django.utils.html import format_html
-
+from modeltranslation.admin import TranslationAdmin
 
 
 class RutaAudioInline(admin.TabularInline):
@@ -147,7 +147,7 @@ class PlayListAdmin(admin.ModelAdmin):
 
 
 
-class AgendaAdmin(admin.ModelAdmin):
+class AgendaAdmin(TranslationAdmin, admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
     autocomplete_fields = ['ubicacion']
     filter_horizontal = ('tags','idiomas')
@@ -186,19 +186,19 @@ class AgendaAdmin(admin.ModelAdmin):
         # Resto de los fieldsets
     ]
 
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "categoria":
             kwargs["queryset"] = Categoria.objects.filter(tipo="agenda")
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    
+        return super(AgendaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-    def formfield_for_dbfield(self, db_field, **kwargs):
-        field = super().formfield_for_dbfield(db_field, **kwargs)
-
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name == 'tipo_evento':
-            field.help_text = _("Selecciona el tipus d'esdeveniment")
+            kwargs['help_text'] = _("Selecciona el tipus d'esdeveniment")
+        return super(AgendaAdmin, self).formfield_for_dbfield(db_field, request, **kwargs)
 
-        return field
+
+
 
 
 class VisitaGuidadaForm(forms.ModelForm):
@@ -254,7 +254,7 @@ class VisitaGuidadaForm(forms.ModelForm):
 
 
 
-class VisitaGuidadaAdmin(admin.ModelAdmin):
+class VisitaGuidadaAdmin(TranslationAdmin, admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostImagenInlineRuta, PostGaleriaImagenInline, PostFicheroImagenInline]
     filter_horizontal = ('agendas','tags','certificados')
@@ -308,7 +308,7 @@ class VisitaGuidadaAdmin(admin.ModelAdmin):
 
 
 
-class RutaAdmin(admin.ModelAdmin):
+class RutaAdmin(TranslationAdmin, admin.ModelAdmin):
     form = VisitaGuidadaForm
     inlines = [PostGaleriaImagenInline, PostFicheroImagenInline, PostImagenInlineRuta]
     exclude = ['duracion']  # Excluir el campo duracion en el administrador

@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 {% if header %}
 <div class="container-fluid p-0 header-container">
     {% include 'topbar/topbar.html' %}
@@ -23,6 +24,7 @@
             </button>
             <div class="collapse navbar-collapse" style="background-color: {{ header.color_fondo_header }} !important;" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
+
                     {% for referencia in referencias %}
                         {% if referencia.tipo == 'externo' %}
                             <li class="nav-item">
@@ -47,7 +49,7 @@
                                                 {% endif %}
                                             {% endfor %}
                                             <li class="nav-item">
-                                                <a class="dropdown-item" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">Saber més</a>
+                                                <a class="dropdown-item" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -79,7 +81,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
                                                             <li class="nav-item">
-                                                                <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">Saber més</a>
+                                                                <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -91,7 +93,7 @@
                                             {% endif %}
                                         {% endfor %}
                                         <li class="nav-item">
-                                            <a class="dropdown-item" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">Saber més</a>
+                                            <a class="dropdown-item" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -120,6 +122,42 @@
                             </li>
                         {% endif %}
                     {% endfor %}
+                </ul>
+                {% comment %} idioma {% endcomment %}
+                <ul class="navbar-nav ml-0">
+                    <div class="nav-item dropdown">
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle text-white font-weight-bold" id="navbarDropdownLang" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if request.LANGUAGE_CODE == 'ca' %}
+                                <img src="{% static 'core/img/banderitas/cat.svg' %}" alt="Catalan Flag" height="20px" width="20px" />
+                            {% else %}
+                                <img src="{% static 'core/img/banderitas/' %}{{ request.LANGUAGE_CODE }}.svg" alt="{{ request.LANGUAGE_CODE }}" height="20px" width="20px" />
+                            {% endif %}
+                        </a>
+                        
+                        
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownLang" id="dropdown-lang" style="min-width: 5rem;">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% for lang in LANGUAGES %}
+                                <a href="{% url 'set_language' %}" class="dropdown-item"
+                                   onclick="event.preventDefault(); document.getElementById('form-lang-{{ lang.0 }}').submit();" data-disabled="true">
+                                    {% if lang.0 == 'ca' %}
+                                        <img class="img-fluid" src="{% static 'core/img/banderitas/cat.svg' %}" height="35px" width="35px" />
+                                    {% else %}
+                                        <img class="img-fluid" src="{% static 'core/img/banderitas/' %}{{ lang.0 }}.svg" height="35px" width="35px" />
+                                    {% endif %}
+                                </a>
+                                <form id="form-lang-{{ lang.0 }}" action="{% url 'set_language' %}" method="post" style="display: none;">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.path }}">
+                                    <input type="hidden" name="language" value="{{ lang.0 }}">
+                                </form>
+                            {% endfor %}
+                        </div>
+                                               
+                        
+                        {% comment %} end idioma {% endcomment %}
+                    </div>
                 </ul>
             </div>
         </div>

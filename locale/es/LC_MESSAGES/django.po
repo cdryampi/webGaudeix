@@ -1,0 +1,447 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-29 09:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\agenda\admin.py:199
+msgid "Selecciona el tipus d'esdeveniment"
+msgstr ""
+
+#: .\agenda\models.py:120
+msgid "Tipus d'esdeveniment"
+msgstr ""
+
+#: .\agenda\models.py:455
+msgid "Nens"
+msgstr ""
+
+#: .\agenda\models.py:456
+msgid "Joves"
+msgstr ""
+
+#: .\agenda\models.py:457
+msgid "Adults"
+msgstr ""
+
+#: .\agenda\models.py:458
+msgid "Totes les edats"
+msgstr ""
+
+#: .\agenda\models.py:462 .\blog\models.py:209
+msgid "Sí"
+msgstr ""
+
+#: .\agenda\models.py:463 .\blog\models.py:208
+msgid "No"
+msgstr ""
+
+#: .\alerta\models.py:86
+msgid "La fecha de inicio debe ser anterior a la fecha de fin."
+msgstr ""
+
+#: .\map\models.py:54
+msgid "Municipi"
+msgstr ""
+
+#: .\map\models.py:61
+msgid "Comarca"
+msgstr ""
+
+#: .\map\models.py:68
+msgid "Comunitat Autònoma"
+msgstr ""
+
+#: .\map\models.py:75
+msgid "País"
+msgstr ""
+
+#: .\map\models.py:82
+msgid "Codi postal"
+msgstr ""
+
+#: .\map\models.py:88
+msgid "Carrer"
+msgstr ""
+
+
+# post template blog\templates\post\detalle_post.html
+msgid "Fes clic a les imatges per veure la galeria completa"
+msgstr "Haz clic en las imágenes para ver la galería completa"
+
+msgid "Descarregar PDF"
+msgstr "Download PDF"
+
+msgid "Agenda"
+msgstr "Agenda"
+
+msgid "No et perdis cap activitat, gaudeix Cabrera!"
+msgstr "¡No te pierdas ninguna actividad, disfruta de Cabrera!"
+
+msgid "Tota l'agenda"
+msgstr "Toda la agenda"
+
+
+# core base.html title
+msgid "Inici"
+msgstr "Inicio"
+
+#categoria_especial.html
+
+msgid "Et proposem els millors plans a Cabrera de Mar!"
+msgstr "¡Te proponemos los mejores planes en Cabrera de Mar!"
+
+msgid "Escull amb qui vols venir i et presentem un munt d'opcions per gaudir al màxim."
+msgstr "Elige con quién quieres venir y te presentamos un montón de opciones para disfrutar al máximo."
+
+#super_destacado.html
+
+msgid "No et pots perdre"
+msgstr "No te puedes perder"
+
+msgid "Saber més"
+msgstr "Ver más"
+
+#destacados.html
+
+msgid "Destacats"
+msgstr "Destacados"
+
+msgid "Cabrera de Mar és un municipi de la comarca del Maresme situat en una petita vall oberta al litoral, entre les localitats de Vilassar de Mar i Mataró. Combina muntanya i mar amb una gran riquesa arqueològica en el poblat iber, al peu del castell de Burriac i en diversos jaciments romans en el nucli urbà."
+msgstr "Cabrera de Mar es un municipio de la comarca del Maresme situado en un pequeño valle abierto al litoral, entre las localidades de Vilassar de Mar y Mataró. Combina montaña y mar con una gran riqueza arqueológica en el asentamiento íbero, al pie del castillo de Burriac y en varios yacimientos romanos en el núcleo urbano."
+
+msgid "Situat a uns 28 quilòmetres de Barcelona i a 104 metres sobre el nivell del mar, el centre del municipi es troba a 2.5 quilòmetres de distància del mar, en una petita vall entre dues muntanyes: Burriac i Montcabrer."
+msgstr "Situado a unos 28 kilómetros de Barcelona y a 104 metros sobre el nivel del mar, el centro del municipio se encuentra a 2.5 kilómetros de distancia del mar, en un pequeño valle entre dos montañas: Burriac y Montcabrer."
+
+
+#categorias_seleccion.html
+
+msgid "Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac, la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera. Aquests són només alguns dels llocs més emblemàtics del nostre municipi, on cada racó us farà viure una experiència única i inoblidable."
+msgstr "Conoce los lugares que no deberías perderte si visitas Cabrera de Mar: el castillo de Burriac, la Necrópolis íbera, la antigua ciudad de Ilturo, la parroquia de San Feliu o las playas de Cabrera. Estos son solo algunos de los lugares más emblemáticos de nuestro municipio, donde cada rincón te hará vivir una experiencia única e inolvidable."
+
+#com_llegar.html
+
+msgid "Com Arribar a Cabrera de Mar"
+msgstr "Cómo llegar a Cabrera de Mar"
+
+msgid "Horaris de tren"
+msgstr "Horarios de tren"
+
+msgid "Busca la millor Ruta"
+msgstr "Busca la mejor Ruta"
+
+msgid "Horaris de Bus"
+msgstr "Horarios de Bus"
+
+msgid "Aeroport del Prat"
+msgstr "Aeropuerto del Prat"
+
+msgid "Aeroport de Girona"
+msgstr "Aeropuerto de Girona"
+
+#cookies.html
+
+msgid "Per a més informació podeu consultar la nostra política de galetes"
+msgstr "Para más información pueden consultar nuestra política de cookies"
+
+msgid "aquí"
+msgstr "aquí"
+
+# footer.html
+
+msgid "diversitat e inclusió"
+msgstr "diversidad e inclusión"
+
+#map.html
+msgid "Descobreix els llocs icònics de Cabrera de mar"
+msgstr "Descubre los lugares icónicos de Cabrera de mar"
+
+msgid "informació"
+msgstr "información"
+
+
+
+
+
+msgid "Leyenda"
+msgstr "Llegenda"
+
+msgid "Punt d'informació"
+msgstr "Punto de información"
+
+msgid "Jaciments arqueològics"
+msgstr "Yacimientos arqueológicos"
+
+msgid "Patrimoni cultural"
+msgstr "Patrimonio cultural"
+
+msgid "Estació"
+msgstr "Estación"
+
+msgid "Restaurant"
+msgstr "Restaurante"
+
+msgid "Biblioteca"
+msgstr "Biblioteca"
+
+msgid "Hotel"
+msgstr "Hotel"
+
+msgid "Ajuntament"
+msgstr "Ayuntamiento"
+
+msgid "Centre Cultural"
+msgstr "Centro Cultural"
+
+msgid "Esports"
+msgstr "Deportes"
+
+msgid "Serveis"
+msgstr "Servicios"
+
+msgid "Transports"
+msgstr "Transportes"
+
+msgid "Aparcaments"
+msgstr "Aparcamientos"
+
+msgid "Flora i fauna"
+msgstr "Flora y fauna"
+
+msgid "patrimoni"
+msgstr "patrimonio"
+
+msgid "jaciments"
+msgstr "yacimientos"
+
+msgid "Platges"
+msgstr "Playas"
+
+msgid "platges"
+msgstr "Playas"
+
+#teenvio_form.html
+
+msgid "Butlletí electrònic"
+msgstr "Boletín electrónico"
+
+msgid "Notificació"
+msgstr "Notificación"
+
+
+msgid "tancar"
+msgstr "cerrar"
+
+msgid "Introduïu el vostre correu electrònic"
+msgstr "Introduce tu dirección de correo electrónico"
+
+
+#carrusel_categorias.html
+
+msgid "Aquesta imatge no està disponible"
+msgstr "Esta imagen no está disponible"
+
+msgid "No hi ha imatges disponibles per a aquesta categoria"
+msgstr "No hay imágenes disponibles para esta categoría"
+
+msgid "Descobreix els Tresors de Cabrera de Mar"
+msgstr "Descubre los Tesoros de Cabrera de Mar"
+
+# categoria_normal.html
+
+msgid "Contingut relacionat"
+msgstr "Contenido relacionado"
+
+msgid "No hi ha posts disponibles"
+msgstr "No hay publicaciones disponibles"
+
+msgid "També et pot interessar"
+msgstr "También te puede interesar"
+
+msgid "Festes principals"
+msgstr "Fiestas principales"
+
+msgid "Altres festes"
+msgstr "Otras fiestas"
+
+msgid "Principals llocs"
+msgstr "Lugares principales"
+
+msgid "Rutes personalitzades de Cabrera de Mar"
+msgstr "Rutas personalizadas de Cabrera de Mar"
+
+msgid "Rutes principals"
+msgstr "Rutas principales"
+
+msgid "No hi ha rutes disponibles"
+msgstr "No hay rutas disponibles"
+
+msgid "Explora Cabrera de Mar: Descobreix els seus racons amb les nostres rutes temàtiques"
+msgstr "Explora Cabrera de Mar: Descubre sus rincones con nuestras rutas temáticas"
+
+msgid "Descobreix les nostres increïbles visites guiades!"
+msgstr "¡Descubre nuestras increíbles visitas guiadas!"
+
+msgid "Viu la Cultura i les Festes a Cabrera de Mar"
+msgstr "Vive la Cultura y las Fiestas en Cabrera de Mar"
+
+msgid "Tots"
+msgstr "Todos"
+
+msgid "Juliol jove"
+msgstr "Julio joven"
+
+msgid "Música"
+msgstr "Música"
+
+msgid "Teatre"
+msgstr "Teatro"
+
+msgid "Exposició"
+msgstr "Exposición"
+
+msgid "Festes"
+msgstr "Fiestas"
+
+msgid "Cinema"
+msgstr "Cine"
+
+msgid "Dansa"
+msgstr "Danza"
+
+msgid "Visites guiades"
+msgstr "Visitas guiadas"
+
+msgid "Conferències"
+msgstr "Conferencias"
+
+msgid "Altres"
+msgstr "Otros"
+
+msgid "Activitats turístiques"
+msgstr "Actividades turísticas"
+
+#ruta.html
+
+msgid "Descripció"
+msgstr "Descripción"
+
+msgid "Detalls"
+msgstr "Detalles"
+
+msgid "Itinerari"
+msgstr "Itinerario"
+
+msgid "Durada"
+msgstr "Duración"
+
+
+msgid "Pendent"
+msgstr "Pendiente"
+
+msgid "metres"
+msgstr "metros"
+
+msgid "quilòmetres"
+msgstr "kilómetros"
+
+msgid "Tema"
+msgstr "Tema"
+
+msgid "Activitat"
+msgstr "Actividad"
+
+msgid "Valoració"
+msgstr "Valoración"
+
+msgid "Tipologia"
+msgstr "Tipología"
+
+msgid "Dificultat"
+msgstr "Difficulty"
+
+msgid "No hi ha llocs disponibles"
+msgstr "No hay lugares disponibles"
+
+msgid "Et recomanem l'App de Natura Local per fer aquesta ruta guiada i interpretada. Descarrega-te-la gratis aquí"
+msgstr "Te recomendamos la App de Natura Local para realizar esta ruta guiada e interpretada. Descárgala gratis aquí"
+
+msgid "Tu navegador no soporta la reproducción de audio"
+msgstr "Tu navegador no admite la reproducción de audio"
+
+msgid "descarregar playlist"
+msgstr "descargar lista de reproducción"
+
+msgid "Altres Rutes"
+msgstr "Otras Rutas"
+
+msgid "Activitats Relacionades"
+msgstr "Actividades Relacionadas"
+
+msgid "Descobreix altres activitats interessants per a gaudir al màxim"
+msgstr "Descubre otras actividades interesantes para disfrutar al máximo"
+
+msgid "Gratis"
+msgstr "Gratis"
+
+msgid "Informació addicional"
+msgstr "Información adicional"
+
+msgid "Duració"
+msgstr "Duración"
+
+msgid "Data d'inici"
+msgstr "Fecha de inicio"
+
+msgid "Públic recomanat"
+msgstr "Público recomendado"
+
+msgid "No s'ha proporcionat la ubicació"
+msgstr "Ubicación no proporcionada"
+
+
+msgid "Calendari d'Esdeveniments"
+msgstr "Calendario de Eventos"
+
+msgid "Dl"
+msgstr "Lu"
+
+msgid "Dm"
+msgstr "Ma"
+
+msgid "Dc"
+msgstr "Mi"
+
+msgid "Dj"
+msgstr "Ju"
+
+msgid "Dv"
+msgstr "Vi"
+
+msgid "Ds"
+msgstr "Sá"
+
+msgid "Dg"
+msgstr "Do"
+
+msgid "Duració diària"
+msgstr "Duración diaria"
+
+msgid "Certificats de Turisme Sostenible"
+msgstr "Certificados de Turismo Sostenible"
+
+msgid "Esdeveniments de la visita guiada"
+msgstr "Eventos de la visita guiada"

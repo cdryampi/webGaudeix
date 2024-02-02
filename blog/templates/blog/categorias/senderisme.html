@@ -1,5 +1,5 @@
 {% extends 'core/base.html' %}
-
+{% load i18n %}
 {% block meta_description %}
   {% if categoria.metadescripcion %}
     <meta name="Description" content="{{ categoria.metadescripcion | safe | striptags }}">
@@ -82,7 +82,7 @@
             <div class="container py-3">
                 {% comment %} Inicio del bloque de tipos de rutas asignadas senderismo {% endcomment %}
                     <div class="col-12 py-2">
-                        <h3 class="py-2 h3">Rutes personalitzades de Cabrera de Mar:</h3>
+                        <h3 class="py-2 h3">{% blocktrans %}Rutes personalitzades de Cabrera de Mar{% endblocktrans %}:</h3>
                         <div class="row row-inline-cards justify-content-center">
                             {% for subcat in categoria.subcategorias.all %}
                                 <div class="col-12 col-md-6 col-lg-6 p-2">
@@ -107,7 +107,7 @@
                                                         {% endautoescape %}
                                                     </p>
                                                     <p>
-                                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                                        <span class="text-primary text-left mt-auto url-link">{% blocktrans %}Saber més{% endblocktrans %}</span>
                                                     </p>
                                                 </div>
                                         </article>
@@ -124,7 +124,7 @@
                 {% comment %} Inicio del bloque de rutas asignadas senderismo {% endcomment %}
                 <div class="col-12 py-2">
 
-                    <h3 class="py-2 h3">Rutes principals:</h3>
+                    <h3 class="py-2 h3">{% blocktrans %}Rutes principals{% endblocktrans %}:</h3>
                     <div class="row row-inline-cards justify-content-center">
                         {% for post in rutes %}
                             <div class="col-12 col-md-6 col-lg-6 p-2">
@@ -143,7 +143,7 @@
                                                         {% endautoescape %}
                                                     </p>
                                                     <p>
-                                                        <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                                        <span class="text-primary text-left mt-auto url-link">{% blocktrans %}Saber més{% endblocktrans %}</span>
                                                     </p>
                                                 </div>
                                     </article>
@@ -153,7 +153,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <p class="card-text">No hi ha rutes disponibles.</p>
+                                        <p class="card-text">{% blocktrans %}No hi ha rutes disponibles{% endblocktrans %}.</p>
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +180,7 @@
         <div class="container">
             <div class="col-12">
                 <h2 class="h2 text-center">
-                    Descobreix els Tresors de Cabrera de Mar
+                    {% blocktrans %}Descobreix els Tresors de Cabrera de Mar{% endblocktrans %}
                 </h2>
             </div>
         </div>

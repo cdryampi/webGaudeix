@@ -9,11 +9,11 @@ from colorfield.fields import ColorField
 from django.core.validators import MinLengthValidator, RegexValidator, MaxLengthValidator
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 from core.utils import generate_short_slug
 from django.core.exceptions import ValidationError
+
 
 
 
@@ -355,6 +355,7 @@ class CategoriaGaleriaImagen(models.Model):
     def save(self, *args, **kwargs):
         # Eliminar la imagen anterior si se cambia la imagen
         if self.pk:
+
             old_instance = CategoriaGaleriaImagen.objects.get(pk=self.pk)
             if old_instance.imagen != self.imagen and old_instance.imagen:
                 old_instance.imagen.delete()
@@ -484,9 +485,13 @@ class SubCategoriaBannerImagen(models.Model):
     def save(self, *args, **kwargs):
         # Eliminar la imagen anterior si se cambia la imagen
         if self.pk:
-            old_instance = CategoriaBannerImagen.objects.get(pk=self.pk)
-            if old_instance.imagen != self.imagen and old_instance.imagen:
-                old_instance.imagen.delete()
+            if CategoriaBannerImagen.objects.filter(pk=self.pk).exists():
+                old_instance = CategoriaBannerImagen.objects.get(pk=self.pk)
+                if old_instance.imagen != self.imagen and old_instance.imagen:
+                    old_instance.imagen.delete()
+                else:
+                    pass
+
         super().save(*args, **kwargs)
 
     class Meta:
@@ -527,9 +532,12 @@ class SubCategoriaGaleriaImagen(models.Model):
     def save(self, *args, **kwargs):
         # Eliminar la imagen anterior si se cambia la imagen
         if self.pk:
-            old_instance = CategoriaGaleriaImagen.objects.get(pk=self.pk)
-            if old_instance.imagen != self.imagen and old_instance.imagen:
-                old_instance.imagen.delete()
+            if CategoriaGaleriaImagen.objects.filter(pk=self.pk).exists():
+                old_instance = CategoriaGaleriaImagen.objects.get(pk=self.pk)
+                if old_instance.imagen != self.imagen and old_instance.imagen:
+                    old_instance.imagen.delete()
+                else:
+                    pass
         super().save(*args, **kwargs)
 
 
@@ -624,6 +632,8 @@ class Post(MetadataModel, BaseModel):
         return self.titulo
 
 
+
+
 class PostImagen(models.Model):
     """
     Modelo que representa a la imagen de un post
@@ -654,9 +664,15 @@ class PostImagen(models.Model):
     def save(self, *args, **kwargs):
         # Eliminar la imagen anterior si se cambia la imagen
         if self.pk:
-            old_instance = PostImagen.objects.get(pk=self.pk)
-            if old_instance.imagen != self.imagen and old_instance.imagen:
-                old_instance.imagen.delete()
+                if PostImagen.objects.filter(pk=self.pk).exists():
+                    
+                    old_instance = PostImagen.objects.get(pk=self.pk)
+                    if old_instance.imagen != self.imagen and old_instance.imagen:
+                        old_instance.imagen.delete()
+                else:
+                    pass
+
+
         super().save(*args, **kwargs)
 
 
@@ -691,9 +707,13 @@ class PostGaleriaImagen(models.Model):
     def save(self, *args, **kwargs):
         # Eliminar la imagen anterior si se cambia la imagen
         if self.pk:
-            old_instance = PostImagen.objects.get(pk=self.pk)
-            if old_instance.imagen != self.imagen and old_instance.imagen:
-                old_instance.imagen.delete()
+                if PostGaleriaImagen.objects.filter(pk=self.pk).exists():
+                    old_instance = PostGaleriaImagen.objects.get(pk=self.pk)
+                    if old_instance.imagen != self.imagen and old_instance.imagen:
+                        old_instance.imagen.delete()
+                else:
+                    pass
+
         super().save(*args, **kwargs)
 
 

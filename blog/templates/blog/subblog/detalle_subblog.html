@@ -1,5 +1,5 @@
 {% extends 'core/base.html' %}
-
+{% load i18n %}
 {% block meta_description %}
     {% if subblog.metadescripcion %}
         <meta name="Description" content="{{ subblog.metadescripcion | safe | striptags }}">
@@ -94,7 +94,7 @@
         <div class="container">
             <div class="col-12">
                 <h2 class="h2 text-center">
-                    Descobreix els Tresors de Cabrera de Mar
+                    {% blocktrans %}Descobreix els Tresors de Cabrera de Mar{% endblocktrans %}
                 </h2>
             </div>
         </div>

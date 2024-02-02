@@ -1,10 +1,11 @@
 {% load bootstrap4 %}
 {% load embed_video_tags %}
 {% load compress %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <title>{% block title %}Inici{% endblock title %} - Cabrera de Mar</title>
+    <title>{% block title %}{% blocktrans %}Inici{% endblocktrans %}{% endblock title %} - Cabrera de Mar</title>
     <!-- Agrega aquí tus etiquetas de estilo CSS, enlaces a archivos estáticos, etc. -->
     {% load static %}
     
@@ -221,9 +222,45 @@
 
             {% if user_agent.is_pc %}
 
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer></script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer loading=async></script>
             
             {% endif %}
+
+            <!-- JavaScript asincrónico para obtener el token CSRF y copiarlo en los formularios -->
+            <script>
+                document.addEventListener('DOMContentLoaded', async function() {
+                    try {
+                        // Realiza una solicitud AJAX asincrónica para obtener el token CSRF
+                        const response = await fetch('/obtener-token-csrf/');
+                        const data = await response.json();
+                        const csrfToken = data.csrf_token;
+                        const forms = document.querySelectorAll('form');
+                
+                        forms.forEach(function(form) {
+                            // Encuentra el campo de entrada CSRF existente en el formulario
+                            const csrfInput = form.querySelector('[name="csrfmiddlewaretoken"]');
+                            if (csrfInput) {
+                                // Reemplaza el valor del token CSRF existente con el nuevo valor
+                                csrfInput.value = csrfToken;
+                            } else {
+                                // Si no existe un campo CSRF, crea uno nuevo
+                                const newCsrfInput = document.createElement('input');
+                                newCsrfInput.type = 'hidden';
+                                newCsrfInput.name = 'csrfmiddlewaretoken';
+                                newCsrfInput.value = csrfToken;
+                                form.appendChild(newCsrfInput);
+                            }
+                            const idiomaLinks = document.querySelectorAll('.idioma-link');
+                            idiomaLinks.forEach((link) => {
+                                link.removeAttribute('data-disabled');
+                            });
+                        });
+                    } catch (error) {
+                        console.error('Error al obtener el token CSRF:', error);
+                    }
+                });
+            </script>
+  
 
     {% endif %}
 

@@ -2,6 +2,8 @@ from django.db import models
 from blog.models import Post
 from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
+
+
 #from django.contrib.gis.db import models as gis_models
 
 ICON_CHOICES = (

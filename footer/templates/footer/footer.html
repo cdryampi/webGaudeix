@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="container-fluid p-0 m-0">
     <div>
         {% include 'header/headerFooter.html' %}
@@ -51,7 +52,7 @@
             {% endfor %}
             <div class="footer-item">
               {% if diversidad %}
-                <p class="mb-1"><a href="{% url 'paginas_estaticas:igualtat' %}">diversitat e inclusió</a></p>
+                <p class="mb-1"><a href="{% url 'paginas_estaticas:igualtat' %}">{% blocktrans %}diversitat e inclusió{% endblocktrans %}</a></p>
               {% endif %}
             </div>
           </div>

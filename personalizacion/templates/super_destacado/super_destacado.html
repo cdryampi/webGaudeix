@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <section class="container-fluid p-0 m-0 bg-white">
     {% if super_destacado.destacado.tipo == 'eventos_especiales' %}
         <a href="{% url 'eventos_especiales:evento_especial' slug=super_destacado.destacado.evento_especial.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
@@ -26,12 +27,12 @@
                             {% if super_destacado.descripcion %}
                                 {{ super_destacado.descripcion }}
                             {% else %}
-                                No et pots perdre
+                                {% blocktrans %}No et pots perdre{% endblocktrans %}
                             {% endif %}
 
                         </h2>
                         <h3 class="mb-3 h1"> {{ super_destacado.titulo }} </h3>
-                        <span class="btn btn-outline-light btn-lg" role="button">Saber més</span>
+                        <span class="btn btn-outline-light btn-lg" role="button">{% blocktrans %}Saber més{% endblocktrans %}</span>
                     </div>
                 </div>
             </div>
@@ -55,11 +56,11 @@
                             {% if super_destacado.descripcion %}
                                 {{ super_destacado.descripcion }}
                             {% else %}
-                                No et pots perdre
+                                {% blocktrans %}No et pots perdre{% endblocktrans %}
                             {% endif %}
                         </h2>
                         <h3 class="mb-3 h1"> {{ super_destacado.titulo }} </h3>
-                        <span class="btn btn-outline-light btn-lg" role="button">Saber més</span>
+                        <span class="btn btn-outline-light btn-lg" role="button">{% blocktrans %}Saber més{% endblocktrans %}</span>
                     </div>
                 </div>
             </div>

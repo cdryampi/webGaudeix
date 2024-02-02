@@ -7,7 +7,9 @@ from ..models import Tag
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django import forms
 from core.utils import refresh_cache
-from django.utils.translation import gettext_lazy as _
+
+from modeltranslation.admin import TranslationAdmin
+
 
 
 
@@ -112,8 +114,8 @@ class PostGaleriaImagenInline(admin.TabularInline):
 
 
 
-class PostAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'categoria')
+class PostAdmin(TranslationAdmin, admin.ModelAdmin):
+    list_display = ('titulo_ca', 'categoria')
     list_filter = ('categoria',)
     search_fields = ('titulo', 'descripcion')
     inlines = [PostImagenInline, PostGaleriaImagenInline, PostFicheroInline]

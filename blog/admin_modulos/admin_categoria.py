@@ -4,6 +4,8 @@ from multimedia_manager.models import Imagen
 from django import forms
 from django.db.models import Q
 from core.utils import refresh_cache
+from modeltranslation.admin import TranslationAdmin
+
 
 class CategoriaBannerImagenInline(admin.TabularInline):
     model = CategoriaBannerImagen
@@ -76,7 +78,7 @@ class CategoriaGaleriaImagenInline(admin.TabularInline):
 
 
 # Se define la configuración del admin para el modelo Categoria
-class CategoriaAdmin(admin.ModelAdmin):
+class CategoriaAdmin(TranslationAdmin, admin.ModelAdmin):
     
     list_display = ['titulo', 'especial', 'color']
     list_filter = ['especial']

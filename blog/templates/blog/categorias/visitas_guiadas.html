@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load custom_filters %}
-
+{% load i18n %}
 {% block meta_description %}
   {% if categoria.metadescripcion %}
     <meta name="Description" content="{{ categoria.metadescripcion | safe | striptags }}">
@@ -174,7 +174,7 @@
 
 
     <div class="container pt-5">
-        <h1>Explora Cabrera de Mar: Descobreix els seus racons amb les nostres rutes temàtiques</h1>
+        <h1>{% blocktrans %}Explora Cabrera de Mar: Descobreix els seus racons amb les nostres rutes temàtiques{% endblocktrans %}</h1>
         <div class="row">
             <div class="col-12">
                 <p class="card-text">
@@ -187,7 +187,7 @@
 
         <div class="row">
             <div class="col-12 pb-3 pt-5">
-                <h2 class="titulo-destacat">Descobreix les nostres increïbles visites guiades!</h2>
+                <h2 class="titulo-destacat">{% blocktrans %}Descobreix les nostres increïbles visites guiades!{% endblocktrans %}</h2>
               </div>              
             {% if categoria.tipo == 'visitas_guiadas' %}
             {% for visita in visitas_guiadas %}
@@ -239,7 +239,7 @@
                                 </div>
                                 <!-- Afegeix aquí altres detalls rellevants per a la carta -->
                                 <p>
-                                    <span class="text-primary text-left mt-auto url-link">Saber més <i class="fas fa-arrow-right"></i></span>
+                                    <span class="text-primary text-left mt-auto url-link">{% blocktrans %}Saber més{% endblocktrans %}<i class="fas fa-arrow-right"></i></span>
                                 </p>
                                     
                             

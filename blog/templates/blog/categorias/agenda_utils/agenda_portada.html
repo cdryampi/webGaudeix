@@ -1,5 +1,5 @@
 {% extends 'core/base.html' %}
-
+{% load i18n %}
 {% block meta_description %}
   {% if categoria.metadescripcion %}
     <meta name="Description" content="{{ categoria.metadescripcion | safe | striptags }}">
@@ -85,7 +85,7 @@
 {% block content %}
 <section class="p-lg-5 p-md-5 overflow-hidden">
   <div class="col-12">
-    <h1 class="h1 text-center py-5">Viu la Cultura i les Festes a Cabrera de Mar</h1>
+    <h1 class="h1 text-center py-5">{% blocktrans %}Viu la Cultura i les Festes a Cabrera de Mar{% endblocktrans %}</h1>
   </div>
   {% include 'blog/categorias/agenda_utils/filtro_agenda.html' %}
 </section>
@@ -96,7 +96,7 @@
   {% if categorias %}
     <div class="container">
       <div class="col-12">
-        <h2 class="text-center h2">Descobreix els Tresors de Cabrera de Mar</h2>
+        <h2 class="text-center h2">{% blocktrans %}Descobreix els Tresors de Cabrera de Mar{% endblocktrans %}</h2>
       </div>
     </div>
     {% include 'blog/selecciones/categorias_seleccion.html' %}

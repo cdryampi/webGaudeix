@@ -23,7 +23,8 @@ from django.conf.urls.static import static
 from django.urls import re_path
 from django_select2 import urls as select2_urls
 
-
+from django.urls import path
+from django.views.i18n import set_language
 
 urlpatterns = [
 
@@ -37,7 +38,8 @@ urlpatterns = [
     path('s/', include('eventos_especiales.urls')),
     path('api/', include('api.urls')),
     path('sv/',include('subvenciones.urls')),
-    path('c-d/', include('compra_y_descubre.urls'))
+    path('c-d/', include('compra_y_descubre.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),

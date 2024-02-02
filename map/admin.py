@@ -4,6 +4,7 @@ from blog.models import PostImagen, PostGaleriaImagen
 from multimedia_manager.models import Imagen
 from django.db.models import Q
 from .utils import export_map_points_csv
+from modeltranslation.admin import TranslationAdmin
 
 
 class PostImagenInline(admin.TabularInline):
@@ -78,7 +79,7 @@ class PostGaleriaImagenInline(admin.TabularInline):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-class MapPointAdmin(admin.ModelAdmin):
+class MapPointAdmin(TranslationAdmin, admin.ModelAdmin):
 
 
     inlines = [PostImagenInline, PostGaleriaImagenInline]

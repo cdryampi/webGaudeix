@@ -27,6 +27,9 @@ from django.views import View
 from django.shortcuts import redirect
 from django.http import Http404
 from agenda.models import AudioRuta
+from django.views.decorators.csrf import csrf_protect
+from django.middleware.csrf import get_token
+from django.http import JsonResponse
 import sys
 
 
@@ -63,12 +66,29 @@ def get_coleccion_destacados():
         return coleccion_destacados
     return None
 
+def generate_cache_key(request, idioma):
+    # Incluye el idioma en la clave de caché
+    cache_key = f'cache_{idioma}_{request.get_full_path()}'
+    return cache_key
+
+
+def obtener_token_csrf(request):
+    token = get_token(request)
+    return JsonResponse({'csrf_token': token})
 # Vista home cacheada con el tiempo de expiración definido
 
+
+@csrf_protect
 def home(request):
 
-    cache_key = generate_cache_key(request)
+    idioma = request.LANGUAGE_CODE
+
+    cache_key = generate_cache_key(request, idioma)
     cache = caches['default']
+
+    cached_page = cache.get(cache_key)
+    if cached_page is not None:
+        return cached_page
 
 
 

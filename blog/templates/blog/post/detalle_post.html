@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block meta_description %}
   {% if post.metadescripcion %}
     <meta name="Description" content="{{ post.metadescripcion | safe | striptags }}">
@@ -103,8 +103,8 @@
             </a>
         </div>
         <div class="col-12">
-            <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
-        </div>
+          <small class="text-center">{% blocktrans %}Fes clic a les imatges per veure la galeria completa{% endblocktrans %}</small>
+        </div>        
     </section>
 
     {% else %}
@@ -162,7 +162,7 @@
                   </a>
                 </div>
                 <div class="col-12">
-                  <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+                  <small class="text-center">{% blocktrans %}Fes clic a les imatges per veure la galeria completa{% endblocktrans %}</small>
                 </div>
               {% endif %}
             </div>
@@ -179,7 +179,7 @@
         <div class="row p-0 m-0">
             <div class="col-md-12 p-0 m-0">
                 <a href="{{ post.postfichero.fichero.archivo.url }}" class="btn btn-light btn-lg btn-block" download>
-                    <i class="fas fa-file-pdf"></i> Descargar PDF "<b>{{ post.postfichero.fichero.titulo }}</b>"
+                    <i class="fas fa-file-pdf"></i>{% blocktrans %}Descarregar PDF{% endblocktrans %} "<b>{{ post.postfichero.fichero.titulo }}</b>"
                 </a>
             </div>
         </div>

@@ -4,8 +4,9 @@ from django.utils.html import format_html
 
 from multimedia_manager.models import Imagen
 from django.db.models import Q
+from ..models import SubBlogImagen, SubblogGaleriaImagen
+from modeltranslation.admin import TranslationAdmin
 
-from ..models import SubBlog, SubBlogImagen, SubblogGaleriaImagen
 
 class SubBlogImagenInline(admin.TabularInline):
     model = SubBlogImagen
@@ -75,7 +76,7 @@ class SubblogGaleriaImagenInline(admin.TabularInline):
 
 
 
-class SubBlogAdmin(admin.ModelAdmin):
+class SubBlogAdmin(TranslationAdmin, admin.ModelAdmin):
     list_display = ('titulo', 'publicado', 'fecha_creacion', 'modificado_por', 'preview_link')
     list_filter = ('publicado',)
     search_fields = ('titulo', 'contenido')

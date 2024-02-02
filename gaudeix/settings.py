@@ -48,6 +48,7 @@ ALLOWED_HOSTS = settings["ALLOWED_HOSTS"]
 
 INSTALLED_APPS = [
     #'adminlteui',
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,7 +58,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'dal',
     'dal_select2',
-    #'taggit',
     'core',
     'bootstrap4',
     'blog',
@@ -85,7 +85,7 @@ INSTALLED_APPS = [
     'admin_utils',
     'gaudeix_utils',
     'newsletter',
-    'alerta'
+    'alerta',
 
     #'corsheaders',
     #'admin_tree'
@@ -93,16 +93,18 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django_samesite_none.middleware.SameSiteNoneMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'gaudeix.urls'
@@ -176,10 +178,31 @@ FILE_CHARSET = 'utf-8'
 TIME_ZONE = settings["TIME_ZONE"]
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
+MODELTRANSLATION_DEFAULT_LANGUAGE = settings["LANGUAGE_CODE"]
+MODELTRANSLATION_LANGUAGES = (settings["LANGUAGE_CODE"],'en', 'es')
+MODELTRANSLATION_FIELDS = {
+    'blog.Post': ['titulo', 'descripcion'],
+    'agenda.Agenda': ['descripcion_corta',],
+    'blog.SubBlog': ['titulo', 'descripcion'],
+    'blog.Categoria':['titulo', 'subtitulo', 'descripcion'],
+    'agenda.Ruta':['tema', 'actividad', 'tipologia', 'dificultad'],
+    'blog.SubCategoria':['titulo', 'subtitulo', 'descripcion'],
+    'map.MapPoint':['titulo', 'descripcion']
+    # Agrega aquí otros campos que desees traducir
+}
 
+LANGUAGES = [
+    ('ca', 'Català'),
+    ('es', 'Español'),
+    ('en', 'English'),
+]
+
+
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -260,6 +283,19 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 ]
+
+
+# settings.py
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',  # Cambia esto a un valor único
+    }
+}
+
+CSRF_COOKIE_SECURE = True
+
 
 #cache
 TIEMPO_EXPIRACION = 2 * 60 * 60

@@ -4,6 +4,7 @@ from multimedia_manager.models import Imagen
 from django import forms
 from django.db.models import Q
 from core.utils import refresh_cache
+from modeltranslation.admin import TranslationAdmin
 
 
 
@@ -76,7 +77,7 @@ class SubCategoriaGaleriaImagenInline(admin.TabularInline):
 
 
 # Se define la configuración del admin para el modelo Categoria
-class SubCategoriaAdmin(admin.ModelAdmin):
+class SubCategoriaAdmin(TranslationAdmin, admin.ModelAdmin):
     
     list_display = ['titulo', 'color']
     search_fields = ['titulo']

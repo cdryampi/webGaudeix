@@ -1,16 +1,17 @@
 <!-- HTML -->
+{% load i18n %}
 <aside class="container-fluid m-0 p-0 py-3" style="background-color: #FFB516;">
   <div class="row justify-content-center m-0 p-0">
     <div class="col-lg-6">
       <form id="newsletter-form" class="text-center">
         {% csrf_token %}
         <div class="form-group justify-content-center px-5">
-          <h2 class="text-center my-4 text-white bold">Butlletí electrònic</h2>
+          <h2 class="text-center my-4 text-white bold">{% blocktrans %}Butlletí electrònic{% endblocktrans %}</h2>
           
             <div class="col-12">
               <div class="row justify-content-center">
                 <div class="input-group text-center w-lg-50 w-sm-75 w-md-75 w-100">
-                  <input type="email" class="form-control form-control-lg w-25" id="emailNewsletter" placeholder="Introduïu el vostre correu electrònic" required>
+                  <input type="email" class="form-control form-control-lg w-25" id="emailNewsletter" placeholder="{% blocktrans %}Introduïu el vostre correu electrònic{% endblocktrans %}" required>
                 <div class="input-group-append">
                   <button class="btn btn-primary" type="submit"><i class="fas fa-arrow-right"></i></button>
                 </div>
@@ -28,7 +29,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="notificacionEmailModalLabel">Notificació:</h5>
+          <h5 class="modal-title" id="notificacionEmailModalLabel">{% blocktrans %}Notificació{% endblocktrans %}:</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -37,7 +38,7 @@
           <div id="notification-messages" class="text-center mt-3"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">tancar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}tancar{% endblocktrans %}</button>
         </div>
       </div>
     </div>

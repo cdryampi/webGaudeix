@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
 
 {% block meta_description %}
@@ -182,60 +183,60 @@
                             <p>{{ visites.descripcion | safe }}</p>                        
                             <div class="col-12 ">
                                 <div class="bg-light p-4 rounded">
-                                    <h4 class="py-3">Informació addicional</h4>
+                                    <h4 class="py-3">{% blocktrans %}Informació addicional{% endblocktrans %}</h4>
                                     <ul class="list-unstyled mb-0">
                                         <li class="mb-3">
                                             <i class="fas fa-euro-sign"></i>
                                             <strong>Preu:</strong>
                                             {% if visites.precio == 0 %}
-                                              <span class="event-price">Gratis</span>
+                                              <span class="event-price">{% blocktrans %}Gratis{% endblocktrans %}</span>
                                               {% elif visites.precio %}
                                                 <span class="event-price">{{ visites.precio }} €</span>
                                             {% endif %}
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-clock"></i>
-                                            <strong>Duració:</strong> {{ visites.duracion|format_duration }}
+                                            <strong>{% blocktrans %}Duració{% endblocktrans %}:</strong> {{ visites.duracion|format_duration }}
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-calendar-alt"></i>
-                                            <strong>Data d'inici:</strong> {{ visites.fecha_inicio|date:"j F Y" }}
+                                            <strong>{% blocktrans %}Data d'inici{% endblocktrans %}:</strong> {{ visites.fecha_inicio|date:"j F Y" }}
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-calendar-alt"></i>
-                                            <strong>Data de finalització:</strong> {{ visites.fecha_fin|date:"j F Y" }}
+                                            <strong>{% blocktrans %}Data de finalització{% endblocktrans %}:</strong> {{ visites.fecha_fin|date:"j F Y" }}
                                         </li>
                                         <li class="mb-3">
                                             <i class="fas fa-users"></i>
-                                            <strong>Públic recomanat:</strong> {{ visites.get_publico_recomendado_display }}
+                                            <strong>{% blocktrans %}Públic recomanat{% endblocktrans %}:</strong> {{ visites.get_publico_recomendado_display }}
                                         </li>
                                         {% if visites.postfichero and visites.postfichero.fichero.archivo.url %}
                                         <li class="mb-3">
                                           <i class="fas fa-file-pdf"></i>
                                           <strong>PDF:</strong> 
                                           <a href="{{ visites.postfichero.fichero.archivo.url }}" title="{{ visites.postfichero.fichero.titulo }}" class="text-black" download>
-                                            descarregar
+                                          {% blocktrans %}descarregar{% endblocktrans %}
                                           </a>
                                         </li>
                                         {% endif %}
 
                                         <li>
                                             <i class="fas fa-map-marker-alt"></i>
-                                            <strong>Ubicació:</strong>
+                                            <strong>{% blocktrans %}Ubicació{% endblocktrans %}:</strong>
                                             {% if visites.mapa %}
 
                                               {% if visites.mapa.enlace_google_maps %}
                                               
-                                                <a href="{{ visites.mapa.enlace_google_maps }}" target="_blank">Veure al mapa</a>
+                                                <a href="{{ visites.mapa.enlace_google_maps }}" target="_blank">{% blocktrans %}Veure al mapa{% endblocktrans %}</a>
                                               
                                               {% else %}
 
-                                                <a href="https://maps.google.com/maps?q={{ visites.mapa.latitud }},{{ visites.mapa.longitud }}" target="_blank">Veure al mapa</a>
+                                                <a href="https://maps.google.com/maps?q={{ visites.mapa.latitud }},{{ visites.mapa.longitud }}" target="_blank">{% blocktrans %}Veure al mapa{% endblocktrans %}</a>
                                               
                                               {% endif %}
 
                                             {% else %}
-                                                No s'ha proporcionat la ubicació.
+                                              {% blocktrans %}No s'ha proporcionat la ubicació{% endblocktrans %}.
                                             {% endif %}
                                         </li>
                                     </ul>
@@ -262,7 +263,7 @@
                               <img src="{{ visites.postimagen.imagen.archivo.url }}" title="{{ visites.postimagen.imagen.titulo }}" alt="{{ visites.postimagen.imagen.titulo }}" class="img-fluid fancybox">
                           </a>
                           <div class="col-12">
-                            <small class="text-center">Fes clic a l'imatge per veure-la en resolució completa</small>
+                            <small class="text-center">{% blocktrans %}Fes clic a l'imatge per veure-la en resolució completa{% endblocktrans %}</small>
                         </div>
                       {% else %}
                           {% with imagenes=visites.postgaleriaimagen_set.all %}
@@ -272,7 +273,7 @@
                                       <img src="{{ imagenes.first.imagen.archivo.url }}" alt="{{ imagenes.first.imagen.titulo }}" class="img-fluid fancybox">
                                     </a>
                                   <div class="col-12">
-                                    <small class="text-center">Fes clic a l'imatge per veure-la en resolució completa</small>
+                                    <small class="text-center">{% blocktrans %}Fes clic a l'imatge per veure-la en resolució completa{% endblocktrans %}</small>
                                   </div>
                                   {% endif %}
 
@@ -293,7 +294,7 @@
 
 <aside class="pb-5 pt-3">
     <div class="container p-1">
-        <h3 class="text-center py-3">Calendari d'Esdeveniments</h3>
+        <h3 class="text-center py-3">{% blocktrans %}Calendari d'Esdeveniments{% endblocktrans %}</h3>
         <div class="row mx-0">
             <div class="col-12 col-lg-8 col-md-6 col-sm-12">
                 <div class="calendar">
@@ -309,13 +310,13 @@
                 
                     <div class="calendar-body">
                         <div class="calendar-weekdays">
-                            <div class="calendar-weekday">Dl</div>
-                            <div class="calendar-weekday">Dt</div>
-                            <div class="calendar-weekday">Dc</div>
-                            <div class="calendar-weekday">Dj</div>
-                            <div class="calendar-weekday">Dv</div>
-                            <div class="calendar-weekday">Ds</div>
-                            <div class="calendar-weekday">Dg</div>
+                            <div class="calendar-weekday">{% blocktrans %}Dl{% endblocktrans %}</div>
+                            <div class="calendar-weekday">{% blocktrans %}Dt{% endblocktrans %}</div>
+                            <div class="calendar-weekday">{% blocktrans %}Dc{% endblocktrans %}</div>
+                            <div class="calendar-weekday">{% blocktrans %}Dj{% endblocktrans %}</div>
+                            <div class="calendar-weekday">{% blocktrans %}Dv{% endblocktrans %}</div>
+                            <div class="calendar-weekday">{% blocktrans %}Ds{% endblocktrans %}</div>
+                            <div class="calendar-weekday">{% blocktrans %}Dg{% endblocktrans %}</div>
                         </div>
                         <div class="calendar-days" id="calendar-days"></div>
                     </div>
@@ -334,7 +335,7 @@
                             {% endif %}
                             {% endwith %}
                         </h4>
-                        <h5 class="card-title" id="event-title">Duració diària:</h5>
+                        <h5 class="card-title" id="event-title">{% blocktrans %}Duració diària{% endblocktrans %}:</h5>
                         <p class="card-text"><i class="fas fa-clock"></i>{{ visites.duracion|format_duration }}</p>
                     </div>
                 </div>
@@ -343,7 +344,7 @@
                 <div class="container-fluid mx-0 py-2">
                     <div class="row">
                         <div class="col-12 py-3">
-                            <h4 class="titulo-certificados text-center">Certificats de Turisme Sostenible</h4>
+                            <h4 class="titulo-certificados text-center">{% blocktrans %}Certificats de Turisme Sostenible{% endblocktrans %}</h4>
                         </div>
                         {% for certificado in visites.certificados.all %}
                             <div class="col-lg-4 col-md-6 col-sm-12">
@@ -370,7 +371,7 @@
     {% if agendas_relacionadas %}
     <aside class="container p-3">
       <div class="py-3">
-          <h4 class="related-activities-title">Esdeveniments de la visita guiada:</h4>
+          <h4 class="related-activities-title">{% blocktrans %}Esdeveniments de la visita guiada{% endblocktrans %}:</h4>
       </div>
       <div class="row row-inline-cards justify-content-center px-0">
           {% for objeto in agendas_relacionadas %}

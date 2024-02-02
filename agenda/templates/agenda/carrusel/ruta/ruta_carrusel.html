@@ -1,3 +1,4 @@
+{% load i18n %}
 <section class="container-fluid p-0">
     <div id="carouselRuta" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -11,7 +12,7 @@
                 {% if imagen and imagen.imagen.archivo.url  %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="gallery">
-                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.titulo }}" alt="{{ imagen.titulo }}" class="img-fluid fancybox">
+                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.titulo }}" alt="{{ imagen.titulo }}" class="img-fluid img-cat-banner fancybox">
                         </a>
                     </div>
                 {% endif %}
@@ -27,6 +28,6 @@
         </a>
     </div>
     <div class="col-12">
-        <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+        <small class="text-center">{% blocktrans %}Fes clic a les imatges per veure la galeria completa{% endblocktrans %}</small>
     </div>
 </section>
