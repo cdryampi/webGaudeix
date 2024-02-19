@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load i18n %}
 {% block meta_description %}
     {% if diversidad.metadescripcion %}
         <meta name="description" content="{{diversidad.metadescripcion |safe | striptags}}">
@@ -70,7 +71,7 @@
     {% if diversidad.logros.all %}
         <div class="container pt-5 bg-light">
             <div class="col-12 p-3">
-                <h2 class="h3 mt-4 text-center"><strong>Llocs Físics de Protecció contra les Violències Masclistes</strong></h2>
+                <h2 class="h3 mt-4 text-center"><strong>{% blocktrans %}Llocs Físics de Protecció contra les Violències Masclistes{% endblocktrans %}</strong></h2>
             </div>
             <div class="row justify-content-center">
                 {% for logro in diversidad.logros.all %}
@@ -95,7 +96,7 @@
                                         {{ logro.descripcion | safe | truncatechars:450  }}
                                     {% endautoescape %}
                                     
-                                    <a href="{% url 'blog:detalle_post' logro.slug %}" class="btn btn-link btn-sm font-weight-bold">Saber més</a>
+                                    <a href="{% url 'blog:detalle_post' logro.slug %}" class="btn btn-link btn-sm font-weight-bold">{% blocktrans %}Saber més{% endblocktrans %}</a>
                                 </div>
                             {% else %}
                                 <div class="col-12 col-md-12 col-sm-6 col-lg-6 col-xl-6">
@@ -114,7 +115,7 @@
                                             {{ logro.get_absolute_url }}
                                         {% endif %}
                                     
-                                    " class="btn btn-link btn-sm font-weight-bold">Saber més</a>
+                                    " class="btn btn-link btn-sm font-weight-bold">{% blocktrans %}Saber més{% endblocktrans %}</a>
                                     {% endautoescape %}
                                 </div>
                                 <div class="col-12 col-md-12 col-sm-6 col-lg-6 col-xl-6">
@@ -138,7 +139,7 @@
     {% if diversidad.diversidadimagenbanner_set.all %}
         <div class="container-fluid py-3 bg-white">
             <div class="col-12 p-3">
-                <h2 class="h2 mt-4 text-center"><strong>Col·laboració d'Entitats pel Pacte Integral</strong></h2>
+                <h2 class="h2 mt-4 text-center"><strong>{% blocktrans %}Col·laboració d'Entitats pel Pacte Integral{% endblocktrans %}</strong></h2>
             </div>
             <div class="container">
                 <div class="row imgs-diversitat">
@@ -162,7 +163,7 @@
     {% if diversidad.planes.all %}
         <div class="container pt-5 bg-light">
             <div class="col-12 p-3">
-                <h2 class="h2 text-center"><strong>Plans i Activitats per a la Igualtat</strong></h2>
+                <h2 class="h2 text-center"><strong>{% blocktrans %}Plans i Activitats per a la Igualtat{% endblocktrans %}</strong></h2>
 
             </div>
             <div class="row justify-content-center">
@@ -197,7 +198,7 @@
                                 {{ plan.get_absolute_url }}
                             {% endif %}
                         
-                        " class="btn btn-link btn-sm font-weight-bold">Saber més</a>
+                        " class="btn btn-link btn-sm font-weight-bold">{% blocktrans %}Saber més{% endblocktrans %}</a>
 
                     </div>
                 </div>
@@ -219,7 +220,7 @@
     {% if diversidad.pdfdiversidadfichero_set.all %}
     <div class="container p-0 p-sm-2 p-md-3 p-lg-4 p-xl-5">
         <div class="row justify-content-center m-0">
-            <h2 class="h2 text-center">Descàrrega de Recursos i Materials</h2>
+            <h2 class="h2 text-center">{% blocktrans %}Descàrrega de Recursos i Materials{% endblocktrans %}</h2>
         </div>
         <div class="row justify-content-center m-0">
             {% for fichero in diversidad.pdfdiversidadfichero_set.all %}
@@ -227,7 +228,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ fichero.titulo }}</h5>
-                        <a href="{{ fichero.fichero.archivo.url }}" target="_blank" class="btn btn-light btn-block">Veure arxiu</a>
+                        <a href="{{ fichero.fichero.archivo.url }}" target="_blank" class="btn btn-light btn-block">{% blocktrans %}Veure arxiu{% endblocktrans %}</a>
                     </div>
                 </div>
             </div>

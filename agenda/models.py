@@ -18,6 +18,231 @@ User = get_user_model()
 
 # Create your models here.
 
+class Restaurante(Post):
+    """
+    Modelo que representa a un Restaurante.
+    """
+    TIPO_CHOICES = [
+        ('restaurant', 'Restaurant'),
+        ('bar', 'Bar'),
+        ('masia', 'Masia'),  # Longitud más larga que 10 caracteres
+        ('guingueta', 'guingueta'),
+    ]
+
+    descripcion_corta = models.CharField(
+        null=True,
+        blank=True,
+        max_length=255,
+        verbose_name="Descripció curta"
+    )
+    tipo = models.CharField(
+        max_length=20,  # Aumentado para ajustarse a la opción más larga
+        choices=TIPO_CHOICES,
+        verbose_name="Tipus de restaurant"
+    )
+    direccion = models.CharField(
+        max_length=255,
+        verbose_name="Direcció",
+        help_text="Afegeix la dirrecció del allotjament"
+    )
+    telefono = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        verbose_name="Telefon",
+        help_text="Afegeix el telefón principal"
+    )
+    sitio_web = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="Lloc web",
+        help_text="Afegix el lloc web de l'empresa"
+    )
+    capacidad = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Capacitat",
+        help_text="Máxim de persones."
+    )
+    horarios = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Horaris",
+        help_text="Horaris de obertura i tancament"
+    )
+    google_maps_link = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="Enllaç del Google Maps",
+        help_text="Afegeix l'enllaç cap a Google Maps."
+    )
+    latitud = models.FloatField(
+        verbose_name="Latitud",
+        help_text="Aquest Camp es opcional, si no l'afegeixes no es generarà el map.",
+        blank=True,
+        null=True,
+    )
+    longitud = models.FloatField(
+        verbose_name="Longitud",
+        help_text="Aquest Camp es opcional, si no l'afegeixes no es generarà el map.",
+        blank=True,
+        null=True,
+    )
+    pet_friendly = models.BooleanField(
+        default=False,
+        verbose_name="Admet mascotes",
+        help_text="Indica si el restaurant admet mascotes."
+    )
+    opciones_vegetarianas = models.BooleanField(
+        default=False,
+        verbose_name="Opcions vegetarianes",
+        help_text="Indica si el restaurant ofereix opcions vegetarianes."
+    )
+    wifi = models.BooleanField(
+        default=False,
+        verbose_name="WiFi disponible",
+        help_text="Indica si el restaurant ofereix WiFi als clients."
+    )
+    apto_para_celiacos = models.BooleanField(
+        default=False,
+        verbose_name="Apte per a celíacs",
+        help_text="Indica si el restaurant ofereix opcions per a celíacs."
+    )
+    terraza = models.BooleanField(
+        default=False,
+        verbose_name="Terrassa disponible",
+        help_text="Indica si el restaurant disposa de terrassa."
+    )
+    menu_infantil = models.BooleanField(
+        default=False,
+        verbose_name="Menú infantil",
+        help_text="Indica si el restaurant ofereix menú infantil."
+    )
+    
+    accessibilitat = models.BooleanField(
+        default=False,
+        verbose_name="Accessibilitat per a persones amb discapacitat",
+        help_text="Indica si el restaurant compta amb accessibilitat per a persones amb discapacitat."
+    )
+
+    parking = models.BooleanField(
+        default=False,
+        verbose_name="Aparcament",
+        help_text="Indica si el restaurant compta amb estacionament o aparcament."
+    )
+
+
+    class Meta:
+        verbose_name = "restaurant"
+        verbose_name_plural = "restaurants"
+
+    def __str__(self):
+        # Asegúrate de que 'tipo' se traduce correctamente desde TIPO_CHOICES
+        tipo_display = dict(Restaurante.TIPO_CHOICES).get(self.tipo, "Tipo no especificado")
+        return f"{tipo_display}: {self.titulo}"
+
+
+
+class Alojamiento(Post):
+    """
+    Modelo que representa a un Alojamiento.
+    """
+    TIPO_CHOICES = [
+        ('hotel', 'Hotel'),
+        ('alberg', 'Alberg'),
+        ('turístic', 'Allotjament turístic'),  # Longitud más larga que 10 caracteres
+        ('autocaravanes', 'Autocaravanes'),
+    ]
+
+    tipo = models.CharField(
+        max_length=20,  # Aumentado para ajustarse a la opción más larga
+        choices=TIPO_CHOICES,
+        verbose_name="Tipus d'Allotjament"
+    )
+    direccion = models.CharField(
+        max_length=255,
+        verbose_name="Direcció",
+        help_text="Afegeix la dirrecció del allotjament"
+    )
+    telefono = models.CharField(
+        max_length=20, null=True,
+        blank=True,
+        verbose_name="Telefon",
+        help_text="Afegeix el telefón principal"
+    )
+    sitio_web = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="Lloc web",
+        help_text="Afegix el lloc web de l'empresa"
+    )
+    capacidad = models.IntegerField(
+        verbose_name="Capacitat",
+        help_text="Máxim de persones."
+    )
+    horarios = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Horaris",
+        help_text="Horaris de obertura i tancament"
+    )
+    google_maps_link = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="Enllaç del Google Maps",
+        help_text="Afegeix l'enllaç cap a Google Maps."
+    )
+    latitud = models.FloatField(
+        verbose_name="Latitud",
+        help_text="Aquest Camp es opcional, si no l'afegeixes no es generarà el map.",
+        blank=True,
+        null=True,
+    )
+    longitud = models.FloatField(
+        verbose_name="Longitud",
+        help_text="Aquest Camp es opcional, si no l'afegeixes no es generarà el map.",
+        blank=True,
+        null=True,
+    )
+    pet_friendly = models.BooleanField(
+        default=False,
+        verbose_name="Pet Friendly",
+    )
+    wifi = models.BooleanField(
+        default=False,
+        verbose_name="WiFi"
+    )
+    adaptado_movilidad_reducida = models.BooleanField(
+        default=False, 
+        verbose_name="Adaptat per a persones amb mobilitat reduïda",
+        help_text="Indica si l'allotjament està adaptat per a persones amb mobilitat reduïda."
+    )
+    parking_gratis = models.BooleanField(
+        default=False, 
+        verbose_name="Pàrquing gratuït",
+        help_text="Indica si l'allotjament ofereix pàrquing gratuït."
+    )
+    habitaciones_sin_humo = models.BooleanField(
+        default=False, 
+        verbose_name="Habitacions sense fum",
+        help_text="Indica si l'allotjament disposa d'habitacions lliures de fum."
+    )
+    servicio_habitaciones = models.BooleanField(
+        default=False, 
+        verbose_name="Servei d'habitacions",
+        help_text="Indica si l'allotjament ofereix servei d'habitacions."
+    )
+
+    class Meta:
+        verbose_name = "allotjament"
+        verbose_name_plural = "allotjaments"
+
+    def __str__(self):
+        # Asegúrate de que 'tipo' se traduce correctamente desde TIPO_CHOICES
+        tipo_display = dict(Alojamiento.TIPO_CHOICES).get(self.tipo, "Tipo no especificado")
+        return f"{tipo_display}: {self.titulo}"
+
+
 
 class Idioma(models.Model):
     """

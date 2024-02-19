@@ -4,7 +4,10 @@ from django.http import HttpResponseRedirect
 from django.core.files.storage import default_storage
 from gaudeix import settings
 from newsletter.models import Newsletter
+from modeltranslation.admin import TranslationAdmin
+
 import os
+from django.conf import settings
 
 
 
@@ -18,21 +21,31 @@ eliminar_archivos_ics.short_description = "Eliminar fitxers ICS."
 
 
 def eliminar_archivos_html_newsletter(modeladmin, request, queryset):
-    directorio_newsletter = os.path.join(settings.MEDIA_ROOT, 'newsletters')  # Ajustar según la ubicación exacta
+    directorio_newsletter = os.path.join(settings.MEDIA_ROOT, 'newsletters')
+    archivos_eliminados = 0
+
+    # Eliminar físicamente los archivos HTML
     for archivo in os.listdir(directorio_newsletter):
         if archivo.endswith('.html'):
             os.remove(os.path.join(directorio_newsletter, archivo))
-    for newsletter in Newsletter.objects.all():
-        if newsletter.html_file:
-        # Si el archivo ya no existe, limpia la referencia en el modelo
-            path_archivo = os.path.join(directorio_newsletter, newsletter.html_file.name)
-            if not os.path.isfile(path_archivo):
-                newsletter.html_file = None
-                newsletter.save()
-    
-    modeladmin.message_user(request, "Fitxers '.html' de les plantilles eliminats.")
-eliminar_archivos_html_newsletter.short_description = "Eliminar fitxers HTML."
+            archivos_eliminados += 1
 
+    # Limpiar las referencias en el modelo para todos los campos traducidos
+    for newsletter in Newsletter.objects.all():
+        campos_html_limpiados = False
+        for codigo_idioma, _ in settings.LANGUAGES:
+            field_name = f'html_file_{codigo_idioma}'
+            file_field = getattr(newsletter, field_name, None)
+            if file_field and file_field.name:
+                path_archivo = os.path.join(directorio_newsletter, file_field.name)
+                if not os.path.isfile(path_archivo):
+                    setattr(newsletter, field_name, None)
+                    campos_html_limpiados = True
+        if campos_html_limpiados:
+            newsletter.save()
+
+    modeladmin.message_user(request, f"Fitxers '.html' de les plantilles eliminats. Total: {archivos_eliminados}")
+eliminar_archivos_html_newsletter.short_description = "Eliminar fitxers HTML."
 
 
 

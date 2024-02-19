@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
 from multimedia_manager.models import Imagen, Fichero, Audio
-from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible, Idioma, AudioRuta, PlayListRuta
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible, Idioma, AudioRuta, PlayListRuta, Alojamiento, Restaurante
 from map.models import MapPoint
 from django.forms import DurationField
 from blog.models import PostImagen, PostGaleriaImagen, PostFichero, Categoria, Tag
@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from django.utils.html import format_html
 from modeltranslation.admin import TranslationAdmin
-
+from blog.admin_modulos.admin_post import PostImagenInline
 
 class RutaAudioInline(admin.TabularInline):
     model = AudioRuta
@@ -402,9 +402,113 @@ class IdiomaAdmin(admin.ModelAdmin):
         )
     ]
 
+class AlojamientoAdmin(TranslationAdmin, admin.ModelAdmin):
+    filter_horizontal = ('tags',)
+    inlines = [PostImagenInline, PostGaleriaImagenInline, PostFicheroImagenInline]
+
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'metatitulo',
+                'descripcion',
+                'metadescripcion',
+                'publicado',
+                'tipo',
+                'direccion',
+                'telefono',
+                'sitio_web',
+                'capacidad',
+                'horarios',
+                'google_maps_link',
+                'latitud',
+                'longitud',
+                'pet_friendly',
+                'wifi',
+                'adaptado_movilidad_reducida',
+                'parking_gratis',
+                'habitaciones_sin_humo',
+                'servicio_habitaciones',
+                'categoria',
+                'tags'
+            ],
+            'description': (
+                "<p><strong><em>Aquesta és l'administració d'un Allotjament.</em></strong></p>"
+                "<p><em>Aquí pots introduir totes les dades relacionades amb el teu allotjament. "
+                "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"
+                "<p><em>Recorda que aquests camps estan destinats a recollir informació sobre l'allotjament, "
+                "com el <strong>preu</strong>, els <strong>serveis</strong>, la <strong>capacitat</strong>, i altres detalls importants.</em></p>"
+                "<p><em>Tingues en compte que la informació proporcionada ha de ser precisa per ajudar als visitants a fer la millor elecció possible.</em></p>"
+                "<p><em>Si l'allotjament no té <strong>preu</strong>, pots deixar-lo a 0,00, i el sistema el detectarà com a gratuït.</em></p>"
+                "<p><em>Assegura't d'afegir <strong>tags</strong> rellevants perquè seran utilitzats per millorar el <strong>SEO</strong> del teu allotjament.</em></p>"
+                "<p><em>La informació com la <strong>latitud</strong> i <strong>longitud</strong> és crucial per a la funcionalitat de mapes, assegura't de proporcionar-la correctament.</em></p>"
+            ),
+            }
+        )
+    ]
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "categoria":
+            kwargs["queryset"] = Categoria.objects.filter(tipo="allotjament")
+        return super(AlojamientoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 
+class RestauranteAdmin(TranslationAdmin, admin.ModelAdmin):
+    filter_horizontal = ('tags',)
+    inlines = [PostImagenInline, PostGaleriaImagenInline, PostFicheroImagenInline]
+
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'metatitulo',
+                'descripcion_corta',
+                'descripcion',
+                'metadescripcion',
+                'publicado',
+                'tipo',
+                'direccion',
+                'telefono',
+                'sitio_web',
+                'capacidad',
+                'horarios',
+                'google_maps_link',
+                'latitud',
+                'longitud',
+                'pet_friendly',
+                'opciones_vegetarianas',
+                'wifi',
+                'apto_para_celiacos',
+                'terraza',
+                'menu_infantil',
+                'accessibilitat',
+                'parking',
+                'categoria',
+                'tags'
+            ],
+            'description': (
+                "<p><strong><em>Aquesta és l'administració d'un Restaurant.</em></strong></p>"
+                "<p><em>Aquí pots introduir totes les dades relacionades amb el teu restaurant. "
+                "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"
+                "<p><em>Recorda que aquests camps estan destinats a recollir informació sobre el restaurant, "
+                "com les <strong>opcions del menú</strong>, els <strong>serveis especials</strong>, i altres detalls importants.</em></p>"
+                "<p><em>Tingues en compte que la informació proporcionada ha de ser precisa per ajudar als visitants a fer la millor elecció possible.</em></p>"
+                "<p><em>Assegura't d'afegir <strong>tags</strong> rellevants perquè seran utilitzats per millorar el <strong>SEO</strong> del teu restaurant.</em></p>"
+                "<p><em>La informació com la <strong>latitud</strong> i <strong>longitud</strong> és crucial per a la funcionalitat de mapes, assegura't de proporcionar-la correctament.</em></p>"
+            ),
+            }
+        )
+    ]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "categoria":
+            kwargs["queryset"] = Categoria.objects.filter(tipo="restaurant")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
+admin.site.register(Restaurante, RestauranteAdmin)
+admin.site.register(Alojamiento, AlojamientoAdmin)
 admin.site.register(Idioma, IdiomaAdmin)
 admin.site.register(Ruta, RutaAdmin)
 admin.site.register(Agenda, AgendaAdmin)

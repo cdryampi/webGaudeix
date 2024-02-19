@@ -1,10 +1,11 @@
+{% load i18n %}
 {% if compra_y_descubre.compradescubregaleriaimagen_set.all %}
 
     <section class="container-fluid py-3" id="guanyadors">
         
         <div class="col-12 p-3">
             <h2 class="text-center h2 primary-color">
-                Llista dels guanyadors de l'última edició.
+                {% blocktrans %}Llista dels guanyadors de l'última edició{% endblocktrans %}.
             </h2>
         </div>
         <div class="row justify-content-center">
@@ -15,7 +16,6 @@
                             <a href="{{ image.imagen.archivo.url }}" class="fancybox">
                                 <img src="{{ image.imagen.archivo.url }}" alt="{{ compra_y_descubre.titulo }}" class="img-fluid" />
                             </a>
-
                         </div>
                     </div>
                 {% endif %}

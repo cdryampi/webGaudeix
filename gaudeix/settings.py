@@ -93,19 +93,20 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django_samesite_none.middleware.SameSiteNoneMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Esto debe venir antes de middlewares que dependen de la sesión
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_user_agents.middleware.UserAgentMiddleware',
-    
+    'django.middleware.locale.LocaleMiddleware',  # LocaleMiddleware después de SessionMiddleware
+    'django_user_agents.middleware.UserAgentMiddleware',  # Middleware de agente de usuario antes de tu middleware personalizado
+    'gaudeix.translation.ForceDefaultLanguageMiddleware',  # Tu middleware personalizado al final
+    'django_samesite_none.middleware.SameSiteNoneMiddleware',  # Considera las implicaciones de seguridad y sesión de este middleware
 ]
+
 
 ROOT_URLCONF = 'gaudeix.urls'
 
@@ -190,7 +191,23 @@ MODELTRANSLATION_FIELDS = {
     'blog.Categoria':['titulo', 'subtitulo', 'descripcion'],
     'agenda.Ruta':['tema', 'actividad', 'tipologia', 'dificultad'],
     'blog.SubCategoria':['titulo', 'subtitulo', 'descripcion'],
-    'map.MapPoint':['titulo', 'descripcion']
+    'map.MapPoint':['titulo', 'descripcion'],
+    'paginas_estaticas.PaginaLegal':['titulo', 'encabezado', 'contenido'],
+    'paginas_estaticas.PuntoInformacion': ['titulo', 'descripcion'],
+    'paginas_estaticas.Cookies': ['titulo', 'descripcion'],
+    'paginas_estaticas.Contacto': ['titulo','subtitulo','descripcion'],
+    'paginas_estaticas.Diversidad': ['titulo','sub_titulo','descripcion_auxiliar'],
+    'topbar.Topbar': ['titulo', 'descripcion', 'descripcion_corta_movil', 'titulo_externo'],
+    'newsletter.Newsletter':['subtitulo'],
+    'alerta.Alerta': ['titulo', 'descripcion'],
+    'compra_y_descubre.CompraDescubre': ['titulo', 'descripcion_larga', 'descripcion_corta'],
+    'compra_y_descubre.CompraDescubrePasosImagen': ['titulo', 'descripcion'],
+    'eventos_especiales.EventoEspecial': ['titulo', 'descripcion_larga', 'descripcion_corta'],
+    'eventos_especiales.MedidaEconomica': ['titulo_html', 'descripcion'],
+    'eventos_especiales.Mensaje':['titulo', 'contenido', 'mensaje_despedida'],
+    'eventos_especiales.Autor':['cargo',],
+
+
     # Agrega aquí otros campos que desees traducir
 }
 

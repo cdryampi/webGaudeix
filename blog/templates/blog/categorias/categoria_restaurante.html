@@ -1,0 +1,389 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% block meta_description %}
+  {% if categoria.metadescripcion %}
+    <meta name="Description" content="{{ categoria.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ categoria.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if categoria.descripcion %}
+      <meta name="Description" content="{{ categoria.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ categoria.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if categoria.tags.all %}
+    <meta name="Keywords" content="{% for tag in categoria.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ categoria.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .categoria-titulo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .categoria-subtitulo {
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .categoria-descripcion {
+        margin-bottom: 20px;
+    }
+    .carousel-control-prev{
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+
+
+    .carousel-inner.text-center {
+        text-align: center;
+    }
+    .img-cat-banner{
+        max-height: 50vh !important;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    #categoria-carrusel-visites-guiades {
+        height: 50vh;
+    }
+    @media (max-width: 768px) {
+        .hashtag {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        #categoria-carrusel-visites-guiades {
+            height: 100%;
+        }
+    }
+    .icono-restaurante {
+        color: #3ebfab;
+        font-size: 1.5rem;
+        padding: 5px;
+    }
+    #filtro-restaurant-form {
+        margin: 20px 0;
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    #filtro-restaurant-form .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    #filtro-restaurant-form .tipo-restaurant-buttons button {
+        background-color: #ffffff;
+        color: #3EBFAB;
+        border: 2px solid #3EBFAB;
+        border-radius: 20px;
+        padding: 5px 15px;
+        margin: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    #filtro-restaurant-form .tipo-restaurant-buttons button:hover,
+    #filtro-restaurant-form .tipo-restaurant-buttons button:focus {
+        background-color: #3EBFAB;
+        color: #ffffff;
+        outline: none;
+    }
+    
+    #filtro-restaurant-form .tipo-restaurant-buttons button.active {
+        background-color: #3EBFAB;
+        color: #ffffff;
+    }
+    
+</style>
+{% endblock extra_css %}
+
+{% block media %}
+
+    {% if categoria.categoriagaleriaimagen_set.count %}
+        {% include 'blog/categorias/carrusel_categorias.html' %}
+    {% endif %}
+    
+{% endblock media %}
+
+{% block content %}
+<div class="container-fluid px-0 py-0">
+
+
+    <div class="container pt-5">
+        <h1 class="text-center">{{ categoria.titulo }}</h1>
+        <p class="text-center italic lead">{{ categoria.subtitulo }}</p>
+        <div class="row">
+            <div class="col-12">
+                <p class="card-text">
+                    {% autoescape on %}
+                    {{ categoria.descripcion | safe }}
+                    {% endautoescape %}
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 pb-3 pt-5">
+                <h4 class="titulo-destacat">{% blocktrans %}Explora les nostres excepcionals opcions de restauració i gaudeix d'una experiència culinària inoblidable!{% endblocktrans %}</h4>
+            </div>
+            <div class="col-12 pb-3 pt-5">
+                <form id="filtro-restaurant-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label class="p-2" for="tipo-restaurant">{% blocktrans %}Tipus d'estableciments{% endblocktrans %}:</label>
+                      <div id="tipo-restaurant" class="tipo-restaurant-buttons">
+                        <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="">{% blocktrans %}Tots{% endblocktrans %}</button>
+                        <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="restaurant">{% blocktrans %}restaurant{% endblocktrans %}</button>
+                        <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="bar">{% blocktrans %}bar{% endblocktrans %}</button>
+                        <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="masia">{% blocktrans %}masia{% endblocktrans %}</button>
+                        <button type="button" class="btn btn-light m-lg-0 m-md-0 m-sm-0 m-2" value="guingueta">{% blocktrans %}guingueta{% endblocktrans %}</button>
+                      </div>
+                      <input type="hidden" id="tipo_restaurant" name="tipo_restaurant" value="">
+                    </div>
+                  </form>
+            </div>
+
+        </div>
+    </div>
+<aside class="container-fluid">
+    <div class="container-fluid p-3">
+        <div class="row row-inline-cards justify-content-center" id="agenda-section">
+        <div id="spinner-container">
+            <div class="spinner"></div>
+        </div>
+        <div class="container-fluid" id="restaurant-resultados">
+            <!-- Aquí se mostrarán los resultados del filtro -->
+            <!-- spinner.html -->
+    
+    
+        </div>
+        </div>
+    </div>
+</aside>
+{% endblock content %}
+
+{% block asides %}
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+
+{% endblock asides %}
+
+{% block extra_script %}
+<script>
+  
+    const iconTexts = {
+        "petFriendly": "{% trans 'Pet Friendly' %}",
+        "opcionesVegetarianas": "{% trans 'Opcions vegetarianes' %}",
+        "wifi": "{% trans 'WiFi' %}",
+        "aptoParaCeliacos": "{% trans 'Apte per a celíacs' %}",
+        "terraza": "{% trans 'Terrassa' %}",
+        "menuInfantil": "{% trans 'Menú infantil' %}",
+    };
+    const tipoRestaurantButtons = document.querySelectorAll('.tipo-restaurant-buttons button');
+    const filtroForm = document.getElementById('filtro-restaurant-form');
+    const resultadosContainer = document.getElementById('restaurant-resultados');
+    const tipo_restaurant = document.getElementById('tipo_restaurant');
+    const spinnerContainer = document.getElementById('spinner-container');
+
+    // Agrega event listeners a los botones de tipo de evento
+    document.querySelector('#tipo-restaurant').addEventListener('click', (event) => {
+        if (event.target.tagName === 'BUTTON') {
+          const button = event.target;
+          tipo_restaurant.value = button.value;
+          actualizarBotonesActivos(button);
+          filtrarRestaurant();
+        }
+      });
+
+    function actualizarBotonesActivos(activeButton) {
+        tipoRestaurantButtons.forEach((btn) => {
+          btn.classList.remove('active');
+        });
+        activeButton.classList.add('active');
+      }
+
+    // Agrega event listener al formulario de filtro
+    filtroForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        filtrarRestaurant();
+    });
+
+    function filtrarRestaurant() {
+        const formData = new FormData(filtroForm);
+        const csrfToken = formData.get('csrfmiddlewaretoken');
+
+        
+        let tipo_restaurant_data = tipo_restaurant.value;
+
+        console.log(tipo_restaurant_data);
+
+        formData.set('tipo_restaurante', tipo_restaurant_data);
+    
+        mostrarSpinner();
+        fetch('/api/filtrar-restaurante/', {
+          method: 'POST',
+          headers: { 'X-CSRFToken': csrfToken },
+          body: formData,
+        })
+        .then(handleResponse)
+        .then(data => {
+          ocultarSpinner();
+          mostrarResultados(data);
+        })
+        .catch(handleFetchError);
+      }
+
+    function handleResponse(response) {
+        if (!response.ok) throw new Error('Error en la llamada a la API');
+        return response.json();
+      }
+
+    function handleFetchError(error) {
+        console.error('Error en fetch:', error);
+        ocultarSpinner();
+      }
+    function mostrarSpinner() { spinnerContainer.style.display = 'block'; }
+    function ocultarSpinner() { spinnerContainer.style.display = 'none'; }
+    function mostrarResultados(resultados) {
+
+        mostrarResultadosRestaurantes(resultados);
+    }
+        // Función para agregar iconos con una clase para estilos
+    function addIcon(className, tooltip) {
+        const iconElement = document.createElement('i');
+        iconElement.className = className + " icono-restaurante"; // Usa la clase CSS personalizada
+        iconElement.title = tooltip;
+        iconsContainer.appendChild(iconElement);
+        iconsContainer.appendChild(document.createTextNode(' ')); // Añadir espacio entre iconos
+    }
+
+    function mostrarResultadosRestaurantes(resultados) {
+        let resultadosContainer = document.getElementById('restaurant-resultados');
+    
+        if (resultadosContainer) {
+            resultadosContainer.innerHTML = ''; // Limpiar los resultados previos
+    
+            const rowElement = document.createElement('div');
+            rowElement.classList.add('row');
+    
+            const restaurantes = JSON.parse(resultados); // Asegúrate de que 'resultados' es la respuesta JSON correcta
+    
+            restaurantes.forEach(function (restaurante) {
+                const colElement = document.createElement('div');
+                colElement.classList.add('col-md-6', 'col-lg-3', 'col-12', 'p-3');
+    
+                // Crear el enlace
+                const detallesLink = document.createElement('a');
+                detallesLink.href = '/agenda/restaurant/' + restaurante.slug;
+                detallesLink.classList.add('related-activity-link');
+    
+                const cardElement = document.createElement('article');
+                cardElement.classList.add('card', 'card-inline', 'related-activity-card', 'h-100');
+    
+                if (restaurante.imagen) {
+                    const imageContainer = document.createElement('div');
+                    imageContainer.classList.add('image-container');
+                    const image = document.createElement('img');
+                    image.src = restaurante.imagen;
+                    image.alt = restaurante.titulo;
+                    image.classList.add('img-fluid');
+                    imageContainer.appendChild(image);
+                    cardElement.appendChild(imageContainer);
+                }
+    
+                const cardBody = document.createElement('div');
+                cardBody.classList.add('card-body');
+    
+                const cardTitle = document.createElement('h5');
+                cardTitle.classList.add('card-title', 'text-center');
+                cardTitle.textContent = restaurante.titulo;
+                cardBody.appendChild(cardTitle);
+    
+                const cardText = document.createElement('p');
+                cardText.classList.add('card-text', 'related-activity-description', 'text-center');
+                cardText.innerHTML = restaurante.descripcion;
+                cardBody.appendChild(cardText);
+    
+                // Crear un contenedor para los iconos
+                const iconsContainer = document.createElement('div');
+                iconsContainer.classList.add('icons-container', 'd-flex', 'justify-content-center', 'flex-wrap', 'mt-2');
+
+                // Función para agregar iconos con estilos específicos
+                function addIcon(className, tooltip) {
+                    const iconElement = document.createElement('i');
+                    iconElement.className = `${className} fa-lg icono-restaurante`; // 'fa-lg' hace el ícono más grande
+                    iconElement.title = tooltip;
+                    iconsContainer.appendChild(iconElement);
+                
+                    const textElement = document.createElement('small');
+                    textElement.textContent = tooltip;
+                    textElement.style.marginLeft = '0.5rem'; // Agregar un margen horizontal a la derecha del icono
+                    iconsContainer.appendChild(textElement);
+                
+                    iconsContainer.appendChild(document.createTextNode(' ')); // Añadir espacio entre iconos
+                }
+                
+
+                // Condiciones para añadir los iconos
+                if (restaurante.pet_friendly) addIcon('fas fa-paw', iconTexts.petFriendly);
+                if (restaurante.opciones_vegetarianas) addIcon('fas fa-carrot', iconTexts.opcionesVegetarianas);
+                if (restaurante.wifi) addIcon('fas fa-wifi', iconTexts.wifi);
+                if (restaurante.apto_para_celiacos) addIcon('fas fa-bread-slice', iconTexts.aptoParaCeliacos);
+                if (restaurante.terraza) addIcon('fas fa-umbrella-beach', iconTexts.terraza);
+                if (restaurante.menu_infantil) addIcon('fas fa-child', iconTexts.menuInfantil);                
+
+                // Añadir el contenedor de iconos al cardBody antes de añadirlo al cardElement
+                cardBody.appendChild(iconsContainer);
+                // Agregar iconos y demás elementos al cardBody como se explicó previamente
+    
+                cardElement.appendChild(cardBody);
+                detallesLink.appendChild(cardElement);
+                colElement.appendChild(detallesLink);
+                rowElement.appendChild(colElement);
+            });
+    
+            resultadosContainer.appendChild(rowElement);
+        } else {
+            console.log('El contenedor de resultados de restaurantes no se encuentra en el HTML');
+        }
+    }
+    
+    
+  filtrarRestaurant();
+  
+</script>
+
+{% endblock extra_script %}

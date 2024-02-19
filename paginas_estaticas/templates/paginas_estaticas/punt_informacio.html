@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block meta_description %}
     <meta name="description" content="Descobreix el nostre punt d'informació turística a Cabrera de Mar, on t'oferim assistència personalitzada sobre rutes, esdeveniments, i tot el que necessites saber sobre el nostre encantador poble. Vine i obtingues la millor informació local.">
     <meta property="og:description" content="Descobreix el nostre punt d'informació turística a Cabrera de Mar, on t'oferim assistència personalitzada sobre rutes, esdeveniments, i tot el que necessites saber sobre el nostre encantador poble. Vine i obtingues la millor informació local.">
@@ -116,9 +116,9 @@
 {% block content %}
     <div class="container-fluid p-0 m-0">
         <div class="container-fluid p-0 m-0 banner-container">
-            <img src="{% static 'core/img/sample/directori-interes-header.png' %}" alt="Punt d'informació" class="banner-img">
+            <img src="{% static 'core/img/sample/directori-interes-header.png' %}" alt="{% blocktrans %}Punt d'informació{% endblocktrans %}" class="banner-img">
             <div class="banner-content">
-              <h1 class="banner-title text-center">Punt d'informació</h1>
+              <h1 class="banner-title text-center">{% blocktrans %}Punt d'informació{% endblocktrans %}</h1>
             </div>
           </div>
           
@@ -171,76 +171,80 @@
 
 {% block extra_script %}
 <script>
-    function truncateDescription(description, wordCount) {
-        // Convertir la descripción en un array de palabras
-        const words = description.split(' ');
-      
-        // Verificar si la descripción ya tiene menos de `wordCount` palabras
-        if (words.length <= wordCount) {
-          return description;
+    {% if punt.mapa.latitud and punt.mapa.longitud %}
+        function truncateDescription(description, wordCount) {
+            // Convertir la descripción en un array de palabras
+            const words = description.split(' ');
+        
+            // Verificar si la descripción ya tiene menos de `wordCount` palabras
+            if (words.length <= wordCount) {
+            return description;
+            }
+        
+            // Obtener las primeras `wordCount` palabras y unirlas nuevamente en una cadena
+            const truncatedWords = words.slice(0, wordCount);
+            const truncatedDescription = truncatedWords.join(' ');
+        
+            // Agregar puntos suspensivos al final de la descripción truncada
+            const finalDescription = truncatedDescription + '...';
+        
+            return finalDescription;
         }
-      
-        // Obtener las primeras `wordCount` palabras y unirlas nuevamente en una cadena
-        const truncatedWords = words.slice(0, wordCount);
-        const truncatedDescription = truncatedWords.join(' ');
-      
-        // Agregar puntos suspensivos al final de la descripción truncada
-        const finalDescription = truncatedDescription + '...';
-      
-        return finalDescription;
-    }
-    
-    function initMap() {
-        const mapContainer = document.getElementById('map');
-        const latitudInicio = parseFloat('{{ punt.mapa.latitud|stringformat:".6f" }}'.replace(',', '.'));
-        const longitudInicio = parseFloat('{{ punt.mapa.longitud|stringformat:".6f" }}'.replace(',', '.'));
-    
-        const map = new google.maps.Map(mapContainer, {
-            center: { lat: latitudInicio, lng: longitudInicio },
-            zoom: 14
-        });
-        const marker = new google.maps.Marker({
-            position: { lat: latitudInicio, lng: longitudInicio },
-            map: map,
-            title: '{{ punt.mapa.titulo }}',
-            animation: google.maps.Animation.BOUNCE
-        });
-        let image = '';
-        let enlace_google_maps = '';
 
-        {% if punt.mapa.postimagen.imagen %}
-        image = '{{ punt.mapa.postimagen.imagen.archivo.url }}';
-        {% endif %}
-        {% if punt.mapa.enlace_google_maps %}
-        enlace_google_maps = '{{ punt.mapa.enlace_google_maps }}'; 
-        {% endif %}
-        let description = truncateDescription(`{% autoescape on %}{{punt.mapa.descripcion|safe}}{% endautoescape %}`, 20);
-        const content = `
-            <div class="info-window">
-                <h4 class="info-window-title text-center">{{punt.mapa.titulo}}</h4>
-                <p class="info-window-image"><img src=${image} alt="{{punt.mapa.titulo}}" style="width: 100%; height: 150px; object-fit: cover;"></p>
-                <p class="info-window-description">${description}</p>
-                ${enlace_google_maps ? `<p class="info-window-link"><a href="{{ punt.mapa.enlace_google_maps }}" target="_blank" rel="noopener noreferrer" class="text-danger">Veure més a Google Maps</a></p>` : ''}
-            </div>
-        `;
+        function initMap() {
+            const mapContainer = document.getElementById('map');
+            const latitudInicio = parseFloat('{{ punt.mapa.latitud|stringformat:".6f" }}'.replace(',', '.'));
+            const longitudInicio = parseFloat('{{ punt.mapa.longitud|stringformat:".6f" }}'.replace(',', '.'));
+        
+            const map = new google.maps.Map(mapContainer, {
+                center: { lat: latitudInicio, lng: longitudInicio },
+                zoom: 14
+            });
+            const marker = new google.maps.Marker({
+                position: { lat: latitudInicio, lng: longitudInicio },
+                map: map,
+                title: '{{ punt.mapa.titulo }}',
+                animation: google.maps.Animation.BOUNCE
+            });
+            let image = "";
+            let enlace_google_maps = '';
 
-        const infoWindow = new google.maps.InfoWindow({
-            content: content
-        });
+            {% if punt.mapa %}
+              image = '{{ punt.mapa.postimagen.imagen.archivo.url }}';
+            {% endif %}
+            {% if punt.mapa.enlace_google_maps %}
+            enlace_google_maps = '{{ punt.mapa.enlace_google_maps }}'; 
+            {% endif %}
+            let description = truncateDescription(`{% autoescape on %}{{punt.mapa.descripcion|safe}}{% endautoescape %}`, 20);
+            const content = `
+                <div class="info-window">
+                    <h4 class="info-window-title text-center">{{map.titulo}}</h4>
+                    <p class="info-window-image"><img src="${image}" alt="{{punt.map.titulo}}" style="width: 100%; height: 150px; object-fit: cover;"></p>
+                    <p class="info-window-description">${description}</p>
+                    ${enlace_google_maps ? `<p class="info-window-link"><a href="{{ punt.mapa.enlace_google_maps }}" target="_blank" rel="noopener noreferrer" class="text-danger">{% blocktrans %}Veure més a Google Maps{% endblocktrans %}</a></p>` : ''}
+                </div>
+            `;
 
-        marker.addListener('click', function() {
-            infoWindow.open(map, marker);
-        });
-    }
-    
-    function loadGoogleMapsAPI(callback) {
-        var script = document.createElement('script');
-        script.src = 'https://maps.googleapis.com/maps/api/js?AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=' + callback;
-        script.defer = true;
-        script.async = true;
-        document.head.appendChild(script);
-      }
-    
-      loadGoogleMapsAPI('initMap');
+            const infoWindow = new google.maps.InfoWindow({
+                content: content
+            });
+
+            marker.addListener('click', function() {
+                infoWindow.open(map, marker);
+            });
+        }
+        
+        function loadGoogleMapsAPI(callback) {
+            var script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=' + callback;
+            script.defer = true;
+            script.async = true;
+            document.head.appendChild(script);
+        }
+
+        loadGoogleMapsAPI('initMap');
+
+      {% endif %}
+
     </script>
 {% endblock extra_script %}

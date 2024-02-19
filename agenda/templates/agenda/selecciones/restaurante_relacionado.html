@@ -1,0 +1,98 @@
+{% load static %}
+{% load i18n %}
+{% if coleccion_destacados %}
+<section class="container-fluid py-3 bg-light" id="destacats">
+    <div class="py-3">
+        <h4 class="related-activities-title text-center h2">{% blocktrans %}Altres restaurants a Cabrera de Mar{% endblocktrans %}</h4>
+        <p class="lead related-activities-subtitle text-center">{% blocktrans %}Descobreix la deliciosa cuina catalana en els nostres restaurants locals{% endblocktrans %}.</p>
+    </div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            {% for restaurante in coleccion_destacados %}
+            <div class="swiper-slide">
+                <a href="{% url 'agenda:restaurant' slug=restaurante.slug %}" class="related-activity-link">
+                    <div class="card related-activity-card mb-3">
+                        {% with imagen=restaurante.postgaleriaimagen_set.first.imagen|default:restaurante.postimagen.imagen %}
+                            {% if imagen.archivo.url %}
+                                <div class="image-container">
+                                    <img src="{{ imagen.archivo.url }}" alt="{{ imagen.titulo }}" title="{{ imagen.titulo }}" class="img-fluid">
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ restaurante.titulo }}</h5>
+                            <div>
+                                <p class="card-text">
+                                    {{ restaurante.descripcion|truncatewords:15|safe }}
+                                    {% if restaurante.descripcion|wordcount > 15 %}...{% endif %}
+                                </p>
+                            </div>
+                            <div class="alojamiento-iconos mb-2">
+                                <!-- Iconos de características del restaurante -->
+                                {% if restaurante.adaptado_movilidad_reducida %}
+                                    <i class="fas fa-wheelchair icono-restaurante" title="{% blocktrans %}Adaptado per a persones amb mobilitat reduïda{% endblocktrans %}"></i>
+                                {% endif %}
+                                {% if restaurante.wifi %}
+                                    <i class="fas fa-wifi icono-restaurante" title="{% blocktrans %}WiFi{% endblocktrans %}"></i><small>{% trans 'WiFi' %}</small>
+                                {% endif %}
+                                {% if restaurante.pet_friendly %}
+                                    <i class="fas fa-paw icono-restaurante" title="{% blocktrans %}Pet Friendly{% endblocktrans %}"></i><small>{% trans 'Pet Friendly' %}</small>
+                                {% endif %}
+                                {% if restaurante.menu_infantil %}
+                                    <i class="fas fa-child icono-restaurante" title="{% blocktrans %}Menú infantil{% endblocktrans %}"></i><small>{% trans 'Menú infantil' %}</small>
+                                {% endif %}
+                                {% if restaurante.terraza %}
+                                    <i class="fas fa-umbrella-beach icono-restaurante" title="{% blocktrans %}Terrassa{% endblocktrans %}"></i><small>{% trans 'Terrassa' %}</small>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="swiper-button-prev custom-prev"></div>
+        <div class="swiper-button-next custom-next"></div>
+    </div>
+</section>
+
+{% endif %}
+
+{% block extra_script %}
+<script>
+    function initSwiper() {
+        let swiper = new Swiper('.swiper-container', {
+            loop: true,
+            slidesPerView: 3, // Número de tarjetas por slide
+            spaceBetween: 10, // Espacio entre tarjetas
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                // Configuración para dispositivos móviles
+                359:{
+                    slidesPerView: 2
+                },
+                374:{
+                    slidesPerView: 2,
+                },
+
+                767: {
+                    slidesPerView: 3,
+                },
+
+                // Configuración para tablets
+                991: {
+                    slidesPerView: 3,
+                },
+            },
+        });
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        initSwiper();
+    });
+</script>
+{% endblock extra_script %}

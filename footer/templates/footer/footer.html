@@ -6,7 +6,7 @@
         <div class="row p-0 m-0">
             <div class="col-md-12">
                 <div class="footer-images row justify-content-around p-0 m-0 py-3">
-                    {% for empresa in footer.empresas.all %}
+                    {% for empresa in footer.footerempresa_set.all %}
                         <div class="footer-image px-2 py-1">
                             {% if empresa.enlace %}
                               <a href="{{ empresa.enlace }}" target="_blank" title="{{ empresa.titulo }}">
@@ -42,11 +42,11 @@
             {% for legal in footer.footerinformacion.paginas_legales.all %}
             <div class="footer-item">
               {% if legal.tipo == 'privacitat' %}
-              <p class="mb-1"><a href="{% url 'paginas_estaticas:privacitat' %}">{{ legal.tipo }}</a></p>
+              <p class="mb-1"><a href="{% url 'paginas_estaticas:privacitat' %}">{{ legal.titulo }}</a></p>
               {% elif legal.tipo == 'avis_legal' %}
               <p class="mb-1"><a href="{% url 'paginas_estaticas:avis_legal' %}">{{ legal.titulo }}</a></p>
               {% elif legal.tipo == 'cookies' %}
-              <p class="mb-1"><a href="{% url 'paginas_estaticas:politica_cookies' %}">{{ legal.tipo }}</a></p>
+              <p class="mb-1"><a href="{% url 'paginas_estaticas:politica_cookies' %}">{{ legal.titulo }}</a></p>
               {% endif %}
             </div>
             {% endfor %}

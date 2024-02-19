@@ -67,9 +67,10 @@ def get_coleccion_destacados():
     return None
 
 def generate_cache_key(request, idioma):
-    # Incluye el idioma en la clave de caché
-    cache_key = f'cache_{idioma}_{request.get_full_path()}'
+    device_type = 'mobile' if request.user_agent.is_mobile else 'desktop'
+    cache_key = f'cache_{idioma}_{device_type}_{request.get_full_path()}'
     return cache_key
+
 
 
 def obtener_token_csrf(request):

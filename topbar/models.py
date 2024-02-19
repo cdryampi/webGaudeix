@@ -20,7 +20,7 @@ class Topbar(models.Model):
         max_length=50,
         null=True,
         blank=True,
-        help_text="Descripció curta per a mòbils",
+        help_text="Descripció curta per a mòbils (màxim 50 paraules)",
         verbose_name="Descripció curta per a mòbils"
     )  # Descripció curta per a mòbils (opcional)
 

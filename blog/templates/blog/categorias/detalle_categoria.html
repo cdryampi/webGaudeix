@@ -12,4 +12,8 @@
     {% include 'blog/categorias/senderisme.html' %}
 {% elif categoria.tipo == 'festes_i_tradicions' %}
     {% include 'blog/categorias/festes-i-tradicions.html' %}
+{% elif categoria.tipo == 'allotjament' %}
+    {% include "blog/categorias/categoria_alojamiento.html" %}
+{% elif categoria.tipo == 'restaurant' %}
+    {% include "blog/categorias/categoria_restaurante.html" %}
 {% endif %}

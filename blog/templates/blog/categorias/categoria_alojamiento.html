@@ -1,0 +1,261 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% block meta_description %}
+  {% if categoria.metadescripcion %}
+    <meta name="Description" content="{{ categoria.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ categoria.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if categoria.descripcion %}
+      <meta name="Description" content="{{ categoria.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ categoria.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if categoria.tags.all %}
+    <meta name="Keywords" content="{% for tag in categoria.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+{% block title %}
+    {% autoescape off %}
+        {{ categoria.titulo |striptags | safe  }}
+    {% endautoescape %}
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .categoria-titulo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .categoria-subtitulo {
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .categoria-descripcion {
+        margin-bottom: 20px;
+    }
+    .carousel-control-prev{
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+
+
+    .carousel-inner.text-center {
+        text-align: center;
+    }
+    .img-cat-banner{
+        max-height: 50vh !important;
+        width: 100%;
+        object-fit: cover;
+    }
+
+
+    .tipo-hotel {
+        background-color: #f0e68c; /* Color para hoteles */
+    }
+    
+    .tipo-alberg {
+        background-color: #add8e6; /* Color para albergs */
+    }
+    
+    .tipo-turistic {
+        background-color: #90ee90; /* Color para allotjaments turístics */
+    }
+    
+    .tipo-autocaravanes {
+        background-color: #ffb6c1; /* Color para autocaravanes */
+    }
+
+    #categoria-carrusel-visites-guiades {
+        height: 50vh;
+    }
+    @media (max-width: 768px) {
+        .hashtag {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        #categoria-carrusel-visites-guiades {
+            height: 100%;
+        }
+    }
+</style>
+{% endblock extra_css %}
+
+{% block media %}
+
+    {% if categoria.categoriagaleriaimagen_set.count %}
+        {% include 'blog/categorias/carrusel_categorias.html' %}
+    {% endif %}
+
+{% endblock media %}
+
+{% block content %}
+<div class="container-fluid px-0 py-0">
+
+
+    <div class="container pt-5">
+        <h1>{{ categoria.titulo }}</h1>
+        <div class="row">
+            <div class="col-12">
+                <p class="card-text">
+                    {% autoescape on %}
+                    {{ categoria.descripcion | safe }}
+                    {% endautoescape %}
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 pb-3 pt-5">
+                <h4 class="titulo-destacat">{% blocktrans %}Explora les nostres excepcionals opcions d'allotjament i viu una estada inoblidable!{% endblocktrans %}</h4>
+            </div>       
+                {% for alojamiento in alojamientos %}
+                    {% if alojamiento.publicado %}
+                        <a href="{% url 'agenda:allotjament' slug=alojamiento.slug %}" class="related-activity-link my-1">
+                            <div class="card related-activity-card mb-3 h-100">
+                                <div class="p-3 {% if alojamiento.tipo == 'hotel' %}tipo-hotel{% elif alojamiento.tipo == 'alberg' %}tipo-alberg{% elif alojamiento.tipo == 'turístic' %}tipo-turistic{% elif alojamiento.tipo == 'autocaravanes' %}tipo-autocaravanes{% endif %}" style="display: flex; align-items: center; flex-wrap: wrap;">
+                                    <!-- Icono y texto para alojamientos adaptados para personas con movilidad reducida -->
+
+                                    {% if alojamiento.adaptado_movilidad_reducida %}
+                                        <i class="fas fa-wheelchair" style="margin-right: 5px;"></i>{% blocktrans %}Adaptat per a persones amb mobilitat reduïda{% endblocktrans %}
+                                    {% endif %}
+                                    <!-- Espacio entre íconos si se requiere -->
+                                    <!-- Icono y texto para alojamientos con parking gratis -->
+                                    {% if alojamiento.parking_gratis %}
+                                        <span style="margin: 0 10px;">|</span>
+                                        <i class="fas fa-parking" style="margin-right: 5px;"></i>{% blocktrans %}Pàrquing gratuït{% endblocktrans %}
+                                    {% endif %}
+                                    <!-- Espacio entre íconos si se requiere -->
+                                    <!-- Icono y texto para alojamientos con WiFi -->
+                                    {% if alojamiento.wifi %}
+                                        <span style="margin: 0 10px;">|</span>
+                                        <i class="fas fa-wifi" style="margin-right: 5px;"></i>{% blocktrans %}WiFi disponible{% endblocktrans %}
+                                    {% endif %}
+                                    <!-- Espacio entre íconos si se requiere -->
+                                    <!-- Icono y texto para alojamientos pet-friendly -->
+                                    {% if alojamiento.pet_friendly %}
+                                        <span style="margin: 0 10px;">|</span>
+                                        <i class="fas fa-paw" style="margin-right: 5px;"></i>{% blocktrans %}Admet mascotes{% endblocktrans %}
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="row p-3">
+                                    {% if alojamiento.postimagen.imagen %}
+                                        {% with imagen=alojamiento.postimagen.imagen %}
+                                            <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                                <img src="{{ imagen.archivo.url }}" alt="{{imagen.titulo}}"
+                                                    class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
+                                            </div>
+                                        {% endwith %}
+                                    {% else %}
+                                        {% if alojamiento.postgaleriaimagen_set.exists %}
+                                            {% with imagen=alojamiento.postgaleriaimagen_set.first %}
+                                                {% if imagen %}
+                                                    <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                                        <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
+                                                            class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
+                                                    </div>
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endif %}
+                                    {% endif %}
+                                    <div class="col-lg-8 col-md-6 col-sm-12">
+                                        <div class="card-body" style="padding: 20px;">
+                                            <h2 class="card-title">{{ alojamiento.titulo }}</h2>
+                                            <div class="card-text">
+                                                {% autoescape on %}
+                                                    {{ alojamiento.descripcion |truncatewords_html:50 | safe }}
+                                                {% endautoescape %}
+                                            </div>
+                                            <!-- Afegeix aquí altres detalls rellevants per a la carta -->
+                                            <p>
+                                                <span class="text-primary text-left mt-auto url-link">{% blocktrans %}Saber més{% endblocktrans %}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                    
+                {% endfor %}
+        </div>
+        {% if posts %}
+            <div class="row py-2">
+                <div class="col-12">
+                    <h4>També et pot interessar<h4>
+                </div>
+                {% for post in posts %}
+                    {% if not post.alojamiento and post.publicado %}
+                        <div class="col-12 col-md-6 col-lg-6 p-2">
+                                <a href="
+                                    {% if post.agenda %} 
+                                        {% url 'post:detalle_agenda' slug=post.agenda.slug %}
+                                    {% elif post.visitaguiada %}
+                                        {% url 'post:visites-guiades' slug=post.agenda.slug %}
+                                    {% elif post.mappoint %}
+                                        {% url 'map:mapa' slug=post.slug %}
+                                    {% else %}
+                                        {{ post.get_absolute_url }}
+                                    {% endif %}"  class="related-activity-link my-1">
+                                        <article class="card related-activity-card mb-3 h-100">
+                                            <div class="image-container">
+                                                {% if post.postimagen.imagen and post.postimagen.imagen.archivo.url %}
+                                                    <img src="{{ post.postimagen.imagen.archivo.url }}" loading="lazy" class="img-fluid lazy-load-img" alt="{{ post.postimagen.imagen.titulo }}" title="{{ post.postimagen.imagen.titulo }}" style="height: 350px;">
+                                                {% endif %}
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
+                                                <p class="card-text related-activity-description">
+                                                    {% autoescape on %}
+                                                        {{ post.descripcion |striptags |truncatewords:30 | safe }}
+                                                    {% endautoescape %}
+                                                </p>
+                                                <p class="text-primary text-left mt-auto url-link" style="color: {{festa.color}} !important;">{% blocktrans %}Saber més{% endblocktrans %}</p>
+                                            </div>
+                                        </article>
+                                </a>
+
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock content %}
+
+{% block asides %}
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+
+{% endblock asides %}

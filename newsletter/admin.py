@@ -2,20 +2,25 @@ from django.contrib import admin
 from .models import Newsletter
 from django.utils.safestring import mark_safe
 from django.utils.html import format_html
+from modeltranslation.admin import TranslationAdmin
+from django.utils.translation import activate, get_language, deactivate
+from django.utils.html import format_html_join
+from django.conf import settings
 
 
-class NewsletterAdmin(admin.ModelAdmin):
+
+class NewsletterAdmin(TranslationAdmin, admin.ModelAdmin):
     list_display = ('nombre_interno', 'evento_especial', 'html_file')
     search_fields = ('nombre_interno', 'evento_especial__titulo')
-    actions = ['generar_html_para_newsletters_seleccionadas']
+    actions = ['generar_html_para_todos_los_idiomas']
     fieldsets = [
         (None, {
             'fields': [
                 'evento_especial',
                 'nombre_interno',
-                'generar_plantilla',
                 'link_tracking',
                 'subtitulo',
+                'html_file'
                 
             ],
             'description': (
@@ -29,35 +34,15 @@ class NewsletterAdmin(admin.ModelAdmin):
             ),
         }),
     ]
-    readonly_fields = ['generar_plantilla','html_file']
+    readonly_fields = ['html_file']
+    def generar_html_para_todos_los_idiomas(self, request, queryset):
 
-
-    def generar_plantilla(self, obj):
-        if obj.html_file:
-            # Si el archivo existe, genera el enlace de descarga
-            file_path = obj.html_file.path
-            download_link = format_html('<a href="{}" download="{}">Baixar HTML</a>', obj.html_file.url, file_path)
-            return download_link
-        else:
-            # Si el archivo no existe, genera y guarda el HTML
-            obj.generar_y_guardar_html()
-            # Recargar el objeto para asegurarse de que 'html_file' esté actualizado
-            obj.refresh_from_db()
-            if obj.html_file:
-                file_path = obj.html_file.path
-                download_link = format_html('<a href="{}" download="{}">Baixar HTML</a>', obj.html_file.url, file_path)
-                return download_link
-            else:
-                # En caso de que el archivo siga sin existir después de intentar generarlo
-                return "Fitxer no disponible"
-        
-    generar_plantilla.allow_tags = True
-    generar_plantilla.short_description = 'Generar HTML'
-
-    def generar_html_para_newsletters_seleccionadas(self, request, queryset):
         for newsletter in queryset:
             newsletter.generar_y_guardar_html()
-        self.message_user(request, "La plantilla HTML s'ha generat bé.")
-    generar_html_para_newsletters_seleccionadas.short_description = "Generar plantilles HTML per les newsletters seleccionades"
+        self.message_user(request, "HTML generado para todos los idiomas.")
+
+
+    generar_html_para_todos_los_idiomas.short_description = "Generar HTML para todos los idiomas"
+
 
 admin.site.register(Newsletter, NewsletterAdmin)

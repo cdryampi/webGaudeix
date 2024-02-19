@@ -1,61 +1,62 @@
+{% load i18n %}
 <form method="POST" id="contactForm">
   {% csrf_token %}
   <div class="row">
     <div class="col-lg-6 col-12">
       <div class="form-group">
-        <label for="name">Nom:</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Introduïu el vostre nom" required>
+        <label for="name">{% blocktrans %}Nom{% endblocktrans %}:</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="{% blocktrans %}Introduïu el vostre nom{% endblocktrans %}" required>
       </div>
       <div class="form-group">
-        <label for="name">Cognoms:</label>
-        <input type="text" class="form-control" id="surname" name="surname" placeholder="Introduïu el vostre cognom" required>
+        <label for="name">{% blocktrans %}Cognoms{% endblocktrans %}:</label>
+        <input type="text" class="form-control" id="surname" name="surname" placeholder="{% blocktrans %}Introduïu el vostre cognom{% endblocktrans %}" required>
       </div>
       <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Introduïu el vostre email" required>
+        <label for="email">{% blocktrans %}Email{% endblocktrans %}:</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="{% blocktrans %}Introduïu el vostre email{% endblocktrans %}" required>
       </div>
       <div class="form-group">
-        <label for="phone">Telèfon:</label>
-        <input type="text" class="form-control" id="phone" name="phone" placeholder="Introduïu el vostre telèfon" required>
+        <label for="phone">{% blocktrans %}Telèfon{% endblocktrans %}:</label>
+        <input type="text" class="form-control" id="phone" name="phone" placeholder="{% blocktrans %}Introduïu el vostre telèfon{% endblocktrans %}" required>
       </div>
       <div class="form-group">
-        <label for="address">Adreça:</label>
-        <input type="text" class="form-control" id="address" name="address" placeholder="Introduïu la vostra adreça">
+        <label for="address">{% blocktrans %}Adreça{% endblocktrans %}:</label>
+        <input type="text" class="form-control" id="address" name="address" placeholder="{% blocktrans %}Introduïu la vostra adreça{% endblocktrans %}">
       </div>
     </div>
     <div class="col-lg-6 col-12">
       <div class="form-group">
-        <label for="postal_code">Codi Postal:</label>
-        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Introduïu el codi postal">
-        <small id="emailHelpCountry" class="form-text text-muted">Aquest camp es opcional.</small>
+        <label for="postal_code">{% blocktrans %}Codi Postal{% endblocktrans %}:</label>
+        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="{% blocktrans %}Introduïu el codi postal{% endblocktrans %}">
+        <small id="emailHelpCountry" class="form-text text-muted">{% blocktrans %}Aquest camp es opcional{% endblocktrans %}.</small>
       </div>
       <div class="form-group">
-        <label for="city">Població:</label>
-        <input type="text" class="form-control" id="city" name="city" placeholder="Introduïu la població" required>
+        <label for="city">{% blocktrans %}Població{% endblocktrans %}:</label>
+        <input type="text" class="form-control" id="city" name="city" placeholder="{% blocktrans %}Introduïu la població{% endblocktrans %}" required>
       </div>
       <div class="form-group">
         <label for="country">País:</label>
         <input type="text" class="form-control" id="country" name="country" placeholder="Introduïu el país">
-        <small id="emailHelpCountry" class="form-text text-muted">Aquest camp es opcional.</small>
+        <small id="emailHelpCountry" class="form-text text-muted">{% blocktrans %}Aquest camp es opcional{% endblocktrans %}.</small>
       </div>
       <div class="form-group">
-        <label for="message">Missatge:</label>
-        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Introduïu el vostre missatge" required></textarea>
+        <label for="message">{% blocktrans %}Missatge{% endblocktrans %}:</label>
+        <textarea class="form-control" id="message" name="message" rows="5" placeholder="{% blocktrans %}Introduïu el vostre missatge{% endblocktrans %}" required></textarea>
       </div>
     </div>
   </div>
   <div class="form-check">
     <input class="form-check-input" type="checkbox" id="privacy_policy" name="privacy_policy" required>
     <label class="form-check-label" for="privacy_policy">
-      He llegit i accepto la política de privacitat.
+      {% blocktrans %}He llegit i accepto la política de privacitat{% endblocktrans %}.
     </label>
   </div>
   <div class="disclaimer my-2">
     <small>
-      De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials.
+    {% blocktrans %}De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials{% endblocktrans %}.
     </small>
   </div>
-  <button type="submit" class="btn btn-primary">Enviar</button>
+  <button type="submit" class="btn btn-primary">{% blocktrans %}Enviar{% endblocktrans %}</button>
 </form>
 <div id="formMessage" class="mt-3"></div>
 
@@ -99,13 +100,13 @@
     var privacyPolicy = privacyPolicyInput.checked;
   
     if (!name || !surname || !email || !phone || !address || !city || !message || !privacyPolicy) {
-      displayFormMessage('error', 'Els camps marcats amb * són obligatoris.');
+      displayFormMessage('error', "{% blocktrans %}Els camps marcats amb * són obligatoris{% endblocktrans %}.");
       return;
     }
   
     // Validar el correo electrónico
     if (!validateEmail(email)) {
-      displayFormMessage('error', 'Introduïu una adreça de correu electrònic vàlida.');
+      displayFormMessage('error', '{% blocktrans %}Introduïu una adreça de correu electrònic vàlida{% endblocktrans %} .');
       return;
     }
   
@@ -142,7 +143,7 @@
     })
     .then(function(data) {
       if (data.success) {
-        displayFormMessage('success', 'Formulari enviat amb èxit.');
+        displayFormMessage('success', '{% blocktrans %}Formulari enviat amb èxit{% endblocktrans %}.');
         // Restablecer los valores del formulario
         nameInput.value = '';
         surnameInput.value = '';
@@ -155,7 +156,7 @@
         messageInput.value = '';
         privacyPolicyInput.checked = false;
       } else {
-        displayFormMessage('error', 'S\'ha produït un error en l\'enviament del formulari. Si us plau, torneu-ho a intentar.');
+        displayFormMessage('error', "{% blocktrans %}S'ha produït un error en l'enviament del formulari. Si us plau, torneu-ho a intentar{% endblocktrans %}.");
       }
     })
     .catch(function(error) {

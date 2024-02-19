@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% load static %}
-
+{% load i18n %}
 {% block meta_description %}
 
     {% if evento_especial.metadescripcion %}
@@ -250,7 +250,7 @@
         </div>
         <div class="row justify-content-center mt-2">
             <div class="col-12">
-                <small class="d-block text-center mt-3">Fes clic a les imatges per veure la galeria completa</small>
+                <small class="d-block text-center mt-3">{% blocktrans %}Fes clic a les imatges per veure la galeria completa{% endblocktrans %}.</small>
             </div>
         </div>
     </div>
@@ -263,11 +263,11 @@
         <div class="container mt-3">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-12 align-content-end">
-                    <p class="titulo-principal-pdf"><span class="text-black">Descarrega el programa d{% if evento_especial.titulo|lower|slice:"0:1" in "aeiou" %}'{{ evento_especial.titulo | safe }}{% else %}e {{ evento_especial.titulo | safe }}{% endif %}</span></p>
+                    <p class="titulo-principal-pdf"><span class="text-black">{% blocktrans %}Descarrega't el programa{% endblocktrans %}</span></p>
                 </div>
                 <div class="col-lg-6 col-12 border-left-evento align-content-start">
                     <a href="{{ evento_especial.eventofichero.fichero.archivo.url }}" class="link" target="_blank">
-                        Descarregar PDF
+                        {% blocktrans %}Descarregar PDF{% endblocktrans %}
                     </a>
                 </div>
                 
@@ -282,8 +282,8 @@
     <div class="container-fluid bg-gray p-0 m-0 py-5">
         <div class="jumbotron jumbotron-fluid bg-light text-center">
             <div class="container">
-            <h3 class="titulo-principal text-center">{{evento_especial.titulo}} ha finalitzat!</h3>
-            <p class="lead">Gràcies per participar.</p>
+            <h3 class="titulo-principal text-center">{{evento_especial.titulo}} {% blocktrans %}ha finalitzat!{% endblocktrans %}</h3>
+            <p class="lead">{% blocktrans %}Gràcies per participar{% endblocktrans %}.</p>
             </div>
         </div>
     </div>
@@ -292,30 +292,30 @@
         <div class="container mt-3">
             <div class="row" id="countdown">
                 <div class="col-12 text-center py-3">
-                    <h2 class="title-countdown" >Encara / Només falten</h2>
+                    <h2 class="title-countdown" >{% blocktrans %}Només falten{% endblocktrans %}</h2>
                 </div>
                 <div class="col-12 col-lg-3 col-md-6" >
                     <div class="container">
                         <p class="int-value"><span id="days"></span></p>
-                        <p class="string-value">dies</p>
+                        <p class="string-value">{% blocktrans %}dies{% endblocktrans %}</p>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 col-md-6">
                     <div class="container">
                         <p class="int-value"><span id="hours"></span></p>
-                        <p class="string-value">hores</p>
+                        <p class="string-value">{% blocktrans %}hores{% endblocktrans %}</p>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 col-md-6 ">
                     <div class="container">
                         <p class="int-value"><span id="minutes"></span></p>
-                        <p class="string-value">minuts</p>
+                        <p class="string-value">{% blocktrans %}minuts{% endblocktrans %}</p>
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 col-md-6">
                     <div class="container">
                         <p class="int-value"><span id="seconds"></span></p>
-                        <p class="string-value">segons</p>
+                        <p class="string-value">{% blocktrans %}segons{% endblocktrans %}</p>
                     </div>
                 </div>
             </div>
@@ -328,8 +328,8 @@
     <div class="container-fluid bg-gray p-0 m-0 py-5">
         <div class="jumbotron jumbotron-fluid bg-light text-center">
             <div class="container">
-            <h1 class="titulo-principal text-center">{{evento_especial.titulo}} ha començat!</h1>
-            <p class="lead">Gaudeix de l'event que has estat esperant.</p>
+            <h1 class="titulo-principal text-center">{{evento_especial.titulo}} {% blocktrans %}ha començat!{% endblocktrans %}</h1>
+            <p class="lead">{% blocktrans %}Gaudeix de l'event que has estat esperant{% endblocktrans %}.</p>
             </div>
         </div>
     </div>
@@ -344,7 +344,7 @@
         <div class="container mt-3">
             <div class="row justify-content-center">
                 <div class="link-div">
-                    <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" target="_blank" class="link">Obtén les teves entrades aquí!</a>
+                    <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" target="_blank" class="link">{% blocktrans %}Obtén les teves entrades aquí!{% endblocktrans %}</a>
                 </div>              
             </div>
         <div>
@@ -369,7 +369,7 @@
     {% if evento_especial.eventomensaje_set.all %}
     <div class="swiper-container" id="special-event">
         <div class="p-3 m-3">
-            <h1 class="h1 text-center" style="color:{{ evento_especial.color |safe }};">Missatges del Nostre Equip Municipal</h1>
+            <h4 class="h1 text-center" style="color:{{ evento_especial.color |safe }};">{% blocktrans %}Missatges del Nostre Equip Municipal{% endblocktrans %}</h4>
         </div>
         <div class="swiper-wrapper">
             {% for evento_mensaje in evento_especial.eventomensaje_set.all %}
@@ -414,13 +414,13 @@
                     <div class="jumbotron jumbotron-fluid m-0" style="background: black;">
                             <div class="container">
                                 <h3 class="display-4 text-center text-capitalize m-2 p-2 text-white">{{ evento_especial.medida_economica.titulo_html }}
-                                    <a href="javascript:void(0);" tabindex="0" class="btn btn-lg btn-link text-white" role="button" data-toggle="popover" data-trigger="focus" title="Detall de la mesura" data-content="{% autoescape off %}{{ evento_especial.medida_economica.descripcion | safe }} {% endautoescape %}">
+                                    <a href="javascript:void(0);" tabindex="0" class="btn btn-lg btn-link text-white" role="button" data-toggle="popover" data-trigger="focus" title="{% blocktrans %}Detall de la mesura{% endblocktrans %}" data-content="{% autoescape off %}{{ evento_especial.medida_economica.descripcion | safe }} {% endautoescape %}">
                                         <i class="fas fa-info-circle"></i>
                                     </a>
                                 </h3>
 
                                 <div class="container text-center mt-5">
-                                    <h2 class="mb-4 text-white">Ajust de Pressupost</h2>
+                                    <h2 class="mb-4 text-white">{% blocktrans %}Ajust de Pressupost{% endblocktrans %}</h2>
                                     <div class="display-4 display-3-md display-2-lg" style="color:{{ evento_especial.color |safe }};">
                                         {% if evento_especial.medida_economica.impacto_economico < 0 %}
                                             <span>-</span>
@@ -471,7 +471,7 @@
 
         if (difference <= 0) {
             // Si el temps restant és 0 o negatiu, mostra un missatge o realitza alguna acció
-            document.getElementById("countdown").innerHTML = "¡L'esdeveniment ha començat!";
+            document.getElementById("countdown").innerHTML = "{% blocktrans %}¡L'esdeveniment ha començat!{% endblocktrans %}";
             // Atura el compte enrere si ja ha arribat a 0
             clearInterval(countdownInterval);
             return;
@@ -501,7 +501,7 @@
             var countdownInterval = setInterval(updateCountdown, 1000);
     
             // Atura el compte enrere si ja ha arribat a 0
-            if (document.getElementById("countdown").innerHTML === "¡L'esdeveniment ha començat!") {
+            if (document.getElementById("countdown").innerHTML === "{% blocktrans %}¡L'esdeveniment ha començat!{% endblocktrans %}") {
                 clearInterval(countdownInterval);
             }
         }
@@ -518,7 +518,7 @@
 
         // Canvia el text del títol
         if(customTitle){
-            customTitle.textContent = 'Activitats principals';
+            customTitle.textContent = '{% blocktrans %}Activitats principals{% endblocktrans %}';
         }
     });
 

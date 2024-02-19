@@ -81,8 +81,7 @@ msgstr ""
 # post template blog\templates\post\detalle_post.html
 msgid "Fes clic a les imatges per veure la galeria completa"
 msgstr "Click on the images to view the full gallery"
-msgid "Descarregar PDF"
-msgstr "Descargar PDF"
+
 
 msgid "Agenda"
 msgstr "Agenda"
@@ -451,3 +450,299 @@ msgstr "Sustainable Tourism Certificates"
 
 msgid "Esdeveniments de la visita guiada"
 msgstr "Guided Tour Events"
+
+#categoria_alojamiento.html
+
+msgid "Explora les nostres excepcionals opcions d'allotjament i viu una estada inoblidable!"
+msgstr "Explore our exceptional accommodation options and experience an unforgettable stay!"
+
+msgid "Adaptat per a persones amb mobilitat reduïda"
+msgstr "Adapted for people with reduced mobility"
+
+msgid "Pàrquing gratuït"
+msgstr "Free Parking"
+
+msgid "WiFi disponible"
+msgstr "WiFi available"
+
+msgid "Admet mascotes"
+msgstr "Pets allowed"
+
+msgid "Feu clic a les imatges per veure la galeria completa"
+msgstr "Click on the images to view the full gallery"
+
+#categoria_restaurante.html
+
+msgid "Explora les nostres excepcionals opcions de restauració i gaudeix d'una experiència culinària inoblidable!"
+msgstr "Explore our exceptional dining options and enjoy an unforgettable culinary experience!"
+
+msgid "restaurant"
+msgstr "restaurant"
+
+msgid "bar"
+msgstr "bar"
+
+msgid "masia"
+msgstr "country house"
+
+msgid "guingueta"
+msgstr "beach bar"
+
+msgid "Tipus d'estableciments"
+msgstr "Types of establishments"
+
+msgid "Pet Friendly"
+msgstr "Pet Friendly"
+
+msgid "Opcions vegetarianes"
+msgstr "Vegetarian options"
+
+msgid "WiFi"
+msgstr "WiFi"
+
+msgid "Apto para celíacos"
+msgstr "Suitable for coeliacs"
+
+msgid "Terrassa"
+msgstr "Terrace"
+
+msgid "Menú infantil"
+msgstr "Kids menu"
+
+msgid "Altres restaurants a Cabrera de Mar"
+msgstr "Other restaurants in Cabrera de Mar"
+
+msgid "Descobreix la deliciosa cuina catalana en els nostres restaurants locals"
+msgstr "Discover the delicious Catalan cuisine in our local restaurants"
+
+msgid "Direcció"
+msgstr "Address"
+
+msgid "Telèfon"
+msgstr "Phone"
+
+msgid "Lloc web"
+msgstr "Website"
+
+msgid "Accessibilitat per a persones amb discapacitat"
+msgstr "Accessibility for people with disabilities"
+
+msgid "Allotjaments Relacionats"
+msgstr "Related Accommodations"
+
+msgid "Descobreix altres allotjaments interessants per gaudir al màxim de la teva estada"
+msgstr "Discover other interesting accommodations to make the most of your stay"
+
+#model 'paginas estaticas'
+
+msgid "Nom"
+msgstr "Name"
+
+msgid "Introduïu el vostre nom"
+msgstr "Enter your name"
+
+msgid "Cognoms"
+msgstr "Last Name"
+
+msgid "Introduïu el vostre cognom"
+msgstr "Enter your last name"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Introduïu el vostre email"
+msgstr "Enter your email"
+
+msgid "Introduïu el vostre telèfon"
+msgstr "Enter your phone number"
+
+msgid "Adreça"
+msgstr "Address"
+
+msgid "Introduïu la vostra adreça"
+msgstr "Enter your address"
+
+msgid "Aquest camp es opcional"
+msgstr "This field is optional"
+
+msgid "Introduïu el codi postal"
+msgstr "Enter the postal code"
+
+msgid "Població"
+msgstr "Town/City"
+
+msgid "Introduïu la població"
+msgstr "Enter the town/city"
+
+msgid "Introduïu el país"
+msgstr "Enter the country"
+
+msgid "Missatge"
+msgstr "Message"
+
+msgid "Introduïu el vostre missatge"
+msgstr "Enter your message"
+
+msgid "He llegit i accepto la política de privacitat"
+msgstr "I have read and accept the privacy policy"
+
+msgid "De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials"
+msgstr "According to the provisions of Organic Law 15/1999, of December 13, on the Protection of Personal Data (LOPD), we inform you that your personal data are incorporated into files owned by the Ajuntament de Cabrera de Mar for the purpose of properly attending to your requests for information and preparing the budgets that you may request from us. To exercise the rights of access, rectification, cancellation, and opposition provided for in the Law, you can send a letter to Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Social Matters."
+
+msgid "Enviar"
+msgstr "Send"
+
+msgid "Introduïu una adreça de correu electrònic vàlida"
+msgstr "Please enter a valid email address"
+
+msgid "Formulari enviat amb èxit"
+msgstr "Form submitted successfully"
+
+msgid "S'ha produït un error en l'enviament del formulari. Si us plau, torneu-ho a intentar"
+msgstr "An error occurred while submitting the form. Please try again"
+
+msgid "Els camps marcats amb * són obligatoris"
+msgstr "Fields marked with * are mandatory"
+
+msgid "Polítiques de privacitat"
+msgstr "Privacy Policies"
+
+msgid "Veure més a Google Maps"
+msgstr "View more on Google Maps"
+
+msgid "Llocs Físics de Protecció contra les Violències Masclistes"
+msgstr "Physical Places for Protection against Male Violence"
+
+msgid "Col·laboració d'Entitats pel Pacte Integral"
+msgstr "Collaboration of Entities for the Integral Pact"
+
+msgid "Plans i Activitats per a la Igualtat"
+msgstr "Plans and Activities for Equality"
+
+msgid "Descàrrega de Recursos i Materials"
+msgstr "Download Resources and Materials"
+
+msgid "Veure arxiu"
+msgstr "View File"
+
+msgid "Polítiques de cookies"
+msgstr "Cookie Policies"
+
+msgid "Fes click"
+msgstr "Click"
+
+# footer footer.html
+
+msgid "privacitat"
+msgstr "privacy"
+
+# newsletter newsletter.html
+
+msgid "Anar a la web"
+msgstr "Go to website"
+
+msgid "MAR, MUNTANYA I HISTÒRIA"
+msgstr "SEA, MOUNTAIN AND HISTORY"
+
+msgid "PROPERES ACTIVITATS"
+msgstr "UPCOMING ACTIVITIES"
+
+msgid "Segueix-nos en"
+msgstr "Follow us on"
+
+msgid "De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials."
+msgstr "In accordance with the provisions of Organic Law 15/1999, of December 13, on the Protection of Personal Data (LOPD), we inform you that your personal data are incorporated into files owned by the Cabrera de Mar City Council in order to properly handle your requests for information and to prepare the budgets that you may request from us. To exercise the rights of access, rectification, cancellation and opposition provided for in the Law, you can send a letter to Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Social Matters."
+
+msgid "Fes clic al banner per veure a pantalla completa"
+msgstr "Click on the banner to view in full screen"
+
+msgid "Vols participar?"
+msgstr "Do you want to participate?"
+
+msgid "Si ets <span class=\"secondary-color h1\">comerciant</span>, adhereix el teu negoci a la campanya…"
+msgstr "If you are a <span class=\"secondary-color h1\">merchant</span>, join your business to the campaign…"
+
+msgid "Adhereix-te"
+msgstr "Join us"
+
+msgid "Si vols <span class=\"secondary-color h1\">participar</span>, completa el registre a xarxabarris.cat"
+msgstr "If you want to <span class=\"secondary-color h1\">participate</span>, complete the registration at xarxabarris.cat"
+
+msgid "Participa"
+msgstr "Participate"
+
+msgid "Gràcies per participar"
+msgstr "Thank you for participating"
+
+msgid "L'esdeveniment Compra i descobreix ha finalitzat!"
+msgstr "The Buy and Discover event has ended!"
+
+msgid "Només falten"
+msgstr "Only missing"
+
+msgid "dies"
+msgstr "days"
+
+msgid "hores"
+msgstr "hours"
+
+msgid "minuts"
+msgstr "minutes"
+
+msgid "ha començat!"
+msgstr "has started!"
+
+msgid "segons"
+msgstr "seconds"
+
+msgid "Gaudeix de l'event que has estat esperant"
+msgstr "Enjoy the event you've been waiting for"
+
+msgid "Descàrrega material addicional en PDF"
+msgstr "Download additional material in PDF"
+
+msgid "¡L'esdeveniment ha començat!"
+msgstr "The event has started!"
+
+msgid "Comerços Participants a"
+msgstr "Participating Shops in"
+
+msgid "a Cabrera de Mar"
+msgstr "in Cabrera de Mar"
+
+msgid "Sorteix dels guanyadors de l'última edició"
+msgstr "Draw the winners of the last edition"
+
+msgid "Tens problemes per veure el vídeo, fes"
+msgstr "Having trouble viewing the video, please"
+
+msgid "clic aquí"
+msgstr "click here"
+
+msgid "Llista dels guanyadors de l'última edició"
+msgstr "List of winners from the last edition"
+
+msgid "Descarrega't el programa"
+msgstr "Download the program"
+
+msgid "Descarregar PDF"
+msgstr "Download PDF"
+
+msgid "ha finalitzat!"
+msgstr "has finished!"
+
+
+msgid "Obtén les teves entrades aquí!"
+msgstr "Get your tickets here!"
+
+msgid "Missatges del Nostre Equip Municipal"
+msgstr "Messages from Our Municipal Team"
+
+msgid "Ajust de Pressupost"
+msgstr "Budget Adjustment"
+
+msgid "Activitats principals"
+msgstr "Main Activities"
+
+msgid "Detall de la mesura"
+msgstr "Measure Detail"

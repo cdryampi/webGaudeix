@@ -121,7 +121,7 @@ class Imagen(BaseModel):
     titulo = models.CharField(max_length=100, blank=True)
     archivo = models.ImageField(
         upload_to=upload_to_imagen,
-        help_text="Extensiones permitidas: .jpg, .jpeg, .png, .gif, .bmp, .svg",
+        help_text="Extensiones permitidas: .jpg, .jpeg, .png, .gif, .bmp, .svg, webp",
         default=None
     )
     tipo = models.CharField(max_length=50, choices=TIPOS_ARCHIVO, default='imagen', editable=False)

@@ -1,0 +1,56 @@
+{% load i18n %}
+{% if alojamiento.postgaleriaimagen_set.count > 1 %}
+    <section class="container-fluid px-0 py-0">
+        <div id="categoria-carrusel-{{ alojamiento.slug }}" class="carousel slide categoria-carrusel" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for imagen in alojamiento.postgaleriaimagen_set.all %}
+                    <li data-target="#categoria-carrusel-{{ alojamiento.slug }}" data-slide-to="{{ forloop.counter0 }}"
+                        {% if forloop.first %}class="active"{% endif %}></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner text-center">
+                {% for imagen in alojamiento.postgaleriaimagen_set.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        {% if imagen.imagen and imagen.imagen.archivo %}
+                            <a href="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" class="fancybox" data-fancybox="categoria-{{ alojamiento.slug }}">
+                                <picture>
+                                    <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
+                                    <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
+                                    <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
+                                    <img src="" 
+                                        data-src="{{ imagen.image.large_thumbnail.url }}"
+                                        alt="{{ imagen.image.titulo }}"
+                                        title="{{ imagen.image.titulo }}"
+                                        class="img-fluid align-middle lazy-load-img">
+                                </picture>
+                                <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid img-cat-banner">
+                            </a>
+                        {% else %}
+                            <p>{% blocktrans %}Aquesta imatge no està disponible{% endblocktrans %}.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#categoria-carrusel-{{ alojamiento.slug }}" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#categoria-carrusel-{{ alojamiento.slug }}" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Següent</span>
+            </a>
+        </div>
+        <div class="col-12">
+            <small class="text-center">{% blocktrans %}Feu clic a les imatges per veure la galeria completa{% endblocktrans %}</small>
+        </div>
+    </section>
+{% else %}
+    {% if alojamiento.postgaleriaimagen_set.first.imagen and alojamiento.postgaleriaimagen_set.first.imagen.archivo %}
+        <div class="text-center">
+            <img src="{{ alojamiento.postgaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ alojamiento.postgaleriaimagen_set.first.imagen.titulo }}"
+                class="img-fluid img-cat-banner" title="{{ alojamiento.postgaleriaimagen_set.first.imagen.titulo }}">
+        </div>
+    {% else %}
+        <p>{% blocktrans %}No hi ha imatges disponibles per a aquesta categoria{% endblocktrans %}.</p>
+    {% endif %}
+{% endif %}

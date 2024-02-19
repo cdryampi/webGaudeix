@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.db.models import Q
 from .models import Alerta
 from multimedia_manager.models import Imagen, Fichero
+from modeltranslation.admin import TranslationAdmin
 
 # Register your models here.
 @admin.register(Alerta)
-class AlertaAdmin(admin.ModelAdmin):
+class AlertaAdmin(TranslationAdmin, admin.ModelAdmin):
     list_display = ('titulo', 'fecha_inicio', 'fecha_fin')
     list_filter = ('fecha_inicio', 'fecha_fin')
     search_fields = ('titulo', 'descripcion')

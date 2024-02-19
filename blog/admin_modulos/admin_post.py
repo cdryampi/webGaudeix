@@ -164,7 +164,7 @@ class PostAdmin(TranslationAdmin, admin.ModelAdmin):
         queryset = super().get_queryset(request)
         
         # Filtrar los objetos de tipo Agenda
-        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguiada__isnull=False).exclude(mappoint__isnull=False).exclude(ruta__isnull=False)
+        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguiada__isnull=False).exclude(mappoint__isnull=False).exclude(ruta__isnull=False).exclude(alojamiento__isnull=False).exclude(restaurante_isnull=False)
         
         return queryset
 
@@ -177,6 +177,6 @@ class PostAdmin(TranslationAdmin, admin.ModelAdmin):
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "categoria":
-            kwargs["queryset"] = Categoria.objects.filter(tipo="normal")
+            kwargs["queryset"] = Categoria.objects.filter().exclude(tipo="noticies").exclude(tipo="agenda").exclude(tipo="senderisme")
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
     

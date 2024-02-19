@@ -67,7 +67,7 @@ class GmailServer(models.Model):
         return "API GmailServer"
 
     def save(self, *args, **kwargs):
-        if not self.pk and GamilServer.objects.exists():
+        if not self.pk and GmailServer.objects.exists():
             raise ValidationError("Ya existe una instancia de GmailServer.")
         super().save(*args, **kwargs)
 

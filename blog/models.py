@@ -220,7 +220,9 @@ class Categoria(MetadataModel, BaseModel):
         ('senderisme','senderisme'),
         ('noticies','noticies'),
         ('lloc','lloc'),
-        ('festes_i_tradicions','festes, tradicions i cultura')
+        ('festes_i_tradicions','festes, tradicions i cultura'),
+        ('allotjament', 'allotjament'),
+        ('restaurant', 'restaurant')
         
         # Agrega más tipos según tus necesidades
     )

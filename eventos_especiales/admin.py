@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-
+from modeltranslation.admin import TranslationAdmin
 from multimedia_manager.models import Fichero
 from .models import EventoFichero, EventoEspecial, EventoEspecialGaleriaImagen, MedidaEconomica, Autor, Mensaje, EventoMensaje
 from django.db.models import Q
@@ -15,25 +15,7 @@ import os
 from django.utils.safestring import mark_safe
 
 
-
-class AutorAdmin(admin.ModelAdmin):
-    model = Autor
-    fieldsets = [
-        (None, {
-            'fields': [
-                'nombre',
-                'cargo',
-                'foto'
-            ],
-            'description': (
-                "<p>Mesures econòmiques per l'esdeveniment especials pensat pel programa d'estabilització econòmica sostenible.</p>"
-                "<p>En aquest model pots afegir les mesures que vols.</p>"
-                "<p>Aquest model el fem servir el popup que explica les mesures d'estalvi o d'altres tipus.</p>"
-            ),
-        }),
-    ]
-
-class MensajeAdmin(admin.ModelAdmin):
+class MensajeAdmin(TranslationAdmin, admin.ModelAdmin):
     model = Mensaje
     fieldsets = [
         (None, {
@@ -57,7 +39,7 @@ class MensajeAdmin(admin.ModelAdmin):
     ]
 
 
-class MedidaEconomicaAdmin(admin.ModelAdmin):
+class MedidaEconomicaAdmin(TranslationAdmin, admin.ModelAdmin):
     model = MedidaEconomica
     fieldsets = [
         (None, {
@@ -155,7 +137,7 @@ class EventoMensajeAdmin(admin.ModelAdmin):
     ]
 
 
-class AutorAdmin(admin.ModelAdmin):
+class AutorAdmin(TranslationAdmin, admin.ModelAdmin):
     model = Autor
     fieldsets = [
         (None, {
@@ -201,7 +183,7 @@ class EventoMensajeInline(admin.TabularInline):
 
 
 @admin.register(EventoEspecial)
-class EventoEspecialAdmin(admin.ModelAdmin):
+class EventoEspecialAdmin(TranslationAdmin, admin.ModelAdmin):
     list_display = ['titulo', 'fecha_evento', 'publicado']
     list_filter = ['fecha_evento', 'publicado']
     search_fields = ['titulo']

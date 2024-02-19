@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% load static %}
-
+{% load i18n %}
 {% block meta_description %}
   {% if compra_y_descubre.metadescripcion %}
     <meta name="Description" content="{{ compra_y_descubre.metadescripcion | safe | striptags }}">
@@ -156,7 +156,7 @@
         </div>
         <div class="row justify-content-center mt-2">
             <div class="col-12">
-                <small class="d-block">Fes clic al banner per veure a pantalla completa</small>
+                <small class="d-block">{% blocktrans %}Fes clic al banner per veure a pantalla completa{% endblocktrans %}.</small>
             </div>
         </div>
     </div>
@@ -183,7 +183,7 @@
     {% if compra_y_descubre.compradescubrepasosimagen_set.all.count > 0 %}
         <div class="container pt-3  event-container">
             <div class="col-12 pt-3">
-                <h2 class="titulo-principal text-center h2">Vols participar?</h2>
+                <h2 class="titulo-principal text-center h2">{% blocktrans %}Vols participar?{% endblocktrans %}</h2>
             </div>
             <div class="row justify-content-center mt-2">
                 <div class="col-12 container-grid">
@@ -227,7 +227,7 @@
     <div class="container-fluid mt-3">
         <div class="col-12 py-3">
             <h2 class="text-center h2 primary-color">
-                Vols Tenir Més Informació per participar?
+            {% blocktrans %}Vols Tenir Més Informació per participar?{% endblocktrans %}
             </h2>
         </div>
         <div class="col-12 justify-content-center py-2 py-sm-2 py-md-3 py-lg-4 py-xl-5 m-0 py-3">
@@ -235,14 +235,14 @@
                 <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6">
                     <div class="col-12">
                         <p class="header-text">
-                            Si ets <span class="secondary-color h1">comerciant</span>, adhereix el teu negoci a la campanya…
+                             {% blocktrans %}Si ets <span class="secondary-color h1">comerciant</span>, adhereix el teu negoci a la campanya…{% endblocktrans %} 
                         </p>
                     </div>
                     <div class="col-12 text-center">
                         {% if compra_y_descubre.comerciante %}
-                            <a href="{{ compra_y_descubre.comerciante }}" class="link text-center" target="_blank">Adhereix-te</a>
+                            <a href="{{ compra_y_descubre.comerciante }}" class="link text-center" target="_blank">{% blocktrans %}Adhereix-te{% endblocktrans %}</a>
                         {% else %}
-                            <a href="https://xarxabarris.cat/" class="link text-center" target="_blank">Adhereix-te</a>
+                            <a href="https://xarxabarris.cat/" class="link text-center" target="_blank">{% blocktrans %}Adhereix-te{% endblocktrans %}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -250,14 +250,14 @@
                 <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6">
                     <div class="col-12">
                         <p class="header-text">
-                            Si vols <span class="secondary-color h1">participar</span>, completa el registre a xarxabarris.cat
+                        {% blocktrans %}Si vols <span class="secondary-color h1">participar</span>, completa el registre a xarxabarris.cat{% endblocktrans %}
                         </p>
                     </div>
                     <div class="col-12 text-center">
                         {% if compra_y_descubre.participante %}
-                            <a href="{{ compra_y_descubre.participante }}" class="link" target="_blank">Participa</a>
+                            <a href="{{ compra_y_descubre.participante }}" class="link" target="_blank">{% blocktrans %}Participa{% endblocktrans %}</a>
                         {% else %}
-                            <a href="https://xarxabarris.cat/" class="link" target="_blank">Participa</a>
+                            <a href="https://xarxabarris.cat/" class="link" target="_blank">{% blocktrans %}Participa{% endblocktrans %}</a>
                         {% endif %}
                     </div>
                 <div>
@@ -277,8 +277,8 @@
         <div class="container-fluid bg-light p-0 m-0 py-5">
             <div class="jumbotron jumbotron-fluid bg-light text-center">
                 <div class="container">
-                <p class="lead">Gràcies per participar.</p>
-                <p class="lead">L'esdeveniment Compra i descobreix ha finalitzat!</p>
+                <p class="lead">{% blocktrans %}Gràcies per participar{% endblocktrans %}.</p>
+                <p class="lead">{% blocktrans %}L'esdeveniment Compra i descobreix ha finalitzat!{% endblocktrans %}</p>
                 </div>
             </div>
         </div>
@@ -287,30 +287,30 @@
             <div class="container mt-3">
                 <div class="row" id="countdown">
                     <div class="col-12 text-center py-3">
-                        <h2 class="title-countdown" >Encara / Només falten</h2>
+                        <h2 class="title-countdown" >{% blocktrans %}Només falten{% endblocktrans %}</h2>
                     </div>
                     <div class="col-12 col-lg-3 col-md-6" >
                         <div class="container">
                             <p class="int-value"><span id="days"></span></p>
-                            <p class="string-value">dies</p>
+                            <p class="string-value">{% blocktrans %}dies{% endblocktrans %}</p>
                         </div>
                     </div>
                     <div class="col-12 col-lg-3 col-md-6">
                         <div class="container">
                             <p class="int-value"><span id="hours"></span></p>
-                            <p class="string-value">hores</p>
+                            <p class="string-value">{% blocktrans %}hores{% endblocktrans %}</p>
                         </div>
                     </div>
                     <div class="col-12 col-lg-3 col-md-6 ">
                         <div class="container">
                             <p class="int-value"><span id="minutes"></span></p>
-                            <p class="string-value">minuts</p>
+                            <p class="string-value">{% blocktrans %}minuts{% endblocktrans %}</p>
                         </div>
                     </div>
                     <div class="col-12 col-lg-3 col-md-6">
                         <div class="container">
                             <p class="int-value"><span id="seconds"></span></p>
-                            <p class="string-value">segons</p>
+                            <p class="string-value">{% blocktrans %}segons{% endblocktrans %}</p>
                         </div>
                     </div>
                 </div>
@@ -323,8 +323,8 @@
         <div class="container-fluid bg-gray p-0 m-0 py-5">
             <div class="jumbotron jumbotron-fluid bg-light text-center">
                 <div class="container">
-                <h1 class="titulo-principal text-center">{{compra_y_descubre.titulo}} ha començat!</h1>
-                <p class="lead">Gaudeix de l'event que has estat esperant.</p>
+                <h1 class="titulo-principal text-center">{{compra_y_descubre.titulo}}{% blocktrans %}ha començat!{% endblocktrans %}</h1>
+                <p class="lead">{% blocktrans %}Gaudeix de l'event que has estat esperant{% endblocktrans %}.</p>
                 </div>
             </div>
         </div>
@@ -338,7 +338,7 @@
             <div class="text-center m-0 p-2" style="background-color:{{compra_y_descubre.primary_color}} !important">
                 <a href="{{ compra_y_descubre.compradescubrefichero.fichero.archivo.url }}" target="_blank" class="btn btn-outline-dark btn-lg" >
                     <i class="fas fa-file-download"></i>
-                    Descàrrega material addicional en PDF
+                        {% blocktrans %}Descàrrega material addicional en PDF{% endblocktrans %}
                 </a>
             </div>
         </div>
@@ -406,7 +406,7 @@
             var countdownInterval = setInterval(updateCountdown, 1000);
     
             // Atura el compte enrere si ja ha arribat a 0
-            if (document.getElementById("countdown").innerHTML === "¡L'esdeveniment ha començat!") {
+            if (document.getElementById("countdown").innerHTML === "{% blocktrans %}¡L'esdeveniment ha començat!{% endblocktrans %}") {
                 clearInterval(countdownInterval);
             }
         }

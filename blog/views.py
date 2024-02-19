@@ -1,11 +1,11 @@
 from django.views.generic import ListView, DetailView
 from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia, SubCategoria
-from agenda.models import Agenda, VisitaGuiada, Ruta, VariationAgenda
+from agenda.models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Alojamiento, Restaurante
 from django.http import JsonResponse
 from django.views.generic import View
 from core.mixin.base import BaseContextMixin
 from redes_sociales.models import RedSocial
-from .utils import agrupar_eventos_por_dia
+from .utils import agrupar_eventos_por_dia, serialize_restaurante_to_json
 from django.db.models import Q
 import json
 from django.shortcuts import get_object_or_404
@@ -13,7 +13,8 @@ from django.utils import timezone
 from eventos_especiales.models import EventoEspecial
 from personalizacion.models import Personalizacion
 from multimedia_manager.models import Parallax
-
+from django.core.serializers import serialize
+from django.http import JsonResponse
 
 class ListarPostsView(ListView):
     """
@@ -152,6 +153,18 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             rutes  = Ruta.objects.filter(publicado=True).all()
             context['rutes'] = rutes
 
+        elif categoria.tipo == 'allotjament':
+            alojamientos = Alojamiento.objects.filter(publicado=True, categoria=categoria).all()
+            context['alojamientos'] = alojamientos
+            posts = Post.objects.filter(publicado = True, categoria = categoria).exclude(alojamiento__isnull=False)
+            context['posts'] = posts
+
+        elif categoria.tipo == 'restaurant':
+            restaurantes = Restaurante.objects.filter(publicado=True, categoria=categoria).all()
+            context['restaurantes'] = restaurantes
+            posts = Post.objects.filter(publicado = True, categoria = categoria).exclude(restaurante__isnull=False)
+            context['posts'] = posts
+            
         elif categoria.tipo == 'normal':
             # Si la categoría es de tipo 'normal', obtener los posts relacionados
             posts = Post.objects.filter(publicado = True, categoria = categoria)
@@ -161,6 +174,7 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             # Si la categoría es de tipo 'lloc', obtener los posts relacionados
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
+            
         elif categoria.tipo == 'festes_i_tradicions':
             # Si la categoría es de tipo 'festes_i_tradicions', obtener las festividades relacionadas
             festes = EventoEspecial.objects.filter(categoria = self.get_object()).all()
@@ -360,3 +374,27 @@ class SubCategoriaDetailView(BaseContextMixin, DetailView):
             context['festes'] = festes
             
         return context
+    
+
+class RestaurantAPI(View):
+    """
+    Vista basada en clase para filtrar los restaurantes.
+    """
+    def post(self, request, *args, **kwargs):
+        # Obtener el parámetro de filtrado desde la solicitud POST
+        tipo_restaurante = request.POST.get('tipo_restaurante')
+
+        # Filtrar las agendas según el tipo de evento
+
+        restaurantes = Restaurante.objects.filter(publicado=True)
+
+
+        if tipo_restaurante in ['bar','restaurant','masia','guingueta']:
+            restaurantes = restaurantes.filter(tipo=tipo_restaurante)
+
+
+        # Serializar los resultados del filtro
+        serialized_restaurantes = serialize_restaurante_to_json(restaurantes)
+
+        # Devolver la respuesta JSON con los resultados del filtro
+        return JsonResponse(serialized_restaurantes, safe=False, content_type="application/json")

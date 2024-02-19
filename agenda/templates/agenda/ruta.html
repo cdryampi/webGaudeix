@@ -73,30 +73,47 @@ div#map {
 }
 
 
-.audio-list {
-    display: grid;
-    gap: 15px; /* Espacio mayor entre elementos para un aspecto más limpio */
-    padding: 15px; /* Espaciado interno del contenedor aumentado */
-}
-
-.audio-item {
-    background-color: #ffffff; /* Fondo blanco para un aspecto más limpio */
-    padding: 15px;
-    border: 1px solid #e0e0e0; /* Borde sutil */
-    border-radius: 10px; /* Bordes más redondeados */
-    color: #333333; /* Color de texto más suave */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidad */
-}
-
-.audio-container {
+.sticky-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa; /* Color de fondo ligero de Bootstrap */
 }
 
-audio {
-    width: 100%;
-    max-width: 100%;
-    border-radius: 5px; /* Bordes redondeados para el reproductor de audio */
+audio#stickyAudioPlayer {
+    flex-grow: 1;
+    margin: 0 10px;
 }
+
+#audio-player-container{
+    z-index:1000;
+}
+
+button {
+    margin: 0 5px;
+}
+
+
+button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #e9e9e9;
+}
+
+
 
 /* Estilos para dispositivos móviles */
 @media (max-width: 768px) {
@@ -104,6 +121,10 @@ audio {
         grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
         gap: 10px;
         padding: 10px;
+    }
+
+    #stickyAudioPlayer{
+        max-width: 200px;
     }
 }
 
@@ -344,17 +365,13 @@ audio {
                     <div class="accordion" id="accordion{{playlist.id}}">
                         {% for audio in playlist.audioruta_set.all %}
                             <div class="card">
-                                <div class="card-header collapsed" id="heading{{audio.id}}" data-toggle="collapse" data-target="#collapse{{audio.id}}" aria-expanded="false" aria-controls="collapse{{audio.id}}" style="cursor: pointer;">
+                                <div class="card-header collapsed" data-audio-title="{{audio.audio.titulo}}"  data-audio-url="{{ audio.audio.archivo.url }}" data-index="{{ forloop.counter }}" id="heading{{audio.id}}" data-toggle="collapse" data-target="#collapse{{audio.id}}" aria-expanded="false" aria-controls="collapse{{audio.id}}" style="cursor: pointer;">
                                     <h6 class="mb-0 text-black-50">
-                                        {{ audio.audio }}
+                                        {{ forloop.counter }}. {{ audio.audio }}
                                     </h6>
                                 </div>
                                 <div id="collapse{{audio.id}}" class="collapse" aria-labelledby="heading{{audio.id}}" data-parent="#accordion{{playlist.id}}">
                                     <div class="card-body">
-                                        <audio controls>
-                                            <source src="{{audio.audio.archivo.url}}" type="audio/mpeg">
-                                            {% blocktrans %}Tu navegador no soporta la reproducción de audio{% endblocktrans %}.
-                                        </audio>
                                     </div>
                                 </div>
                             </div>
@@ -370,6 +387,16 @@ audio {
             </div>
         </div>
     </aside>
+    <div class="sticky-player bg-light border-top shadow" id="audio-player-container">
+        <button id="prevAudio" class="btn btn-outline-secondary"><i class="fas fa-backward"></i></button>
+        <audio id="stickyAudioPlayer" controls></audio>
+        <button id="nextAudio" class="btn btn-outline-secondary"><i class="fas fa-forward"></i></button>
+        <button id="downloadAudio" class="btn btn-outline-success"><i class="fas fa-download"></i></button>
+        <button id="closePlayer" class="btn btn-outline-danger"><i class="fas fa-times"></i></button>
+    </div>
+    
+    
+    
 {% endif %}
 
 
@@ -432,6 +459,8 @@ audio {
 
 </aside>
 
+
+
 {% endif %}
 
 
@@ -448,19 +477,138 @@ audio {
 
 
 {% block extra_script %}
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let audioList = []
+        const audioPlayer = document.getElementById('stickyAudioPlayer');
+        const audioTracks = document.querySelectorAll('.card-header');
+        const playerContainer = document.getElementById('audio-player-container');
+        const downloadAudioBtn = document.getElementById('downloadAudio');
+        let audioLinks = [];
+        let currentIndex = 0;
+        audioTracks.forEach(track => {
+            track.addEventListener('click', function() {
+                const audioIndex = this.getAttribute('data-index');
+                const audioUrl = this.getAttribute('data-audio-url'); // Asegúrate de incluir este atributo en el HTML        
+                if (audioUrl) {
+                    updatePlayList();
+                    playerContainer.style.display = 'flex'; // Hace el contenedor visible
+                    playerContainer.style.position = 'fixed'; // Opcionalmente fija la posición del contenedor
+                    playerContainer.style.bottom = '0'; // Ejemplo para fijar el reproductor en la parte inferior de la pantalla
+                    playerContainer.style.left = '0'; // Alinea el reproductor a la izquierda
+                    playerContainer.style.width = '100%'; // Opcional: Ajusta el ancho del reproductor para que ocupe todo el ancho de la pantalla
+                    audioPlayer.src = audioUrl;
+                    console.log(playerContainer.style.display);
+                    audioPlayer.play();
+                }
+            });
+        });
+
+        function updatePlayList() {
+            let activeTab = document.querySelector('.playlist-container-tab.active');
+            let audiosLinkContainer = activeTab.getElementsByClassName('card-header');
+            
+            audioLinks = [];
+        
+            // Convierte HTMLCollection a Array para usar forEach
+            Array.from(audiosLinkContainer).forEach(link => {
+                // Aquí asumo que deseas extraer alguna información específica de cada link
+                // Por ejemplo, si cada 'card-header' contiene un elemento 'a' con el URL del audio
+                const audioUrl = link.getAttribute('data-audio-url');
+                const audioName = link.getAttribute('data-audio-title');
+
+                if (audioUrl && audioName) {
+                    audioLinks.push({ url: audioUrl, name: audioName });
+                }
+        
+            });
+
+            console.log(audioLinks);
+            // Aquí puedes seguir con la lógica para actualizar tu reproductor con audioLinks
+        }
+
+            // Encuentra el botón de cerrar dentro del contenedor del reproductor
+        const closeButton = document.querySelector('#closePlayer'); // Asegúrate de que .btn-close sea el selector correcto para tu botón de cerrar
+
+        // Función para manejar el evento de clic en el botón de cerrar
+        closeButton.addEventListener('click', function() {
+            // Oculta el contenedor del reproductor de audio
+            const playerContainer = document.getElementById('audio-player-container');
+            let audioPlayer = document.getElementById('stickyAudioPlayer');
+            if(audioPlayer){
+                audioPlayer.pause();
+            }
+            playerContainer.style.display = 'none';
+        });
+
+        downloadAudioBtn.addEventListener('click', function() {
+            // Obtiene la URL del audio actualmente en reproducción
+            if(audioSrc){
+                const audioSrc = audioPlayer.src;
+    
+                // Obtiene el nombre del archivo del audio actualmente en reproducción para usarlo como nombre de descarga
+                // Aquí simplemente extraemos el nombre del archivo desde la URL. Ajusta según sea necesario.
+                const audioName = audioSrc.split('/').pop();
+        
+                // Crea un elemento <a> temporal para facilitar la descarga
+                const link = document.createElement('a');
+                link.href = audioSrc;
+                link.download = audioName; // Esto sugiere el nombre del archivo al guardar
+        
+                // Simula un clic en el enlace para iniciar la descarga
+                document.body.appendChild(link); // Añade el enlace al documento
+                link.click(); // Simula el clic
+        
+                // Limpieza: elimina el enlace del documento
+                document.body.removeChild(link);
+            }
+
+        });
+
+        document.getElementById('prevAudio').addEventListener('click', function() {
+            // Decrementa currentIndex, asegurándote de que no sea menor que 0
+            currentIndex = (currentIndex - 1 + audioLinks.length) % audioLinks.length;
+            
+            // Actualiza la fuente del audio player y reproduce el audio
+            audioPlayer.src = audioLinks[currentIndex].url;
+            audioPlayer.play();
+            
+            // Opcional: Actualiza la interfaz de usuario según sea necesario
+        });
+    
+        // Botón de Avanzar
+        document.getElementById('nextAudio').addEventListener('click', function() {
+            // Incrementa currentIndex, asegurándote de que no exceda la longitud de audioLinks
+            currentIndex = (currentIndex + 1) % audioLinks.length;
+            
+            // Actualiza la fuente del audio player y reproduce el audio
+            audioPlayer.src = audioLinks[currentIndex].url;
+            audioPlayer.play();
+            
+            // Opcional: Actualiza la interfaz de usuario según sea necesario
+        });
+        
+        updatePlayList();
+    });
+    
+
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const descargarPlaylist = document.getElementById('descargarPlaylist');
+
         if(descargarPlaylist){
             descargarPlaylist.addEventListener('click', async function() {
                 let activeTab = document.querySelector('.playlist-container-tab.active');
-    
                 if (activeTab) {
                     var playlistId = activeTab.getAttribute('data-playlist-id');
     
                     if (playlistId) {
                         try {
-                            const response = await fetch(`/agenda/descargar-playlist/?playlist_id=${playlistId}`);
+                            const response = await fetch(`/agenda/descargar-playlist-rss/?playlist_id=${playlistId}`);
                             if (!response.ok) {
                                 throw new Error('La solicitud de descarga falló');
                             }
@@ -473,6 +621,8 @@ audio {
                             a.click();
                             window.URL.revokeObjectURL(downloadUrl);
                             document.body.removeChild(a); // Limpiar el enlace temporal
+                            updatePlayList();
+
                         } catch (error) {
                             console.error('Error:', error);
                         }

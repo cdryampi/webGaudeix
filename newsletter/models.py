@@ -1,7 +1,9 @@
 from django.db import models
+from django.utils import translation
 from eventos_especiales.models import EventoEspecial
 from django.core.files.base import ContentFile
 from .utils import gen_html_evento_especial
+from django.conf import settings
 # Create your models here.
 
 class Newsletter(models.Model):
@@ -43,10 +45,26 @@ class Newsletter(models.Model):
         return f"Newsletter per a {self.nombre_interno} - {self.evento_especial.titulo}"
 
     def generar_y_guardar_html(self):
-        # Genera el contenido HTML utilizando tu plantilla y los datos del evento
-        html_content = gen_html_evento_especial(self, self.evento_especial)
-        # Guarda el contenido HTML en un archivo
-        self.html_file.save(f'newsletter-{self.id}.html', ContentFile(html_content))
+        idioma_actual = translation.get_language()  # Guardar el idioma actual
+        for codigo_idioma, _ in settings.LANGUAGES:
+            translation.activate(codigo_idioma)  # Activar el idioma para la generación de contenido
+
+            # Genera el contenido HTML utilizando tu plantilla y los datos del evento
+            html_content = gen_html_evento_especial(self, self.evento_especial)
+            
+            # Construir el nombre del archivo incluyendo el código de idioma
+            nombre_archivo = f'newsletter-{self.id}-{codigo_idioma}.html'
+            
+            # Construir el nombre del campo basado en el idioma
+            field_name = f'html_file_{codigo_idioma}'
+            
+            # Guardar el contenido HTML en el campo de archivo traducido correspondiente
+            file_field = getattr(self, field_name, None)
+            if file_field is not None:
+                file_field.save(nombre_archivo, ContentFile(html_content), save=False)
+        
+        self.save()  # Asegúrate de guardar el modelo después de actualizar los archivos
+        translation.activate(idioma_actual)  # Restaurar el idioma original
 
     class Meta:
         verbose_name_plural = "Newsletters"

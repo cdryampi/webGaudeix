@@ -1,4 +1,5 @@
-{% load static %} 
+{% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
   xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -14,7 +15,7 @@
   <meta name="color-scheme" content="light dark">
   <meta name="supported-color-schemes" content="light dark">
   <!--Hecho en Cabrera de Mar por - @cdryampi -->
-  <title>GAUDEIX CABRERA DE MAR | FESTA DEL NADAL</title>
+  <title>GAUDEIX CABRERA DE MAR | {{ evento_especial.titulo }}</title>
   <style type="text/css">
     * {
       mso-line-height-rule: exactly;
@@ -616,7 +617,7 @@ a {text-decoration: none;}
               <p
                 style="font-size: 13px; line-height: 1.5; font-family: 'Montserrat', Helvetica, Trebuchet, Arial, sans-serif; color: #000; margin:0; direction: ltr;">
                 <a target="_blank" style="color: #000; text-decoration: underline;"
-                  href="{% if newsletter.link_tracking %}{{ newsletter.link_tracking }}{% else %}{{url_domain}}{% endif %}">Anar a la web</a></p>
+                  href="{% if newsletter.link_tracking %}{{ newsletter.link_tracking }}{% else %}{{url_domain}}{% endif %}">{% blocktrans %}Anar a la web{% endblocktrans %}</a></p>
             </td>
           </tr>
         </table>
@@ -641,7 +642,7 @@ a {text-decoration: none;}
                             class="fontsize16 center"> <strong
                               style="font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif;">GAUDEIX
                               CABRERA DE MAR,<br>
-                            </strong>{% if newsletter.subtitulo %}{{newsletter.subtitulo}}{% else %}MAR, MUNTANYA I HISTÒRIA{% endif %} 
+                            </strong>{% if newsletter.subtitulo %}{{newsletter.subtitulo}}{% else %}{% blocktrans %}MAR, MUNTANYA I HISTÒRIA{% endblocktrans %}{% endif %} 
                           </p>
                         </td>
                       </tr>
@@ -693,11 +694,18 @@ a {text-decoration: none;}
                       <table role="presentation" width="500" style="width: 500px;" border="0" cellspacing="0"
                         cellpadding="0" class="w100pc">
                         <tr>
-                          {% for subblog in subblogs %}
-                            <td align="center" valign="middle" class="menuitem">
-                              <p style="font-size: 18px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 2; color: #ffffff; text-decoration: none; margin: 0; direction: ltr;"
-                                class="menutext"><a target="_blank" href="{{ url_domain }}{% url 'blog:detalle-subblog' slug=subblog.slug %}" style="text-decoration:none; color:#ffffff;">{{subblog.titulo}}</a></p>
-                            </td>
+                          {% for referencia in referencias %}
+                              {% if referencia.tipo == 'subblog' %}
+                              <td align="center" valign="middle" class="menuitem">
+                                <p style="text-transform: uppercase;font-size: 18px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 1; color: #ffffff; text-decoration: none; margin: 10px; direction: ltr;"
+                                class="menutext"><a target="_blank" href="{{url_domain}}{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}" style="text-decoration:none; color:#ffffff;">{{ referencia.subblog.titulo }}</a></p>
+                              </td>
+                              {% elif  referencia.tipo == 'categoria' %}
+                              <td align="center" valign="middle" class="menuitem">
+                                <p style="text-transform: uppercase;font-size: 18px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 1; color: #ffffff; text-decoration: none; margin: 10px; direction: ltr;"
+                                class="menutext"><a target="_blank" href="{{url_domain}}{% url 'blog:categoria' slug=referencia.categoria.slug %}" style="text-decoration:none; color:#ffffff;">{{ referencia.categoria.titulo }}</a></p>
+                              </td>
+                              {% endif %}  
                           {% endfor %}
                         </tr>
                       </table>
@@ -791,7 +799,7 @@ a {text-decoration: none;}
                           class="button"><a
                             href="{{url_domain}}{{evento_especial.get_absolute_url}}"
                             style="text-decoration: none; color: #ffffff; font-size: 16px; display:inline-block; line-height:22px; text-align:center; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; font-weight: normal!important;">
-                            SABER MÉS </a></td>
+                          {% blocktrans %}Saber més{% endblocktrans %}</a></td>
                       </tr>
                     </tbody>
                   </table>
@@ -820,7 +828,7 @@ a {text-decoration: none;}
                   <td>
                     <p valign="top" align="center"
                       style="font-size: 24px; letter-spacing: 5px; font-weight: lighter;  font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 26px; color: #000; text-decoration: none; margin: 0px 15px;  direction: ltr;"
-                      class="fontsize16 ">PROPERES ACTIVITATS</p>
+                      class="fontsize16 ">{% blocktrans %}PROPERES ACTIVITATS{% endblocktrans %}</p>
                   </td>
                 </tr>
               </table>
@@ -905,7 +913,7 @@ a {text-decoration: none;}
                                               class="button"><a target="_blank"
                                                 href="{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}"
                                                 style="text-decoration: none; color: {% if evento_especial.color %}{{evento_especial.color}}{% else %}#000000{% endif %}; font-size: 16px; display:inline-block; line-height:22px; text-align:center; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; font-weight: normal!important;">
-                                                SABER MÉS </a></td>
+                                                {% blocktrans %}Saber més{% endblocktrans %}</a></td>
                                           </table>
                                           </tr>
                                     </table>
@@ -984,7 +992,7 @@ a {text-decoration: none;}
                                               class="button"><a target="_blank"
                                                 href="{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}"
                                                 style="text-decoration: none; color: {% if evento_especial.color %}{{evento_especial.color}}{% else %}#000000{% endif %}; font-size: 16px; display:inline-block; line-height:22px; text-align:center; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; font-weight: normal!important;">
-                                                SABER MÉS </a></td>
+                                              {% blocktrans %}Saber més{% endblocktrans %}</a></td>
                                             </table>
                                           </tr>
                                     </table>
@@ -1066,7 +1074,7 @@ a {text-decoration: none;}
                   <th class="colsplit" style="font-weight: normal;">
                     <p align="center" valign="top"
                       style="font-size: 16px; font-family: 'Montserrat', Helvetica, Trebuchet, Arial, sans-serif; line-height: 26px; color: #ffffff; margin: 0; text-decoration: none;  direction: ltr;"
-                      class="fontsize16 pm15 "> Segueix-nos en: </p>
+                      class="fontsize16 pm15 ">{% blocktrans %}Segueix-nos en{% endblocktrans %}:</p>
                   </th>
                   <th class="colsplit" style="font-weight: normal;">
                     <table role="presentation" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -1178,7 +1186,7 @@ a {text-decoration: none;}
                                             style="height:auto !important; font-size: 12px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 18px; color: #000000; text-decoration: none;">
                                               <p style=" margin: 0; direction: ltr;"> <a target="_blank" href="tel:{{ footer.footerinformacion.telefono }}"
                                                 style="color: #ffffff; text-decoration: none; text-align: center!important;">
-                                                Telèfon <br>
+                                                {% blocktrans %}Telèfon{% endblocktrans %}<br>
                                                 {{ footer.footerinformacion.telefono }}<br>
                                                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -1218,7 +1226,7 @@ a {text-decoration: none;}
                 <tr>
                   <td valign="middle" align="center"
                     style="font-size: 12px; font-family: 'Quattrocento', Helvetica, Trebuchet, Arial, sans-serif; line-height: 18px; color: #434343; text-decoration: none; padding: 25px 0 0 0; direction: ltr">
-                    De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials.
+                    {% blocktrans %}De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials.{% endblocktrans %}
                     <br><br></td>
                 </tr>
               </table>

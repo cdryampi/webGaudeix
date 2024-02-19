@@ -1,4 +1,4 @@
-from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Idioma, AudioRuta, PlayListRuta
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Idioma, AudioRuta, PlayListRuta, Alojamiento, Restaurante
 from blog.models import Post
 from django.views import View
 from django.http import HttpResponse
@@ -24,7 +24,72 @@ from django.http import HttpResponse
 from django.urls import reverse
 from gaudeix import settings
 from django.http import JsonResponse
+from xml.etree import ElementTree as ET
 
+
+class RestauranteView(BaseContextMixin, DetailView):
+    model = Restaurante
+    template_name = 'agenda/restaurante.html'
+    context_object_name = 'restaurante'
+
+
+
+    def get_object(self, queryset=None):
+        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
+        
+        slug = self.kwargs.get('slug')
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, slug=slug)
+        return obj
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # current_object = self.get_object()  # Esta línea es redundante.
+        restaurantes = Restaurante.objects.filter(publicado=True).exclude(pk=self.object.pk)
+
+        # Verificar si hay al menos 4 alojamientos para evitar errores
+        if restaurantes.count() > 4:
+            restaurantes = restaurantes.order_by('?')[:4]
+        else:
+            restaurantes = restaurantes.order_by('-fecha_creacion')[:4]  # O cualquier otro criterio
+
+        context['coleccion_destacados'] = restaurantes
+
+        return context
+
+
+class AlojamientoView(BaseContextMixin, DetailView):
+
+    model = Alojamiento
+    template_name = 'agenda/alojamiento.html'
+    context_object_name = 'alojamiento'
+
+
+
+    def get_object(self, queryset=None):
+        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
+        
+        slug = self.kwargs.get('slug')
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, slug=slug)
+        return obj
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # current_object = self.get_object()  # Esta línea es redundante.
+        alojamientos = Alojamiento.objects.filter(publicado=True).exclude(pk=self.object.pk)
+
+        # Verificar si hay al menos 4 alojamientos para evitar errores
+        if alojamientos.count() > 4:
+            alojamientos = alojamientos.order_by('?')[:4]
+        else:
+            alojamientos = alojamientos.order_by('-fecha_creacion')[:4]  # O cualquier otro criterio
+
+        context['coleccion_destacados'] = alojamientos
+
+        return context
 
 
 
@@ -404,5 +469,44 @@ class DescargarPlaylist(View):
         # Configurar la respuesta HTTP para descargar el archivo
         response = HttpResponse(content, content_type='audio/x-mpegurl')
         response['Content-Disposition'] = f'attachment; filename="{playlist.nom_intern}.m3u"'
+
+        return response
+
+
+class GenerarRSS(View):
+    """
+    Clase que representa una vista para generar y descargar una playlist como un archivo RSS.
+    """
+    def get(self, request, *args, **kwargs):
+        playlist_id = request.GET.get('playlist_id')
+        
+        try:
+            playlist = PlayListRuta.objects.get(pk=playlist_id)
+        except PlayListRuta.DoesNotExist:
+            return HttpResponse("Playlist no encontrada", status=404)
+
+        # Crear el elemento raíz del archivo RSS
+        rss = ET.Element('rss', version='2.0')
+        channel = ET.SubElement(rss, 'channel')
+        
+        # Añadir metadatos de la playlist
+        ET.SubElement(channel, 'title').text = playlist.nom_intern
+        ET.SubElement(channel, 'link').text = f"{DOMAIN_URL}/playlist/{playlist_id}"
+
+        # Añadir elementos para cada audio en la playlist
+        for audio in AudioRuta.objects.filter(playlist=playlist).order_by('orden'):
+            item = ET.SubElement(channel, 'item')
+            ET.SubElement(item, 'title').text = audio.audio.titulo
+            ET.SubElement(item, 'link').text = f"{DOMAIN_URL}{audio.audio.archivo.url}"
+            ET.SubElement(item, 'guid').text = f"{DOMAIN_URL}{audio.audio.archivo.url}"
+            # Opcional: Añadir la fecha de publicación si está disponible
+            # ET.SubElement(item, 'pubDate').text = audio.audio.fecha_publicacion.strftime('%a, %d %b %Y %H:%M:%S +0000')
+
+        # Generar el XML
+        xmlstr = ET.tostring(rss, encoding='utf8', method='xml')
+
+        # Configurar la respuesta HTTP para descargar el archivo
+        response = HttpResponse(xmlstr, content_type='application/rss+xml')
+        response['Content-Disposition'] = f'attachment; filename="{playlist.nom_intern}.rss"'
 
         return response

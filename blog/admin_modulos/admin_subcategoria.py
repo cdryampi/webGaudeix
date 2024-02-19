@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ..models import SubCategoriaBannerImagen, SubCategoriaGaleriaImagen
+from ..models import SubCategoriaBannerImagen, SubCategoriaGaleriaImagen, Categoria
 from multimedia_manager.models import Imagen
 from django import forms
 from django.db.models import Q
@@ -102,6 +102,12 @@ class SubCategoriaAdmin(TranslationAdmin, admin.ModelAdmin):
         }),
         # Otras secciones de fieldsets aquí si es necesario
     ]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "categoria":
+            kwargs["queryset"] = Categoria.objects.filter().exclude(tipo="noticies").exclude(tipo="agenda").exclude(tipo="allotjament")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
 
     def refresh_cache(self, request, queryset):
         refresh_cache(request)

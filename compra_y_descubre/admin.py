@@ -10,6 +10,7 @@ from blog.models import Tag, Categoria
 from django.http import FileResponse
 import os
 from django.utils.safestring import mark_safe
+from modeltranslation.admin import TranslationAdmin
 
 
 
@@ -145,7 +146,7 @@ class CompraDescubreImagenInline(admin.TabularInline):
 
 
 @admin.register(CompraDescubre)
-class CompraDescubreAdmin(admin.ModelAdmin):
+class CompraDescubreAdmin(TranslationAdmin, admin.ModelAdmin):
     list_display = ['titulo', 'fecha_inicio', 'publicado']
     list_filter = ['fecha_inicio', 'publicado']
     search_fields = ['titulo']

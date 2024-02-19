@@ -1,0 +1,356 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block meta_description %}
+  {% if restaurante.metadescripcion %}
+    <meta name="Description" content="{{ restaurante.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ restaurante.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if restaurante.descripcion %}
+      <meta name="Description" content="{{ restaurante.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ restaurante.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if restaurante.tags.all %}
+    <meta name="Keywords" content="{% for tag in restaurante.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+{% block title %}
+  {{ restaurante.titulo |striptags | safe  }}
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+    div#map {
+        height: 500px;
+    }
+    #carouselalojamiento .carousel-inner img {
+        height: 350px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .carousel-control-prev{
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+    .img-cat-banner{
+        max-height: 50vh !important;
+        width: 100%;
+        object-fit: cover;
+    }
+    .link-alojamiento {
+        word-break: break-all; /* Otra opción puede ser 'break-word' dependiendo del comportamiento deseado */
+    }
+    .descripcion {
+        word-break: break-word; /* Esta propiedad es preferida para mantener la integridad de las palabras cuando sea posible */
+    }
+    .tipo-hotel {
+        background-color: #f0e68c; /* Color para hoteles */
+    }
+    
+    .tipo-alberg {
+        background-color: #add8e6; /* Color para albergs */
+    }
+    
+    .tipo-turistic {
+        background-color: #90ee90; /* Color para allotjaments turístics */
+    }
+    
+    .tipo-autocaravanes {
+        background-color: #ffb6c1; /* Color para autocaravanes */
+    }
+    .icono-restaurante {
+        color: #3ebfab;
+        font-size: 1.5rem;
+        padding: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block media %}
+  {% if restaurante.postgaleriaimagen_set.all.count %}
+    {% include 'agenda/carrusel/restaurante/restaurante_carrusel.html' %}
+  {% endif %}
+
+{% endblock media %}
+
+{% block content %}
+
+<section class="mx-0 px-0 pb-5 pt-0 container-fluid">
+    <div class="p-3">
+        <h1 class="text-center">{{ restaurante.titulo }}</h1>
+    </div>
+    <div class="container-fuild p-lg-5 p-sm-5 p-md-5 p-lg-5 p-2 content-agenda-detail-container justify-content-center">
+        <div class="container p-2">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-12 p-1">
+                            <div class="descripcion">
+                                <p>{{ restaurante.descripcion | safe }}</p>
+                            </div>                     
+                            <div class="">
+                                <div class="bg-light p-2 p-lg-4 p-sm-3 p-md-3 rounded">
+                                    <h4 class="py-3">{% blocktrans %}Informació addicional{% endblocktrans %}</h4>
+                                    <ul class="list-unstyled mb-0">
+                                        {% if restaurante.direccion %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <strong>{% blocktrans %}Direcció{% endblocktrans %}:</strong> {{ restaurante.direccion }}
+                                        </li>
+                                        {% endif %}
+                                        {% if restaurante.telefono %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-phone"></i>
+                                            <strong>{% blocktrans %}Telèfon{% endblocktrans %}:</strong> {{ restaurante.telefono }}
+                                        </li>
+                                        {% endif %}
+                                        {% if restaurante.sitio_web %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-globe"></i>
+                                            <strong>{% blocktrans %}Lloc web{% endblocktrans %}:</strong>
+                                            <a href="{{ restaurante.sitio_web }}" target="_blank" class="link-alojamiento">{{ restaurante.sitio_web }}</a>
+                                        </li>
+                                        {% endif %}
+                                        {% if restaurante.google_maps_link %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-map"></i>
+                                            <strong>{% blocktrans %}Ubicació{% endblocktrans %}:</strong>
+                                            <a href="{{ restaurante.google_maps_link }}" target="_blank">{% blocktrans %}Veure al mapa{% endblocktrans %}</a>
+                                        </li>
+                                        {% endif %}
+                                        <!-- Aquí puedes añadir más detalles específicos del restaurante como pet_friendly, wifi, etc. -->
+                                        {% if restaurante.pet_friendly %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-paw"></i>
+                                            <strong>{% blocktrans %}Admet mascotes{% endblocktrans %}</strong>
+                                        </li>
+                                        {% endif %}
+                                        {% if restaurante.wifi %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-wifi"></i>
+                                            <strong>WiFi</strong>
+                                        </li>
+                                        {% endif %}
+                                        {% if restaurante.accessibilitat %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-wheelchair"></i>
+                                            <strong>{% blocktrans %}Accessibilitat per a persones amb discapacitat{% endblocktrans %}</strong>
+                                        </li>
+                                        {% endif %}
+                                        {% if restaurante.parking %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-car"></i>
+                                            <strong>{% blocktrans %}Aparcament{% endblocktrans %}</strong>
+                                        </li>
+                                        {% endif %}
+                                        {% if restaurante.postfichero %}
+                                        <li class="mb-3">
+                                            <i class="fas fa-file-pdf"></i>
+                                            <strong>PDF:</strong>
+                                            <a href="{{ restaurante.postfichero.fichero.archivo.url }}" class="text-black" title="{{ restaurante.postfichero.fichero.titulo }}" download>
+                                            {% blocktrans %}descarregar PDF{% endblocktrans %}
+                                            </a>
+                                        </li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>                                
+                                
+                            </div>
+                        <div class="social-share-buttons pt-3 text-center">
+                            <!-- Botones para compartir en redes sociales -->
+                            <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+                                <i class="fab fa-facebook-f fa-2x px-2"></i>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ restaurante.titulo }}" target="_blank">
+                                <i class="fab fa-twitter fa-2x px-2"></i>
+                            </a>
+                            <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
+                                <i class="fab fa-instagram fa-2x px-2"></i>
+                            </a>
+                    </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-12 pt-5 pt-lg-0 pt-sm-0 pt-xl-0 pt-md-5">
+                    <div class="row">
+                        <div class="col-12">
+                            {% if restaurante.postimagen %}
+                                <a href="{{ restaurante.postimagen.imagen.archivo.url }}" data-fancybox="single-image">
+                                    <img src="{{ restaurante.postimagen.imagen.archivo.url }}" title="{{ restaurante.postimagen.imagen.titulo }}" alt="{{ restaurante.postimagen.imagen.titulo }}" class="img-fluid fancybox">
+                                </a>
+                                <div class="col-12">
+                                <small class="text-center">{% blocktrans %}Fes clic a l'imatge per veure-la en resolució completa{% endblocktrans %}</small>
+                                </div>
+                            {% else %}
+                                {% with imagenes=restaurante.postgaleriaimagen_set.all %}
+                                    {% if imagenes %}
+                                        {% if imagenes.first and imagenes.first.imagen.archivo.url %}
+                                        <a href="{{ imagenes.first.imagen.archivo.url }}" data-fancybox="single-image">
+                                            <img src="{{ imagenes.first.imagen.archivo.url }}" alt="{{ imagenes.first.imagen.titulo }}" class="img-fluid fancybox">
+                                        </a>
+                                        <div class="col-12">
+                                        <small class="text-center">{% blocktrans %}Fes clic a l'imatge per veure-la en resolució completa{% endblocktrans %}</small>
+                                        </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        </div>
+                        <div class="col-12 py-3">
+                            <div class="map-container">
+                                <div class="row justify-content-center align-content-center" style="height: 100%;">
+                                    <div id="map" style="width: 100%; height: 500px;"></div>
+                                    {% if map.contenido_adicional %}
+                                        <div class="col-12 pt-5">
+                                            <p>
+                                                {% autoescape on %}
+                                                    {{ map.contenido_adicional | safe }}
+                                                {% endautoescape %}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block asides %}
+    {% if coleccion_destacados %}
+        {% include 'agenda/selecciones/restaurante_relacionado.html' %}
+    {% endif %}
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+    
+{% endblock asides %}
+
+{% block extra_script %}
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar FancyBox para todos los elementos con la clase "fancybox"
+        Fancybox.bind('.fancybox', {
+        // Opciones de configuración de FancyBox
+        groupAll: true,
+        });
+    });
+
+  </script>
+  
+<script>
+    {% if restaurante.latitud and restaurante.longitud %}
+        function truncateDescription(description, wordCount) {
+            // Convertir la descripción en un array de palabras
+            const words = description.split(' ');
+        
+            // Verificar si la descripción ya tiene menos de `wordCount` palabras
+            if (words.length <= wordCount) {
+            return description;
+            }
+        
+            // Obtener las primeras `wordCount` palabras y unirlas nuevamente en una cadena
+            const truncatedWords = words.slice(0, wordCount);
+            const truncatedDescription = truncatedWords.join(' ');
+        
+            // Agregar puntos suspensivos al final de la descripción truncada
+            const finalDescription = truncatedDescription + '...';
+        
+            return finalDescription;
+        }
+
+        function initMap() {
+            const mapContainer = document.getElementById('map');
+            const latitudInicio = parseFloat('{{ restaurante.latitud|stringformat:".6f" }}'.replace(',', '.'));
+            const longitudInicio = parseFloat('{{ restaurante.longitud|stringformat:".6f" }}'.replace(',', '.'));
+        
+            const map = new google.maps.Map(mapContainer, {
+                center: { lat: latitudInicio, lng: longitudInicio },
+                zoom: 14
+            });
+            const marker = new google.maps.Marker({
+                position: { lat: latitudInicio, lng: longitudInicio },
+                map: map,
+                title: '{{ restaurante.titulo }}',
+                animation: google.maps.Animation.BOUNCE
+            });
+            let image = '';
+            let enlace_google_maps = '';
+
+            {% if restaurante.postimagen.imagen %}
+            image = '{{ restaurante.postimagen.imagen.archivo.url }}';
+            {% endif %}
+            {% if restaurante.enlace_google_maps %}
+            enlace_google_maps = '{{ restaurante.enlace_google_maps }}'; 
+            {% endif %}
+            let description = truncateDescription(`{% autoescape on %}{{restaurante.descripcion|safe}}{% endautoescape %}`, 20);
+            const content = `
+                <div class="info-window">
+                    <h4 class="info-window-title text-center">{{restaurante.titulo}}</h4>
+                    <p class="info-window-image"><img src=${image} alt="{{restaurante.titulo}}" style="width: 100%; height: 150px; object-fit: cover;"></p>
+                    <p class="info-window-description">${description}</p>
+                    ${enlace_google_maps ? `<p class="info-window-link"><a href="{{ restaurante.enlace_google_maps }}" target="_blank" rel="noopener noreferrer" class="text-danger">Veure més a Google Maps</a></p>` : ''}
+                </div>
+            `;
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: content
+            });
+
+            marker.addListener('click', function() {
+                infoWindow.open(map, marker);
+            });
+        }
+        
+        function loadGoogleMapsAPI(callback) {
+            var script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=' + callback;
+            script.defer = true;
+            script.async = true;
+            document.head.appendChild(script);
+        }
+
+        loadGoogleMapsAPI('initMap');
+
+      {% endif %}
+
+    </script>
+{% endblock extra_script %}

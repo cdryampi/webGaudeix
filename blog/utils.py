@@ -9,9 +9,10 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from datetime import datetime
 import requests
-
+from django.core.serializers.json import DjangoJSONEncoder
 import feedparser
 import json
+from bs4 import BeautifulSoup
 
 
 
@@ -132,3 +133,56 @@ def sincronizar_noticias():
         except Exception as e:
             # Manejar el error en caso de que ocurra durante el proceso de sincronización
             print(f"Error al sincronizar noticia: {str(e)}")
+
+
+def serialize_restaurante_to_json(restaurantes):
+    """
+        Función que serealiza una lista de restaurantes.
+    """
+    restaurantes_list = []
+    for restaurante in restaurantes:
+        imagen = None
+        if restaurante.postimagen.imagen.medium_thumbnail.url:
+            imagen = restaurante.postimagen.imagen.medium_thumbnail.url
+        else:
+            if restaurante.postgaleriaimagen_set.first().imagen.medium_thumbnail.url:
+                imagen = restaurante.postgaleriaimagen_set.first().imagen.medium_thumbnail.url
+                
+        r = {
+            # Campos de Restaurante
+            "titulo": restaurante.titulo,
+            "direccion": restaurante.direccion,
+            "telefono": restaurante.telefono,
+            "slug":restaurante.slug,
+            "sitio_web": restaurante.sitio_web,
+            "tipo": restaurante.get_tipo_display(),  # Muestra la representación de string del choice
+            # Añadir más campos de Restaurante según sea necesario
+            "pet_friendly": restaurante.pet_friendly,
+            "opciones_vegetarianas": restaurante.opciones_vegetarianas,
+            "wifi": restaurante.wifi,
+            "apto_para_celiacos": restaurante.apto_para_celiacos,
+            "terraza": restaurante.terraza,
+            "menu_infantil": restaurante.menu_infantil,
+            "telefono": restaurante.telefono,
+            "imagen": imagen,
+            # Campos de Post (modelo padre)
+            "descripcion": limitar_descripcion_html(restaurante.descripcion, 20),
+            # Añadir más campos heredados de Post según sea necesario
+        }
+        restaurantes_list.append(r)
+
+    return json.dumps(restaurantes_list, cls=DjangoJSONEncoder)
+
+
+
+def limitar_descripcion_html(html_content, max_palabras):
+    soup = BeautifulSoup(html_content, "html.parser")
+    texto_plano = soup.get_text(separator=' ')
+    palabras = texto_plano.split()
+
+    if len(palabras) <= max_palabras:
+        return html_content
+
+    texto_cortado = ' '.join(palabras[:max_palabras]) + '...'
+    soup_cortado = BeautifulSoup(texto_cortado, "html.parser")
+    return str(soup_cortado)

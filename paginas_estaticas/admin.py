@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from modeltranslation.admin import TranslationAdmin
 from blog.models import Post
 from .models import  PuntoInformacion, Contacto
 from .models import PaginaLegal, Cookies, Diversidad, PDFDiversidadFichero, DiversidadImagenBanner
@@ -83,13 +83,13 @@ class DiversidadImagenBannerInline(admin.TabularInline):
 
 
 @admin.register(Diversidad)
-class DiversidadAdmin(admin.ModelAdmin):
+class DiversidadAdmin(TranslationAdmin, admin.ModelAdmin):
     filter_horizontal = ('logros','planes',)
     inlines = [PDFDiversidadFicheroFicheroInline, DiversidadImagenBannerInline]
 
 
 @admin.register(PaginaLegal)
-class PaginaLegalAdmin(admin.ModelAdmin):
+class PaginaLegalAdmin(TranslationAdmin, admin.ModelAdmin):
     fieldsets = [
         (None, {
             'fields': [
@@ -116,7 +116,7 @@ class PaginaLegalAdmin(admin.ModelAdmin):
 
 
 @admin.register(Contacto)
-class ContactoAdmin(admin.ModelAdmin):
+class ContactoAdmin(TranslationAdmin, admin.ModelAdmin):
     fieldsets = [
         (None, {
             'fields': [
@@ -138,7 +138,7 @@ class ContactoAdmin(admin.ModelAdmin):
 
 
 @admin.register(PuntoInformacion)
-class PuntoInformacionAdmin(admin.ModelAdmin):
+class PuntoInformacionAdmin(TranslationAdmin, admin.ModelAdmin):
     fieldsets = [
         (None, {
             'fields': [
@@ -164,7 +164,7 @@ class PuntoInformacionAdmin(admin.ModelAdmin):
     autocomplete_fields = ['mapa']
 
 @admin.register(Cookies)
-class CookiesAdmin(admin.ModelAdmin):
+class CookiesAdmin(TranslationAdmin, admin.ModelAdmin):
     fieldsets = [
         (None, {
             'fields': [
