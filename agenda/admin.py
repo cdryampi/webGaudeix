@@ -149,7 +149,7 @@ class PlayListAdmin(admin.ModelAdmin):
 
 class AgendaAdmin(TranslationAdmin, admin.ModelAdmin):
     inlines = [PostGaleriaImagenInline, VariationAgendaInline, PostFicheroImagenInline]
-    autocomplete_fields = ['ubicacion']
+    autocomplete_fields = ['ubicacion',]
     filter_horizontal = ('tags','idiomas')
     search_fields = ['titulo']
     fieldsets = [

@@ -135,7 +135,7 @@ class SuperDestacadoAdmin(admin.ModelAdmin):
     ]  
 
 
-class PersonalizacionAdmin(admin.ModelAdmin):
+class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
 
     search_fields = ['topbar','meta_keywords']
 

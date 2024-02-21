@@ -164,7 +164,7 @@ class PostAdmin(TranslationAdmin, admin.ModelAdmin):
         queryset = super().get_queryset(request)
         
         # Filtrar los objetos de tipo Agenda
-        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguiada__isnull=False).exclude(mappoint__isnull=False).exclude(ruta__isnull=False).exclude(alojamiento__isnull=False).exclude(restaurante_isnull=False)
+        queryset = queryset.exclude(agenda__isnull=False).exclude(visitaguiada__isnull=False).exclude(mappoint__isnull=False).exclude(ruta__isnull=False).exclude(alojamiento__isnull=False).exclude(restaurante__isnull=False)
         
         return queryset
 

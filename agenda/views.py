@@ -25,6 +25,9 @@ from django.urls import reverse
 from gaudeix import settings
 from django.http import JsonResponse
 from xml.etree import ElementTree as ET
+from django.utils.translation import get_language_from_request
+
+from gaudeix.settings import NOMBRES_MESES, NOMBRES_DIAS
 
 
 class RestauranteView(BaseContextMixin, DetailView):
@@ -329,7 +332,7 @@ class ICSAgenda(View):
 
 class PDFView(View):
     def get(self, request):
-
+        lang = get_language_from_request(request)
         fecha_actual = datetime.now()
         fecha_siguiente = fecha_actual + timedelta(days=30)
 
@@ -353,57 +356,37 @@ class PDFView(View):
 
         
         # Diccionario de traducción de meses
-        meses_traduccion = {
-            1: 'Gener',
-            2: 'Febrer',
-            3: 'Març',
-            4: 'Abril',
-            5: 'Maig',
-            6: 'Juny',
-            7: 'Juliol',
-            8: 'Agost',
-            9: 'Setembre',
-            10: 'Octubre',
-            11: 'Novembre',
-            12: 'Desembre',
-        }
-        dias_letras = {
-            0: 'Dilluns',
-            1: 'Dimarts',
-            2: 'Dimecres',
-            3: 'Dijous',
-            4: 'Divendres',
-            5: 'Dissabte',
-            6: 'Diumenge',
-        }
+        meses_traduccion = NOMBRES_MESES.get(lang, settings.NOMBRES_MESES['ca'])
+        dias_letras = NOMBRES_DIAS.get(lang, settings.NOMBRES_DIAS['ca'])
+
         agendas_por_mes = {}
 
         # Obtener todas las agendas ordenadas por fecha
         agendas = VariationAgenda.objects.filter(
             Q(fecha__gte=datetime.now().date(), fecha__lte=datetime.now().date() + timedelta(days=30), agenda__publicado=True)
         ).order_by('fecha')
-        mes_actual = fecha_actual.month
-        mes_posterior = fecha_siguiente.month
-        # Crear un diccionario para agrupar las agendas por fecha
-        agendas_por_mes[meses_traduccion[mes_actual]] = {}
-        agendas_por_mes[meses_traduccion[mes_posterior]] = {}
 
+        mes_actual = fecha_actual.month
+        mes_posterior = fecha_siguiente.month if fecha_siguiente.month != mes_actual else mes_actual  # Ajuste por si el rango incluye el mismo mes
+
+
+        # Asegurar que los meses están correctamente inicializados en el diccionario
+        agendas_por_mes[meses_traduccion[mes_actual - 1]] = {}
+        if mes_posterior != mes_actual:
+            agendas_por_mes[meses_traduccion[mes_posterior - 1]] = {}
+        
         for agenda in agendas:
             fecha = agenda.fecha.strftime("%d")
-            day_of_the_week = agenda.fecha.isocalendar().weekday-1
-            agenda_mes = str(str(fecha) + " " + str(dias_letras[day_of_the_week]))
-            try:
-                if mes_actual == agenda.fecha.month:
-                    if agenda_mes not in agendas_por_mes[meses_traduccion[mes_actual]]:
-                        agendas_por_mes[meses_traduccion[mes_actual]][agenda_mes] = []
-                        agendas_por_mes[meses_traduccion[mes_actual]][agenda_mes].append(agenda)
-                    else:
-                        agendas_por_mes[meses_traduccion[mes_actual]][agenda_mes].append(agenda)
-                if mes_actual+1 == agenda.fecha.month:
-                    agendas_por_mes[meses_traduccion[agenda.fecha.month]][agenda_mes] = []
-                    agendas_por_mes[meses_traduccion[agenda.fecha.month]][agenda_mes].append(agenda)
-            except Exception as e:
-                pass
+            day_of_the_week = agenda.fecha.weekday()  # .weekday() devuelve 0 para lunes
+            agenda_mes = f"{fecha} {dias_letras[day_of_the_week]}"
+            
+            mes_agenda = agenda.fecha.month
+            if mes_agenda in [mes_actual, mes_posterior]:
+                clave_mes = meses_traduccion[mes_agenda - 1]  # Ajustar índice para lista
+                if agenda_mes not in agendas_por_mes[clave_mes]:
+                    agendas_por_mes[clave_mes][agenda_mes] = [agenda]
+                else:
+                    agendas_por_mes[clave_mes][agenda_mes].append(agenda)
 
 
         # Convertir los emojis y los iconos a texto plano

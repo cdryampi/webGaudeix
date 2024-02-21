@@ -1,4 +1,6 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
+
 from .models import Imagen, Fichero, Video, Parallax, VideosEmbed, Audio
 
 
@@ -44,7 +46,7 @@ class FicheroAdmin(admin.ModelAdmin):
 class VideoAdmin(admin.ModelAdmin):
     model = Video
 
-class ParallaxAdmin(admin.ModelAdmin):
+class ParallaxAdmin(TranslationAdmin, admin.ModelAdmin):
     model = Parallax
 
 class VideosEmbedAdmin(admin.ModelAdmin):

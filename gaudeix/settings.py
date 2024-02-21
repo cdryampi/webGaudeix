@@ -204,11 +204,13 @@ MODELTRANSLATION_FIELDS = {
     'compra_y_descubre.CompraDescubrePasosImagen': ['titulo', 'descripcion'],
     'eventos_especiales.EventoEspecial': ['titulo', 'descripcion_larga', 'descripcion_corta'],
     'eventos_especiales.MedidaEconomica': ['titulo_html', 'descripcion'],
-    'eventos_especiales.Mensaje':['titulo', 'contenido', 'mensaje_despedida'],
-    'eventos_especiales.Autor':['cargo',],
-
-
+    'eventos_especiales.Mensaje': ['titulo', 'contenido', 'mensaje_despedida'],
+    'eventos_especiales.Autor': ['cargo',],
+    'multimedia_manager.Parallax': ['descripcion_corta'],
     # Agrega aquí otros campos que desees traducir
+
+
+
 }
 
 LANGUAGES = [
@@ -220,6 +222,33 @@ LANGUAGES = [
 
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
+
+# Configuraciones de traducción de nombres de meses y días para varios idiomas
+NOMBRES_MESES = {
+    'es': ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    'ca': ['Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre'],
+    'en': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    'de': ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+    'fr': ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+    'ar': ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+    'it': ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+}
+
+NOMBRES_DIAS = {
+    'es': ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+    'ca': ['Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte', 'Diumenge'],
+    'en': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'de': ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'],
+    'fr': ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+    'ar': ['الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت', 'الأحد'],
+    'it': ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'],
+}
+
+
+
+
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
