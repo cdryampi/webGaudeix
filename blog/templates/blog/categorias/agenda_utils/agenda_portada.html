@@ -74,12 +74,29 @@
 {% endblock extra_css %}
 
 {% block media %}
-  {% if parallax %}
+  {% if carrusel %}
     <div class="hero-agenda-especial">
-      {% include 'parallax/parallax.html' %}
+      {% comment %} Verifica si es un dispositivo móvil y el rango de imágenes {% endcomment %}
+      {% if not request.user_agent.is_pc and carrusel.imatges.all.count >= 5 and carrusel.imatges.all.count <= 10 %}
+        {% comment %} Asumiendo que deseas el carrusel estándar para dispositivos móviles {% endcomment %}
+        {% include 'carrusel/carrusel.html' %}
+      {% else %}
+        {% if carrusel.tipo == 'collage' %}
+          {% include 'carrusel/collage.html' %}
+        {% else %}
+          {% include 'carrusel/carrusel.html' %}
+        {% endif %}
+      {% endif %}
     </div>
+  {% else %}
+    {% if parallax %}
+      <div class="hero-agenda-especial">
+        {% include 'parallax/parallax.html' %}
+      </div>
+    {% endif %}
   {% endif %}
 {% endblock media %}
+
 
 
 {% block content %}

@@ -1,14 +1,14 @@
 {% load  static  %}
 {% load i18n %}
-<section class="container-fluid p-0 m-0 pt-3 bg-light">
-    <div class="col-12 p-3">
+<section class="container-fluid p-0 m-0 bg-light">
+    {% comment %} <div class="col-12 p-3">
         <h1 class="h1 text-center">{% blocktrans %}Et proposem els millors plans a Cabrera de Mar!{% endblocktrans %}</h1>
         <p class="lead text-center">{% blocktrans %}Escull amb qui vols venir i et presentem un munt d'opcions per gaudir al màxim.{% endblocktrans %}</p>
-    </div>
-    <div class="col-12">
-        <div class="row categoria-especial-container py-5">
+    </div> {% endcomment %}
+    <div class="">
+        <div class="row categoria-especial-container">
             {% for categoria in categorias_especiales %}
-            <div class="col-especial-subBlog p-1" data-color="{{ categoria.color }}">
+            <div class="col-especial-subBlog  text-capitalize" data-color="{{ categoria.color }}">
                 <div class="categoria-especial mx-auto text-center" style="background-color: {{ categoria.color }}">
                     <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="text-white d-block">
                         {% if categoria.categoriabannerimagen.imagen and categoria.categoriabannerimagen.imagen.archivo.url %}

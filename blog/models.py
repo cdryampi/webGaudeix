@@ -63,6 +63,11 @@ class SubBlog(MetadataModel, BaseModel):
         help_text="Indica si el subblog està publicat",
         verbose_name="Publicat"
     )
+    ver_mas = models.BooleanField(
+        default=False,
+        help_text="Indica si vols mostrar el botó 'Saber més'",
+        verbose_name="saber més"
+    )
     tags = models.ManyToManyField(
         Tag,
         blank=True,
@@ -204,6 +209,18 @@ class Categoria(MetadataModel, BaseModel):
         blank=True,
         verbose_name="Subblog"
     )
+    
+    mostrar_primer_hijo = models.BooleanField(
+        default=False,
+        help_text="Indica si vols mostrar el primer element automàticament, quan només tingui un fill publicat.",
+        verbose_name="Mostrar primer element"
+    )
+    ver_mas = models.BooleanField(
+        default=False,
+        help_text="Indica si vols mostrar el botó 'Saber més'",
+        verbose_name="saber més"
+    )
+
     ESPECIAL_CHOICES = (
         (False, _('No')),
         (True, _('Sí')),
@@ -249,7 +266,10 @@ class Categoria(MetadataModel, BaseModel):
     @property
     def subcategorias(self):
         return self.subcategorias.all()
-
+    @property
+    def subcat_public(self):
+        return self.subcategorias.filter(publicado=True).all()
+        
     def get_absolute_url(self):
         return reverse('blog:categoria', kwargs={'slug': self.slug})
     
@@ -404,6 +424,11 @@ class SubCategoria(MetadataModel, BaseModel):
         max_length=255,
         unique=True,
         editable=False
+    )
+    mostrar_primer_hijo = models.BooleanField(
+        default=False,
+        help_text="Indica si vols mostrar el primer element automàticament, quan només tingui un fill publicat.",
+        verbose_name="Mostrar primer element"
     )
     tipo = models.CharField(
         max_length=50,

@@ -4,18 +4,25 @@ from topbar.models import Topbar
 from footer.models import Footer
 from eventos_especiales.models import EventoEspecial
 from redes_sociales.models import RedSocial
+from redes_sociales.utils import obtener_color_mas_repetido
 from agenda.models import VariationAgenda
 from django.utils import timezone
 from django.db.models import Q
 from paginas_estaticas.models import Cookies, PaginaLegal, Diversidad
 from alerta.models import Alerta
+from personalizacion.models import Personalizacion
 
 class BaseContextMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Agrega aquí las variables de contexto que deseas pasar a la plantilla
         #context['categorias'] = Categoria.objects.filter(publicado=True)
-
+        personalizacion = Personalizacion.objects.filter().first()
+        topbar =None
+        color_red_social = None
+        color_red_social = obtener_color_mas_repetido()
+        if personalizacion:
+            topbar = personalizacion.topbar            
         alert = Alerta.objects.filter(publicado=True).first()
         # ultimos eventos del portal
         now = timezone.now()
@@ -31,7 +38,7 @@ class BaseContextMixin:
         categorias_con_subblog = Categoria.objects.filter(subblog__isnull=False, publicado=True)
         context['categorias_header'] = categorias_con_subblog
         context['referencias'] = Referencia.objects.filter(header=context['header'])
-        context['topbar'] = Topbar.objects.filter(publicado=True).last()
+        context['topbar'] = topbar
         context['footer'] = Footer.objects.filter().first()
         context['evento_especial_activo'] = EventoEspecial.objects.filter(publicado = True).first()
         context['redes_sociales'] = RedSocial.objects.all()
@@ -40,6 +47,7 @@ class BaseContextMixin:
         context['cookies'] = Cookies.objects.filter().first()
         context['cookie_page'] = PaginaLegal.objects.filter(tipo="cookies").first()
         context['alert'] = alert
+        context['color_red_social'] = color_red_social
         # Obten la URL canónica y agrega al contexto
         canonical_url = self.get_canonical_url()
         context['canonical_url'] = canonical_url

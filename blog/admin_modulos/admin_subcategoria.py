@@ -86,7 +86,7 @@ class SubCategoriaAdmin(TranslationAdmin, admin.ModelAdmin):
     filter_horizontal = ('tags',)
     fieldsets = [
         (None, {
-            'fields': ['titulo', 'metatitulo', 'subtitulo', 'descripcion', 'metadescripcion', 'tipo', 'color', 'publicado', 'categoria'],
+            'fields': ['titulo', 'metatitulo', 'subtitulo', 'descripcion', 'metadescripcion', 'tipo', 'color', 'publicado', 'categoria', 'mostrar_primer_hijo'],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'una Sub Categoria.</strong></p>"
                 "<p><em>Les <u>Categories</u> són una part crítica del lloc web, ja que determinen la manera com els continguts relacionats es mostraran als usuaris. Pots utilitzar <strong>Categories</strong> per organitzar i categoritzar els continguts sota temes o categories específiques, com ara <em>Post</em>, <em>Agendes</em>, <em>Visites Guiades</em> i més.</em></p>"

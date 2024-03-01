@@ -1,0 +1,10 @@
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+SUMMARY:Dia internacional per a l'erradicació de la violència envers les
+  dones
+DTSTART:20231126T160000
+DTEND:20231126T180000
+DESCRIPTION:Expositor de propostes de lectura temàtica
+LOCATION:Biblioteca Ilturo
+END:VEVENT
+END:VCALENDAR

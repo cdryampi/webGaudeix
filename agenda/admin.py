@@ -17,6 +17,8 @@ class RutaAudioInline(admin.TabularInline):
     model = AudioRuta
     extra = 1
 
+
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'audio':
             playlist_id = None
@@ -33,6 +35,7 @@ class PlayListRutaInline(admin.TabularInline):
     model = PlayListRuta
     extra = 1
     inlines = [RutaAudioInline]
+
 
 
 class PostGaleriaImagenInline(admin.TabularInline):
@@ -143,6 +146,29 @@ class PostImagenInlineRuta(admin.TabularInline):
 class PlayListAdmin(admin.ModelAdmin):
     model = PlayListRuta
     inlines = [RutaAudioInline]
+
+    fieldsets = [
+        (None, {
+            'fields': [
+                'nom_intern',
+                'idioma',
+                'orden'
+            ],
+            'description': (
+                "<p><strong><em>Gestió de Playlists per a Rutes.</em></strong></p>"
+                "<p>Aquesta secció permet definir i organitzar les playlists de les rutes, "
+                "incloent la selecció d'àudios específics a través del model 'AudioRuta'. "
+                "Aquí pots establir un nom intern per a la playlist, seleccionar l'idioma "
+                "associat, i determinar l'ordre en què la playlist apareixerà dins de l'aplicació o la web.</p>"
+                "<p>Les playlists poden contenir múltiples àudios, els quals es poden afegir, "
+                "ordenar i gestionar mitjançant les opcions proporcionades en la secció d'àudios inclosos. "
+                "És important utilitzar enllaços amb el format específic 'https://gaudeixcabrera.cat/redirect/xxxx.mp3' "
+                "per a cada àudio, facilitant així la redirecció correcta i la integració amb el sistema de gestió d'àudios.</p>"
+                "<p>Utilitza els camps proporcionats per especificar les característiques de cada playlist, "
+                "assegurant que es mostren de manera ordenada i coherent amb les preferències establertes.</p>"
+            )
+        }),
+    ]
 
 
 

@@ -214,12 +214,19 @@ class EventoEspecial(BaseModel, MetadataModel):
         blank=True,
         verbose_name="Miniatura d'esdeveniment especial"
     )
-
+    
+    flyer = models.ImageField(
+        upload_to='eventos_especiales/flyers/',
+        help_text="Puja el flyer de l'esdeveniment en format DIN A3",
+        null=True,
+        blank=True,
+        verbose_name="Flyer"
+    )
 
     mostrar_ahorro = models.BooleanField(
-    default=False,
-    help_text="Marca si vols que es mostri els preus",
-    verbose_name="Mostrar l'estalvi"
+        default=False,
+        help_text="Marca si vols que es mostri els preus",
+        verbose_name="Mostrar l'estalvi"
     )
     
     agendas = models.ManyToManyField(

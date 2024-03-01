@@ -89,7 +89,7 @@ class CategoriaAdmin(TranslationAdmin, admin.ModelAdmin):
     filter_horizontal = ('tags',)
     fieldsets = [
         (None, {
-            'fields': ['titulo', 'metatitulo', 'subtitulo', 'descripcion', 'metadescripcion', 'especial', 'tipo', 'color', 'publicado', 'subblog','tags'],
+            'fields': ['titulo', 'metatitulo', 'subtitulo', 'descripcion', 'metadescripcion', 'especial', 'tipo', 'color', 'publicado', 'mostrar_primer_hijo', 'ver_mas', 'subblog', 'tags'],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'una Categoria.</strong></p>"
                 "<p><em>Les <u>Categories</u> són una part crítica del lloc web, ja que determinen la manera com els continguts relacionats es mostraran als usuaris. Pots utilitzar <strong>Categories</strong> per organitzar i categoritzar els continguts sota temes o categories específiques, com ara <em>Post</em>, <em>Agendes</em>, <em>Visites Guiades</em> i més.</em></p>"
@@ -97,7 +97,7 @@ class CategoriaAdmin(TranslationAdmin, admin.ModelAdmin):
                 "<p>El <strong>Tipus</strong> que triïs limitarà la forma com veuràs el contingut, ja que cada tipus té una plantilla diferent. Això afectarà quins tipus de <em>Post</em> relacionats a aquesta categoria utilitzarem.</p>"
                 "<p>Recorda que només pots tenir una Categoria del tipus <strong>Agenda</strong>. Si vols tenir-ne una altra per altres motius, pots fer-ho, però el sistema només detectarà la primera <em>Categoria Agenda</em> publicada.</p>"
                 "<p>Si la categoria és <strong>Especial</strong>, apareixerà al principi amb un icono en blanc i fons transparent per mantenir el disseny.</p>"
-                "<p>La <strong>imatge del Banner</strong> només és vàlida si s'utilitza la categoria especial. Totes les categories utilitzen la primera imatge de la galeria per a les miniatures.</p>"
+                "<p>La <strong>imatge del Banner</strong> només és vàlida si s'utilitza la categoria especial. Totes les categories utilitzen la primera imatge de la galeria per a les miniatures.</p><em><strong>La mida recomanada per afegir la icona és 65x65 px.</strong></em>"
                 "<p>Recorda que els canvis que realitzis aquí poden afectar la forma en què es presenta la categoria i els continguts relacionats al lloc web.</p>"
                 "<p><em>Assegura't d'afegir tags amb sentit per què es farà servir per al <strong> SEO</strong>.</em></p>"
                 "<p><strong>Atenció:</strong> Quan vulguis eliminar una Categoria, revisa altres elements <strong> fills com entrades, visites guiades, etc</strong> per evitar errors, ja estan relacionats i no poden estar sense categoria i s'eliminará.</p>"

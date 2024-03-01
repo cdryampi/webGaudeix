@@ -30,7 +30,10 @@ class Header(SingletonModel):
     color_letra = ColorField(
         default='#FFFFFF'
     )
-
+    color_entrada = ColorField(
+        default='#FFFFFF'
+    )
+    
     def __str__(self):
         return "Menú de navegación"
     
@@ -61,6 +64,7 @@ class HeaderFooter(SingletonModel):
         default='#FFFFFF'
     )
 
+
     def __str__(self):
         return "Menú del footer"
     
@@ -85,11 +89,25 @@ class EnlaceExterno(models.Model):
     """
         Modelo que representa una enlace externo.
     """
+    ESTILS_TEXT_CHOICES = (
+        ('text-decoration-none', 'Sense decoració de text'),
+        ('fw-bold', 'Text en negreta'),
+        ('text-uppercase', 'Text en majúscules'),
+        ('text-lowercase', 'Text en minúscules'),
+        ('text-capitalize', 'Text capitalitzat'),
+        # Afegeix més classes segons necessitis
+    )
+
     titulo = models.CharField(
         max_length=35,
         help_text="Títol de l'enllaç",
         verbose_name="títol"
     )
+
+    color_letra = ColorField(
+        default='#FFFFFF'
+    )
+
     enlace = models.URLField(
         blank=True,
         null=True,
@@ -97,6 +115,14 @@ class EnlaceExterno(models.Model):
         verbose_name="enllaç"
     )
 
+    estil_del_text = models.CharField(
+        max_length=50,
+        blank=True,
+        choices=ESTILS_TEXT_CHOICES,
+        default='text-decoration-none',
+        help_text="Selecciona un estil de Bootstrap per a l'estilització personalitzada",
+        verbose_name="estil del text"
+    )
 
     def __str__(self):
         return self.titulo

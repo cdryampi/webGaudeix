@@ -1,4 +1,6 @@
 from .models import Header, Referencia, EnlaceExterno, HeaderFooter
+from modeltranslation.admin import TranslationAdmin
+
 from django.contrib import admin
 
 
@@ -35,6 +37,7 @@ class HeaderAdmin(admin.ModelAdmin):
                 'logo',
                 'color_fondo_header',
                 'color_letra',
+                'color_entrada'
             ],
                'description': (
                     "<p><strong>Aquesta és la pàgina d'edició de la capçalera superior.</strong></p>"
@@ -44,6 +47,7 @@ class HeaderAdmin(admin.ModelAdmin):
                     "<p>Tingues en compte que una referència només pot tenir una sola vinculació.</p>"
                     "<p><em>Assegura't d'afegir referències que consideris rellevants.</em></p>"
                     "<p><em>Les <strong>referències</strong> que es generen automàticament s'han d'eliminar si no les fas servir per evitar problemes en desar-les.</em></p>"
+                    "<p><em>PD: Volem destacar les entrades per facilitar a la gent trobarla, aixì que s'ha de afegir un color adicional.</em></p>"
                ),
 
         }),
@@ -79,12 +83,14 @@ class ReferenciaAdminWeb(admin.ModelAdmin):
      pass
 
 @admin.register(EnlaceExterno)
-class EnlaceExternoAdminWeb(admin.ModelAdmin):
+class EnlaceExternoAdminWeb(TranslationAdmin, admin.ModelAdmin):
      fieldsets = [
         (None, {
             'fields': [
                 'titulo',
                 'enlace',
+                'color_letra',
+                'estil_del_text'
             ],
                'description': (
                     "<p><strong>Aquesta és la pàgina d'edició d'un enllaç extern.</strong></p>"

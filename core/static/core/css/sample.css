@@ -34,6 +34,10 @@ header .dropdown-submenu .dropdown-menu {
   margin-top: -1px;
 }
 
+.topbar-link{
+  font-size: 1rem;
+  text-decoration: underline !important;
+}
 
 @media (max-width: 991px) {
   /* Muestra el botón de hamburguesa en pantallas pequeñas */
@@ -93,8 +97,15 @@ header .dropdown-submenu .dropdown-menu {
 }
 
 .dropdown-menu a:hover {
-  background-color: #f8f8f8; /* Color de fondo al pasar el ratón */
+  background-color: #ffffff; /* Color de fondo al pasar el ratón */
 }
+.text-header-link:hover, .text-header-link:active, .text-header-link:focus{
+  color: rgba(230, 230, 230) !important;
+}
+.enlace-externo-link:hover, .enlace-externo-link:active, .enlace-externo-link:focus{
+  color: rgba(255, 255, 255) !important;
+}
+
 @media (max-width: 767px) {
   .dropdown-menu {
     background-color: #ffffff; /* Color de fondo */
@@ -528,7 +539,7 @@ header .dropdown-submenu .dropdown-menu {
     right: 0;
     display: flex;
     flex-flow: wrap;
-    width: 190px;
+    width: auto;
     justify-content: space-around;
     padding: 20px;
     background: #000000;
@@ -537,6 +548,7 @@ header .dropdown-submenu .dropdown-menu {
 .list-group{
     display: flex;
     flex-direction: row;
+    padding: 0;
 }
 
 .container-social .list-group .list-group-item{
@@ -568,6 +580,9 @@ header .dropdown-submenu .dropdown-menu {
   .container-social.parallax-mobile{
     bottom: 0 !important;
   }
+  .container-social .list-group-item img {
+    width: 1.5rem;
+  }
 }
 @media only screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
   .video-hero {
@@ -581,12 +596,10 @@ header .dropdown-submenu .dropdown-menu {
 /* inicio subBlog especiales */
 .categoria-especial-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     justify-content: center;
     align-items: center;
     align-items: stretch;
-    grid-auto-rows: 150px;
-    padding: 1rem;
     margin: 0;
    
 }
@@ -1597,6 +1610,17 @@ table.table-custom tr.even {
   .modal-dialog.modal-dialog-centered {
     max-width: calc(80% - 30px);
   }
+  .categoria-especial-container{
+    grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+    padding: 0;
+    margin: 0;
+  }
+  .categoria-especial-container .caption{
+    display: none;
+  }
+  .categoria-especial .img-fluid.align-middle {
+    height: 95px;
+  }
 }
 
 /* Para pantallas pequeñas (sm) */
@@ -1621,3 +1645,10 @@ table.table-custom tr.even {
 }
 
 /* end modal */
+
+/* ckeditor */
+iframe {
+  width: 100% !important; /* Asegura que el iframe tome el ancho completo del contenedor */
+  height: auto; /* Ajusta la altura automáticamente basado en el aspect ratio */
+}
+/* end ckeditor */

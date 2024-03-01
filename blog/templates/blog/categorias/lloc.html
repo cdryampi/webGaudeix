@@ -166,17 +166,11 @@
 
                     <h3>{% blocktrans %}Principals llocs{% endblocktrans %}</h3>
                     <div class="row">
-                        {% for post in posts %}
+                        {% for post in llocs %}
                         <div class="col-12 col-md-6 col-lg-6 p-2">
                             <a href="
-                            {% if post.agenda %} 
-                                {% url 'agenda:detalle_agenda' slug=post.agenda.slug %}
-                            {% elif post.visitaguiada %}
-                                {% url 'agenda:visites-guiades' slug=post.agenda.slug %}
-                            {% elif post.mappoint %}
+                            {% if post.slug %}
                                 {% url 'map:mapa' slug=post.slug %}
-                            {% else %}
-                                {{ post.get_absolute_url }}
                             {% endif %}" 
                             class="related-activity-link my-1">
                             <article class="card related-activity-card mb-3 h-100">

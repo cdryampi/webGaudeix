@@ -1,72 +1,73 @@
 {% load static %}
 {% load i18n %}
-<section class="container-fluid p-0 m-0 bg-white">
+
     {% if super_destacado.destacado.tipo == 'eventos_especiales' %}
-        <a href="{% url 'eventos_especiales:evento_especial' slug=super_destacado.destacado.evento_especial.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
-            {% if super_destacado.destacado.evento_especial.parallax%}
-                {% if super_destacado.destacado.evento_especial.parallax.imagen.url %}
-                    background-image: url('{{ super_destacado.destacado.evento_especial.parallax.imagen.url }}');
-                {% endif %}
-            {% else %}
-                {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.all.count >= 1 %}
-                    {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first %}
-                        {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first.imagen.archivo.url %}
-                            background-image: url('{{ super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first.imagen.archivo.url }}');
+        
+        {% if super_destacado.destacado.evento_especial.flyer %}
+            <section class="container my-3 bg-white">
+                <div class="col-12 my-3 py-2">
+                    <h2 class="mb-3 h1 text-uppercase text-center font-weight-bold display-6 display-sm-5 display-md-4 display-lg-3 display-xl-2" style="color: {{super_destacado.destacado.evento_especial.color}};"> {{ super_destacado.titulo }} </h2>
+                    <p class="text-center">{{ super_destacado.descripcion }}</p>
+                </div>
+
+                <a href="{% url 'eventos_especiales:evento_especial' slug=super_destacado.destacado.evento_especial.slug %}">
+                    <img src="{{ super_destacado.destacado.evento_especial.flyer.url }}" alt="{{ super_destacado.destacado.evento_especial.titulo }}" class="img-fluid">
+                </a>
+            </section>
+        {% else %}
+            <section class="container-fluid p-0 m-0 bg-white">
+                <a href="{% url 'eventos_especiales:evento_especial' slug=super_destacado.destacado.evento_especial.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
+                    {% if super_destacado.destacado.evento_especial.parallax%}
+                        {% if super_destacado.destacado.evento_especial.parallax.imagen.url %}
+                            background-image: url('{{ super_destacado.destacado.evento_especial.parallax.imagen.url }}');
+                        {% endif %}
+                    {% else %}
+                        {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.all.count >= 1 %}
+                            {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first %}
+                                {% if super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first.imagen.archivo.url %}
+                                    background-image: url('{{ super_destacado.destacado.evento_especial.eventoespecialgaleriaimagen_set.first.imagen.archivo.url }}');
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            background-image: url('{% static 'core/img/banners/img-agenda.png' %}');
                         {% endif %}
                     {% endif %}
-                {% else %}
-                    background-image: url('{% static 'core/img/banners/img-agenda.png' %}');
-                {% endif %}
-            {% endif %}
-        display: block;
-        ">
-            <div class="container-fluid p-0 m-0" style="background-color: rgba(0, 0, 0, 0.3); height: 100%;">
-                <div class="d-flex justify-content-center align-items-center h-100">
-                    <div class="text-white text-center"> <!-- Agregado text-center para centrar el contenido textual horizontalmente -->
-                        <h2 class="mb-3 h2">
-                            {% if super_destacado.descripcion %}
-                                {{ super_destacado.descripcion }}
-                            {% else %}
-                                {% blocktrans %}No et pots perdre{% endblocktrans %}
-                            {% endif %}
+                display: block;
+                ">
+                    <div class="container-fluid p-0 m-0" style="background-color: rgba(0, 0, 0, 0.3); height: 100%;">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="text-white text-center"> <!-- Agregado text-center para centrar el contenido textual horizontalmente -->
+                                <h3 class="mb-3 h1 text-capitalize"> {{ super_destacado.titulo }} </h3>
+                            </div>
+                        </div>
+                    </div>
+                
+                </a>
+            </section>
+        {% endif %}
 
-                        </h2>
-                        <h3 class="mb-3 h1"> {{ super_destacado.titulo }} </h3>
-                        <span class="btn btn-outline-light btn-lg" role="button">{% blocktrans %}Saber més{% endblocktrans %}</span>
-                    </div>
-                </div>
-            </div>
-        
-        </a>
     {% elif super_destacado.destacado.tipo == 'compra_y_descubre' %}
-        <a href="{% url 'compra_y_descubre:compra_y_descubre' slug=super_destacado.destacado.compra_y_descubre.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
-            {% if super_destacado.destacado.compra_y_descubre.compradescubreimagen and super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url %}
-                background-image: url('{{ super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url }}');
-            {% else %}
-                background-image: url('{% static 'core/img/banners/img-agenda.png' %}')
-            {% endif %}
-            background-repeat: no-repeat;
-            display: block;
-            height: 70vh;
-        ">
-            <div class="container-fluid p-0 m-0" style="background-color: rgba(0, 0, 0, 0.3); height: 100%;">
-                <div class="d-flex justify-content-center align-items-center h-100">
-                    <div class="text-white text-center"> <!-- Agregado text-center para centrar el contenido textual horizontalmente -->
-                        <h2 class="mb-3 h2">                            
-                            {% if super_destacado.descripcion %}
-                                {{ super_destacado.descripcion }}
-                            {% else %}
-                                {% blocktrans %}No et pots perdre{% endblocktrans %}
-                            {% endif %}
-                        </h2>
-                        <h3 class="mb-3 h1"> {{ super_destacado.titulo }} </h3>
-                        <span class="btn btn-outline-light btn-lg" role="button">{% blocktrans %}Saber més{% endblocktrans %}</span>
+        <section class="container-fluid p-0 m-0 bg-white">
+            <a href="{% url 'compra_y_descubre:compra_y_descubre' slug=super_destacado.destacado.compra_y_descubre.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
+                {% if super_destacado.destacado.compra_y_descubre.compradescubreimagen and super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url %}
+                    background-image: url('{{ super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url }}');
+                {% else %}
+                    background-image: url('{% static 'core/img/banners/img-agenda.png' %}')
+                {% endif %}
+                background-repeat: no-repeat;
+                display: block;
+                height: 70vh;
+            ">
+                <div class="container-fluid p-0 m-0" style="background-color: rgba(0, 0, 0, 0.3); height: 100%;">
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                        <div class="text-white text-center"> <!-- Agregado text-center para centrar el contenido textual horizontalmente -->
+                            <h3 class="mb-3 h1 text-capitalize"> {{ super_destacado.titulo }} </h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-        
-        </a>
+            
+            </a>
+        </section>
     {% endif %}
 
 
-</section>

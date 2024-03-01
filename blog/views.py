@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView
 from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia, SubCategoria
 from agenda.models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Alojamiento, Restaurante
+from map.models import MapPoint
 from django.http import JsonResponse
 from django.views.generic import View
 from core.mixin.base import BaseContextMixin
@@ -14,6 +15,8 @@ from eventos_especiales.models import EventoEspecial
 from personalizacion.models import Personalizacion
 from multimedia_manager.models import Parallax
 from django.core.serializers import serialize
+from django.shortcuts import redirect
+
 from django.http import JsonResponse
 
 class ListarPostsView(ListView):
@@ -98,33 +101,35 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
     context_object_name = 'categoria' # Nombre con el que se pasará el objeto categoría a la plantilla
     pk_url_kwarg = 'categoria_id' # Nombre del argumento de URL para identificar la categoría
 
-    def get_object(self, queryset=None):
-        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
-        slug = self.kwargs.get('slug')
-        queryset = self.get_queryset()
-        obj = get_object_or_404(queryset, slug=slug)
-        return obj
 
-
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
         """
         Agrega datos adicionales al contexto de la plantilla.
         """
-        context = super().get_context_data(**kwargs)
-        # Obtener el objeto de la categoría actual
-        categoria = context['categoria']
+        
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        categoria = self.object
+
         categorias_hermanas = Categoria.objects.filter(publicado= True).exclude(id=categoria.id)
         context['categorias'] = categorias_hermanas
         now = timezone.now()
+        subcategorias = categoria.subcategorias.filter(publicado=True)
+
+
         # Verificar si el tipo de categoría es "agenda"
         if categoria.tipo == 'agenda':
             # Si la categoría es de tipo 'agenda', obtener la lista de agendas relacionadas
             agendas = Agenda.objects.filter(publicado=True).all()
-            parallax = Personalizacion.objects.filter().first()
+            parallax = None
+            carrusel = None
+            personalizacion = Personalizacion.objects.filter().first()
 
-            if parallax is not None:
-                if parallax.parallax_agenda:
-                    parallax = parallax.parallax_agenda.parallax_agenda
+            if personalizacion is not None:
+                if personalizacion.carrusel_agenda:
+                    carrusel = personalizacion.carrusel_agenda
+                elif personalizacion.parallax_agenda:
+                    parallax = personalizacion.parallax_agenda.parallax_agenda
                 else:
                     parallax = None
             else:
@@ -134,6 +139,7 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             categorias = Categoria.objects.filter(publicado=True)
             context['redes_sociales'] = redes_sociales
             context['parallax'] = parallax
+            context['carrusel'] = carrusel
             context['agendas'] = agendas
             context['joves'] = VariationAgenda.objects.filter(agenda__publicado= True, agenda__tipo_evento='joves',fecha__gt=now).first()
             context['categorias'] = categorias
@@ -141,7 +147,12 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         elif categoria.tipo == 'visitas_guiadas':
             # Si la categoría es de tipo 'visitas_guiadas', obtener las visitas guiadas relacionadas
             visitas_guiadas = VisitaGuiada.objects.filter(publicado=True, categoria = categoria).all()
+            if visitas_guiadas.count() ==1 and categoria.mostrar_primer_hijo:
+                return redirect('agenda:visites-guiades',slug = visitas_guiadas.first().slug)
+            elif subcategorias.count() == 1 and categoria.mostrar_primer_hijo:
+                return redirect('blog:subcategoria', slug=subcategorias.first().slug)
             context['visitas_guiadas'] = visitas_guiadas
+
 
         elif categoria.tipo == 'noticies':
             # Si la categoría es de tipo 'noticias', obtener las noticias relacionadas
@@ -151,38 +162,71 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
         elif categoria.tipo == 'senderisme':
             # Si la categoría es de tipo 'senderisme', obtener las rutas relacionadas
             rutes  = Ruta.objects.filter(publicado=True).all()
+            if rutes.count() == 1 and categoria.mostrar_primer_hijo:
+                return redirect('agenda:ruta', slug = rutes.first().slug)
+            elif subcategorias.count() == 1:
+                return redirect('blog:subcategoria', slug=subcategorias.first().slug)
+            
             context['rutes'] = rutes
 
         elif categoria.tipo == 'allotjament':
             alojamientos = Alojamiento.objects.filter(publicado=True, categoria=categoria).all()
             context['alojamientos'] = alojamientos
+            if alojamientos.count() == 1 and categoria.mostrar_primer_hijo:
+                return redirect('agenda:allotjament', slug = alojamientos.first().slug)
+            elif subcategorias.count() == 1:
+                return redirect('blog:subcategoria', slug=subcategorias.first().slug)
+            
             posts = Post.objects.filter(publicado = True, categoria = categoria).exclude(alojamiento__isnull=False)
             context['posts'] = posts
 
         elif categoria.tipo == 'restaurant':
             restaurantes = Restaurante.objects.filter(publicado=True, categoria=categoria).all()
             context['restaurantes'] = restaurantes
+
+            if restaurantes.count() == 1 and categoria.mostrar_primer_hijo:
+                return redirect('agenda:restaurant', slug = restaurantes.first().slug)
+            elif subcategorias.count() == 1:
+                return redirect('blog:subcategoria', slug=subcategorias.first().slug)
+            
             posts = Post.objects.filter(publicado = True, categoria = categoria).exclude(restaurante__isnull=False)
             context['posts'] = posts
             
         elif categoria.tipo == 'normal':
             # Si la categoría es de tipo 'normal', obtener los posts relacionados
-            posts = Post.objects.filter(publicado = True, categoria = categoria)
+            posts = Post.objects.filter(publicado = True, categoria = categoria).all()
+            if posts.count() == 1 and categoria.mostrar_primer_hijo:
+               return redirect('blog:detalle_post', slug = posts.first().slug)
+            elif subcategorias.count() == 1:
+                return redirect('blog:subcategoria', slug=subcategorias.first().slug)
             context['posts'] = posts
 
         elif categoria.tipo == 'lloc':
             # Si la categoría es de tipo 'lloc', obtener los posts relacionados
+            llocs = MapPoint.objects.filter(publicado = True, categoria = categoria)
+            context['llocs'] = llocs
+            if llocs.count() == 1 and categoria.mostrar_primer_hijo:
+                return redirect('map:mapa', slug = llocs.first().slug)
+            elif subcategorias.count() == 1:
+                return redirect('blog:subcategoria', slug=subcategorias.first().slug)
+            
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
             
         elif categoria.tipo == 'festes_i_tradicions':
             # Si la categoría es de tipo 'festes_i_tradicions', obtener las festividades relacionadas
             festes = EventoEspecial.objects.filter(categoria = self.get_object()).all()
+
+            if festes.count() ==1 and categoria.mostrar_primer_hijo:
+                return redirect('eventos_especiales:evento_especial', slug= festes.first().slug)
+            elif subcategorias.count() == 1:
+                return redirect('blog:subcategoria', slug=subcategorias.first().slug)
+                
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
             context['festes'] = festes
             
-        return context
+        return self.render_to_response(context)
 
 class FiltrarAgendaView(View):
     """
@@ -302,21 +346,14 @@ class SubCategoriaDetailView(BaseContextMixin, DetailView):
     context_object_name = 'subcategoria' # Nombre con el que se pasará el objeto categoría a la plantilla
     pk_url_kwarg = 'subcategoria_id' # Nombre del argumento de URL para identificar la categoría
 
-    def get_object(self, queryset=None):
-        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
-        slug = self.kwargs.get('slug')
-        queryset = self.get_queryset()
-        obj = get_object_or_404(queryset, slug=slug)
-        return obj
 
-
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
         """
         Agrega datos adicionales al contexto de la plantilla.
         """
-        context = super().get_context_data(**kwargs)
-        # Obtener el objeto de la categoría actual
-        subcategoria = context['subcategoria']
+        self.object = self.get_object()
+        subcategoria = self.object
+        context = self.get_context_data(object=self.object)
         subcategorias_hermanas = SubCategoria.objects.filter(publicado= True).exclude(id=subcategoria.id)
         context['categorias'] = subcategorias_hermanas
         now = timezone.now()
@@ -345,6 +382,9 @@ class SubCategoriaDetailView(BaseContextMixin, DetailView):
         elif subcategoria.tipo == 'visitas_guiadas':
             # Si la categoría es de tipo 'visitas_guiadas', obtener las visitas guiadas relacionadas
             visitas_guiadas = VisitaGuiada.objects.filter(publicado=True, subcategoria = subcategoria).all()
+            if visitas_guiadas.count() ==1 and subcategoria.mostrar_primer_hijo:
+                return redirect('agenda:visites-guiades',slug = visitas_guiadas.first().slug)
+            
             context['visitas_guiadas'] = visitas_guiadas
 
         elif subcategoria.tipo == 'noticies':
@@ -355,25 +395,34 @@ class SubCategoriaDetailView(BaseContextMixin, DetailView):
         elif subcategoria.tipo == 'senderisme':
             # Si la categoría es de tipo 'senderisme', obtener las rutas relacionadas
             rutes  = Ruta.objects.filter(publicado=True, subcategoria= subcategoria).all()
+            if rutes.count() == 1 and subcategoria.mostrar_primer_hijo:
+                return redirect('agenda:ruta', slug = rutes.first().slug)
             context['rutes'] = rutes
 
         elif subcategoria.tipo == 'normal':
             # Si la categoría es de tipo 'normal', obtener los posts relacionados
             posts = Post.objects.filter(publicado = True, subcategoria = subcategoria)
+            if posts.count() == 1 and subcategoria.mostrar_primer_hijo:
+                return redirect('blog:detalle_post', slug = posts.first().slug)
             context['posts'] = posts
 
         elif subcategoria.tipo == 'lloc':
             # Si la categoría es de tipo 'lloc', obtener los posts relacionados
-            posts = Post.objects.filter(publicado = True, subcategoria = subcategoria)
+            llocs = MapPoint.objects.filter(publicado = True, subcategoria = subcategoria)
+            if llocs.count() == 1 and subcategoria.mostrar_primer_hijo:
+                return redirect('map:mapa', slug = llocs.first().slug)
             context['posts'] = posts
         elif subcategoria.tipo == 'festes_i_tradicions':
             # Si la categoría es de tipo 'festes_i_tradicions', obtener las festividades relacionadas
             festes = EventoEspecial.objects.filter(categoria = self.get_object().categoria).all()
             posts = Post.objects.filter(publicado = True, subcategoria = subcategoria)
+            if festes.count() ==1 and subcategoria.mostrar_primer_hijo:
+                return redirect('eventos_especiales:evento_especial', slug= festes.first().slug)
+
             context['posts'] = posts
             context['festes'] = festes
             
-        return context
+        return self.render_to_response(context)
     
 
 class RestaurantAPI(View):

@@ -8,7 +8,7 @@ from redes_sociales.models import RedSocial
 from footer.models import Footer
 from redes_sociales.utils import obtener_color_mas_repetido
 from map.models import MapPoint
-from multimedia_manager.models import VideosEmbed
+from multimedia_manager.models import VideosEmbed, Carrusel
 from selecciones.models import SeleccionDestacados
 from eventos_especiales.models import EventoEspecial
 from paginas_estaticas.models import Cookies, PaginaLegal, Diversidad
@@ -30,6 +30,8 @@ from agenda.models import AudioRuta
 from django.views.decorators.csrf import csrf_protect
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
+from urllib.parse import unquote
+
 import sys
 
 
@@ -124,15 +126,17 @@ def home(request):
     evento = EventoEspecial.objects.filter(publicado=True).first()
 
     super_destacado = None
-
+    carrusel =  None
     if personalizacion and personalizacion.super_destacado:
         super_destacado = personalizacion.super_destacado
+    if personalizacion and personalizacion.carrusel_portada:
+        carrusel = personalizacion.carrusel_portada
     # com arribar
     tren = None
     autopista = None
     bus =  None
     aeroport = None
-
+    topbar = None
 
     subblog = SubBlog.objects.filter(publicado = True).all()
 
@@ -150,10 +154,10 @@ def home(request):
     else:
         parallax = Parallax.objects.filter(publicado =True).first()
 
+    
     if personalizacion and personalizacion.topbar:
         topbar = personalizacion.topbar
-    else:
-        topbar = Topbar.objects.filter(publicado=True).last()
+
 
     if personalizacion and personalizacion.trenpersonalizacion:
         tren = personalizacion.trenpersonalizacion
@@ -211,6 +215,7 @@ def home(request):
             'subblogs': subblog,
             'portada_meta_description': meta_description,
             'portada_meta_keywords': meta_keywords,
+            'carrusel': carrusel
         }
     )
     
@@ -348,7 +353,7 @@ class RedirectMultimediaFile(View):
     def get(self, request, *args, **kwargs):
         try:
             current_url = request.build_absolute_uri()
-            audio_ruta = AudioRuta.objects.get(link_unico=current_url)
+            audio_ruta = AudioRuta.objects.get(link_unico=unquote(current_url))
         except AudioRuta.DoesNotExist:
             raise Http404("El enlace no existe")  # Maneja el caso en el que el enlace no se encuentre en la base de datos
         # Realiza el redireccionamiento al enlace único del audio

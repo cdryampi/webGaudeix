@@ -73,8 +73,10 @@
     {% endblock canonical %}
 
     <!-- Fuentes -->
-    <link rel="preload" href="{% static 'core/css/fonts.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'core/css/fonts.css' %}" as="style">
+    <link rel="stylesheet" href="{% static 'core/css/fonts.css' %}" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="{% static 'core/css/fonts.css' %}"></noscript>
+    
     <!-- end fuentes -->
 
     <!--FAVICON-->
@@ -94,8 +96,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/sample.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/swiper/swiper-bundle.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/js/gallery-js/fancybox.css' %}">
-
     {% endcompress %}
+
     {% compress js %}
         <script src="{% static 'core/bootstrap/js/jquery-3.5.1.slim.min.js' %}"></script>
         <script src="{% static 'core/bootstrap/js/popper.min.js' %}"></script>
@@ -103,7 +105,7 @@
         <script src="{% static 'core/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'core/js/swiper/swiper-bundle.min.js' %}"></script>
         <script src="{% static 'core/js/popper.min.js' %}"></script>
-    {% endcompress %%}
+    {% endcompress %}
 
     {% block extra_css %}
         
@@ -124,8 +126,8 @@
 
                 {% if user_agent.is_mobile %}
 
-                    {% include 'parallax/parallax.html' %}
-
+                    {% comment %} {% include 'parallax/parallax.html' %} {% endcomment %}
+                    {% include "carrusel/carrusel.html" %}
                 {% else %}
 
                     {% include 'portada-video/portada-video.html' %}
@@ -156,15 +158,17 @@
 
         {% if portada %}
 
-            {% if coleccion_destacados  %}
+            {% comment %} {% if coleccion_destacados  %}
                 {% include 'destacados/destacados.html' %}
-            {% endif %}
+            {% endif %} {% endcomment %}
 
             {% include 'custom/hero.html' %}
-            
-            {% if categorias %}
+
+
+
+            {% comment %} {% if categorias %}
                 {% include 'blog/selecciones/categorias_seleccion.html' %}
-            {% endif %}
+            {% endif %} {% endcomment %}
 
         {% endif %}
 
@@ -175,13 +179,28 @@
 
         {% endblock %}
     </main>
-
-    {% if alert %}
-        {% include 'alerta/alerta.html' %}
+    {% if portada %}
+        {% if alert  %}
+            {% if alert.publicado and alert.has_init %}
+                {% include 'alerta/alerta.html' %}
+            {% endif %}
+        {% endif %}
     {% endif %}
 
     {% if portada %}
         {% include 'map/map.html' %}
+    {% endif %}
+
+    {% if portada %}
+        {% if ultimos_eventos %}
+            <aside class="container">
+                {% include 'agenda/selecciones/selector_agendas.html' %}
+            </aside>
+        {% endif %}
+    {% endif %}
+
+
+    {% if portada %}
         {% include "como_llegar/como_llegar.html" %}
     {% endif %}
 
@@ -189,11 +208,7 @@
         {% include "blog/subblog/selecciones/subblog_freebox.html" %}
     {% endif %}
 
-    {% if portada %}
-        {% if ultimos_eventos %}
-            {% include 'agenda/selecciones/selector_agendas.html' %}
-        {% endif %}
-    {% endif %}
+
     {% block asides %}
         
 
@@ -222,43 +237,12 @@
 
             {% if user_agent.is_pc %}
 
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async defer loading=async></script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async></script>
             
             {% endif %}
 
-            <!-- JavaScript asincrónico para obtener el token CSRF y copiarlo en los formularios -->
             <script>
-                document.addEventListener('DOMContentLoaded', async function() {
-                    try {
-                        // Realiza una solicitud AJAX asincrónica para obtener el token CSRF
-                        const response = await fetch('/obtener-token-csrf/');
-                        const data = await response.json();
-                        const csrfToken = data.csrf_token;
-                        const forms = document.querySelectorAll('form');
-                
-                        forms.forEach(function(form) {
-                            // Encuentra el campo de entrada CSRF existente en el formulario
-                            const csrfInput = form.querySelector('[name="csrfmiddlewaretoken"]');
-                            if (csrfInput) {
-                                // Reemplaza el valor del token CSRF existente con el nuevo valor
-                                csrfInput.value = csrfToken;
-                            } else {
-                                // Si no existe un campo CSRF, crea uno nuevo
-                                const newCsrfInput = document.createElement('input');
-                                newCsrfInput.type = 'hidden';
-                                newCsrfInput.name = 'csrfmiddlewaretoken';
-                                newCsrfInput.value = csrfToken;
-                                form.appendChild(newCsrfInput);
-                            }
-                            const idiomaLinks = document.querySelectorAll('.idioma-link');
-                            idiomaLinks.forEach((link) => {
-                                link.removeAttribute('data-disabled');
-                            });
-                        });
-                    } catch (error) {
-                        console.error('Error al obtener el token CSRF:', error);
-                    }
-                });
+                document.addEventListener("DOMContentLoaded",async function(){try{let e=await fetch("/obtener-token-csrf/"),t=await e.json(),r=t.csrf_token,n=document.querySelectorAll("form");n.forEach(function(e){let t=e.querySelector('[name="csrfmiddlewaretoken"]');if(t)t.value=r;else{let n=document.createElement("input");n.type="hidden",n.name="csrfmiddlewaretoken",n.value=r,e.appendChild(n)}let a=document.querySelectorAll(".idioma-link");a.forEach(e=>{e.removeAttribute("data-disabled")})})}catch(a){console.error("Error al obtener el token CSRF:",a)}});
             </script>
   
 

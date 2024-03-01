@@ -12,7 +12,7 @@ from ckeditor.fields import RichTextField
 from multimedia_manager.models import Audio
 from django.core.exceptions import ValidationError
 from gaudeix.settings import DOMAIN_URL 
-
+from urllib.parse import urlparse, quote
 
 User = get_user_model()
 
@@ -635,7 +635,7 @@ class AudioRuta(models.Model):
         verbose_name="Àudio de la ruta"
     )
 
-    link_unico = models.URLField(
+    link_unico = models.CharField(
         unique=True,  # Hace que el campo sea único
         blank=True,
         null=True,
@@ -663,9 +663,15 @@ class AudioRuta(models.Model):
 
     def clean(self):
         # Verificar que la URL cumple con el formato deseado
-        url_pattern = rf'^{re.escape(DOMAIN_URL)}/redirect/[\w.-]+\.\w{{2,4}}$'
-        if self.link_unico and not re.match(url_pattern, self.link_unico):
-            raise ValidationError("La URL no cumple con el formato requerido.")
+        if self.link_unico:
+            parsed_url = urlparse(self.link_unico)
+            path_codificado = quote(parsed_url.path)  # Codifica la ruta para permitir caracteres especiales
+            url_codificada = f'{parsed_url.scheme}://{parsed_url.netloc}{path_codificado}'
+            
+            # Actualiza el patrón para permitir caracteres codificados en la ruta
+            url_pattern = rf'^{re.escape(DOMAIN_URL)}/redirect/[\w%.-]+(\.\w{{2,4}})?$'
+            if not re.match(url_pattern, url_codificada):
+                raise ValidationError("La URL no cumple con el formato requerido.")
         
     
     class Meta:

@@ -1,13 +1,13 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from blog.models import Post, Categoria, SubBlog, Tag
-from multimedia_manager.models import Video, Parallax, VideosEmbed
+from multimedia_manager.models import Video, Parallax, VideosEmbed, Carrusel
 from topbar.models import Topbar
 from ckeditor.fields import RichTextField
 from compra_y_descubre.models import CompraDescubre
 from eventos_especiales.models import EventoEspecial
 from datetime import time
-
 
 # Create your models here.
 class PersonalizacionManager(models.Manager):
@@ -187,6 +187,24 @@ class Personalizacion(models.Model):
         verbose_name="Favicon",
         help_text="Selecciona el favicon per al lloc (si n'hi ha un)."
     )
+    carrusel_portada = models.ForeignKey(
+        Carrusel,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Carrusel de portada",
+        help_text="Selecciona el carrusel per a la portada (si n'hi ha un).",
+        related_name='personalizaciones_portada'
+    )
+    carrusel_agenda = models.ForeignKey(
+        Carrusel,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Carrusel-collage de portada",
+        help_text="Selecciona el carrusel-collage per a la portada (si n'hi ha un).",
+        related_name='personalizaciones_agenda'
+    )
     parallax_portada = models.OneToOneField(
         Parallax,
         on_delete=models.SET_NULL,
@@ -226,6 +244,19 @@ class Personalizacion(models.Model):
         blank= True,
         verbose_name="super destacat",
         help_text="Selecciona un superdestacat si existeix."
+    )
+
+    dias_vista_agenda = models.IntegerField(
+        default=10,
+        validators=[MinValueValidator(0), MaxValueValidator(30)],
+        verbose_name="Dies pel PDF de l'agenda.",
+        help_text="Defineix el nombre de dies per generar el PDF de l'agenda, des de 0 fins a 30."
+    )
+    enlace_agenda = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Enllaç per comprar tiquets per l'agenda",
+        verbose_name="enllaç pels tiquets"
     )
 
     analytics_script = models.TextField(

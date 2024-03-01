@@ -2,10 +2,12 @@
 {% load i18n %}
 {% if header %}
 <div class="container-fluid p-0 header-container">
-    {% include 'topbar/topbar.html' %}
+    {% if topbar %}
+        {% include 'topbar/topbar.html' %}
+    {% endif %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header.color_fondo_header }} !important;">
-        <div class="container">
-            <div>
+        <div class="container-fluid">
+            <div class="row">
                 {% if evento_especial_activo.logo_especial %}
                     <a class="navbar-brand" href="{% url 'eventos_especiales:evento_especial' slug=evento_especial_activo.slug %}">
                         <img src="{{ evento_especial_activo.logo_especial.url }}" alt="Logo" class="logo-img">
@@ -15,7 +17,7 @@
                     {% if header.logo %}
                         <img src="{{ header.logo.url }}" alt="Logo" class="logo-img">
                     {% else %}
-                        <span class="logo-text">Cabrera de Mar</span>
+                        <span class="logo-text">Gaudeix Cabrera de Mar</span>
                     {% endif %}
                 </a>
             </div>
@@ -28,16 +30,16 @@
                     {% for referencia in referencias %}
                         {% if referencia.tipo == 'externo' %}
                             <li class="nav-item">
-                                <a class="nav-link text-white font-weight-bold" href="{{ referencia.externo.enlace }}" target="_blank" style="color: {{ header.color_letra}} !important;">{{ referencia.externo.titulo }}</a>
+                                <a class="nav-link text-white font-weight-bold {{ referencia.externo.estil_del_text }}" href="{{ referencia.externo.enlace }}" target="_blank" style="color: {{ referencia.externo.color_letra }} !important;">{{ referencia.externo.titulo }}</a>
                             </li>
                         {% elif referencia.tipo == 'post' %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.post.titulo }}</a>
                             </li>
                         {% elif referencia.tipo == 'categoria' %}
-                                {% if referencia.categoria.subcategorias.all %}
+                                {% if referencia.categoria.subcat_public.exists %}
                                     <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle text-white font-weight-bold" href="javascript:void(0)" id="navbarDropdownCategoriaouter{{ referencia.categoria.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <a class="nav-link dropdown-toggle text-white font-weight-bold text-header-link" href="javascript:void(0)" id="navbarDropdownCategoriaouter{{ referencia.categoria.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             {{ referencia.categoria.titulo }}
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategoriaouter{{ referencia.categoria.id }}">
@@ -48,53 +50,67 @@
                                                     </li>
                                                 {% endif %}
                                             {% endfor %}
-                                            <li class="nav-item">
-                                                <a class="dropdown-item" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
-                                            </li>
+
+                                            {% if referencia.categoria.ver_mas %}
+                                                <li class="nav-item">
+                                                    <a class="dropdown-item" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
+                                                </li>
+                                            {% endif %}
+
                                         </ul>
                                     </li>
                                 {% else %}
                                     <li class="nav-item">
                                         <a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.categoria.titulo }}</a>
                                     </li>
-                        {% endif %}
+                                {% endif %}
                         {% elif referencia.tipo == 'subblog' %}
                             {% if referencia.subblog.publicado %}
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white font-weight-bold" href="javascript:void(0)" id="navbarDropdownSubblog{{ referencia.subblog.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle text-white font-weight-bold text-header-link" href="javascript:void(0)" id="navbarDropdownSubblog{{ referencia.subblog.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {{ referencia.subblog.titulo }}
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownSubblog{{ referencia.subblog.id }}">
                                         {% for categoria in categorias_header %}
                                             {% if categoria.subblog == referencia.subblog %}
-                                                {% if categoria.subcategorias.all %}
-                                                    <li class="dropdown-submenu">
-                                                        <a class="dropdown-toggle" href="javascript:void(0)" id="navbarDropdownCategoriaInner{{ categoria.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            {{ categoria.titulo }}
-                                                        </a>
-                                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategoriaInner{{ categoria.id }}">
-                                                            {% for subcat in categoria.subcategorias.all %}
-                                                                {% if subcat.publicado %}
+                                                {% if categoria.subcat_public.exists %}
+                                                    {% if categoria.publicado %}
+                                                        <li class="dropdown-submenu">
+                                                            <a class="dropdown-toggle" href="javascript:void(0)" id="navbarDropdownCategoriaInner{{ categoria.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                {{ categoria.titulo }}
+                                                            </a>
+                                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategoriaInner{{ categoria.id }}">
+                                                                {% for subcat in categoria.subcategorias.all %}
+                                                                    {% if subcat.publicado %}
+                                                                        <li class="nav-item">
+                                                                            <a class="dropdown-item" href="{% url 'blog:subcategoria' slug=subcat.slug %}">{{ subcat.titulo }}</a>
+                                                                        </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                                
+                                                                {% if categoria.ver_mas %}
                                                                     <li class="nav-item">
-                                                                        <a class="dropdown-item" href="{% url 'blog:subcategoria' slug=subcat.slug %}">{{ subcat.titulo }}</a>
+                                                                        <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
                                                                     </li>
                                                                 {% endif %}
-                                                            {% endfor %}
-                                                            <li class="nav-item">
-                                                                <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
+                                                            </ul>
+                                                        </li>
+                                                    {% endif %}
                                                 {% else %}
-                                                    <li class="nav-item">
-                                                        <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">{{ categoria.titulo }}</a>
-                                                    </li>
+                                                    {% if categoria.publicado %}
+                                                        <li class="nav-item">
+                                                            <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">{{ categoria.titulo }}</a>
+                                                        </li>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endif %}
                                         {% endfor %}
-                                        <li class="nav-item">
-                                            <a class="dropdown-item" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
-                                        </li>
+                                        {% if referencia.subblog.ver_mas %}
+                                            <li class="nav-item">
+                                                <a class="dropdown-item" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
+                                            </li>
+                                        {% endif %}
+
                                     </ul>
                                 </li>
                             {% endif %}

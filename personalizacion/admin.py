@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.core.files.storage import default_storage
 from gaudeix import settings
 from newsletter.models import Newsletter
-from modeltranslation.admin import TranslationAdmin
-
+from modeltranslation.admin import TranslationAdmin, TranslationStackedInline
+from multimedia_manager.models import Carrusel, ImagenCarrusel
 import os
 from django.conf import settings
 
@@ -70,9 +70,29 @@ class AutoPistaPersonalizacionAdminInLine(admin.StackedInline):
 
 
 
+class ImagenCarruselInline(TranslationStackedInline):  # O usa admin.StackedInline para un estilo diferente
+    model = ImagenCarrusel
+    extra = 1  # Número de formularios para imágenes nuevas
+    fields = ['imagen', 'descripcion', 'orden']
+    verbose_name = "Imatge del carrusel"
+    verbose_name_plural = "Imatges del carrusel"
 
-
-
+class CarruselAdmin(admin.ModelAdmin):
+    inlines = [ImagenCarruselInline]
+    fieldsets = [
+        (None, {
+            'fields': ['titulo', 'descripcion', 'tipo', 'activo'],
+            'description': (
+                "<p>Defineix un carrusel d'imatges per ser mostrat en diferents parts del lloc web.</p>"
+                "<p>Aquest model permet afegir diverses imatges i ordenar-les segons la necessitat.</p>"
+                "<p>Pots utilitzar aquestes imatges per destacar contingut, promocions, esdeveniments o qualsevol cosa que consideris important.</p>"
+                "<p>Recorda que l'ordre de les imatges es pot ajustar dins de la secció de 'Imatges del carrusel'.</p>"
+            ),
+        }),
+    ]
+    list_display = ('titulo', 'activo')
+    list_filter = ('activo',)
+    search_fields = ['titulo', 'descripcion']
 
 
 
@@ -124,12 +144,13 @@ class SuperDestacadoAdmin(admin.ModelAdmin):
                 'destacado',
             ],
             'description': (
-                "<p>Super destacta per l'inici.</p>"
-                "<p>Aquest model fa que puguis afegir una referència del model 'enllaç intern' cap personalització.</p>"
-                "<p>Pots afegir una descripció per l'encapçalament la secció del super destacat, si no poses res afegirà un 'No et pots perdre'.</p>"
-                "<p>S'ha de tenir en compte que s'ha pensat per poder destacar encara més els esdeveniments especials i els esdeveniments compra i descobreix.</p>"
-                "<p>El sistema agafarà en el cas dels esdeveniments especials la imatge del parallax que té assignat o la primera imatge de la seva galeria, en cas que no hi hagi imatges agafarà una per defecte.</p>"
-                "<p>El sistema agafarà en el cas dels esdeveniments de 'compra i descobreix' de la imatge principal en cas que no hi hagin vinculat les imatges, agafarà una imatge per defecte.</p>"
+                "<p>Super destacat per a l'inici.</p>"
+                "<p>Aquest model permet afegir una referència al model 'esdeveniment especial'.</p>"
+                "<p>Pots afegir una descripció per a l'encapçalament de la secció del super destacat.</p>"
+                "<p>Es considera especialment útil per a destacar encara més els esdeveniments especials i els esdeveniments de 'compra i descobreix - comerç local'.</p>"
+                "<p>En el cas d'esdeveniments especials, el sistema utilitzarà la imatge del parallax assignat o la primera imatge de la seva galeria. Si no hi ha imatges disponibles, es mostrarà una imatge per defecte.</p>"
+                "<p>Per als esdeveniments de 'compra i descobreix', el sistema utilitzarà la imatge principal. En absència d'imatges vinculades, es recorrerà a una imatge per defecte.</p>"
+                "<p><strong>Nota:</strong> Si s'incorpora un flyer (programa en format DIN A3), el sistema seleccionarà entre dues plantilles diferents basant-se en la presència d'aquest i el donarà prioritat.</p>"
             ),
         }),
     ]  
@@ -143,12 +164,16 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
         (None, {
             'fields': [
                 'favicon',
+                'carrusel_portada',
+                'carrusel_agenda',
                 'parallax_portada',
                 'parallax_agenda',
                 'super_destacado',
                 'video_portada',
                 'topbar',
                 'horario',
+                'dias_vista_agenda',
+                'enlace_agenda',
                 'hora_agenda_fin',
                 'analytics_script',
                 'meta_keywords',
@@ -171,7 +196,7 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
     inlines = [TrenPersonalizacionAdminInLine, BusPersonalizacionAdminInLine, AeropuertoPErsonalizacionAdminInLine, AutoPistaPersonalizacionAdminInLine]
     actions = [eliminar_archivos_ics,eliminar_archivos_html_newsletter]
 
-
+admin.site.register(Carrusel, CarruselAdmin)
 admin.site.register(Personalizacion, PersonalizacionAdmin)
 admin.site.register(AgendaParallax, AgendaParallaxAdmin)
 admin.site.register(SuperDestacado, SuperDestacadoAdmin)

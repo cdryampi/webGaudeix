@@ -210,6 +210,7 @@ class EventoEspecialAdmin(TranslationAdmin, admin.ModelAdmin):
                 'agendas',
                 'logo_especial',
                 'imagen_especial',
+                'flyer',
                 'tags',
                 'videos',
             ],

@@ -1,0 +1,123 @@
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+    <style>
+        #collage-agenda{
+            position: relative;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr); /* Aumentar a 12 columnas para más flexibilidad */
+            grid-template-rows: repeat(6, minmax(150px, auto)); /* Aumentar el número de filas y su altura mínima */
+            grid-gap: 15px;
+            width: 100%;
+
+            height: auto; /* Ajustar según sea necesario para adaptarse al contenido */
+          }
+          
+          .grid-item1 { grid-area: 1 / 1 / 3 / 5; }
+          .grid-item2 { grid-area: 1 / 5 / 3 / 8; }
+          .grid-item3 { grid-area: 1 / 8 / 4 / 13; }
+          .grid-item4 { grid-area: 3 / 1 / 6 / 5; }
+          .grid-item5 { grid-area: 3 / 5 / 5 / 9; }
+          .grid-item6 { grid-area: 5 / 5 / 7 / 10; }
+          .grid-item7 { grid-area: 4 / 9 / 6 / 13; }
+          .grid-item8 { grid-area: 6 / 1 / 8 / 4; } /* Nuevo */
+          .grid-item9 { grid-area: 6 / 4 / 8 / 7; } /* Nuevo */
+          .grid-item10 { grid-area: 6 / 7 / 8 / 10; } /* Nuevo */
+          
+
+          .grid-item {
+            background-size: cover;
+            background-position: center;
+            position: relative; /* Necesario para posicionar absolutamente la descripción dentro */
+            cursor: pointer; /* Opcional, para indicar al usuario que es interactuable */
+            display: flex; /* Asegura que el contenido se centre */
+            align-items: center; /* Centra verticalmente */
+            justify-content: center; /* Centra horizontalmente */
+            overflow: hidden; /* Asegura que el contenido no desborde */
+            border-radius: 0.5rem;
+            border: .3rem dashed {{header.color_fondo_header}};
+        }
+        
+        .image-description {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: {{header.color_fondo_header}}; /* Fondo semitransparente */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            transform: translateY(100%); /* Oculta inicialmente la descripción */
+            transition: transform 0.3s ease; /* Transición suave */
+            box-sizing: border-box;
+        }
+        
+        .grid-item:hover .image-description {
+            transform: translateY(0); /* Muestra la descripción al pasar el ratón */
+        }
+        .grid-item {
+            position: relative;
+            cursor: pointer; /* Indica al usuario que el elemento es clickeable */
+        }
+        
+        .grid-item a {
+            display: block;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .grid-item img {
+            opacity: 0; /* Hace la imagen totalmente transparente */
+        }
+        
+        @media screen and (max-width: 1024px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columnas, cada una ocupando el 50% */
+                grid-template-rows: auto; /* Las filas se ajustan basadas en el contenido */
+                grid-gap: 15px; /* Ajusta el espacio entre las imágenes según necesites */
+            }
+        
+            /* "Unset" a las propiedades específicas de grid-area para dispositivos más pequeños */
+            .grid-item {
+                grid-column: unset;
+                grid-row: unset;
+                background-size: cover; /* Asegura que la imagen cubra el área disponible */
+                background-position: center; /* Centra la imagen en su contenedor */
+                height: auto; /* Altura automática basada en el aspect ratio de la imagen */
+            }
+        }
+        
+    
+        /* Estilos para dispositivos más pequeños que tablets */
+        @media screen and (max-width: 767px) {
+            .grid {
+                display: none; /* Opcional: Oculta el collage y muestra otra disposición o carrusel */
+            }
+        }
+    </style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid mt-4 text-center bg-gray" id="collage-agenda">
+    <div class="grid">
+        {% for imagen in carrusel.imatges.all %}
+        <div class="grid-item grid-item{{forloop.counter}}" style="background-image: url('{{ imagen.imagen.url }}');">
+            <a href="{{ imagen.imagen.url }}" class="fancybox" data-fancybox="collage-agenda">
+                <img src="{{ imagen.imagen.url }}" data-caption="{% if imagen.descripcion %}{{imagen.descripcion}}{% else %}{{imagen.titulo}}{% endif %}" title="{{ imagen.descripcion }}" alt="{{ imagen.descripcion }}" class="img-fluid" style="opacity: 0; height: 100%; width: 100%;">
+            </a>
+            {% if imagen.descripcion %}
+            <div class="image-description">{{ imagen.descripcion }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="red-container">
+        {% include 'redes_sociales/redes_sociales.html' %}
+    </div>
+</div>
+{% endblock content %}

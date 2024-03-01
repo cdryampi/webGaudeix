@@ -89,6 +89,7 @@ class SubBlogAdmin(TranslationAdmin, admin.ModelAdmin):
                 'titulo',
                 'contenido',
                 'publicado',
+                'ver_mas',
                 'metatitulo',
                 'metadescripcion',
                 'tags'

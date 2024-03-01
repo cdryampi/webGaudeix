@@ -334,8 +334,13 @@ class PDFView(View):
     def get(self, request):
         lang = get_language_from_request(request)
         fecha_actual = datetime.now()
-        fecha_siguiente = fecha_actual + timedelta(days=30)
-
+        personalizacion = Personalizacion.objects.filter().first()
+        dias_vista = 10
+        
+        if personalizacion:
+            dias_vista = personalizacion.dias_vista_agenda if personalizacion else 10
+        
+        fecha_siguiente = fecha_actual + timedelta(days=dias_vista)
         emoji_pattern = re.compile("["
                            u"\U0001F600-\U0001F64F"  # emoticonos
                            u"\U0001F300-\U0001F5FF"  # símbolos y pictogramas
@@ -363,7 +368,7 @@ class PDFView(View):
 
         # Obtener todas las agendas ordenadas por fecha
         agendas = VariationAgenda.objects.filter(
-            Q(fecha__gte=datetime.now().date(), fecha__lte=datetime.now().date() + timedelta(days=30), agenda__publicado=True)
+            Q(fecha__gte=datetime.now().date(), fecha__lte=datetime.now().date() + timedelta(days=dias_vista), agenda__publicado=True)
         ).order_by('fecha')
 
         mes_actual = fecha_actual.month

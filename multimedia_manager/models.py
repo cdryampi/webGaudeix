@@ -13,7 +13,7 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill, ResizeToFit
 from imagekit.models import ImageSpecField
 from .utils import validar_tamanio_archivo, delete_file
-from personalizacion.utils import get_parallax_image_path
+from personalizacion.utils import get_parallax_image_path, get_carrousel_image_path
 
 
 
@@ -267,3 +267,91 @@ class Audio(BaseModel):
     class Meta:
        verbose_name = 'Àudio'
        verbose_name_plural = 'Àudios'
+
+
+class Carrusel(models.Model):
+    """
+        Modelo que representa a un carrusel
+    """
+    TIPO_OPCIONES = (
+    ('carrusel', 'Carrusel'),
+    ('collage', 'Collage'),
+    )
+    titulo = models.CharField(
+        max_length=100,
+        verbose_name="Títol del Carrusel intern"
+    )
+    descripcion = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Descripció intern"
+    )
+    activo = models.BooleanField(
+        default=True,
+        verbose_name="Actiu"
+    )
+    tipo = models.CharField(
+    max_length=8,
+    choices=TIPO_OPCIONES,
+    default='carrusel',
+    verbose_name="Tipus de visualització"
+    )
+
+    def __str__(self):
+        return self.titulo
+
+    class Meta:
+        verbose_name = 'Carrusel'
+        verbose_name_plural = 'Carrusels'
+
+class ImagenCarrusel(models.Model):
+    carrusel = models.ForeignKey(
+        Carrusel,
+        related_name='imatges',
+        verbose_name="Carrusel",
+        on_delete=models.CASCADE
+    )
+    imagen = models.ImageField(
+        upload_to=get_carrousel_image_path,
+        validators=[validar_tamanio_archivo],
+        verbose_name="Imatge"
+    )
+    small_thumbnail = ImageSpecField(
+        source='imagen',
+        processors=[ResizeToFill(350, 350)],
+        format='JPEG',
+        options={'quality': 70}
+    )
+
+    medium_thumbnail = ImageSpecField(
+        source='imagen',
+        processors=[ResizeToFit(800, 800)],
+        format='JPEG',
+        options={'quality': 70}
+    )
+
+    large_thumbnail = ImageSpecField(
+        source='imagen',
+        processors=[ResizeToFit(1600, 1600)],
+        format='JPEG',
+        options={'quality': 70}
+    )
+    descripcion = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Caption",
+        help_text= "Descripció per l'imatge que sortirà a la web."
+    )
+    orden = models.PositiveIntegerField(
+        default=0,
+        help_text="Defineix l'ordre de la imatge en el carrusel",
+        verbose_name="Ordre"
+    )
+
+    def __str__(self):
+        return f"Imatge {self.id} del {self.carrusel.titulo}"
+
+    class Meta:
+        ordering = ['orden']
+        verbose_name = 'Imatge del Carrusel'
+        verbose_name_plural = 'Imatges del Carrusel'
