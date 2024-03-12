@@ -31,6 +31,7 @@
 
 {% block extra_css %}
 <style>
+
     .categoria-titulo {
         font-size: 24px;
         font-weight: bold;
@@ -75,95 +76,44 @@
         width: 100%;
         object-fit: cover;
     }
-
-    .visita-guiada-card {
-        margin-bottom: 20px;
-        position: relative;
+    .carousel-control-prev, .carousel-control-next {
+        width: 5%;
+        opacity: 0.6;
     }
 
-    .visita-guiada-card .tipo-visita {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 5px 10px;
-        margin: 0;
-        color: #fff;
-        font-weight: bold;
-        background-color: #17a2b8;
+    .carousel-control-prev:hover, .carousel-control-next:hover {
+        opacity: 1;
+    }
+
+    .img-cat-banner, .visita-guiada-card img {
+        max-height: 50vh;
         width: 100%;
+        object-fit: cover;
     }
 
-    .visita-guiada-card.flex-row .tipo-visita {
-        background-color: #28a745;
-    }
-
-    .visita-guiada-card .tipo-visita i {
-        margin-right: 5px;
-    }
-
-    .visita-guiada-card .card-body {
-        padding: 20px;
-    }
-
-    .hashtag {
-        font-size: 2.5rem;
-        color: #17a2b8;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    .visita-guiada-card {
-        margin-bottom: 20px;
-        position: relative;
-    }
-
-    .visita-guiada-card .tipo-visita {
-        padding: 5px 10px;
-        margin-bottom: 10px;
-        color: #fff;
-        font-weight: bold;
-    }
-
-    .visita-guiada-card .tipo-visita-agenda {
-        background-color: #17a2b8;
-    }
-
-    .visita-guiada-card .tipo-visita-guiada {
-        background-color: #28a745;
-    }
-
-    .visita-guiada-card .tipo-visita-otro {
-        background-color: #6c757d;
-    }
-    .duracion-visita {
-        padding-left: 10px; /* Ajusta el valor según tus necesidades */
-    }
-    .visita-guiada-link {
-        color: #17a2b8;
-        opacity: 0.7;
-        transition: color 0.3s;
+    .adults {
+        background-color: #add8e6; /* Color para albergs */
     }
     
-    .visita-guiada-link:focus,
-    .visita-guiada-link:hover {
-        color: #17a2b8;
-        opacity: 1;
-        text-decoration: underline;
+    .nens {
+        background-color: #90ee90; /* Color para allotjaments turístics */
     }
-    #categoria-carrusel-visites-guiades {
-        height: 50vh;
+    .otro {
+        background-color: #f0e68c; /* Color para hoteles */
     }
     @media (max-width: 768px) {
         .hashtag {
-            font-size: 1.5rem;
+            font-size: 20px;
             text-align: center;
         }
-        #categoria-carrusel-visites-guiades {
+
+        #categoria-carrusel-visites-guiades, .img-cat-banner, .visita-guiada-card img {
             height: 100%;
         }
     }
 </style>
 {% endblock extra_css %}
+
 
 {% block media %}
     {% include 'blog/categorias/carrusel_categorias.html' %}
@@ -174,7 +124,7 @@
 
 
     <div class="container pt-5">
-        <h1>{% blocktrans %}Explora Cabrera de Mar: Descobreix els seus racons amb les nostres rutes temàtiques{% endblocktrans %}</h1>
+        <h1>{{visita.titulo}}</h1>
         <div class="row">
             <div class="col-12">
                 <p class="card-text">
@@ -187,68 +137,84 @@
 
         <div class="row">
             <div class="col-12 pb-3 pt-5">
-                <h2 class="titulo-destacat">{% blocktrans %}Descobreix les nostres increïbles visites guiades!{% endblocktrans %}</h2>
-              </div>              
+                <h2 class="titulo-destacat">{{ categoria.subtitulo }}</h2>
+            </div>              
             {% if categoria.tipo == 'visitas_guiadas' %}
-            {% for visita in visitas_guiadas %}
-            <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="card visita-guiada-card pt-3 col-12">
-                <div class="">
-                    <div class="tipo-visita {% if visita.publico_recomendado == 'nens' %}tipo-visita-agenda{% elif visita.publico_recomendado == 'adults' %}tipo-visita-guiada{% else %}tipo-visita-otro{% endif %}">
-                        {% if visita.publico_recomendado == 'nens' %}
-                        <i class="fas fa-child"></i>
-                        {% elif visita.publico_recomendado == 'adults' %}
-                        <i class="fas fa-user"></i>
-                        {% else %}
-                        <i class="fas fa-users"></i>
-                        {% endif %}
-                        {{ visita.get_publico_recomendado_display }}
-                        <span class="duracion-visita">
-                            <i class="fas fa-clock"></i>
-                            {{ visita.duracion|format_duration }}
-                        </span>
-                        
-                    </div>
 
-                    <div class="row p-3">
-                        {% if visita.postimagen.imagen %}
-                            {% with imagen=visita.postimagen.imagen %}
-                                <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
-                                    <img src="{{ imagen.archivo.url }}" alt="Imagen de la visita"
-                                        class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
-                                </div>
-                            {% endwith %}
-                        {% else %}
-                            {% if visita.postgaleriaimagen_set.exists %}
-                                {% with imagen=visita.postgaleriaimagen_set.first %}
-                                    {% if imagen %}
-                                        <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
-                                            <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
-                                                class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
-                                        </div>
-                                    {% endif %}
-                                {% endwith %}
+                {% for visita in visitas_guiadas %}
+                <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="related-activity-link my-1">
+                    <div class="card related-activity-card mb-3 h-100">
+                        <div class="tipo-visita {% if visita.publico_recomendado == 'nens' %}nens{% elif visita.publico_recomendado == 'adults' %}adults{% else %}otro{% endif %}" style="display: flex; align-items: center; flex-wrap: wrap; padding:1rem;">
+
+                            {% if visita.publico_recomendado == 'nens' %}
+                                <i class="fas fa-child" style="margin-right: 5px;"></i>
+                            {% elif visita.publico_recomendado == 'adults' %}
+                                <i class="fas fa-user" style="margin-right: 5px;"></i>
+                            {% else %}
+                                <i class="fas fa-users" style="margin-right: 5px;"></i>
                             {% endif %}
-                        {% endif %}
-                        <div class="col-lg-8 col-md-6 col-sm-12">
-                            <div class="card-body" style="padding: 20px;">
-                                <h2 class="card-title">{{ visita.titulo }}</h2>
-                                <div class="card-text">
-                                    {% autoescape on %}
-                                        {{ visita.descripcion |truncatewords_html:50 | safe }}
-                                    {% endautoescape %}
+                            {{ visita.get_publico_recomendado_display }}
+
+                            <span style="margin: 0 10px;">|</span>
+                            <span class="duracion-visita" style="margin-right: 5px;">
+                                <i class="fas fa-clock"></i>
+                                {{ visita.duracion|format_duration }}
+                            </span>
+
+                            {% if visita.fecha_inicio <= visita.fecha_fin %}
+                                <span style="margin: 0 10px;">|</span>
+                                <i class="fas fa-calendar-alt" style="margin-right: 5px;"></i>{{ visita.fecha_inicio|date:"d M, Y" }} - {{ visita.fecha_fin|date:"d M, Y" }}
+                            {% endif %}
+                            {% if visita.mapa and visita.mapa.titulo %}
+                                <span style="margin-left: 10px;">|</span>
+                                <span style="margin-right: 5px;margin-left: 5px;">
+                                    <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i>
+                                    {{ visita.mapa.titulo }}
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="row p-3">
+                            {% if visita.postimagen.imagen %}
+                                {% with imagen=visita.postimagen.imagen %}
+                                    <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                        <img src="{{ imagen.archivo.url }}" alt="Imagen de la visita"
+                                            class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
+                                    </div>
+                                {% endwith %}
+                            {% else %}
+                                {% if visita.postgaleriaimagen_set.exists %}
+                                    {% with imagen=visita.postgaleriaimagen_set.first %}
+                                        {% if imagen %}
+                                            <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                                <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
+                                                    class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endif %}
+                            {% endif %}
+                            <div class="col-lg-8 col-md-6 col-sm-12">
+                                <div class="card-body" style="padding: 20px;">
+                                    <h2 class="card-title">{{ visita.titulo }}</h2>
+                                    <div class="card-text">
+                                        {% autoescape on %}
+                                            {{ visita.descripcion |truncatewords_html:50 | safe }}
+                                        {% endautoescape %}
+                                    </div>
+                                    <!-- Afegeix aquí altres detalls rellevants per a la carta -->
+                                    <p>
+                                        <span class="text-primary text-left mt-auto url-link">{% blocktrans %}Saber més{% endblocktrans %}<i class="fas fa-arrow-right"></i></span>
+                                    </p>
+                                        
+                                
                                 </div>
-                                <!-- Afegeix aquí altres detalls rellevants per a la carta -->
-                                <p>
-                                    <span class="text-primary text-left mt-auto url-link">{% blocktrans %}Saber més{% endblocktrans %}<i class="fas fa-arrow-right"></i></span>
-                                </p>
-                                    
-                            
                             </div>
                         </div>
                     </div>
-                </div>
-            </a>
-            {% endfor %}
+                </a>
+                {% endfor %}
             {% endif %}
         </div>
     </div>

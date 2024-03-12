@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
 
 
@@ -87,12 +88,12 @@
                   <table class="table table-bordered table-custom">
                     <thead>
                       <tr>
-                        <th colspan="2" class="table-header bg-dark text-white">Dades adicionals</th>
+                        <th colspan="2" class="table-header bg-dark text-white">{% blocktrans %}Dades adicionals{% endblocktrans %}</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td class="font-weight-bold"><i class="fas fa-map-marker-alt"></i> Ubicació:</td>
+                        <td class="font-weight-bold"><i class="fas fa-map-marker-alt"></i>{% blocktrans %}Ubicació{% endblocktrans %}:</td>
                         <td>
                           <p>
                             <a href="{% url 'map:mapa' slug=local_agenda.ubicacion.slug %}" class="font-weight-bold" title="{{ local_agenda.ubicacion.titulo }}">{{ local_agenda.ubicacion.titulo }}</a>{% if local_agenda.ubicacion.calle %} - <span>{{ local_agenda.ubicacion.calle }}</span>{% endif %},
@@ -137,11 +138,11 @@
                         {% endfor %}
                       {% endif %}
                       <tr>
-                        <td class="font-weight-bold"><label for="agenda-select-form"><i class="fas fa-calendar-alt"></i> Data:</label></td>
+                        <td class="font-weight-bold"><label for="agenda-select-form"><i class="fas fa-calendar-alt"></i>{% blocktrans %}Data{% endblocktrans %}:</label></td>
                         <td>
-                          <p class="small"><small>Fes click al selector per veure altres dades.</small></p>
+                          <p class="small"><small>{% blocktrans %}Fes click al selector per veure altres dades{% endblocktrans %}.</small></p>
                           <select name="event_date" class="form-control" id="agenda-select-form">
-                            <option value="" selected disabled>Selecciona una data de l'esdeveniment</option>
+                            <option value="" selected disabled>{% blocktrans %}Selecciona una data de l'esdeveniment{% endblocktrans %}</option>
                             {% for event in local_agenda.variationagenda_set.all %}
                               {% with event_counter=forloop.counter0 %}
                                 <option value="{{ event_counter }}" data-slug="{{ local_agenda.slug }}" data-variation-pk="{{ event.id }}">
@@ -159,7 +160,7 @@
                           <i class="fas fa-file-pdf"></i>
                           <strong>PDF:</strong>
                           <a href="{{ local_agenda.postfichero.fichero.archivo.url }}" class="text-black" title="{{ local_agenda.postfichero.fichero.titulo }}" download>
-                            descarregar
+                            {% blocktrans %}descarregar{% endblocktrans %}
                           </a>
                         </td>
                       </tr>
@@ -170,7 +171,7 @@
             
             <div class="social-share-buttons">
               <div class="">
-                <p class="badge">Comparteix l'acte:</p>
+                <p class="badge">{% blocktrans %}Comparteix l'acte{% endblocktrans %}:</p>
               </div>
               <div>
                 <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
@@ -236,7 +237,7 @@
                       </a>
                   </div>
                   <div class="col-12">
-                      <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+                      <small class="text-center">{% blocktrans %}Fes clic a les imatges per veure la galeria completa{% endblocktrans %}.</small>
                   </div>
               </div>
             
@@ -249,7 +250,7 @@
                     </a>
                   </div>
                   <div class="col-12">
-                    <small class="text-center">Fes clic a les imatges per veure la galeria completa</small>
+                    <small class="text-center">{% blocktrans %}Fes clic a les imatges per veure la galeria completa{% endblocktrans %}.</small>
                   </div>
                 {% endif %}
               {% endwith %}
@@ -267,10 +268,10 @@
 {% if ics_slug_url and ics_variation_pk %}
   <!-- Dentro de tu archivo de plantilla HTML -->
   <div class="text-center p-5" style="background-color: {% if header.color_fondo_header %}{{ header.color_fondo_header }}{% else %}#4CAA66{% endif %};">
-    <p class="text-center lead">Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu.</p>
+    <p class="text-center lead">{% blocktrans %}Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu{% endblocktrans %}.</p>
     <div class="container text-center justify-content-center" id="propera_activitat">
       <button class="btn btn-outline-dark" id="descargarICS" role="button" data-slug="{{ ics_slug_url }}" data-variation-pk="{{ ics_variation_pk }}">
-        <i class="fas fa-download"></i> Generar els enllaços
+        <i class="fas fa-download"></i>{% blocktrans %}Generar els enllaços{% endblocktrans %}
       </button>
       {% comment %} <a href="{{ google_calendar_link }}" class="btn btn-outline-light p-3 m-2" target="_blank">
         <i class="fab fa-google"></i><span> Afegir a Google calendar</span>
@@ -286,9 +287,9 @@
 {% if entrades %}
             <div class="jumbotron jumbotron-fluid bg-light text-center mb-0">
               <div class="container">
-                <h4 class="display-4">Compra les teves entrades</h4>
-                <p class="lead">Tens la oportunitat de comprar les teves entrades per a aquest esdeveniment.</p>
-                <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" class="btn btn-outline-dark btn-lg" target="_blank">Comprar entrades</a>
+                <h4 class="display-4">{% blocktrans %}Compra les teves entrades{% endblocktrans %}</h4>
+                <p class="lead">{% blocktrans %}Tens la oportunitat de comprar les teves entrades per a aquest esdeveniment{% endblocktrans %}.</p>
+                <a href="{{link_tickets}}" class="btn btn-outline-dark btn-lg" target="_blank">{% blocktrans %}Comprar entrades{% endblocktrans %}</a>
               </div>
             </div>
 {% endif %}
@@ -299,7 +300,7 @@
         <div class="text-center  m-0 p-2 bg-light agenda-pdf-link">
             <a href="{% url 'agenda:calendario_pdf' %}" class="btn btn-outline-dark btn-lg">
                 <i class="fas fa-file-download"></i>
-                Descarrega tota l'agenda en PDF
+                {% blocktrans %}Descarrega tota l'agenda en PDF{% endblocktrans %}
             </a>
         </div>
     </div>

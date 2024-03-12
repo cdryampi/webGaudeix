@@ -1,11 +1,36 @@
 from .models import MapPoint
 from django.contrib import admin
-from blog.models import PostImagen, PostGaleriaImagen
-from multimedia_manager.models import Imagen
+from blog.models import PostImagen, PostGaleriaImagen, PostFichero
+from multimedia_manager.models import Imagen, Fichero
 from django.db.models import Q
 from .utils import export_map_points_csv
 from modeltranslation.admin import TranslationAdmin
 
+
+class PostFicheroInline(admin.TabularInline):
+    model = PostFichero
+    extra = 1
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'fichero':
+            agenda_id = None
+            if hasattr(request, 'resolver_match') and 'object_id' in request.resolver_match.kwargs:
+                agenda_id = request.resolver_match.kwargs['object_id']
+
+            kwargs['queryset'] = Fichero.objects.filter(
+                Q(postfichero__isnull=True) | Q(postfichero__post__id=agenda_id),
+                Q(eventofichero__isnull=True),
+                Q(pdfcollectionresoluciofichero__isnull =True),
+                Q(pdfcollectionjustificaciofichero__isnull=True),
+                Q(pdfcollectionconvocatoriafichero__isnull=True),
+                Q(pdfcollectiontotesfichero__isnull = True),
+                Q(pdfdiversidadfichero__isnull=True),
+                Q(compradescubrefichero__isnull=True),
+                Q(alerta__isnull=True)
+            )
+            kwargs['empty_label'] = 'Sin fichero asociado'
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class PostImagenInline(admin.TabularInline):
     model = PostImagen
@@ -82,10 +107,11 @@ class PostGaleriaImagenInline(admin.TabularInline):
 class MapPointAdmin(TranslationAdmin, admin.ModelAdmin):
 
 
-    inlines = [PostImagenInline, PostGaleriaImagenInline]
+    inlines = [PostImagenInline, PostGaleriaImagenInline, PostFicheroInline]
     list_display = ('titulo', 'latitud', 'longitud', 'icono')
     list_filter = ('icono',)
     search_fields = ('titulo', 'latitud', 'longitud')
+    filter_horizontal = ('tags',)
     autocomplete_fields = ['categoria']
     actions = [export_map_points_csv]
     
@@ -104,6 +130,7 @@ class MapPointAdmin(TranslationAdmin, admin.ModelAdmin):
                 'icono',
                 'calle',
                 'enlace_google_maps',
+                'tags'
             ],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'un Map Point.</strong></p>"

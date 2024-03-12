@@ -172,66 +172,68 @@
 {% block extra_script %}
 <script>
     {% if punt.mapa.latitud and punt.mapa.longitud %}
-        function truncateDescription(description, wordCount) {
-            // Convertir la descripción en un array de palabras
-            const words = description.split(' ');
-        
-            // Verificar si la descripción ya tiene menos de `wordCount` palabras
-            if (words.length <= wordCount) {
-            return description;
-            }
-        
-            // Obtener las primeras `wordCount` palabras y unirlas nuevamente en una cadena
-            const truncatedWords = words.slice(0, wordCount);
-            const truncatedDescription = truncatedWords.join(' ');
-        
-            // Agregar puntos suspensivos al final de la descripción truncada
-            const finalDescription = truncatedDescription + '...';
-        
-            return finalDescription;
+
+      let map;
+      const parser = new DOMParser();
+
+      function truncateDescription(description, wordCount) {
+          // Convertir la descripción en un array de palabras
+          const words = description.split(' ');
+      
+          // Verificar si la descripción ya tiene menos de `wordCount` palabras
+          if (words.length <= wordCount) {
+          return description;
+          }
+      
+          // Obtener las primeras `wordCount` palabras y unirlas nuevamente en una cadena
+          const truncatedWords = words.slice(0, wordCount);
+          const truncatedDescription = truncatedWords.join(' ');
+      
+          // Agregar puntos suspensivos al final de la descripción truncada
+          const finalDescription = truncatedDescription + '...';
+      
+          return finalDescription;
+      }
+
+      async function initMap() {
+
+        const mapContainer = document.getElementById('map');
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+          "marker",
+        );
+        const latitudInicio = parseFloat('{{ punt.mapa.latitud|stringformat:".6f" }}'.replace(',', '.'));
+        const longitudInicio = parseFloat('{{ punt.mapa.longitud|stringformat:".6f" }}'.replace(',', '.'));
+    
+        const map = new Map(mapContainer, {
+            center: { lat: latitudInicio, lng: longitudInicio },
+            zoom: 14,
+            mapTypeId: 'satellite',
+            mapId: "4504f8b37365c3d0"
+        });
+
+        let point = {
+          latitud: latitudInicio,
+          longitud: longitudInicio,
+          titulo: "{{ punt.mapa.titulo }}",
+          imagen: '{% if punt.mapa.postimagen.imagen.small_thumbnail.url %} {{ punt.mapa.postimagen.imagen.small_thumbnail.url|stringformat:"s"}}{% endif %}',
+          descripcion: truncateDescription(`{% autoescape on %}{{punt.mapa.descripcion|safe}}{% endautoescape %}`, 20),
+          url_externo: '{% if punt.mapa.enlace_google_maps %}{{ punt.mapa.enlace_google_maps }}{% endif %}',
         }
 
-        function initMap() {
-            const mapContainer = document.getElementById('map');
-            const latitudInicio = parseFloat('{{ punt.mapa.latitud|stringformat:".6f" }}'.replace(',', '.'));
-            const longitudInicio = parseFloat('{{ punt.mapa.longitud|stringformat:".6f" }}'.replace(',', '.'));
-        
-            const map = new google.maps.Map(mapContainer, {
-                center: { lat: latitudInicio, lng: longitudInicio },
-                zoom: 14
-            });
-            const marker = new google.maps.Marker({
-                position: { lat: latitudInicio, lng: longitudInicio },
-                map: map,
-                title: '{{ punt.mapa.titulo }}',
-                animation: google.maps.Animation.BOUNCE
-            });
-            let image = "";
-            let enlace_google_maps = '';
 
-            {% if punt.mapa %}
-              image = '{{ punt.mapa.postimagen.imagen.archivo.url }}';
-            {% endif %}
-            {% if punt.mapa.enlace_google_maps %}
-            enlace_google_maps = '{{ punt.mapa.enlace_google_maps }}'; 
-            {% endif %}
-            let description = truncateDescription(`{% autoescape on %}{{punt.mapa.descripcion|safe}}{% endautoescape %}`, 20);
-            const content = `
-                <div class="info-window">
-                    <h4 class="info-window-title text-center">{{map.titulo}}</h4>
-                    <p class="info-window-image"><img src="${image}" alt="{{punt.map.titulo}}" style="width: 100%; height: 150px; object-fit: cover;"></p>
-                    <p class="info-window-description">${description}</p>
-                    ${enlace_google_maps ? `<p class="info-window-link"><a href="{{ punt.mapa.enlace_google_maps }}" target="_blank" rel="noopener noreferrer" class="text-danger">{% blocktrans %}Veure més a Google Maps{% endblocktrans %}</a></p>` : ''}
-                </div>
-            `;
+        const marker = new AdvancedMarkerElement({
+            position: { lat: latitudInicio, lng: longitudInicio },
+            map: map,
+            title: '{{ punt.mapa.titulo }}',
+            content: buildContent(point)
+        });
 
-            const infoWindow = new google.maps.InfoWindow({
-                content: content
-            });
+        marker.addListener('click', (e) => {
+          toggleHighlight(marker, point);
+        });
 
-            marker.addListener('click', function() {
-                infoWindow.open(map, marker);
-            });
+
         }
         
         function loadGoogleMapsAPI(callback) {
@@ -243,6 +245,66 @@
         }
 
         loadGoogleMapsAPI('initMap');
+
+
+        function toggleHighlight(markerView, property) {
+          if (markerView.content.classList.contains("highlight")) {
+            markerView.content.classList.remove("highlight");
+            markerView.zIndex = null;
+          } else {
+            markerView.content.classList.add("highlight");
+            markerView.zIndex = 1;
+          }
+        }
+
+        function buildContent(property) {
+          // Crea el contenedor principal para el contenido del marcador.
+          const baseURL = `${window.location.protocol}//${window.location.host}`;
+        
+          const googleMapsIcon = '<i class="fas fa-map-marked-alt px-1" aria-hidden="true"></i>';
+          const internalLinkIcon = '<i class="fas fa-link px-1" aria-hidden="true"></i>';
+          
+          const content = document.createElement("div");
+          content.className = "property";
+        
+        
+          // Crea el contenido HTML dinámico.
+          content.innerHTML = `
+            <div class="icon">
+                <i class="fa-solid fa-thumbtack" aria-hidden="true" style="color: #69920C;"></i>
+            </div>
+            <div class="details">
+                <div class="address address text-center text-uppercase text-primary h6">${property.titulo}</div>
+                <div class="description">${property.descripcion}</div>
+                <div class="features">
+                    <div>
+                        <i class="fas fa-camera fa-lg mb-2" aria-hidden="true" title="image"></i>
+                        <span class="fa-sr-only">image</span>
+                        <img src="${property.imagen}" alt="${property.titulo}" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                        <div class="row justify-content-center">
+                          ${property.url_externo ? `<div class="info-window-link py-2">${googleMapsIcon}<a class="link-opacity-100" href="${property.url_externo}" 
+                          target="_blank" rel="noopener noreferrer">Google Maps</a></div>` : ''}
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+          `;
+          setTimeout(() => {
+            const links = content.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Previene la propagación del evento
+                    // Opcionalmente, maneja el clic aquí, por ejemplo, abriendo el enlace en una nueva pestaña
+                    // Esto podría no ser necesario si ya estás usando target="_blank" en tus enlaces
+                    console.log("click inside");
+                });
+            });
+        }, 0);
+          return content;
+        }
+
 
       {% endif %}
 

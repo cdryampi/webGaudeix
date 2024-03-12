@@ -181,6 +181,8 @@ class AgendaDetailView(BaseContextMixin, DetailView):
         current_object = self.get_object()
         now = timezone.now()
         show_ticket_section = False
+        personalizacion = None
+        personalizacion = Personalizacion.objects.filter().first()
         for variation in current_object.variationagenda_set.all():
             if now.date() <= variation.fecha:
                 show_ticket_section = True
@@ -235,8 +237,8 @@ class AgendaDetailView(BaseContextMixin, DetailView):
 
         context['parallax'] = parallax
         context['coleccion_destacados'] = all_events[:20]
-        context['entrades'] = show_ticket_section
-
+        context['link_tickets'] = show_ticket_section
+        context['parallax'] = personalizacion.enlace_agenda
         
         return context
 

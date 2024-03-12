@@ -1,5 +1,7 @@
 {% extends 'core/base.html' %}
+
 {% load static %}
+{% load i18n %}
 
 {% block meta_description %}
     {% if map.metadescripcion %}
@@ -97,17 +99,54 @@
             <div class="row">
                 <div class="col-12 justify-content-center">
                     <div class="pb-5">
-                        <h1 class="text-center p-3 h1">{{ map.titulo }}</h1>
+                        <h1 class="text-center p-3 h1">
+                            {% if map.icono == 'station' %}
+                                <i class="fas fa-train"></i>
+                            {% elif map.icono == 'restaurant' %}
+                                <i class="fas fa-utensils"></i>
+                            {% elif map.icono == 'library' %}
+                                <i class="fas fa-book"></i>
+                            {% elif map.icono == 'hotel' %}
+                                <i class="fas fa-bed"></i>
+                            {% elif map.icono == 'town-hall' %}
+                                <i class="fas fa-landmark"></i>
+                            {% elif map.icono == 'theater' %}
+                                <i class="fas fa-theater-masks"></i>
+                            {% elif map.icono == 'sport' %}
+                                <i class="fas fa-futbol"></i>
+                            {% elif map.icono == 'serveis' %}
+                                <i class="fas fa-concierge-bell"></i>
+                            {% elif map.icono == 'transports' %}
+                                <i class="fas fa-bus"></i>
+                            {% elif map.icono == 'aparcaments' %}
+                                <i class="fas fa-parking"></i>
+                            {% elif map.icono == 'platges' %}
+                                <i class="fas fa-umbrella-beach"></i>
+                            {% elif map.icono == 'informació' %}
+                                <i class="fas fa-info-circle"></i>
+                            {% elif map.icono == 'jaciments' %}
+                                <i class="fas fa-landmark"></i>
+                            {% elif map.icono == 'patrimoni' %}
+                                <i class="fas fa-archway"></i>
+                            {% elif map.icono == 'flora-i-fauna' %}
+                                <i class="fas fa-leaf"></i>
+                            {% endif %}
+                            {{ map.titulo }}
+                        </h1>
                     </div>
+                    
                 </div>
                 <div class="col-md-7">
                     <div class="container p-2">
                         <div class="row">
                             <div class="col-md-12">
-                                {% autoescape on %}
-                                    {{ map.descripcion | safe }}
-                                {% endautoescape %}
+                                <div>
+                                    {% autoescape on %}
+                                        {{ map.descripcion | safe }}
+                                    {% endautoescape %}
+                                </div>
                             </div>
+                            
                             <div class="col-md-12">
                                 {% with imagen=map.postimagen %}
                                     {% if imagen and imagen.imagen.archivo.url %}
@@ -122,7 +161,39 @@
                                     {% endif %}
                                 {% endwith %}
                             </div>
-
+                            <div class="col-md-12 py-2">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-custom">
+                                      <thead>
+                                        <tr>
+                                          <th colspan="2" class="table-header bg-dark text-white">{% blocktrans %}Dades adicionals{% endblocktrans %}</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td class="font-weight-bold"><i class="fas fa-map-marker-alt"></i>{% blocktrans %}Ubicació{% endblocktrans %}:</td>
+                                          <td>
+                                            <p>
+                                              <span class="font-weight-bold" title="{{ map.titulo }}">{{ map.titulo }}</span>{% if map.calle %} - <span>{{ map.calle }}</span>{% endif %},
+                                              <span>{{ map.codigo_postal }}</span> <span>{{ map.comunidad_autonoma }}</span>
+                                            </p>
+                                          </td>
+                                        </tr>
+                                        {% if map.postfichero and map.postfichero.fichero.archivo.url %}
+                                        <tr>
+                                          <td colspan="1" style="border-left:0px;">
+                                            <i class="fas fa-file-pdf"></i>
+                                            <strong>PDF:</strong>
+                                            <a href="{{ map.postfichero.fichero.archivo.url }}" class="text-black" title="{{ map.postfichero.fichero.titulo }}" download>
+                                              {% blocktrans %}descarregar{% endblocktrans %}
+                                            </a>
+                                          </td>
+                                        </tr>
+                                        {% endif %}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                            </div>
                             <div class="col-md-12 pt-3">
                                 <div class="social-share-buttons">
                                     <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
@@ -270,6 +341,10 @@
 
 {% block extra_script %}
 <script>
+
+    let map;
+    const parser = new DOMParser();
+
     {% if map.latitud and map.longitud %}
         function truncateDescription(description, wordCount) {
             // Convertir la descripción en un array de palabras
@@ -290,47 +365,119 @@
             return finalDescription;
         }
 
-        function initMap() {
+        async function initMap() {
+            
             const mapContainer = document.getElementById('map');
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+              "marker",
+            );
+
             const latitudInicio = parseFloat('{{ map.latitud|stringformat:".6f" }}'.replace(',', '.'));
             const longitudInicio = parseFloat('{{ map.longitud|stringformat:".6f" }}'.replace(',', '.'));
         
-            const map = new google.maps.Map(mapContainer, {
-                center: { lat: latitudInicio, lng: longitudInicio },
-                zoom: 14
-            });
-            const marker = new google.maps.Marker({
-                position: { lat: latitudInicio, lng: longitudInicio },
-                map: map,
-                title: '{{ map.titulo }}',
-                animation: google.maps.Animation.BOUNCE
-            });
             let image = '';
             let enlace_google_maps = '';
 
             {% if map.postimagen.imagen %}
-            image = '{{ map.postimagen.imagen.archivo.url }}';
+            image = '{{ map.postimagen.imagen.small_thumbnail.url }}';
             {% endif %}
             {% if map.enlace_google_maps %}
             enlace_google_maps = '{{ map.enlace_google_maps }}'; 
             {% endif %}
             let description = truncateDescription(`{% autoescape on %}{{map.descripcion|safe}}{% endautoescape %}`, 20);
-            const content = `
-                <div class="info-window">
-                    <h4 class="info-window-title text-center">{{map.titulo}}</h4>
-                    <p class="info-window-image"><img src=${image} alt="{{map.titulo}}" style="width: 100%; height: 150px; object-fit: cover;"></p>
-                    <p class="info-window-description">${description}</p>
-                    ${enlace_google_maps ? `<p class="info-window-link"><a href="{{ map.enlace_google_maps }}" target="_blank" rel="noopener noreferrer" class="text-danger">Veure més a Google Maps</a></p>` : ''}
-                </div>
-            `;
 
-            const infoWindow = new google.maps.InfoWindow({
-                content: content
+            const point ={
+                latitud: latitudInicio,
+                longitud: longitudInicio,
+                titulo: '{{ map.titulo }}',
+                imagen: image,
+                descripcion: description,
+                enlace_google_maps: enlace_google_maps
+
+            }
+
+
+            const map = new Map(mapContainer, {
+                center: { lat: latitudInicio, lng: longitudInicio },
+                zoom: 14,
+                mapTypeId: 'satellite',
+                mapId: "4504f8b37365c3d0"
+            });
+            const marker = new AdvancedMarkerElement({
+                position: { lat: latitudInicio, lng: longitudInicio },
+                map: map,
+                title: '{{ map.titulo }}',
+                content: buildContent(point)
             });
 
-            marker.addListener('click', function() {
-                infoWindow.open(map, marker);
+
+
+            marker.addListener('click', (e) => {
+                toggleHighlight(marker, point);
             });
+
+
+
+
+            function buildContent(property) {
+                // Crea el contenedor principal para el contenido del marcador.
+                const baseURL = `${window.location.protocol}//${window.location.host}`;
+              
+                const googleMapsIcon = '<i class="fas fa-map-marked-alt px-1" aria-hidden="true"></i>';
+                const internalLinkIcon = '<i class="fas fa-link px-1" aria-hidden="true"></i>';
+                
+                const content = document.createElement("div");
+                content.className = "property";
+              
+              
+                // Crea el contenido HTML dinámico.
+                content.innerHTML = `
+                  <div class="icon">
+                      <i class="fa-solid fa-thumbtack" aria-hidden="true" style="color: #69920C;"></i>
+                  </div>
+                  <div class="details">
+                      <div class="address address text-center text-uppercase text-primary h6">${property.titulo}</div>
+                      <div class="description">${property.descripcion}</div>
+                      <div class="features">
+                          <div>
+                              <i class="fas fa-camera fa-lg mb-2" aria-hidden="true" title="image"></i>
+                              <span class="fa-sr-only">image</span>
+                              <img src="${property.imagen}" alt="${property.titulo}" style="width: 100%; height: 200px; object-fit: cover;">
+                          </div>
+                              <div class="row justify-content-center">
+                                ${property.enlace_google_maps ? `<div class="info-window-link py-2">${googleMapsIcon}<a class="link-opacity-100" href="${property.enlace_google_maps}" 
+                                    target="_blank" rel="noopener noreferrer">Google Maps</a></div>` : ''}
+                              </div>
+                          </div>
+                          
+                      </div>
+                  </div>
+                `;
+                setTimeout(() => {
+                  const links = content.querySelectorAll('a');
+                  links.forEach(link => {
+                      link.addEventListener('click', (e) => {
+                          e.stopPropagation(); // Previene la propagación del evento
+                          // Opcionalmente, maneja el clic aquí, por ejemplo, abriendo el enlace en una nueva pestaña
+                          // Esto podría no ser necesario si ya estás usando target="_blank" en tus enlaces
+                          console.log("click inside");
+                      });
+                  });
+              }, 0);
+                return content;
+            }
+
+        }
+
+        function toggleHighlight(markerView, property) {
+            if (markerView.content.classList.contains("highlight")) {
+              markerView.content.classList.remove("highlight");
+              markerView.zIndex = null;
+            } else {
+              markerView.content.classList.add("highlight");
+              markerView.zIndex = 1;
+            }
         }
         
         function loadGoogleMapsAPI(callback) {

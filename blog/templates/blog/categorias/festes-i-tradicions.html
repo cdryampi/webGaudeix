@@ -150,43 +150,41 @@
                                             </p>
                                         </div>
                                 </article>
-                                
                             </a>
                         </div>
                     {% endfor %}
-
                     {% for post in posts %}
-                        <div class="col-12 col-md-6 col-lg-6 p-2">
-                            <a href="
-                            {% if post.agenda %} 
-                                {% url 'post:detalle_agenda' slug=post.agenda.slug %}
-                            {% elif post.visitaguiada %}
-                                {% url 'post:visites-guiades' slug=post.agenda.slug %}
-                            {% elif post.mappoint %}
-                                {% url 'map:mapa' slug=post.slug %}
-                            {% else %}
-                                {{ post.get_absolute_url }}
-                            {% endif %}"  class="related-activity-link my-1">
+                    <div class="col-12 col-md-6 col-lg-6 p-2">
+                        <a href="
+                        {% if post.agenda %} 
+                            {% url 'post:detalle_agenda' slug=post.agenda.slug %}
+                        {% elif post.visitaguiada %}
+                            {% url 'post:visites-guiades' slug=post.agenda.slug %}
+                        {% elif post.mappoint %}
+                            {% url 'map:mapa' slug=post.slug %}
+                        {% else %}
+                            {{ post.get_absolute_url }}
+                        {% endif %}"  class="related-activity-link my-1">
 
-                                <article class="card related-activity-card mb-3 h-100">
-                                    <div class="image-container">
-                                        {% if post.postimagen.imagen and post.postimagen.imagen.archivo.url %}
-                                            <img src="{{ post.postimagen.imagen.archivo.url }}" loading="lazy" class="img-fluid lazy-load-img" alt="{{ post.postimagen.imagen.titulo }}" title="{{ post.postimagen.imagen.titulo }}" style="height: 350px;">
-                                        {% endif %}
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
-                                        <p class="card-text related-activity-description">
-                                            {% autoescape on %}
-                                                {{ post.descripcion |striptags |truncatewords:30 | safe }}
-                                            {% endautoescape %}
-                                        </p>
-                                        <p class="text-primary text-left mt-auto url-link" style="color: {{festa.color}} !important;">{% blocktrans %}Saber més{% endblocktrans %}</p>
-                                    </div>
-                                </article>
-                            </a>
-                        <div class="col-12 col-md-6 col-lg-6 p-2">
-                    {% endfor %}
+                            <article class="card related-activity-card mb-3 h-100">
+                                <div class="image-container">
+                                    {% if post.postimagen.imagen and post.postimagen.imagen.archivo.url %}
+                                        <img src="{{ post.postimagen.imagen.archivo.url }}" loading="lazy" class="img-fluid lazy-load-img" alt="{{ post.postimagen.imagen.titulo }}" title="{{ post.postimagen.imagen.titulo }}" style="height: 350px;">
+                                    {% endif %}
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
+                                    <p class="card-text related-activity-description">
+                                        {% autoescape on %}
+                                            {{ post.descripcion |striptags |truncatewords:30 | safe }}
+                                        {% endautoescape %}
+                                    </p>
+                                    <p class="text-primary text-left mt-auto url-link" style="color: {{festa.color}} !important;">{% blocktrans %}Saber més{% endblocktrans %}</p>
+                                </div>
+                            </article>
+                        </a>
+                    </div>
+                {% endfor %}
                 </div>
             </div>
         </div>

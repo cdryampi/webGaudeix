@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('header', '0013_alter_referencia_subvencion'),
+        ('header', '0012_alter_referencia_subvencion'),
     ]
 
     operations = [

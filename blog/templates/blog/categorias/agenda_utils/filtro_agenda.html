@@ -47,6 +47,18 @@
 {% block extra_script %}
 <script>
   // Obtén los elementos HTML necesarios
+  const obtenerValorCookie = (nombre) => {
+    let nombreCookie = `${nombre}=`;
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nombreCookie) === 0) return c.substring(nombreCookie.length, c.length);
+    }
+    return "";
+  };
+
+  let currentLanguage = obtenerValorCookie('django_language');
+
   const tipoEventoButtons = document.querySelectorAll('.tipo-evento-buttons button');
   const tipoEventoInput = document.getElementById('tipo_evento');
   const filtroForm = document.getElementById('filtro-agenda-form');
@@ -358,7 +370,7 @@
     <div class="calendar">
       <div class="calendar-header">
         <button class="btn btn-link" onclick="mostrarCalendario(${prevYear}, ${prevMonth})"><i class="fas fa-chevron-left"></i></button>
-        <h4>${firstDay.toLocaleString('ca-ES', { month: 'long', year: 'numeric' })}</h4>
+        <h4>${firstDay.toLocaleString(currentLanguage, { month: 'long', year: 'numeric' })}</h4>
         <button class="btn btn-link" onclick="mostrarCalendario(${nextYear}, ${nextMonth})"><i class="fas fa-chevron-right"></i></button>
       </div>
       <div class="w-100 d-block"></div>

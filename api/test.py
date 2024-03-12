@@ -33,3 +33,16 @@ class SubscriptorModelTest(TestCase):
 
         # Asegúrate de que el método __str__ funcione correctamente
         self.assertEqual(str(subscriptor), 'John Doe')
+
+class TeenvioViewTest(TestCase):
+    def test_sql_injection_attempt(self):
+        # Supongamos que existe una URL llamada 'newsletter_subscribe' para simplificar
+        url = reverse('api:newsletter')
+        malicious_payload = {'email': "'; DROP TABLE users; --"}
+        response = self.client.post(url, data=malicious_payload)
+        
+        # Aquí podrías verificar que la tabla no ha sido eliminada, pero dado que estás usando Django ORM,
+        # este tipo de comandos inyectados no deberían tener efecto.
+        # Además, puedes verificar que la respuesta no indica una ejecución exitosa de SQL malicioso.
+        self.assertNotEqual(response.status_code, 200)  # Este código depende de cómo gestiones los errores.
+        # Podrías buscar un mensaje específico de error o verificar que los usuarios o los datos siguen intactos.

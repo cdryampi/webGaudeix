@@ -358,6 +358,8 @@ class RutaAdmin(TranslationAdmin, admin.ModelAdmin):
                 'valoracion',
                 'tipologia',
                 'dificultad',
+                'duracion_dias',
+                'duracion_horas',
                 'punto_inicio',
                 'mapas_itinerario',
                 'playlist',

@@ -5,21 +5,28 @@
     {% if topbar %}
         {% include 'topbar/topbar.html' %}
     {% endif %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header.color_fondo_header }} !important;">
+    <nav class="navbar navbar-expand-xl navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header.color_fondo_header }} !important;">
         <div class="container-fluid">
-            <div class="row">
+            <div class="justify-content-center">
                 {% if evento_especial_activo.logo_especial %}
                     <a class="navbar-brand" href="{% url 'eventos_especiales:evento_especial' slug=evento_especial_activo.slug %}">
-                        <img src="{{ evento_especial_activo.logo_especial.url }}" alt="Logo" class="logo-img">
+                        <img src="{{ evento_especial_activo.logo_especial.url }}" alt="evento_especial_activo.titulo" class="logo-img">
                     </a>
                  {% endif %}
                 <a class="navbar-brand" href="{% url 'core:home' %}">
                     {% if header.logo %}
-                        <img src="{{ header.logo.url }}" alt="Logo" class="logo-img">
+                        <img src="{{ header.logo.url }}" alt="Cabrera de mar" class="logo-img">
                     {% else %}
                         <span class="logo-text">Gaudeix Cabrera de Mar</span>
                     {% endif %}
                 </a>
+                {% if header.logos_auxiliares.all %}
+                    {% for logo in header.logos_auxiliares.all %}
+                        <a class="navbar-brand" href="{{ logo.enlace }}" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ logo.imagen.url }}" alt="{{ logo.titulo }}" class="logo-img">
+                        </a>
+                    {% endfor %}
+                {% endif %}
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

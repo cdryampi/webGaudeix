@@ -109,7 +109,9 @@ class InternalLink(models.Model):
 
 
 class SuperDestacado(models.Model):
-
+    """
+        Modelo que representa a un super destacado
+    """
     titulo = models.CharField(
         max_length=100,
         help_text="Títol del super destacat.",
@@ -127,6 +129,14 @@ class SuperDestacado(models.Model):
         verbose_name="Destacat",
         help_text="Selecciona un enllaç intern per fer la vinculació"
     )
+    mostrar_titulo = models.BooleanField(
+        default=True, 
+        verbose_name="Mostrar títol"
+    )
+    mostrar_descripcion = models.BooleanField(
+        default=True, 
+        verbose_name="Mostrar descripció"
+    )
 
     def __str__(self):
         return f"Super Descat: {self.titulo} - {self.destacado}"
@@ -136,6 +146,7 @@ class SuperDestacado(models.Model):
         verbose_name_plural = "Super destacats"
 
 class AgendaParallax(models.Model):
+    
     """
         Modelo que representa la imagen de la agenda.
     """

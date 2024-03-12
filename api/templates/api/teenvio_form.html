@@ -88,7 +88,7 @@
       })
       .then(function(data) {
         if (data.success) {
-          updateAndShowModal('Subscripció exitosa');
+          updateAndShowModal('{% blocktrans %}Subscripció exitosa{% endblocktrans %}');
         } else {
           updateAndShowModal('Error en la petició');
         }

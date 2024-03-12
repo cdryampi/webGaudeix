@@ -20,7 +20,12 @@ from django.conf import settings
 
 import pdb
 
+
+
 class Header(SingletonModel):
+    """
+        Modelo que representa a un Encabezado superior
+    """
     logo = models.ImageField(
         upload_to='logo/'
     )
@@ -33,7 +38,8 @@ class Header(SingletonModel):
     color_entrada = ColorField(
         default='#FFFFFF'
     )
-    
+
+
     def __str__(self):
         return "Menú de navegación"
     
@@ -48,7 +54,8 @@ class Header(SingletonModel):
             evento_especial = None,
             subvencion = None,
             compra_y_descubre = None,
-            contacto= None
+            contacto= None,
+            punt_informacio = None,
         ).delete()
 
         super().save(*args, **kwargs)
@@ -79,6 +86,7 @@ class HeaderFooter(SingletonModel):
             evento_especial = None,
             contacto= None,
             subvencion = None,
+            punt_informacio = None,
             compra_y_descubre= None
 
         ).delete()
@@ -336,7 +344,7 @@ class Referencia(models.Model):
             self.punt_informacio = None
             self.compra_y_descubre = None
 
-        elif self.punt_informacio == 'punt_informacio':
+        elif self.tipo == 'punt_informacio':
 
             self.post = None
             self.categoria = None
@@ -347,7 +355,7 @@ class Referencia(models.Model):
             self.subvencion = None
             self.compra_y_descubre = None
 
-        elif self.compra_y_descubre == 'compra_y_descubre':
+        elif self.tipo == 'compra_y_descubre':
             self.post = None
             self.categoria = None
             self.subblog = None
@@ -371,3 +379,34 @@ class Referencia(models.Model):
         ordering = ['orden']
         verbose_name_plural = "Referència"
         verbose_name = "Referències"
+
+
+class LogoAuxiliar(models.Model):
+    """
+        Clase que representa a un logo auxiliar.
+    """
+    header = models.ForeignKey(
+        Header, 
+        related_name='logos_auxiliares', 
+        on_delete=models.CASCADE
+    )
+    imagen = models.ImageField(
+        upload_to='logo_auxiliar/'
+    )
+    titulo = models.CharField(
+        max_length=100, blank=True,
+        null=True,
+        help_text="Títol opcional per al logo."
+    )
+    enlace = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Enllaç opcional per al logo."
+    )
+    orden = models.PositiveIntegerField(default=0, verbose_name="Ordre")
+    
+    class Meta:
+        ordering = ['orden']
+
+    def __str__(self):
+        return self.titulo if self.titulo else "Logo Auxiliar"

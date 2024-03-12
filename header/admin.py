@@ -1,8 +1,20 @@
-from .models import Header, Referencia, EnlaceExterno, HeaderFooter
-from modeltranslation.admin import TranslationAdmin
+from .models import Header, Referencia, EnlaceExterno, HeaderFooter, LogoAuxiliar
+from modeltranslation.admin import TranslationAdmin, TranslationStackedInline
+from django.utils.translation import gettext_lazy as _
+
 
 from django.contrib import admin
 
+
+class LogoAuxiliarInline(TranslationStackedInline):
+    model = LogoAuxiliar
+    extra = 1
+    fieldsets = (
+        (None, {
+            'fields': ('imagen', 'titulo', 'enlace', 'orden'),
+            'description': _('Aquí pots gestionar els logos auxiliars. Afegeix un títol i un enllaç opcional per a cadascun.'),
+        }),
+    )
 
 class EnlaceExternoInline(admin.StackedInline):
     model = EnlaceExterno
@@ -29,7 +41,7 @@ class ReferenciaAdmin(admin.TabularInline):
 
 @admin.register(Header)
 class HeaderAdmin(admin.ModelAdmin):
-     inlines = [ReferenciaAdmin]
+     inlines = [ReferenciaAdmin, LogoAuxiliarInline]
      
      fieldsets = [
         (None, {

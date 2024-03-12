@@ -12,22 +12,21 @@
 
         <div id="map-container" class="" style="height: 600px; width: 100%;"></div>
         <div id="legend-container" class="map-legend">
-          <h4>{% blocktrans %}Leyenda{% endblocktrans %}</h4>
-      
+          <h4>{% blocktrans %}Llegenda{% endblocktrans %}</h4>
           <div class="legend-item">
-            <div class="legend-color bg-primary"></div>
+            <i class="fas fa-umbrella-beach legend-icon px-1"></i>
             <span class="legend-label">{% blocktrans %}Platges{% endblocktrans %}</span>
           </div>
           <div class="legend-item">
-            <div class="legend-color bg-info"></div>
+            <i class="fas fa-info-circle legend-icon px-1"></i>
             <span class="legend-label">{% blocktrans %}Punt d'informació{% endblocktrans %}</span>
           </div>
           <div class="legend-item">
-            <div class="legend-color bg-warning"></div>
+            <i class="fas fa-archway legend-icon px-1"></i>
             <span class="legend-label">{% blocktrans %}Jaciments arqueològics{% endblocktrans %}</span>
           </div>
           <div class="legend-item">
-            <div class="legend-color bg-secondary"></div>
+            <i class="fas fa-landmark legend-icon px-1"></i>
             <span class="legend-label">{% blocktrans %}Patrimoni cultural{% endblocktrans %}</span>
           </div>
         </div>
@@ -42,9 +41,20 @@
         <div class="card">
           <div class="card-header bg-light" data-toggle="collapse" data-target="#collapse_{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse_{{ forloop.counter }}" id="heading_{{ forloop.counter }}" style="border: 1px solid {% if group.grouper == 'platges' %}#007BFF{% elif group.grouper == 'informació' %}#17A2B8{% elif group.grouper == 'jaciments' %}#FFC107{% elif group.grouper == 'patrimoni' %}#6C757D{% else %}#000000{% endif %};">
             <h5 class="mb-0 d-flex align-items-center">
-              <h5 class="btn btn-link text-white">
+              {% if group.grouper == 'platges' %}
+              <i class="fas fa-umbrella-beach legend-icon px-1"></i>
+              {% elif group.grouper == 'informació' %}
+              <i class="fas fa-info-circle legend-icon px-1"></i>
+              {% elif group.grouper == 'jaciments' %}
+              <i class="fas fa-archway legend-icon px-1"></i>
+              {% elif group.grouper == 'patrimoni' %}
+              <i class="fas fa-landmark legend-icon px-1"></i>
+              {% else %}
+              <i class="fas fa-bookmark legend-icon px-1"></i>
+              {% endif %}
+              <span class="btn btn-link text-white">
                 <span class="mr-2 text-capitalize" style="color: {% if group.grouper == 'platges' %}#007BFF{% elif group.grouper == 'informació' %}#17A2B8{% elif group.grouper == 'jaciments' %}#FFC107{% elif group.grouper == 'patrimoni' %}#6C757D{% else %}#000000{% endif %};">{% trans group.grouper %}</span>
-              </h5>
+              </span>
               <span class="badge badge-secondary ml-auto">{{ group.list|length }}</span>
             </h5>
           </div>

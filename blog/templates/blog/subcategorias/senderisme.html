@@ -119,55 +119,47 @@
             <div class="container py-3">
                 {% comment %} Inicio del bloque de rutas asignadas senderismo {% endcomment %}
                 <div class="col-12  py-2">
-
                     <h3 class="py-2 h3">Rutes principals:</h3>
-                    <div class="row row-inline-cards justify-content-center">
-                        {% for post in rutes %}
-                            <div class="col-12 col-md-6 col-lg-6 p-2">
-                                <a href="{% url 'agenda:ruta' slug=post.slug %}" class="related-activity-link my-1">
-                                    <article class="card related-activity-card mb-3 h-100">
-                                                {% if post.postimagen.imagen %}
-                                                    <div class="image-container">
-                                                        <img src="{{ post.postimagen.imagen.archivo.url }}" class="img-fluid lazy-load-img" loading="lazy" style="height: 350px;" alt="{{ post.titulo }}">
-                                                    </div>
-                                                {% endif %}
-                                            <div class="card-body text-center">
-                                                <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
-                                                <p class="card-text related-activity-description">
-                                                    {% autoescape on %}
-                                                        {{ post.descripcion|striptags|truncatewords:30|safe }}
-                                                    {% endautoescape %}
-                                                </p>
-                                                <p>
-                                                    <span class="text-primary text-left mt-auto url-link">Saber més</span>
-                                                </p>
-                                            </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row row-inline-cards justify-content-center">
+                    {% for post in rutes %}
+                        <div class="col-12 col-md-6 col-lg-6 p-2">
+                            <a href="{% url 'agenda:ruta' slug=post.slug %}" class="related-activity-link my-1">
+                                <article class="card related-activity-card mb-3 h-100">
+                                            {% if post.postimagen.imagen %}
+                                                <div class="image-container">
+                                                    <img src="{{ post.postimagen.imagen.archivo.url }}" class="img-fluid lazy-load-img" loading="lazy" style="height: 350px;" alt="{{ post.titulo }}">
+                                                </div>
+                                            {% endif %}
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title related-activity-title">{{ post.titulo }}</h5>
+                                            <p class="card-text related-activity-description">
+                                                {% autoescape on %}
+                                                    {{ post.descripcion|striptags|truncatewords:30|safe }}
+                                                {% endautoescape %}
+                                            </p>
+                                            <p>
+                                                <span class="text-primary text-left mt-auto url-link">Saber més</span>
+                                            </p>
                                         </div>
-                                    </article>
-                                </a>
-                            </div>
-                        {% empty %}
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="card-text">No hi ha rutes disponibles.</p>
-                                    </div>
+                                </article>
+                            </a>
+                        </div>
+                    {% empty %}
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-text">No hi ha rutes disponibles.</p>
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
-
+                        </div>
+                    {% endfor %}
                 </div>
-                {% comment %} Fin del bloque de rutas asignadas senderismo {% endcomment %}
-
             </div>
         </div>
-            
-            
-            
-        </div>
     </div>
-
 </section>
 {% endblock %}
 

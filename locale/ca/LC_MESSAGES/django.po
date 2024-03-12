@@ -17,203 +17,207 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: .\agenda\admin.py:199
-msgid "Selecciona el tipus d'esdeveniment"
-msgstr ""
-
 #: .\agenda\models.py:120
-msgid "Tipus d'esdeveniment"
-msgstr ""
+
+msgid "Selecciona el tipus d'esdeveniment"
+msgstr "Selecciona el tipus d'esdeveniment"
 
 #: .\agenda\models.py:455
 msgid "Nens"
-msgstr ""
+msgstr "Nens"
+
 
 #: .\agenda\models.py:456
 msgid "Joves"
-msgstr ""
+msgstr "Joves"
+
 
 #: .\agenda\models.py:457
 msgid "Adults"
-msgstr ""
+msgstr "Adults"
+
 
 #: .\agenda\models.py:458
 msgid "Totes les edats"
-msgstr ""
+msgstr "Totes les edats"
 
 #: .\agenda\models.py:462 .\blog\models.py:209
 msgid "Sí"
-msgstr ""
+msgstr "Sí"
 
 #: .\agenda\models.py:463 .\blog\models.py:208
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: .\alerta\models.py:86
 msgid "La fecha de inicio debe ser anterior a la fecha de fin."
-msgstr ""
+msgstr "La data d'inici ha de ser anterior a la data de fi."
+
 
 #: .\map\models.py:54
 msgid "Municipi"
-msgstr ""
+msgstr "Municipi"
 
 #: .\map\models.py:61
 msgid "Comarca"
-msgstr ""
+msgstr "Comarca"
 
 #: .\map\models.py:68
 msgid "Comunitat Autònoma"
-msgstr ""
+msgstr "Comunitat Autònoma"
 
 #: .\map\models.py:75
 msgid "País"
-msgstr ""
+msgstr "País"
 
 #: .\map\models.py:82
 msgid "Codi postal"
-msgstr ""
+msgstr "Codi postal"
 
 #: .\map\models.py:88
 msgid "Carrer"
-msgstr ""
+msgstr "Carrer"
+
 
 # post template blog\templates\post\detalle_post.html
 msgid "Fes clic a les imatges per veure la galeria completa"
-msgstr ""
+msgstr "Fes clic a les imatges per veure la galeria completa"
+
 
 msgid "Agenda"
-msgstr ""
+msgstr "Agenda"
 
 msgid "No et perdis cap activitat, gaudeix Cabrera!"
-msgstr ""
+msgstr "No et perdis cap activitat, gaudeix Cabrera!"
 
 msgid "Tota l'agenda"
-msgstr ""
+msgstr "Tota l'agenda"
 
 # core base.html title
 msgid "Inici"
-msgstr ""
+msgstr "Inici"
 
 #categoria_especial.html
 
 msgid "Et proposem els millors plans a Cabrera de Mar!"
-msgstr ""
+msgstr "Et proposem els millors plans a Cabrera de Mar!"
 
 msgid "Escull amb qui vols venir i et presentem un munt d'opcions per gaudir al màxim."
-msgstr ""
+msgstr "Escull amb qui vols venir i et presentem un munt d'opcions per gaudir al màxim."
 
 
 #super_destacado.html
 
 msgid "No et pots perdre"
-msgstr ""
+msgstr "No et pots perdre"
 
 msgid "Saber més"
-msgstr ""
+msgstr "Saber més"
 
 #destacados.html
 msgid "Destacats"
-msgstr ""
+msgstr "Destacats"
 
 msgid "Cabrera de Mar és un municipi de la comarca del Maresme situat en una petita vall oberta al litoral, entre les localitats de Vilassar de Mar i Mataró. Combina muntanya i mar amb una gran riquesa arqueològica en el poblat iber, al peu del castell de Burriac i en diversos jaciments romans en el nucli urbà."
-msgstr ""
+msgstr "Cabrera de Mar és un municipi de la comarca del Maresme situat en una petita vall oberta al litoral, entre les localitats de Vilassar de Mar i Mataró. Combina muntanya i mar amb una gran riquesa arqueològica en el poblat iber, al peu del castell de Burriac i en diversos jaciments romans en el nucli urbà."
 
 msgid "Situat a uns 28 quilòmetres de Barcelona i a 104 metres sobre el nivell del mar, el centre del municipi es troba a 2.5 quilòmetres de distància del mar, en una petita vall entre dues muntanyes: Burriac i Montcabrer."
-msgstr ""
+msgstr "Situat a uns 28 quilòmetres de Barcelona i a 104 metres sobre el nivell del mar, el centre del municipi es troba a 2.5 quilòmetres de distància del mar, en una petita vall entre dues muntanyes: Burriac i Montcabrer."
 
 #categorias_seleccion.html
 
 msgid "Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac, la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera. Aquests són només alguns dels llocs més emblemàtics del nostre municipi, on cada racó us farà viure una experiència única i inoblidable."
-msgstr ""
+msgstr "Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac, la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera. Aquests són només alguns dels llocs més emblemàtics del nostre municipi, on cada racó us farà viure una experiència única i inoblidable."
 
 #com_llegar.html
 
 msgid "Com Arribar a Cabrera de Mar"
-msgstr ""
+msgstr "Com Arribar a Cabrera de Mar"
 
 msgid "Horaris de tren"
-msgstr ""
+msgstr "Horaris de tren"
 
 msgid "Busca la millor Ruta"
-msgstr ""
+msgstr "Busca la millor Ruta"
 
 msgid "Horaris de Bus"
-msgstr ""
+msgstr "Horaris de Bus"
 
 msgid "Aeroport del Prat"
-msgstr ""
+msgstr "Aeroport del Prat"
 
 msgid "Aeroport de Girona"
-msgstr ""
+msgstr "Aeroport de Girona"
 
 #cookies.html
 
 msgid "Per a més informació podeu consultar la nostra política de galetes"
-msgstr ""
+msgstr "Per a més informació podeu consultar la nostra política de galetes"
 
 msgid "aquí"
-msgstr ""
+msgstr "aquí"
 
 # footer.html
 
 msgid "diversitat e inclusió"
-msgstr ""
+msgstr "diversitat e inclusió"
 
 #map.html
 
 msgid "Descobreix els llocs icònics de Cabrera de Mar"
-msgstr ""
+msgstr "Descobreix els llocs icònics de Cabrera de Mar"
 
 msgid "informació"
 msgstr "informació"
 
 msgid "Platges"
-msgstr ""
+msgstr "Platges"
 
-msgid "Leyenda"
-msgstr ""
+msgid "Llegenda"
+msgstr "Llegenda"
+
 
 msgid "Punt d'informació"
-msgstr ""
+msgstr "Punt d'informació"
 
 msgid "Jaciments arqueològics"
-msgstr ""
+msgstr "Jaciments arqueològics"
 
 msgid "Patrimoni cultural"
-msgstr ""
+msgstr "Patrimoni cultural"
 
 msgid "Estació"
-msgstr ""
+msgstr "Estació"
 
 msgid "Restaurant"
-msgstr ""
+msgstr "Restaurant"
 
 msgid "Biblioteca"
-msgstr ""
+msgstr "Biblioteca"
 
 msgid "Hotel"
 msgstr "Hotel"
 
 msgid "Ajuntament"
-msgstr ""
+msgstr "Ajuntament"
 
 msgid "Centre Cultural"
-msgstr ""
+msgstr "Centre Cultural"
 
 msgid "Esports"
-msgstr ""
+msgstr "Esports"
 
 msgid "Serveis"
-msgstr ""
+msgstr "Serveis"
 
 msgid "Transports"
-msgstr ""
+msgstr "Transports"
 
 msgid "Aparcaments"
-msgstr ""
+msgstr "Aparcaments"
 
 msgid "Flora i fauna"
-msgstr ""
+msgstr "Flora i fauna"
 
 msgid "patrimoni"
 msgstr "patrimoni"
@@ -229,6 +233,9 @@ msgstr "Butlletí electrònic"
 
 msgid "Notificació"
 msgstr "Notificació"
+
+msgid "Subscripció exitosa"
+msgstr "Subscripció exitosa"
 
 msgid "tancar"
 msgstr "tancar"
@@ -737,5 +744,84 @@ msgstr "Ajust de Pressupost"
 msgid "Activitats principals"
 msgstr "Activitats principals"
 
+
 msgid "Detall de la mesura"
 msgstr "Detall de la mesura"
+
+msgid "Dades adicionals"
+msgstr "Dades adicionals"
+
+msgid "Fes click al selector per veure altres dades"
+msgstr "Fes click al selector per veure altres dades"
+
+msgid "Selecciona una data de l'esdeveniment"
+msgstr "Selecciona una data de l'esdeveniment"
+
+msgid "Download"
+msgstr "Descarregar"
+
+msgid "descarregar"
+msgstr "descarregar"
+
+msgid "Comparteix l'acte"
+msgstr "Comparteix l'acte"
+
+msgid "Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu"
+msgstr "Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu"
+
+msgid "Compra les teves entrades"
+msgstr "Compra les teves entrades"
+
+msgid "Comprar entrades"
+msgstr "Comprar entrades"
+
+msgid "Descarrega tota l'agenda en PDF"
+msgstr "Descarrega tota l'agenda en PDF"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Generar els enllaços"
+msgstr "Generar els enllaços"
+
+msgid "Gener"
+msgstr "Gener"
+
+msgid "Febrer"
+msgstr "Febrer"
+
+msgid "Març"
+msgstr "Març"
+
+msgid "Abril"
+msgstr "Abril"
+
+msgid "Maig"
+msgstr "Maig"
+
+msgid "Juny"
+msgstr "Juny"
+
+msgid "Juliol"
+msgstr "Juliol"
+
+msgid "Agost"
+msgstr "Agost"
+
+msgid "Setembre"
+msgstr "Setembre"
+
+msgid "Octubre"
+msgstr "Octubre"
+
+msgid "Novembre"
+msgstr "Novembre"
+
+msgid "Desembre"
+msgstr "Desembre"
+
+msgid "Preu"
+msgstr "Preu"
+
+msgid "Data de finalització"
+msgstr "Data de finalització"

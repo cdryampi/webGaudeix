@@ -1,5 +1,5 @@
 from modeltranslation.translator import translator, TranslationOptions, register
-from .models import Personalizacion, TrenPersonalizacion, AutoPistaPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion
+from .models import Personalizacion, TrenPersonalizacion, AutoPistaPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, SuperDestacado
 
 @register(Personalizacion)
 class PersonalizacionTranslationOptions(TranslationOptions):
@@ -7,16 +7,21 @@ class PersonalizacionTranslationOptions(TranslationOptions):
 
 @register(TrenPersonalizacion)
 class TrenPersonalizacionTranslationOptions(TranslationOptions):
-    fields = ('titulo', 'descripcion',)  # Lista de campos que deseas traducir
+    fields = ('titulo', 'descripcion',)
 
 @register(AutoPistaPersonalizacion)
 class AutoPistaPersonalizacionTranslationOptions(TranslationOptions):
-    fields = ('titulo', 'descripcion',)  # Lista de campos que deseas traducir
+    fields = ('titulo', 'descripcion',)
 
 @register(BusPersonalizacion)
 class BusPersonalizacionTranslationOptions(TranslationOptions):
-    fields = ('titulo', 'descripcion',)  # Lista de campos que deseas traducir
+    fields = ('titulo', 'descripcion',)
 
 @register(AeropuertoPersonalizacion)
 class AeropuertoPersonalizacionTranslationOptions(TranslationOptions):
-    fields = ('titulo', 'descripcion',)  # Lista de campos que deseas traducir
+    fields = ('titulo', 'descripcion',)
+
+
+@register(SuperDestacado)
+class SuperDestacadoTranslationOptions(TranslationOptions):
+    fields = ('titulo','descripcion',)

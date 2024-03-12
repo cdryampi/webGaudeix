@@ -51,19 +51,19 @@ eliminar_archivos_html_newsletter.short_description = "Eliminar fitxers HTML."
 
 
 
-class TrenPersonalizacionAdminInLine(admin.StackedInline):
+class TrenPersonalizacionAdminInLine(TranslationStackedInline):
     model = TrenPersonalizacion
     extra = 1
 
-class BusPersonalizacionAdminInLine(admin.StackedInline):
+class BusPersonalizacionAdminInLine(TranslationStackedInline):
     model = BusPersonalizacion
     extra = 1
 
-class AeropuertoPErsonalizacionAdminInLine(admin.StackedInline):
+class AeropuertoPErsonalizacionAdminInLine(TranslationStackedInline):
     model = AeropuertoPersonalizacion
     extra = 1
 
-class AutoPistaPersonalizacionAdminInLine(admin.StackedInline):
+class AutoPistaPersonalizacionAdminInLine(TranslationStackedInline):
     model = AutoPistaPersonalizacion
     extra = 1
 
@@ -134,7 +134,7 @@ class AgendaParallaxAdmin(admin.ModelAdmin):
     ]
 
 
-class SuperDestacadoAdmin(admin.ModelAdmin):
+class SuperDestacadoAdmin(TranslationAdmin, admin.ModelAdmin):
     model = SuperDestacado
     fieldsets = [
         (None, {
@@ -142,6 +142,8 @@ class SuperDestacadoAdmin(admin.ModelAdmin):
                 'titulo',
                 'descripcion',
                 'destacado',
+                'mostrar_titulo',
+                'mostrar_descripcion'
             ],
             'description': (
                 "<p>Super destacat per a l'inici.</p>"

@@ -19,7 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 #: .\agenda\admin.py:199
 msgid "Selecciona el tipus d'esdeveniment"
-msgstr ""
+msgstr "Select the type of event"
+
 
 #: .\agenda\models.py:120
 msgid "Tipus d'esdeveniment"
@@ -27,55 +28,66 @@ msgstr ""
 
 #: .\agenda\models.py:455
 msgid "Nens"
-msgstr ""
+msgstr "Children"
 
 #: .\agenda\models.py:456
 msgid "Joves"
-msgstr ""
+msgstr "Youth"
+
 
 #: .\agenda\models.py:457
 msgid "Adults"
-msgstr ""
+msgstr "Adults"
+
 
 #: .\agenda\models.py:458
 msgid "Totes les edats"
-msgstr ""
+msgstr "All ages"
+
 
 #: .\agenda\models.py:462 .\blog\models.py:209
 msgid "Sí"
-msgstr ""
+msgstr "Yes"
+
 
 #: .\agenda\models.py:463 .\blog\models.py:208
 msgid "No"
-msgstr ""
+msgstr "No"
+
 
 #: .\alerta\models.py:86
 msgid "La fecha de inicio debe ser anterior a la fecha de fin."
-msgstr ""
+msgstr "The start date must be earlier than the end date."
+
 
 #: .\map\models.py:54
 msgid "Municipi"
-msgstr ""
+msgstr "Municipality"
 
 #: .\map\models.py:61
 msgid "Comarca"
-msgstr ""
+msgstr "Region"
+
 
 #: .\map\models.py:68
 msgid "Comunitat Autònoma"
-msgstr ""
+msgstr "Autonomous Community"
+
 
 #: .\map\models.py:75
 msgid "País"
-msgstr ""
+msgstr "Country"
+
 
 #: .\map\models.py:82
 msgid "Codi postal"
-msgstr ""
+msgstr "Postal code"
+
 
 #: .\map\models.py:88
 msgid "Carrer"
-msgstr ""
+msgstr "Street"
+
 
 
 # post template blog\templates\post\detalle_post.html
@@ -176,8 +188,9 @@ msgstr "information"
 
 
 
-msgid "Leyenda"
+msgid "Llegenda"
 msgstr "Legend"
+
 
 msgid "Punt d'informació"
 msgstr "Information Point"
@@ -240,6 +253,9 @@ msgstr "Electronic newsletter"
 
 msgid "Notificació"
 msgstr "Notification"
+
+msgid "Subscripció exitosa"
+msgstr "Successful subscription"
 
 msgid "tancar"
 msgstr "close"
@@ -746,3 +762,79 @@ msgstr "Main Activities"
 
 msgid "Detall de la mesura"
 msgstr "Measure Detail"
+
+
+msgid "Dades adicionals"
+msgstr "Additional data"
+
+msgid "Fes click al selector per veure altres dades"
+msgstr "Click on the selector to see other data"
+
+msgid "Selecciona una data de l'esdeveniment"
+msgstr "Select an event date"
+
+msgid "descarregar"
+msgstr "download"
+
+msgid "Comparteix l'acte"
+msgstr "Share the event"
+
+msgid "Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu"
+msgstr "Do you want to add the next activity to your schedule? Click on the icon of your device."
+
+msgid "Compra les teves entrades"
+msgstr "Buy your tickets"
+
+msgid "Comprar entrades"
+msgstr "Buy tickets"
+
+msgid "Descarrega tota l'agenda en PDF"
+msgstr "Download the entire schedule in PDF"
+
+msgid "Data"
+msgstr "Date"
+
+msgid "Generar els enllaços"
+msgstr "Generate the links"
+
+msgid "Gener"
+msgstr "January"
+
+msgid "Febrer"
+msgstr "February"
+
+msgid "Març"
+msgstr "March"
+
+msgid "Abril"
+msgstr "April"
+
+msgid "Maig"
+msgstr "May"
+
+msgid "Juny"
+msgstr "June"
+
+msgid "Juliol"
+msgstr "July"
+
+msgid "Agost"
+msgstr "August"
+
+msgid "Setembre"
+msgstr "September"
+
+msgid "Octubre"
+msgstr "October"
+
+msgid "Novembre"
+msgstr "November"
+
+msgid "Desembre"
+msgstr "December"
+
+msgid "Preu"
+msgstr "Price"
+
+msgid "Data de finalització"
+msgstr "End date"

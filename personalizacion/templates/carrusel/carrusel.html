@@ -66,20 +66,50 @@
           color: #fff;
         }
           
+        .carousel-item {
+          position: relative;
+          width: 100%;
+        }
+
         .carousel-item img {
             animation: zoomIn 15s ease-in-out forwards;
             animation-fill-mode: forwards;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .carousel-caption-title{
           font-size: 3.5rem;
         }
         
+        .carousel-inner {
+          position: relative;
+          width: 100%;
+          padding-top: 56.25%; /* Esto mantiene un ratio de 16:9 */
+          overflow: hidden;
+        }
+        
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+      
+        
         @media (max-width: 768px) {
+
+          .carousel-item img {
+            animation: none;
+          }
           .carousel-caption{
             bottom: 35%;
           }
-
           .carousel-caption-title{
             font-size: 1.25rem;
           }
@@ -89,6 +119,7 @@
           .carousel-inner {
             height: 100% !important;
           }
+          
         }
 
       
@@ -99,7 +130,7 @@
 <div id="carrusel-home" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       {% for imagen in carrusel.imatges.all %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" style="padding-top: (9 / 16 * 100%);">
             <picture>
                 <source srcset="{{ imagen.large_thumbnail.url }}" media="(min-width: 1200px)">
                 <source srcset="{{ imagen.medium_thumbnail.url }}" media="(min-width: 768px)">

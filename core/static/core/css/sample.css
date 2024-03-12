@@ -62,6 +62,29 @@ header .dropdown-submenu .dropdown-menu {
   }
 }
 
+@media (max-width: 1366px) {
+  /* Muestra el botón de hamburguesa en pantallas pequeñas a medianas */
+  header .navbar-toggler {
+      display: block;
+  }
+
+  /* Ajusta los submenús para que se muestren de manera vertical en pantallas pequeñas a medianas */
+  header .dropdown-submenu .dropdown-menu {
+      position: static;
+      float: none;
+      width: 100%;
+      margin-left: 0;
+      left: 0;
+      background-color: #f8f9fa;
+  }
+
+  /* Estilos adicionales para el menú en modo móvil a tablet */
+  header .navbar-nav .dropdown-menu {
+      position: static;
+      float: none;
+  }
+}
+
 
 
 /* Custom */
@@ -539,7 +562,7 @@ header .dropdown-submenu .dropdown-menu {
     right: 0;
     display: flex;
     flex-flow: wrap;
-    width: auto;
+    width: auto !important;
     justify-content: space-around;
     padding: 20px;
     background: #000000;
@@ -1274,6 +1297,104 @@ table.table-custom tr.even {
     outline: none;
   }
   
+
+/*
+ * Property styles in unhighlighted state.
+*/
+/* Estilos básicos para el contenido del marcador. */
+.property {
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  color: #263238;
+  display: flex;
+  font-size: 14px;
+  gap: 15px;
+  height: 30px; /* Tamaño inicial del marcador */
+  justify-content: center;
+  padding: 4px;
+  position: relative;
+  transition: all 0.3s ease-out;
+  width: 30px; /* Tamaño inicial del marcador */
+  cursor: pointer; /* Hace que el cursor cambie a mano al pasar por encima */
+}
+
+.property::after {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid #FFFFFF;
+  content: "";
+  height: 0;
+  left: 50%;
+  position: absolute;
+  top: 100%;
+  transform: translate(-50%, -50%) scale(0); /* Inicia la transformación escalando a 0 para ocultarlo. */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Suaviza la transformación y la opacidad. */
+  width: 0;
+  z-index: 1;
+  opacity: 0; /* Inicia con opacidad 0 para ocultarlo completamente. */
+}
+
+.property.highlight::after {
+  transform: translate(-50%, -50%) scale(1); /* Escala a su tamaño normal para mostrarlo. */
+  opacity: 1; /* Ajusta la opacidad a 1 para hacerlo completamente visible. */
+}
+
+
+.property .icon {
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+}
+
+.property .icon i {
+  font-size: 20px; /* Tamaño del icono */
+}
+
+.property .details {
+  display: none; /* Ocultar detalles por defecto */
+}
+
+.property.highlight {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  flex-direction: column;
+  height: auto; /* Altura automática cuando se expande */
+  padding: 15px;
+  width: 250px; /* Ancho del detalle expandido */
+  z-index: 2; /* Asegurar que se muestre por encima de otros elementos */
+}
+
+.property.highlight::after {
+  display: block; /* Mostrar el triángulo cuando está destacado */
+}
+
+.property.highlight .details {
+  display: flex; /* Mostrar detalles cuando está destacado */
+  flex-direction: column;
+}
+.info-window-link {
+  z-index: 1000; /* Ajusta según sea necesario para asegurar visibilidad */
+  cursor: pointer; /* Asegura que se muestre el cursor de enlace */
+}
+.info-window-link a {
+  pointer-events: auto; /* Asegura que los eventos del mouse sean capturados */
+}
+
+
+.property img {
+  max-width: 100%; /* Asegurar que la imagen no desborde el contenedor */
+  height: auto;
+  border-radius: 8px; /* Opcional: bordes redondeados para la imagen */
+}
+/* Ajusta este estilo para cambiar el aspecto de los iconos según el tipo de propiedad. */
+.fa-landmark { color: #6C757D; } /* Ejemplo para patrimonio. */
+.fa-archway{ color: #FFC107; } /* Ejemplo para jacimientos. */
+.fa-umbrella-beach { color: #007BFF; } /* Ejemplo para playas. */
+.fa-info-circle { color: #17A2B8; } /* Ejemplo para información. */
+.fa-thumbtack { color: #69920C; }
+/* Añade más reglas según los tipos de icono que tengas. */
 
 
 /* fin mapa portada */

@@ -436,7 +436,7 @@ class Ruta(Post):
     )
 
     duracion = models.DurationField(
-        help_text="Durada de la ruta",
+        help_text="Durada de la ruta.PE 00:02:30(DD:HH:MM)",
         null=True,
         blank=True,
         verbose_name="Durada"
