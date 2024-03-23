@@ -183,7 +183,7 @@ class Parallax(models.Model):
     
     titulo = models.CharField(
         max_length=100,
-        verbose_name="Títola"
+        verbose_name="Títol"
     )
     descripcion_corta = models.CharField(
         max_length=200,

@@ -45,16 +45,6 @@ class Favicon(models.Model):
         return "Aquest Favicon el sistema el fa servir per a la imatge representativa del lloc web."
 
 
-
-
-
-
-
-
-
-
-
-
 class InternalLink(models.Model):
     TIPOS_REFERENCIA = (
         ('eventos_especiales', 'Esdeveniments especials'),
@@ -106,44 +96,6 @@ class InternalLink(models.Model):
         
         super().save(*args, **kwargs)
 
-
-
-class SuperDestacado(models.Model):
-    """
-        Modelo que representa a un super destacado
-    """
-    titulo = models.CharField(
-        max_length=100,
-        help_text="Títol del super destacat.",
-        verbose_name="Títol"
-    )
-    descripcion = models.TextField(
-        help_text="Títol que sortirà com a encapçalament al superdestacat.",
-        null=True,
-        blank=True,
-        verbose_name="Descripció"
-    )
-    destacado = models.OneToOneField(
-        InternalLink,
-        on_delete=models.CASCADE,
-        verbose_name="Destacat",
-        help_text="Selecciona un enllaç intern per fer la vinculació"
-    )
-    mostrar_titulo = models.BooleanField(
-        default=True, 
-        verbose_name="Mostrar títol"
-    )
-    mostrar_descripcion = models.BooleanField(
-        default=True, 
-        verbose_name="Mostrar descripció"
-    )
-
-    def __str__(self):
-        return f"Super Descat: {self.titulo} - {self.destacado}"
-
-    class Meta:
-        verbose_name = "Super destacat"
-        verbose_name_plural = "Super destacats"
 
 class AgendaParallax(models.Model):
     
@@ -248,14 +200,6 @@ class Personalizacion(models.Model):
         verbose_name="Topbar del portal",
         help_text= "Selecciona el topbar que vols per la portada"
     )
-    super_destacado = models.OneToOneField(
-        SuperDestacado,
-        on_delete=models.SET_NULL,
-        null= True,
-        blank= True,
-        verbose_name="super destacat",
-        help_text="Selecciona un superdestacat si existeix."
-    )
 
     dias_vista_agenda = models.IntegerField(
         default=10,
@@ -308,6 +252,56 @@ class Personalizacion(models.Model):
         raise ValueError("No se puede eliminar la instancia de Personalizacion.")
 
 
+
+class SuperDestacado(models.Model):
+    """
+        Modelo que representa a un super destacado
+    """
+    titulo = models.CharField(
+        max_length=100,
+        help_text="Títol del super destacat.",
+        verbose_name="Títol"
+    )
+    descripcion = models.TextField(
+        help_text="Títol que sortirà com a encapçalament al superdestacat.",
+        null=True,
+        blank=True,
+        verbose_name="Descripció"
+    )
+    destacado = models.OneToOneField(
+        InternalLink,
+        on_delete=models.CASCADE,
+        verbose_name="Destacat",
+        help_text="Selecciona un enllaç intern per fer la vinculació"
+    )
+    mostrar_titulo = models.BooleanField(
+        default=True, 
+        verbose_name="Mostrar títol"
+    )
+    mostrar_descripcion = models.BooleanField(
+        default=True, 
+        verbose_name="Mostrar descripció"
+    )
+    personalizacion = models.ForeignKey(
+        Personalizacion,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name="Personalització",
+    )
+
+    orden = models.PositiveIntegerField(
+        default=0,
+        help_text="Defineix l'ordre del destacat",
+        verbose_name="Ordre"
+    )
+    def __str__(self):
+        return f"Super Descat: {self.titulo} - {self.destacado}"
+
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "Super destacat"
+        verbose_name_plural = "Super destacats"
 
 
 

@@ -2,6 +2,8 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% load i18n %}
+{% load custom_filters %}
+
 {% block meta_description %}
   {% if ruta.metadescripcion %}
     <meta name="Description" content="{{ ruta.metadescripcion | safe | striptags }}">
@@ -190,7 +192,7 @@ button:hover {
                                     <tr>
                                         <td><i class="fas fa-clock" style="color: #3ebfab;"></i></td>
                                         <td><strong>{% blocktrans %}Durada{% endblocktrans %}:</strong></td>
-                                        <td>{{ ruta.duracion }}</td>
+                                        <td>{{ ruta.duracion|format_duration }} </td>
                                     </tr>
                                 {% endif %}
                                 <tr>
@@ -723,7 +725,7 @@ button:hover {
 
             const map = new Map(mapContainer, {
                 center: { lat: latitudInicio, lng: longitudInicio },
-                zoom: 13,
+                zoom: 15,
                 mapTypeId: 'satellite',
                 mapId: "4504f8b37365c3d0"
             });
@@ -752,7 +754,13 @@ button:hover {
                     content: buildContent(point)
                 });
 
-                marker.addListener('click', (e) => {
+                marker.addListener('click', ({ domEvent, latLng }) => {
+                    // Centra el mapa en la posición del marcador cuando se hace clic
+                    map.panTo(new google.maps.LatLng({ lat: latLng.lat(), lng: latLng.lng() }));
+
+                    // Ajusta la vista del mapa para mejorar la visibilidad del marcador
+                    // Este valor '100' es un ejemplo; ajusta según la necesidad de tu diseño/UI
+                    map.panBy(0, -180);
                     toggleHighlight(marker, point);
                 });
             });

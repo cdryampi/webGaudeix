@@ -297,47 +297,112 @@
             return finalDescription;
         }
 
-        function initMap() {
+       async function initMap() {
             const mapContainer = document.getElementById('map');
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+            "marker",
+            );
+
             const latitudInicio = parseFloat('{{ restaurante.latitud|stringformat:".6f" }}'.replace(',', '.'));
             const longitudInicio = parseFloat('{{ restaurante.longitud|stringformat:".6f" }}'.replace(',', '.'));
         
-            const map = new google.maps.Map(mapContainer, {
-                center: { lat: latitudInicio, lng: longitudInicio },
-                zoom: 14
-            });
-            const marker = new google.maps.Marker({
-                position: { lat: latitudInicio, lng: longitudInicio },
-                map: map,
-                title: '{{ restaurante.titulo }}',
-                animation: google.maps.Animation.BOUNCE
-            });
             let image = '';
             let enlace_google_maps = '';
 
             {% if restaurante.postimagen.imagen %}
-            image = '{{ restaurante.postimagen.imagen.archivo.url }}';
+            image = '{{ restaurante.postimagen.imagen.small_thumbnail.url }}';
             {% endif %}
-            {% if restaurante.enlace_google_maps %}
-            enlace_google_maps = '{{ restaurante.enlace_google_maps }}'; 
+            {% if restaurante.google_maps_link %}
+            enlace_google_maps = '{{ restaurante.google_maps_link }}'; 
             {% endif %}
             let description = truncateDescription(`{% autoescape on %}{{restaurante.descripcion|safe}}{% endautoescape %}`, 20);
-            const content = `
-                <div class="info-window">
-                    <h4 class="info-window-title text-center">{{restaurante.titulo}}</h4>
-                    <p class="info-window-image"><img src=${image} alt="{{restaurante.titulo}}" style="width: 100%; height: 150px; object-fit: cover;"></p>
-                    <p class="info-window-description">${description}</p>
-                    ${enlace_google_maps ? `<p class="info-window-link"><a href="{{ restaurante.enlace_google_maps }}" target="_blank" rel="noopener noreferrer" class="text-danger">Veure més a Google Maps</a></p>` : ''}
-                </div>
+
+            const point ={
+                latitud: latitudInicio,
+                longitud: longitudInicio,
+                titulo: '{{ restaurante.titulo }}',
+                imagen: image,
+                descripcion: description,
+                enlace_google_maps: enlace_google_maps
+            }
+
+            const map = new Map(mapContainer, {
+                center: { lat: latitudInicio, lng: longitudInicio },
+                zoom: 14,
+                mapTypeId: 'satellite',
+                mapId: "4504f8b37365c3d0"
+            });
+
+            const marker = new AdvancedMarkerElement({
+                position: { lat: latitudInicio, lng: longitudInicio },
+                map: map,
+                title: '{{ restaurante.titulo }}',
+                content: buildContent(point)
+            });
+
+            marker.addListener('click', ({ domEvent, latLng }) => {
+                map.panTo(new google.maps.LatLng({ lat: latLng.lat(), lng: latLng.lng() }));
+                map.panBy(0, -180);
+                toggleHighlight(marker, point);
+            });
+        }
+        function buildContent(property) {
+            // Crea el contenedor principal para el contenido del marcador.
+            const baseURL = `${window.location.protocol}//${window.location.host}`;
+          
+            const googleMapsIcon = '<i class="fas fa-map-marked-alt px-1" aria-hidden="true"></i>';
+            const internalLinkIcon = '<i class="fas fa-link px-1" aria-hidden="true"></i>';
+            
+            const content = document.createElement("div");
+            content.className = "property";
+          
+          
+            // Crea el contenido HTML dinámico.
+            content.innerHTML = `
+              <div class="icon">
+                  <i class="fa-solid fa-thumbtack" aria-hidden="true" style="color: #69920C;"></i>
+              </div>
+              <div class="details">
+                  <div class="address address text-center text-uppercase text-primary h6">${property.titulo}</div>
+                  <div class="description">${property.descripcion}</div>
+                  <div class="features">
+                      <div>
+                          <i class="fas fa-camera fa-lg mb-2" aria-hidden="true" title="image"></i>
+                          <span class="fa-sr-only">image</span>
+                          <img src="${property.imagen}" alt="${property.titulo}" style="width: 100%; height: 200px; object-fit: cover;">
+                      </div>
+                          <div class="row justify-content-center">
+                            ${property.enlace_google_maps ? `<div class="info-window-link py-2">${googleMapsIcon}<a class="link-opacity-100" href="${property.enlace_google_maps}" 
+                                target="_blank" rel="noopener noreferrer">Google Maps</a></div>` : ''}
+                          </div>
+                      </div>
+                      
+                  </div>
+              </div>
             `;
+            setTimeout(() => {
+              const links = content.querySelectorAll('a');
+              links.forEach(link => {
+                  link.addEventListener('click', (e) => {
+                      e.stopPropagation(); // Previene la propagación del evento
+                      // Opcionalmente, maneja el clic aquí, por ejemplo, abriendo el enlace en una nueva pestaña
+                      // Esto podría no ser necesario si ya estás usando target="_blank" en tus enlaces
+                      console.log("click inside");
+                  });
+              });
+          }, 0);
+            return content;
+        }
 
-            const infoWindow = new google.maps.InfoWindow({
-                content: content
-            });
-
-            marker.addListener('click', function() {
-                infoWindow.open(map, marker);
-            });
+        function toggleHighlight(markerView, property) {
+            if (markerView.content.classList.contains("highlight")) {
+            markerView.content.classList.remove("highlight");
+            markerView.zIndex = null;
+            } else {
+            markerView.content.classList.add("highlight");
+            markerView.zIndex = 1;
+            }
         }
         
         function loadGoogleMapsAPI(callback) {

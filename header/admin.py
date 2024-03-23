@@ -49,7 +49,8 @@ class HeaderAdmin(admin.ModelAdmin):
                 'logo',
                 'color_fondo_header',
                 'color_letra',
-                'color_entrada'
+                'color_entrada',
+                'color_top_bar_logos'
             ],
                'description': (
                     "<p><strong>Aquesta és la pàgina d'edició de la capçalera superior.</strong></p>"

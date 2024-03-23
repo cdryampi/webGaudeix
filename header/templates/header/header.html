@@ -2,9 +2,9 @@
 {% load i18n %}
 {% if header %}
 <div class="container-fluid p-0 header-container">
-    {% if topbar %}
-        {% include 'topbar/topbar.html' %}
-    {% endif %}
+    
+    {% include "header/top_header_aux.html" %}
+
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header.color_fondo_header }} !important;">
         <div class="container-fluid">
             <div class="justify-content-center">
@@ -20,13 +20,6 @@
                         <span class="logo-text">Gaudeix Cabrera de Mar</span>
                     {% endif %}
                 </a>
-                {% if header.logos_auxiliares.all %}
-                    {% for logo in header.logos_auxiliares.all %}
-                        <a class="navbar-brand" href="{{ logo.enlace }}" target="_blank" rel="noopener noreferrer">
-                            <img src="{{ logo.imagen.url }}" alt="{{ logo.titulo }}" class="logo-img">
-                        </a>
-                    {% endfor %}
-                {% endif %}
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -185,6 +178,9 @@
             </div>
         </div>
     </nav>
+    {% if topbar %}
+        {% include 'topbar/topbar.html' %}
+    {% endif %}
 </div>
 {% else %}
     {% include 'header/header_default.html' %}

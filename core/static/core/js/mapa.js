@@ -43,7 +43,16 @@ async function initMap() {
           content: buildContent(point),
         });
         // Agregar evento de clic al marcador para mostrar el InfoWindow
-        marker.addListener('click', (e) => {
+
+        marker.addListener('click', ({ domEvent, latLng }) => {
+          // Centra el mapa en la posición del marcador cuando se hace clic
+          map.panTo(new google.maps.LatLng({ lat: latLng.lat(), lng: latLng.lng() }));
+
+          // Ajusta la vista del mapa para mejorar la visibilidad del marcador
+          // Este valor '100' es un ejemplo; ajusta según la necesidad de tu diseño/UI
+          map.panBy(0, -180);
+
+          // Activa la lógica de resaltado para el marcador seleccionado
           toggleHighlight(marker, point);
         });
 

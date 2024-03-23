@@ -369,6 +369,7 @@ class EventoEspecial(BaseModel, MetadataModel):
     
     class Meta:
         verbose_name_plural = "Esdeveniments Especials"
+        ordering = ['-fecha_evento']
 
 
 class EventoEspecialGaleriaImagen(models.Model):

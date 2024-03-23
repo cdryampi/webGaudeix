@@ -229,7 +229,9 @@
             content: buildContent(point)
         });
 
-        marker.addListener('click', (e) => {
+        marker.addListener('click', ({ domEvent, latLng }) => {
+          map.panTo(new google.maps.LatLng({ lat: latLng.lat(), lng: latLng.lng() }));
+          map.panBy(0, -180);
           toggleHighlight(marker, point);
         });
 

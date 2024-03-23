@@ -220,6 +220,7 @@ class CompraDescubre(BaseModel, MetadataModel):
     class Meta:
         verbose_name = "Esdeveniment Especial 'Compra i descobreix'."
         verbose_name_plural = "Esdeveniments Especials 'Compra i descobreix'."
+        ordering = ['-fecha_inicio']
 
 
 

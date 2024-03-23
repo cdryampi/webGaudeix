@@ -178,8 +178,8 @@ msgstr "diversity and inclusion"
 
 #map.html
 
-msgid "Descobreix els llocs icònics de Cabrera de mar"
-msgstr "Discover the iconic places of Cabrera de mar"
+msgid "Descobreix els llocs icònics de Cabrera de Mar"
+msgstr "Discover the iconic places of Cabrera de Mar"
 
 msgid "informació"
 msgstr "information"

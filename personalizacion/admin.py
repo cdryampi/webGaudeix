@@ -134,8 +134,9 @@ class AgendaParallaxAdmin(admin.ModelAdmin):
     ]
 
 
-class SuperDestacadoAdmin(TranslationAdmin, admin.ModelAdmin):
+class SuperDestacadoAdmin(TranslationStackedInline):
     model = SuperDestacado
+    extra = 1
     fieldsets = [
         (None, {
             'fields': [
@@ -143,7 +144,9 @@ class SuperDestacadoAdmin(TranslationAdmin, admin.ModelAdmin):
                 'descripcion',
                 'destacado',
                 'mostrar_titulo',
-                'mostrar_descripcion'
+                'mostrar_descripcion',
+                'orden',
+                'personalizacion'
             ],
             'description': (
                 "<p>Super destacat per a l'inici.</p>"
@@ -170,7 +173,6 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
                 'carrusel_agenda',
                 'parallax_portada',
                 'parallax_agenda',
-                'super_destacado',
                 'video_portada',
                 'topbar',
                 'horario',
@@ -195,11 +197,10 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
         }),
     ]
 
-    inlines = [TrenPersonalizacionAdminInLine, BusPersonalizacionAdminInLine, AeropuertoPErsonalizacionAdminInLine, AutoPistaPersonalizacionAdminInLine]
+    inlines = [TrenPersonalizacionAdminInLine, BusPersonalizacionAdminInLine, AeropuertoPErsonalizacionAdminInLine, AutoPistaPersonalizacionAdminInLine, SuperDestacadoAdmin]
     actions = [eliminar_archivos_ics,eliminar_archivos_html_newsletter]
 
 admin.site.register(Carrusel, CarruselAdmin)
 admin.site.register(Personalizacion, PersonalizacionAdmin)
 admin.site.register(AgendaParallax, AgendaParallaxAdmin)
-admin.site.register(SuperDestacado, SuperDestacadoAdmin)
 admin.site.register(InternalLink, InternalLinkAdmin)

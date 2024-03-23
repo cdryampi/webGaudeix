@@ -1,8 +1,9 @@
 {% load static %}
 {% load i18n %}
-
-    {% if super_destacado.destacado.tipo == 'eventos_especiales' %}
-        
+    {% for super_destacado in super_destacados %}
+    
+        {% if super_destacado.destacado.tipo == 'eventos_especiales' %}
+            
         {% if super_destacado.destacado.evento_especial.flyer %}
             <section class="container my-3 bg-white">
                 <div class="col-12 my-3 py-2">
@@ -52,34 +53,36 @@
                 </a>
             </section>
         {% endif %}
-
-    {% elif super_destacado.destacado.tipo == 'compra_y_descubre' %}
-        <section class="container-fluid p-0 m-0 bg-white">
-            <a href="{% url 'compra_y_descubre:compra_y_descubre' slug=super_destacado.destacado.compra_y_descubre.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
-                {% if super_destacado.destacado.compra_y_descubre.compradescubreimagen and super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url %}
-                    background-image: url('{{ super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url }}');
-                {% else %}
-                    background-image: url('{% static 'core/img/banners/img-agenda.png' %}')
-                {% endif %}
-                background-repeat: no-repeat;
-                display: block;
-                height: 70vh;
-            ">
-                <div class="container-fluid p-0 m-0" style="background-color: rgba(0, 0, 0, 0.3); height: 100%;">
-                    <div class="d-flex justify-content-center align-items-center h-100">
-                        <div class="text-white text-center">
-                            {% if super_destacado.mostrar_titulo %}
-                                <h2 class="mb-3 h1 text-uppercase text-center font-weight-bold display-6 display-sm-5 display-md-4 display-lg-3 display-xl-2" style="color: {{super_destacado.destacado.evento_especial.color}};">{{ super_destacado.titulo }}</h2>
-                            {% endif %}
-                            {% if super_destacado.mostrar_descripcion %}
-                                <p class="text-center">{{ super_destacado.descripcion }}</p>
-                            {% endif %}
+        {% elif super_destacado.destacado.tipo == 'compra_y_descubre' %}
+            <section class="container-fluid p-0 m-0 bg-white">
+                <a href="{% url 'compra_y_descubre:compra_y_descubre' slug=super_destacado.destacado.compra_y_descubre.slug %}" class="text-center bg-image rounded-3 super_destacado_container_image_parallax" style="
+                    {% if super_destacado.destacado.compra_y_descubre.compradescubreimagen and super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url %}
+                        background-image: url('{{ super_destacado.destacado.compra_y_descubre.compradescubreimagen.imagen.archivo.url }}');
+                    {% else %}
+                        background-image: url('{% static 'core/img/banners/img-agenda.png' %}')
+                    {% endif %}
+                    background-repeat: no-repeat;
+                    display: block;
+                    height: 70vh;
+                ">
+                    <div class="container-fluid p-0 m-0" style="background-color: rgba(0, 0, 0, 0.3); height: 100%;">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="text-white text-center">
+                                {% if super_destacado.mostrar_titulo %}
+                                    <h2 class="mb-3 h1 text-uppercase text-center font-weight-bold display-6 display-sm-5 display-md-4 display-lg-3 display-xl-2" style="color: {{super_destacado.destacado.evento_especial.color}};">{{ super_destacado.titulo }}</h2>
+                                {% endif %}
+                                {% if super_destacado.mostrar_descripcion %}
+                                    <p class="text-center">{{ super_destacado.descripcion }}</p>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
-            
-            </a>
-        </section>
-    {% endif %}
+                
+                </a>
+            </section>
+        {% endif %}
+
+    {% endfor %}
+
 
 

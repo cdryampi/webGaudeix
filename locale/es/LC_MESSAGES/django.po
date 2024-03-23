@@ -177,8 +177,8 @@ msgid "diversitat e inclusió"
 msgstr "diversidad e inclusión"
 
 #map.html
-msgid "Descobreix els llocs icònics de Cabrera de mar"
-msgstr "Descubre los lugares icónicos de Cabrera de mar"
+msgid "Descobreix els llocs icònics de Cabrera de Mar"
+msgstr "Descubre los lugares icónicos de Cabrera de Mar"
 
 msgid "informació"
 msgstr "información"

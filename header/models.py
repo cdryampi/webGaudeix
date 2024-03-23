@@ -29,13 +29,20 @@ class Header(SingletonModel):
     logo = models.ImageField(
         upload_to='logo/'
     )
+
     color_fondo_header = ColorField(
         default='#0000'
     )
+
     color_letra = ColorField(
         default='#FFFFFF'
     )
+
     color_entrada = ColorField(
+        default='#FFFFFF'
+    )
+
+    color_top_bar_logos = ColorField(
         default='#FFFFFF'
     )
 

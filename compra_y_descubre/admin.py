@@ -10,7 +10,7 @@ from blog.models import Tag, Categoria
 from django.http import FileResponse
 import os
 from django.utils.safestring import mark_safe
-from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TranslationAdmin, TranslationStackedInline
 
 
 
@@ -45,7 +45,7 @@ class CompraDescubreFicheroInline(admin.TabularInline):
 
 
 
-class CompraDescubrePasosImagenInline(admin.TabularInline):
+class CompraDescubrePasosImagenInline(TranslationStackedInline):
     model = CompraDescubrePasosImagen
     extra = 1
 

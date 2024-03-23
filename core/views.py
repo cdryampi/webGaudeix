@@ -125,10 +125,10 @@ def home(request):
     coleccion_destacados = get_coleccion_destacados()
     evento = EventoEspecial.objects.filter(publicado=True).first()
 
-    super_destacado = None
+    super_destacados = None
     carrusel =  None
-    if personalizacion and personalizacion.super_destacado:
-        super_destacado = personalizacion.super_destacado
+    if personalizacion and personalizacion.superdestacado_set.all():
+        super_destacados = personalizacion.superdestacado_set.all()
     if personalizacion and personalizacion.carrusel_portada:
         carrusel = personalizacion.carrusel_portada
     # com arribar
@@ -192,7 +192,7 @@ def home(request):
             'topbar': topbar,
             'portada': portada,
             'redes_sociales': redes_sociales,
-            'super_destacado': super_destacado,
+            'super_destacados': super_destacados,
             'color_red_social': redes_color,
             'categorias_especiales': categorias_especiales,
             'footer': footer,
