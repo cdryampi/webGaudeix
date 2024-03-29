@@ -54,7 +54,3 @@ Para comenzar a usar Gaudeix CMS, sigue estos pasos:
    ```
 
 Visite `http://localhost:8000` en su navegador para ver el proyecto en acción.
-
-## Contribuir
-
-Gaudeix CMS es un proyecto de código abierto y agradecemos cualquier contribución. Si desea contribuir, por favor lea el archivo `CONTRIBUTING.md` para obtener más información sobre cómo hacerlo.
