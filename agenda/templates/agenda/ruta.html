@@ -389,9 +389,18 @@ button:hover {
                 </div>
             {% endfor %}
                 <div class="container-fluid py-3">
-                    <button class="btn btn-outline-dark" id="descargarPlaylist" role="button" playlist-slug="{{ playlist.pk }}">
-                        <i class="fas fa-download"></i>{% blocktrans %}descarregar playlist{% endblocktrans %}
-                    </button>
+                    <div class="p-3">
+                        <button class="btn btn-outline-dark" id="descargarPlaylist" role="button" playlist-slug="{{ playlist.pk }}">
+                            <i class="fas fa-download"></i> Descargar Playlist
+                        </button>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        <h4 class="alert-heading">{% blocktrans %}Necessites un reproductor?{% endblocktrans %}</h4>
+                        <p>{% blocktrans %}Per utilitzar correctament aquest arxiu .m3u, necessites tenir instal·lat un reproductor compatible com VLC.{% endblocktrans %}</p>
+                        <hr>
+                        <p class="mb-0">{% blocktrans %}Pots descarregar VLC des del seu{% endblocktrans %} <a href="https://www.videolan.org/vlc/" target="_blank" class="alert-link">{% blocktrans %}lloc oficial{% endblocktrans %}</a>. {% blocktrans %}La instal·lació és ràpida i fàcil.{% endblocktrans %}</p>
+                    </div>
+
                 </div>
             </div>
         </div>

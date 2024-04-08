@@ -9,9 +9,9 @@
                     {% if subblog.subblogimagen %}
                         <div class="img-container">
                             <picture>
-                                <source srcset="{{ subblog.subblogimagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
-                                <source srcset="{{ subblog.subblogimagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
-                                <source srcset="{{ subblog.subblogimagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
+                                <source srcset="{{ subblog.subblogimagen.imagen.small_thumbnail.url |urlencode }}" media="(min-width: 800px)">
+                                <source srcset="{{ subblog.subblogimagen.imagen.medium_thumbnail.url |urlencode }}" media="(min-width: 566px)">
+                                <source srcset="{{ subblog.subblogimagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 400px)">
                                 <img src="{{ subblog.subimagen.imagen.archivo.url }}" 
                                     data-src="{{ subblog.subblogimagen.imagen.large_thumbanil.url }}"
                                     alt="{{ subblog.titulo }}" 
@@ -19,16 +19,15 @@
                                     title="{{ subblog.subblogimagen.imagen.titulo }}"
                                     >
                             </picture>
-                            <img src="{{ subblog.subblogimagen.imagen.archivo.url }}" alt="{{ subblog.titulo }}" class="img-fluid">
                         </div>
                         {% else %}
                             {% if subblog.subbloggaleriaimagen_set.count > 0 %}
                                 {% for imagen in subblog.subbloggaleriaimagen_set.all|slice:":1" %}
                                     <div class="img-container">
                                             <picture>
-                                                <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(max-width: 575px)">
-                                                <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(max-width: 991px)">
-                                                <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 992px)">
+                                                <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(min-width: 800px)">
+                                                <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(min-width: 566px)">
+                                                <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 400px)">
                                                 <img src="{{ imagen.imagen.archivo.url }}" 
                                                     data-src="{{ imagen.image.large_thumbanil.url }}"
                                                     alt="{{ subblog.titulo }}" 
@@ -36,7 +35,6 @@
                                                     title="{{ imagen.imagen.titulo }}"
                                                     >
                                             </picture>
-                                            
                                     </div>
                                 {% endfor %}
                             {% endif %}

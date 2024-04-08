@@ -1,0 +1,1140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-06 18:39+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: .\agenda\admin.py:223
+msgid "Selecciona el tipus d'esdeveniment"
+msgstr "Sélectionnez le type d'événement"
+
+#: .\agenda\models.py:345
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:8
+msgid "Tipus d'esdeveniment"
+msgstr "Type d'événement"
+
+#: .\agenda\models.py:686
+msgid "Nens"
+msgstr "Enfants"
+
+#: .\agenda\models.py:687
+msgid "Joves"
+msgstr "Jeunes"
+
+#: .\agenda\models.py:688
+msgid "Adults"
+msgstr "Adultes"
+
+#: .\agenda\models.py:689
+msgid "Totes les edats"
+msgstr "Tous les âges"
+
+#: .\agenda\models.py:693 .\blog\models.py:226
+msgid "Sí"
+msgstr "Oui"
+
+#: .\agenda\models.py:694 .\blog\models.py:225
+msgid "No"
+msgstr "Non"
+
+#: .\agenda\templates\agenda\agenda.html:91
+#: .\map\templates\map\mapa-post.html:169
+msgid "Dades adicionals"
+msgstr "Données supplémentaires"
+
+#: .\agenda\templates\agenda\agenda.html:96
+#: .\agenda\templates\agenda\alojamiento.html:139
+#: .\agenda\templates\agenda\restaurante.html:144
+#: .\agenda\templates\agenda\visita_guiada.html:226
+#: .\map\templates\map\mapa-post.html:174
+msgid "Ubicació"
+msgstr "Emplacement"
+
+#: .\agenda\templates\agenda\agenda.html:141
+msgid "Data"
+msgstr "Date"
+
+#: .\agenda\templates\agenda\agenda.html:143
+msgid "Fes click al selector per veure altres dades"
+msgstr "Cliquez sur le sélecteur pour voir d'autres données"
+
+#: .\agenda\templates\agenda\agenda.html:145
+msgid "Selecciona una data de l'esdeveniment"
+msgstr "Sélectionnez une date pour l'événement"
+
+#: .\agenda\templates\agenda\agenda.html:163
+#: .\agenda\templates\agenda\visita_guiada.html:219
+#: .\map\templates\map\mapa-post.html:188
+msgid "descarregar"
+msgstr "télécharger"
+
+#: .\agenda\templates\agenda\agenda.html:174
+msgid "Comparteix l'acte"
+msgstr "Partager l'événement"
+
+#: .\agenda\templates\agenda\agenda.html:240
+#: .\agenda\templates\agenda\agenda.html:253
+#: .\agenda\templates\agenda\carrusel\ruta\ruta_carrusel.html:31
+#: .\agenda\templates\agenda\carrusel\visita_guiada\visita_guiada_carrusel.html:31
+#: .\blog\templates\blog\categorias\categoria_normal.html:99
+#: .\blog\templates\blog\categorias\festes-i-tradicions.html:93
+#: .\blog\templates\blog\categorias\lloc.html:135
+#: .\blog\templates\blog\post\detalle_post.html:106
+#: .\blog\templates\blog\post\detalle_post.html:165
+#: .\blog\templates\blog\subblog\carrusel_subblog.html:41
+#: .\blog\templates\blog\subblog\carrusel_subblog.html:52
+#: .\blog\templates\blog\subblog\carrusel_subblog.html:59
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:259
+msgid "Fes clic a les imatges per veure la galeria completa"
+msgstr "Cliquez sur les images pour voir la galerie complète"
+
+#: .\agenda\templates\agenda\agenda.html:271
+msgid ""
+"Vols afegir l'activitat més propera a la teva agenda fes click al icone del "
+"teu dispositiu"
+msgstr "Vous voulez ajouter l'activité la plus proche à votre agenda, cliquez sur l'icône de votre appareil"
+
+#: .\agenda\templates\agenda\agenda.html:274
+msgid "Generar els enllaços"
+msgstr "Générer les liens"
+
+#: .\agenda\templates\agenda\agenda.html:291
+msgid "Compra les teves entrades"
+msgstr "Achetez vos billets"
+
+#: .\agenda\templates\agenda\agenda.html:292
+msgid "Tens la oportunitat de comprar les teves entrades per a aquest esdeveniment"
+msgstr "Vous avez l'opportunité d'acheter vos billets pour cet événement"
+
+#: .\agenda\templates\agenda\agenda.html:293
+msgid "Comprar entrades"
+msgstr "Acheter des billets"
+
+#: .\agenda\templates\agenda\agenda.html:304
+#: .\blog\templates\blog\categorias\agenda_utils\agenda_portada.html:120
+msgid "Descarrega tota l'agenda en PDF"
+msgstr "Télécharger l'agenda complet en PDF"
+
+#: .\agenda\templates\agenda\agenda_pdf.html:151
+msgid "Agenda cultural Cabrera de Mar"
+msgstr "Agenda culturelle de Cabrera de Mar"
+
+#: .\agenda\templates\agenda\alojamiento.html:115
+#: .\agenda\templates\agenda\restaurante.html:120
+#: .\agenda\templates\agenda\visita_guiada.html:186
+msgid "Informació addicional"
+msgstr "Informations supplémentaires"
+
+#: .\agenda\templates\agenda\alojamiento.html:120
+#: .\agenda\templates\agenda\restaurante.html:125
+msgid "Direcció"
+msgstr "Adresse"
+
+#: .\agenda\templates\agenda\alojamiento.html:126
+#: .\agenda\templates\agenda\restaurante.html:131
+#: .\api\templates\api\teenvio_contacto.html:19
+#: .\newsletter\templates\newsletter\event_email.html:1189
+msgid "Telèfon"
+msgstr "Téléphone"
+
+#: .\agenda\templates\agenda\alojamiento.html:132
+#: .\agenda\templates\agenda\restaurante.html:137
+msgid "Lloc web"
+msgstr "Site web"
+
+#: .\agenda\templates\agenda\alojamiento.html:140
+#: .\agenda\templates\agenda\restaurante.html:145
+#: .\agenda\templates\agenda\visita_guiada.html:231
+#: .\agenda\templates\agenda\visita_guiada.html:235
+msgid "Veure al mapa"
+msgstr "Voir sur la carte"
+
+#: .\agenda\templates\agenda\alojamiento.html:147
+#: .\agenda\templates\agenda\restaurante.html:152
+#: .\blog\templates\blog\categorias\categoria_alojamiento.html:164
+msgid "Admet mascotes"
+msgstr "Animaux acceptés"
+
+#: .\agenda\templates\agenda\alojamiento.html:159
+#: .\blog\templates\blog\categorias\categoria_alojamiento.html:146
+msgid "Adaptat per a persones amb mobilitat reduïda"
+msgstr "Adapté aux personnes à mobilité réduite"
+
+#: .\agenda\templates\agenda\alojamiento.html:165
+#: .\blog\templates\blog\categorias\categoria_alojamiento.html:152
+msgid "Pàrquing gratuït"
+msgstr "Parking gratuit"
+
+#: .\agenda\templates\agenda\alojamiento.html:171
+msgid "Habitacions sense fum"
+msgstr "Chambres non-fumeurs"
+
+#: .\agenda\templates\agenda\alojamiento.html:177
+msgid "Servei d'habitacions"
+msgstr "Service en chambre"
+
+#: .\agenda\templates\agenda\alojamiento.html:206
+#: .\agenda\templates\agenda\alojamiento.html:216
+#: .\agenda\templates\agenda\restaurante.html:208
+#: .\agenda\templates\agenda\restaurante.html:218
+#: .\agenda\templates\agenda\visita_guiada.html:267
+#: .\agenda\templates\agenda\visita_guiada.html:277
+msgid "Fes clic a l'imatge per veure-la en resolució completa"
+msgstr "Cliquez sur l'image pour la voir en résolution complète"
+
+#: .\agenda\templates\agenda\carrusel\alojamiento\alojamiento_carrusel.html:29
+#: .\agenda\templates\agenda\carrusel\restaurante\restaurante_carrusel.html:29
+#: .\blog\templates\blog\categorias\carrusel_categorias.html:29
+msgid "Aquesta imatge no està disponible"
+msgstr "Cette image n'est pas disponible"
+
+#: .\agenda\templates\agenda\carrusel\alojamiento\alojamiento_carrusel.html:44
+#: .\agenda\templates\agenda\carrusel\restaurante\restaurante_carrusel.html:44
+#: .\blog\templates\blog\categorias\carrusel_categorias.html:44
+msgid "Feu clic a les imatges per veure la galeria completa"
+msgstr "Cliquez sur les images pour voir la galerie complète"
+
+#: .\agenda\templates\agenda\carrusel\alojamiento\alojamiento_carrusel.html:54
+#: .\blog\templates\blog\categorias\carrusel_categorias.html:54
+msgid "No hi ha imatges disponibles per a aquesta categoria"
+msgstr "Aucune image disponible pour cette catégorie"
+
+#: .\agenda\templates\agenda\restaurante.html:164
+msgid "Accessibilitat per a persones amb discapacitat"
+msgstr "Accessibilité pour les personnes handicapées"
+
+#: .\agenda\templates\agenda\restaurante.html:170
+msgid "Aparcament"
+msgstr "Parking"
+
+#: .\agenda\templates\agenda\restaurante.html:178
+msgid "descarregar PDF"
+msgstr "télécharger le PDF"
+
+#: .\agenda\templates\agenda\ruta.html:173
+msgid "Descripció"
+msgstr "Description"
+
+#: .\agenda\templates\agenda\ruta.html:176
+msgid "Detalls"
+msgstr "Détails"
+
+#: .\agenda\templates\agenda\ruta.html:179
+msgid "Itinerari"
+msgstr "Itinéraire"
+
+#: .\agenda\templates\agenda\ruta.html:194
+msgid "Durada"
+msgstr "Durée"
+
+#: .\agenda\templates\agenda\ruta.html:200
+msgid "Pendent"
+msgstr "Pente"
+
+#: .\agenda\templates\agenda\ruta.html:201
+msgid "metres"
+msgstr "mètres"
+
+#: .\agenda\templates\agenda\ruta.html:206
+msgid "quilòmetres"
+msgstr "kilomètres"
+
+#: .\agenda\templates\agenda\ruta.html:210
+msgid "Tema"
+msgstr "Thème"
+
+#: .\agenda\templates\agenda\ruta.html:215
+msgid "Activitat"
+msgstr "Activité"
+
+#: .\agenda\templates\agenda\ruta.html:220
+msgid "Valoració"
+msgstr "Évaluation"
+
+#: .\agenda\templates\agenda\ruta.html:225
+msgid "Tipologia"
+msgstr "Typologie"
+
+#: .\agenda\templates\agenda\ruta.html:230
+msgid "Dificultat"
+msgstr "Difficulté"
+
+#: .\agenda\templates\agenda\ruta.html:256
+#: .\agenda\templates\agenda\ruta.html:458
+#: .\alerta\templates\alerta\alerta.html:27
+#: .\alerta\templates\alerta\alerta.html:29
+#: .\blog\templates\blog\categorias\categoria_alojamiento.html:199
+#: .\blog\templates\blog\categorias\categoria_alojamiento.html:241
+#: .\blog\templates\blog\categorias\categoria_normal.html:167
+#: .\blog\templates\blog\categorias\categoria_normal.html:221
+#: .\blog\templates\blog\categorias\festes-i-tradicions.html:149
+#: .\blog\templates\blog\categorias\festes-i-tradicions.html:182
+#: .\blog\templates\blog\categorias\festes-i-tradicions.html:229
+#: .\blog\templates\blog\categorias\lloc.html:197
+#: .\blog\templates\blog\categorias\lloc.html:251
+#: .\blog\templates\blog\categorias\senderisme.html:111
+#: .\blog\templates\blog\categorias\senderisme.html:149
+#: .\blog\templates\blog\categorias\visitas_guiadas.html:208
+#: .\header\templates\header\header.html:56
+#: .\header\templates\header\header.html:93
+#: .\header\templates\header\header.html:110
+#: .\newsletter\templates\newsletter\event_email.html:802
+#: .\newsletter\templates\newsletter\event_email.html:916
+#: .\newsletter\templates\newsletter\event_email.html:995
+#: .\paginas_estaticas\templates\paginas_estaticas\igualtat.html:99
+#: .\paginas_estaticas\templates\paginas_estaticas\igualtat.html:118
+#: .\paginas_estaticas\templates\paginas_estaticas\igualtat.html:201
+msgid "Saber més"
+msgstr "En savoir plus"
+
+#: .\agenda\templates\agenda\ruta.html:266
+msgid "No hi ha llocs disponibles"
+msgstr "Aucune place disponible"
+
+#: .\agenda\templates\agenda\ruta.html:285
+msgid ""
+"Et recomanem l'App de Natura Local per fer aquesta ruta guiada i "
+"interpretada. Descarrega-te-la gratis aquí"
+msgstr "Nous vous recommandons l'application Natura Local pour suivre ce parcours guidé et interprété. Téléchargez-la gratuitement ici"
+
+#: .\agenda\templates\agenda\ruta.html:398
+msgid "Necessites un reproductor?"
+msgstr "Besoin d'un lecteur ?"
+
+#: .\agenda\templates\agenda\ruta.html:399
+msgid ""
+"Per utilitzar correctament aquest arxiu .m3u, necessites tenir instal·lat un "
+"reproductor compatible com VLC."
+msgstr "Pour utiliser correctement ce fichier .m3u, vous devez avoir installé un lecteur compatible comme VLC."
+
+#: .\agenda\templates\agenda\ruta.html:401
+msgid "Pots descarregar VLC des del seu"
+msgstr "Vous pouvez télécharger VLC depuis son"
+
+#: .\agenda\templates\agenda\ruta.html:401
+msgid "lloc oficial"
+msgstr "site officiel"
+
+#: .\agenda\templates\agenda\ruta.html:401
+msgid "La instal·lació és ràpida i fàcil."
+msgstr "L'installation est rapide et facile."
+
+#: .\agenda\templates\agenda\ruta.html:439
+msgid "Altres Rutes"
+msgstr "Autres Itinéraires"
+
+#: .\agenda\templates\agenda\ruta.html:468
+#: .\blog\templates\blog\categorias\senderisme.html:159
+msgid "No hi ha rutes disponibles"
+msgstr "Aucun itinéraire disponible"
+
+#: .\agenda\templates\agenda\selecciones\agenda_relacionada.html:6
+msgid "Activitats Relacionades"
+msgstr "Activités Connexes"
+
+#: .\agenda\templates\agenda\selecciones\agenda_relacionada.html:7
+msgid "Descobreix altres activitats interessants per a gaudir al màxim"
+msgstr "Découvrez d'autres activités intéressantes pour profiter au maximum"
+
+#: .\agenda\templates\agenda\selecciones\agenda_relacionada.html:135
+#: .\agenda\templates\agenda\visita_guiada.html:192
+msgid "Gratis"
+msgstr "Gratuit"
+
+#: .\agenda\templates\agenda\selecciones\alojamiento_relacionado.html:6
+msgid "Allotjaments Relacionats"
+msgstr "Hébergements Connexes"
+
+#: .\agenda\templates\agenda\selecciones\alojamiento_relacionado.html:7
+msgid ""
+"Descobreix altres allotjaments interessants per gaudir al màxim de la teva "
+"estada"
+msgstr "Découvrez d'autres hébergements intéressants pour profiter pleinement de votre séjour"
+
+#: .\agenda\templates\agenda\selecciones\alojamiento_relacionado.html:27
+msgid "Adaptado para personas con movilidad reducida"
+msgstr "Adapté pour les personnes à mobilité réduite"
+
+#: .\agenda\templates\agenda\selecciones\alojamiento_relacionado.html:30
+msgid "Parking gratuito"
+msgstr "Parking gratuit"
+
+#: .\agenda\templates\agenda\selecciones\alojamiento_relacionado.html:33
+#: .\blog\templates\blog\categorias\categoria_alojamiento.html:158
+msgid "WiFi disponible"
+msgstr "WiFi disponible"
+
+#: .\agenda\templates\agenda\selecciones\alojamiento_relacionado.html:36
+msgid "Admite mascotas"
+msgstr "Animaux acceptés"
+
+#: .\agenda\templates\agenda\selecciones\restaurante_relacionado.html:6
+msgid "Altres restaurants a Cabrera de Mar"
+msgstr "Autres restaurants à Cabrera de Mar"
+
+#: .\agenda\templates\agenda\selecciones\restaurante_relacionado.html:7
+msgid ""
+"Descobreix la deliciosa cuina catalana en els nostres restaurants locals"
+msgstr "Découvrez la délicieuse cuisine catalane dans nos restaurants locaux"
+
+#: .\agenda\templates\agenda\selecciones\restaurante_relacionado.html:33
+msgid "Adaptado per a persones amb mobilitat reduïda"
+msgstr "Adapté pour les personnes à mobilité réduite"
+
+#: .\agenda\templates\agenda\selecciones\restaurante_relacionado.html:36
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:205
+msgid "WiFi"
+msgstr "WiFi"
+
+#: .\agenda\templates\agenda\selecciones\restaurante_relacionado.html:39
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:203
+msgid "Pet Friendly"
+msgstr "Animaux acceptés"
+
+#: .\agenda\templates\agenda\selecciones\restaurante_relacionado.html:42
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:208
+msgid "Menú infantil"
+msgstr "Menu enfant"
+
+#: .\agenda\templates\agenda\selecciones\restaurante_relacionado.html:45
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:207
+msgid "Terrassa"
+msgstr "Terrasse"
+
+#: .\agenda\templates\agenda\selecciones\selector_agendas.html:6
+msgid "Agenda"
+msgstr "Agenda"
+
+#: .\agenda\templates\agenda\selecciones\selector_agendas.html:7
+msgid "No et perdis cap activitat, gaudeix Cabrera!"
+msgstr "Ne manquez aucune activité, profitez de Cabrera!"
+
+#: .\agenda\templates\agenda\selecciones\selector_agendas.html:77
+#: .\agenda\templates\agenda\selecciones\selector_agendas.html:79
+msgid "Tota l'agenda"
+msgstr "Tout l'agenda"
+
+#: .\agenda\templates\agenda\visita_guiada.html:199
+msgid "Duració"
+msgstr "Durée"
+
+#: .\agenda\templates\agenda\visita_guiada.html:203
+msgid "Data d'inici"
+msgstr "Date de début"
+
+#: .\agenda\templates\agenda\visita_guiada.html:207
+msgid "Data de finalització"
+msgstr "Date de fin"
+
+#: .\agenda\templates\agenda\visita_guiada.html:211
+msgid "Públic recomanat"
+msgstr "Public recommandé"
+
+
+#: .\agenda\templates\agenda\visita_guiada.html:240
+msgid "No s'ha proporcionat la ubicació"
+msgstr "Emplacement non fourni"
+
+#: .\agenda\templates\agenda\visita_guiada.html:298
+msgid "Calendari d'Esdeveniments"
+msgstr "Calendrier d'événements"
+
+#: .\agenda\templates\agenda\visita_guiada.html:314
+msgid "Dl"
+msgstr "Lu"
+
+#: .\agenda\templates\agenda\visita_guiada.html:315
+msgid "Dt"
+msgstr "Ma"
+
+#: .\agenda\templates\agenda\visita_guiada.html:316
+msgid "Dc"
+msgstr "Me"
+
+#: .\agenda\templates\agenda\visita_guiada.html:317
+msgid "Dj"
+msgstr "Je"
+
+#: .\agenda\templates\agenda\visita_guiada.html:318
+msgid "Dv"
+msgstr "Ve"
+
+#: .\agenda\templates\agenda\visita_guiada.html:319
+msgid "Ds"
+msgstr "Sa"
+
+#: .\agenda\templates\agenda\visita_guiada.html:320
+msgid "Dg"
+msgstr "Di"
+
+#: .\agenda\templates\agenda\visita_guiada.html:339
+msgid "Duració diària"
+msgstr "Durée quotidienne"
+
+#: .\agenda\templates\agenda\visita_guiada.html:348
+msgid "Certificats de Turisme Sostenible"
+msgstr "Certificats de tourisme durable"
+
+#: .\agenda\templates\agenda\visita_guiada.html:375
+msgid "Esdeveniments de la visita guiada"
+msgstr "Événements de la visite guidée"
+
+#: .\alerta\models.py:86
+msgid "La fecha de inicio debe ser anterior a la fecha de fin."
+msgstr "La date de début doit être antérieure à la date de fin."
+
+#: .\api\templates\api\teenvio_contacto.html:7
+msgid "Nom"
+msgstr "Nom"
+
+#: .\api\templates\api\teenvio_contacto.html:8
+msgid "Introduïu el vostre nom"
+msgstr "Entrez votre nom"
+
+#: .\api\templates\api\teenvio_contacto.html:11
+msgid "Cognoms"
+msgstr "Prénoms"
+
+#: .\api\templates\api\teenvio_contacto.html:12
+msgid "Introduïu el vostre cognom"
+msgstr "Entrez votre prénom"
+
+#: .\api\templates\api\teenvio_contacto.html:15
+msgid "Email"
+msgstr "Email"
+
+#: .\api\templates\api\teenvio_contacto.html:16
+msgid "Introduïu el vostre email"
+msgstr "Entrez votre email"
+
+#: .\api\templates\api\teenvio_contacto.html:20
+msgid "Introduïu el vostre telèfon"
+msgstr "Entrez votre téléphone"
+
+#: .\api\templates\api\teenvio_contacto.html:23
+msgid "Adreça"
+msgstr "Adresse"
+
+#: .\api\templates\api\teenvio_contacto.html:24
+msgid "Introduïu la vostra adreça"
+msgstr "Entrez votre adresse"
+
+#: .\api\templates\api\teenvio_contacto.html:25
+#: .\api\templates\api\teenvio_contacto.html:32
+#: .\api\templates\api\teenvio_contacto.html:41
+msgid "Aquest camp es opcional"
+msgstr "Ce champ est facultatif"
+
+#: .\api\templates\api\teenvio_contacto.html:30
+msgid "Codi Postal"
+msgstr "Code Postal"
+
+#: .\api\templates\api\teenvio_contacto.html:31
+msgid "Introduïu el codi postal"
+msgstr "Entrez le code postal"
+
+#: .\api\templates\api\teenvio_contacto.html:35
+msgid "Població"
+msgstr "Ville"
+
+#: .\api\templates\api\teenvio_contacto.html:36
+msgid "Introduïu la població"
+msgstr "Entrez la ville"
+
+#: .\api\templates\api\teenvio_contacto.html:44
+msgid "Missatge"
+msgstr "Message"
+
+#: .\api\templates\api\teenvio_contacto.html:45
+msgid "Introduïu el vostre missatge"
+msgstr "Entrez votre message"
+
+#: .\api\templates\api\teenvio_contacto.html:52
+msgid "He llegit i accepto la política de privacitat"
+msgstr "J'ai lu et j'accepte la politique de confidentialité"
+
+#: .\api\templates\api\teenvio_contacto.html:57
+msgid ""
+"De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de "
+"desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que "
+"les seves dades personals són incorporades en fitxers titularitat de "
+"Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament "
+"les seves peticions d'informació i elaborar els pressupostos que puguin "
+"sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i "
+"oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de "
+"l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials"
+msgstr "Conformément à la Loi Organique 15/1999 du 13 décembre sur la Protection des Données Personnelles (LOPD), nous vous informons que vos données personnelles sont intégrées dans des fichiers appartenant à la Mairie de Cabrera de Mar dans le but de pouvoir répondre correctement à vos demandes d'information et de préparer les devis que vous pourriez nous demander. Pour exercer vos droits d'accès, de rectification, d'annulation et d'opposition prévus par la loi, vous pouvez envoyer une lettre à l'adresse suivante : Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelone, Réf. Affaires Sociales."
+
+#: .\api\templates\api\teenvio_contacto.html:60
+msgid "Enviar"
+msgstr "Envoyer"
+
+#: .\api\templates\api\teenvio_contacto.html:104
+msgid "Els camps marcats amb * són obligatoris"
+msgstr "Les champs marqués d'un * sont obligatoires"
+
+#: .\api\templates\api\teenvio_contacto.html:110
+msgid "Introduïu una adreça de correu electrònic vàlida"
+msgstr "Entrez une adresse e-mail valide"
+
+#: .\api\templates\api\teenvio_contacto.html:147
+msgid "Formulari enviat amb èxit"
+msgstr "Formulaire envoyé avec succès"
+
+#: .\api\templates\api\teenvio_contacto.html:160
+msgid ""
+"S'ha produït un error en l'enviament del formulari. Si us plau, torneu-ho a "
+"intentar"
+msgstr "Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer, s'il vous plaît"
+
+#: .\api\templates\api\teenvio_form.html:9
+msgid "Butlletí electrònic"
+msgstr "Bulletin électronique"
+
+#: .\api\templates\api\teenvio_form.html:14
+msgid "Introduïu el vostre correu electrònic"
+msgstr "Entrez votre courriel"
+
+#: .\api\templates\api\teenvio_form.html:32
+msgid "Notificació"
+msgstr "Notification"
+
+#: .\api\templates\api\teenvio_form.html:41
+msgid "tancar"
+msgstr "fermer"
+
+#: .\api\templates\api\teenvio_form.html:91
+msgid "Subscripció exitosa"
+msgstr "Abonnement réussi"
+
+#: .\blog\templates\blog\categorias\agenda_utils\agenda_portada.html:107
+msgid "Viu la Cultura i les Festes a Cabrera de Mar"
+msgstr "Vivez la Culture et les Fêtes à Cabrera de Mar"
+
+#: .\blog\templates\blog\categorias\agenda_utils\agenda_portada.html:130
+#: .\blog\templates\blog\categorias\categoria_normal.html:241
+#: .\blog\templates\blog\categorias\festes-i-tradicions.html:247
+#: .\blog\templates\blog\categorias\lloc.html:270
+#: .\blog\templates\blog\categorias\senderisme.html:187
+#: .\blog\templates\blog\subblog\detalle_subblog.html:97
+msgid "Descobreix els Tresors de Cabrera de Mar"
+msgstr "Découvrez les Trésors de Cabrera de Mar"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:10
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:165
+msgid "Tots"
+msgstr "Tous"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:12
+msgid "Juliol jove"
+msgstr "Juillet jeune"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:14
+msgid "Música"
+msgstr "Musique"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:15
+msgid "Teatre"
+msgstr "Théâtre"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:16
+msgid "Exposició"
+msgstr "Exposition"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:17
+msgid "Festes"
+msgstr "Fêtes"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:18
+msgid "Cinema"
+msgstr "Cinéma"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:19
+msgid "Dansa"
+msgstr "Danse"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:20
+msgid "Visites guiades"
+msgstr "Visites guidées"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:21
+msgid "Activitats turístiques"
+msgstr "Activités touristiques"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:22
+msgid "Conferències"
+msgstr "Conférences"
+
+#: .\blog\templates\blog\categorias\agenda_utils\filtro_agenda.html:23
+msgid "Altres"
+msgstr "Autres"
+
+#: .\blog\templates\blog\categorias\categoria_alojamiento.html:136
+msgid ""
+"Explora les nostres excepcionals opcions d'allotjament i viu una estada "
+"inoblidable!"
+msgstr "Explorez nos options d'hébergement exceptionnelles et vivez un séjour inoubliable!"
+
+#: .\blog\templates\blog\categorias\categoria_normal.html:129
+msgid "Contingut relacionat"
+msgstr "Contenu associé"
+
+#: .\blog\templates\blog\categorias\categoria_normal.html:177
+#: .\blog\templates\blog\categorias\lloc.html:207
+msgid "No hi ha posts disponibles"
+msgstr "Aucun post disponible"
+
+#: .\blog\templates\blog\categorias\categoria_normal.html:196
+#: .\blog\templates\blog\categorias\lloc.html:226
+msgid "També et pot interessar"
+msgstr "Cela pourrait également vous intéresser"
+
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:163
+msgid "Tipus d'estableciments"
+msgstr "Types d'établissements"
+
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:166
+msgid "restaurant"
+msgstr "restaurant"
+
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:167
+msgid "bar"
+msgstr "bar"
+
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:168
+msgid "masia"
+msgstr "ferme"
+
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:169
+msgid "guingueta"
+msgstr "guinguette"
+
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:204
+msgid "Opcions vegetarianes"
+msgstr "Options végétariennes"
+
+#: .\blog\templates\blog\categorias\categoria_restaurante.html:206
+msgid "Apte per a celíacs"
+msgstr "Adapté pour les cœliaques"
+
+#: .\blog\templates\blog\categorias\festes-i-tradicions.html:124
+msgid "Festes principals"
+msgstr "Principales fêtes"
+
+#: .\blog\templates\blog\categorias\festes-i-tradicions.html:204
+msgid "Altres festes"
+msgstr "Autres fêtes"
+
+#: .\blog\templates\blog\categorias\lloc.html:167
+msgid "Principals llocs"
+msgstr "Lieux principaux"
+
+#: .\blog\templates\blog\categorias\senderisme.html:86
+msgid "Rutes personalitzades de Cabrera de Mar"
+msgstr "Itinéraires personnalisés de Cabrera de Mar"
+
+#: .\blog\templates\blog\categorias\senderisme.html:130
+msgid "Rutes principals"
+msgstr "Itinéraires principaux"
+
+#: .\blog\templates\blog\post\detalle_post.html:182
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:276
+msgid "Descarregar PDF"
+msgstr "Télécharger le PDF"
+
+#: .\blog\templates\blog\selecciones\categorias_seleccion.html:6
+msgid ""
+"Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el "
+"castell Burriac, la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia "
+"de Sant Feliu o les platges Cabrera. Aquests són només alguns dels llocs més "
+"emblemàtics del nostre municipi, on cada racó us farà viure una experiència "
+"única i inoblidable."
+msgstr "Découvrez les lieux incontournables lors de votre visite à Cabrera de Mar : le château de Burriac, la nécropole ibérique, l'ancienne ville d'Ilturo, la paroisse de Sant Feliu ou encore les plages de Cabrera. Ce ne sont là que quelques-uns des endroits emblématiques de notre municipalité, où chaque coin vous fera vivre une expérience unique et inoubliable."
+
+#: .\blog\templatetags\custom_filters.py:16
+msgid "dia"
+msgstr "jour"
+
+#: .\blog\templatetags\custom_filters.py:16
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:295
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:306
+msgid "dies"
+msgstr "jours"
+
+#: .\blog\templatetags\custom_filters.py:20
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:301
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:312
+msgid "hores"
+msgstr "heures"
+
+#: .\blog\templatetags\custom_filters.py:23
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:307
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:318
+msgid "minuts"
+msgstr "minutes"
+
+#: .\blog\templatetags\custom_filters.py:26
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:313
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:324
+msgid "segons"
+msgstr "secondes"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:159
+msgid "Fes clic al banner per veure a pantalla completa"
+msgstr "Cliquez sur la bannière pour voir en plein écran"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:186
+msgid "Vols participar?"
+msgstr "Vous souhaitez participer ?"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:230
+msgid "Vols Tenir Més Informació per participar?"
+msgstr "Vous voulez plus d'informations pour participer ?"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:238
+msgid ""
+"Si ets <span class=\"secondary-color h1\">comerciant</span>, adhereix el teu "
+"negoci a la campanya…"
+msgstr "Si vous êtes <span class=\"secondary-color h1\">commerçant</span>, inscrivez votre entreprise à la campagne…"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:243
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:245
+msgid "Adhereix-te"
+msgstr "Adhérez"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:253
+msgid ""
+"Si vols <span class=\"secondary-color h1\">participar</span>, completa el "
+"registre a xarxabarris.cat"
+msgstr "Si vous souhaitez <span class=\"secondary-color h1\">participer</span>, complétez l'inscription sur xarxabarris.cat"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:258
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:260
+msgid "Participa"
+msgstr "Participez"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:280
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:292
+msgid "Gràcies per participar"
+msgstr "Merci de votre participation"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:281
+msgid "L'esdeveniment Compra i descobreix ha finalitzat!"
+msgstr "L'événement Achat et Découverte est terminé !"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:290
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:301
+msgid "Només falten"
+msgstr "Il reste seulement"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:326
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:337
+msgid "ha començat!"
+msgstr "a commencé !"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:327
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:338
+msgid "Gaudeix de l'event que has estat esperant"
+msgstr "Profitez de l'événement que vous attendiez"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:341
+msgid "Descàrrega material addicional en PDF"
+msgstr "Téléchargez des matériaux supplémentaires en PDF"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\compra_y_descubre.html:409
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:480
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:510
+msgid "¡L'esdeveniment ha començat!"
+msgstr "L'événement a commencé !"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\galeria_ganadores.html:8
+msgid "Llista dels guanyadors de l'última edició"
+msgstr "Liste des gagnants de la dernière édition"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\link_youtube.html:6
+msgid "Sorteix dels guanyadors de l'última edició"
+msgstr "Tirage au sort des gagnants de la dernière édition"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\link_youtube.html:12
+msgid "Tens problemes per veure el vídeo, fes"
+msgstr "Si vous avez des problèmes pour voir la vidéo, faites"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\link_youtube.html:12
+msgid "clic aquí"
+msgstr "cliquez ici"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\negocis_selection.html:6
+msgid "Comerços Participants a"
+msgstr "Commerces participants à"
+
+#: .\compra_y_descubre\templates\compra_y_descubre\negocis_selection.html:8
+msgid "a Cabrera de Mar"
+msgstr "à Cabrera de Mar"
+
+#: .\core\templates\core\base.html:8
+msgid "Inici"
+msgstr "Accueil"
+
+#: .\eventos_especiales\templates\eventos_especiales\agenda_selection.html:5
+#: .\selecciones\templates\destacados\destacados.html:5
+msgid "Destacats"
+msgstr "En vedette"
+
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:272
+msgid "Descarrega't el programa"
+msgstr "Téléchargez le programme"
+
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:291
+msgid "ha finalitzat!"
+msgstr "est terminé !"
+
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:353
+msgid "Obtén les teves entrades aquí!"
+msgstr "Obtenez vos billets ici !"
+
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:378
+msgid "Missatges del Nostre Equip Municipal"
+msgstr "Messages de notre équipe municipale"
+
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:423
+msgid "Detall de la mesura"
+msgstr "Détail de la mesure"
+
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:429
+msgid "Ajust de Pressupost"
+msgstr "Ajustement du budget"
+
+#: .\eventos_especiales\templates\eventos_especiales\evento_especial.html:527
+msgid "Activitats principals"
+msgstr "Activités principales"
+
+#: .\footer\templates\footer\footer.html:55
+msgid "diversitat e inclusió"
+msgstr "diversité et inclusion"
+
+#: .\header\admin.py:15
+msgid ""
+"Aquí pots gestionar els logos auxiliars. Afegeix un títol i un enllaç "
+"opcional per a cadascun."
+msgstr "Ici, vous pouvez gérer les logos secondaires. Ajoutez un titre et un lien optionnel pour chacun."
+
+#: .\map\models.py:56
+msgid "Municipi"
+msgstr "Municipalité"
+
+#: .\map\models.py:63
+msgid "Comarca"
+msgstr "Comarque"
+
+#: .\map\models.py:70
+msgid "Comunitat Autònoma"
+msgstr "Communauté autonome"
+
+#: .\map\models.py:77
+msgid "País"
+msgstr "Pays"
+
+#: .\map\models.py:84
+msgid "Codi postal"
+msgstr "Code postal"
+
+#: .\map\models.py:90
+msgid "Carrer"
+msgstr "Rue"
+
+#: .\map\templates\map\map.html:7
+msgid "Descobreix els llocs icònics de Cabrera de Mar"
+msgstr "Découvrez les lieux emblématiques de Cabrera de Mar"
+
+#: .\map\templates\map\map.html:15
+msgid "Llegenda"
+msgstr "Légende"
+
+#: .\map\templates\map\map.html:18 .\map\templates\map\map.html:128
+
+#: .\map\templates\map\map.html:22 .\map\templates\map\map.html:131
+#: .\paginas_estaticas\templates\paginas_estaticas\punt_informacio.html:119
+#: .\paginas_estaticas\templates\paginas_estaticas\punt_informacio.html:121
+msgid "Punt d'informació"
+msgstr "Point d'information"
+
+#: .\map\templates\map\map.html:26 .\map\templates\map\map.html:134
+msgid "Jaciments arqueològics"
+msgstr "Sites archéologiques"
+
+#: .\map\templates\map\map.html:30 .\map\templates\map\map.html:137
+
+msgid "informació"
+msgstr "information"
+
+msgid "jaciments"
+msgstr "dépôts"
+
+msgid "patrimoni"
+msgstr "patrimoine"
+
+msgid "platges"
+msgstr "Des plages"
+
+
+msgid "Patrimoni cultural"
+msgstr "Patrimoine culturel"
+
+#: .\map\templates\map\map.html:98
+msgid "Estació"
+msgstr "Gare"
+
+#: .\map\templates\map\map.html:101
+msgid "Restaurant"
+msgstr "Restaurant"
+
+#: .\map\templates\map\map.html:104
+msgid "Biblioteca"
+msgstr "Bibliothèque"
+
+#: .\map\templates\map\map.html:107
+msgid "Hotel"
+msgstr "Hôtel"
+
+#: .\map\templates\map\map.html:110
+msgid "Ajuntament"
+msgstr "Mairie"
+
+#: .\map\templates\map\map.html:113
+msgid "Centre Cultural"
+msgstr "Centre culturel"
+
+#: .\map\templates\map\map.html:116
+msgid "Esports"
+msgstr "Sports"
+
+#: .\map\templates\map\map.html:119
+msgid "Serveis"
+msgstr "Services"
+
+#: .\map\templates\map\map.html:122
+msgid "Transports"
+msgstr "Transports"
+
+#: .\map\templates\map\map.html:125
+msgid "Aparcaments"
+msgstr "Parkings"
+
+#: .\map\templates\map\map.html:140
+msgid "Flora i fauna"
+msgstr "Flore et faune"
+
+#: .\map\templates\map\map.html:143
+msgid "Icono desconocido"
+msgstr "Icône inconnue"
+
+#: .\newsletter\templates\newsletter\event_email.html:620
+msgid "Anar a la web"
+msgstr "Aller sur le site web"
+
+#: .\newsletter\templates\newsletter\event_email.html:645
+msgid "MAR, MUNTANYA I HISTÒRIA"
+msgstr "MER, MONTAGNE ET HISTOIRE"
+
+#: .\newsletter\templates\newsletter\event_email.html:831
+msgid "PROPERES ACTIVITATS"
+msgstr "PROCHAINES ACTIVITÉS"
+
+#: .\newsletter\templates\newsletter\event_email.html:1077
+msgid "Segueix-nos en"
+msgstr "Suivez-nous sur"
+
+#: .\newsletter\templates\newsletter\event_email.html:1229
+msgid ""
+"De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de "
+"desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que "
+"les seves dades personals són incorporades en fitxers titularitat de "
+"Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament "
+"les seves peticions d'informació i elaborar els pressupostos que puguin "
+"sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i "
+"oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de "
+"l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials."
+msgstr 
+"Conformément à la Loi Organique 15/1999 du 13 décembre sur la Protection des Données Personnelles (LOPD), nous vous informons que vos données personnelles sont intégrées dans des fichiers appartenant à la Mairie de Cabrera de Mar dans le but de pouvoir répondre correctement à vos demandes d'information et de préparer les devis que vous pourriez nous demander. Pour exercer vos droits d'accès, de rectification, d'annulation et d'opposition prévus par la loi, vous pouvez envoyer une lettre à l'adresse suivante : Place de la Mairie, 1, 08349 Cabrera de Mar, Barcelone, Réf. Affaires Sociales."
+
+#: .\paginas_estaticas\templates\paginas_estaticas\igualtat.html:74
+msgid "Llocs Físics de Protecció contra les Violències Masclistes"
+msgstr "Lieux physiques de protection contre les violences machistes"
+
+#: .\paginas_estaticas\templates\paginas_estaticas\igualtat.html:142
+msgid "Col·laboració d'Entitats pel Pacte Integral"
+msgstr "Collaboration d'entités pour le Pacte Intégral"
+
+#: .\paginas_estaticas\templates\paginas_estaticas\igualtat.html:166
+msgid "Plans i Activitats per a la Igualtat"
+msgstr "Plans et activités pour l'égalité"
+
+#: .\paginas_estaticas\templates\paginas_estaticas\igualtat.html:223
+msgid "Descàrrega de Recursos i Materials"
+msgstr "Téléchargement de ressources et matériaux"
+
+#: .\paginas_estaticas\templates\paginas_estaticas\igualtat.html:231
+msgid "Veure arxiu"
+msgstr "Voir le fichier"
+
+#: .\paginas_estaticas\templates\paginas_estaticas\privacitat.html:51
+#: .\paginas_estaticas\templates\paginas_estaticas\privacitat.html:53
+msgid "Polítiques de privacitat"
+msgstr "Politiques de confidentialité"
+
+#: .\personalizacion\templates\como_llegar\como_llegar.html:5
+msgid "Com Arribar a Cabrera de Mar"
+msgstr "Comment arriver à Cabrera de Mar"
+
+#: .\personalizacion\templates\como_llegar\como_llegar.html:26
+msgid "Horaris de tren"
+msgstr "Horaires de train"
+
+#: .\personalizacion\templates\como_llegar\como_llegar.html:49
+msgid "Busca la millor Ruta"
+msgstr "Trouvez le meilleur itinéraire"
+
+#: .\personalizacion\templates\como_llegar\como_llegar.html:71
+msgid "Horaris de Bus"
+msgstr "Horaires de bus"
+
+#: .\personalizacion\templates\como_llegar\como_llegar.html:93
+msgid "Aeroport del Prat"
+msgstr "Aéroport du Prat"
+
+#: .\personalizacion\templates\como_llegar\como_llegar.html:98
+msgid "Aeroport de Girona"
+msgstr "Aéroport de Gérone"
+
+#: .\personalizacion\templates\cookies\cookies.html:7
+msgid "Per a més informació podeu consultar la nostra política de galetes"
+msgstr "Pour plus d'informations, vous pouvez consulter notre politique de cookies"
+
+#: .\personalizacion\templates\cookies\cookies.html:7
+msgid "aquí"
+msgstr "ici"
+
+#: .\personalizacion\templates\custom\hero.html:11
+msgid "Cabrera de Mar és un municipi de la comarca del Maresme situat en una petita vall oberta al litoral, entre les localitats de Vilassar de Mar i Mataró. Combina muntanya i mar amb una gran riquesa arqueològica en el poblat iber, al peu del castell de Burriac i en diversos jaciments romans en el nucli urbà."
+msgstr "Cabrera de Mar est une municipalité de la région du Maresme située dans une petite vallée ouverte sur le littoral, entre les localités de Vilassar de Mar et Mataró. Elle combine montagne et mer avec une grande richesse archéologique dans le village ibère, au pied du château de Burriac, et dans plusieurs sites romains au sein du centre urbain."
+
+msgid "Situat a uns 28 quilòmetres de Barcelona i a 104 metres sobre el nivell del mar, el centre del municipi es troba a 2.5 quilòmetres de distància del mar, en una petita vall entre dues muntanyes: Burriac i Montcabrer."
+msgstr "Situé à environ 28 kilomètres de Barcelone et à 104 mètres au-dessus du niveau de la mer, le centre de la municipalité se trouve à 2,5 kilomètres de la mer, dans une petite vallée entre deux montagnes : Burriac et Montcabrer."
+
+#: .\topbar\templates\topbar\topbar.html:16
+#: .\topbar\templates\topbar\topbar.html:27
+msgid "Fes click"
+msgstr "Cliquez"

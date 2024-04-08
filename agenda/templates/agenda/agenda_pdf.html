@@ -1,3 +1,5 @@
+{% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,10 +148,10 @@
         <table>
             <tr>
                 <td>
-                    <h1>Agenda cultural Cabrera de Mar</h1>
+                    <h1>{% blocktrans %}Agenda cultural Cabrera de Mar{% endblocktrans %}</h1>
                 </td>
                 <td>
-                    <img src="{{ logo_imagen }}" alt="Logo de la Agenda Cultural">
+                    <img src="{{ logo_imagen }}" alt="Cabrera de Mar">
                 </td>
             </tr>
         </table>
@@ -178,11 +180,6 @@
                             <p class="description">{{ a.agenda.descripcion_corta | safe }}</p>
                             <p class="ubicacion">{{ a.agenda.ubicacion.titulo | safe }}</p>
                             <p class="hora">{{ a.hora | time:"h:i A" }}</p>
-                            <p class="tag">
-                                {% for b in a.agenda.tags.all|slice:":5" %}
-                                <span class="tag">{{ b.nombre }}</span>
-                                {% endfor %}
-                            </p>
                         </td>
                     </tr>
                     {% endfor %}

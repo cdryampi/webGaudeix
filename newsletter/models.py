@@ -40,7 +40,12 @@ class Newsletter(models.Model):
         verbose_name="subtìtul",
         help_text="afegeix un subtìtul o el nom de l'esdeveniment PE: 'Festa del Nadal'."
     )
-
+    aux_img = models.ImageField(
+        upload_to='aux_img_newsletter',
+        null=True,
+        verbose_name="Imatge auxiliar",
+        help_text= "Fes servir aquest model d'imatge per afegir un banner al mig de la newsteller."
+    )
     def __str__(self):
         return f"Newsletter per a {self.nombre_interno} - {self.evento_especial.titulo}"
 

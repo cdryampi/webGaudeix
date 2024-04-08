@@ -1,0 +1,36 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+    <p>Traduccions de Gaudeix</p>
+</div>
+<div>
+    <p><strong>Advertència:</strong> Sigues cautelós al editar fitxers .po directament i sempre assegura't de validar la sintaxi abans de compilar les traduccions. Si no estàs segur, demana ajuda a un desenvolupador.</p>
+    <p>Aquesta funcionalitat de traduccions és una eina poderosa per gestionar contingut multilingüe, permetent que la web sigui accessible a una audiència global més àmplia.</p>
+</div>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row">
+        {{ form.content.label_tag }}
+        {{ form.content }}
+    </div>
+    <div class="form-row">
+        <input type="submit" value="Guardar cambis">
+    </div>
+</form>
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <!-- Asegúrate de que la ruta a ckeditor.js sea correcta -->
+    <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            CKEDITOR.replace('{{ form.content.id_for_label }}');
+        });
+    </script>
+{% endblock %}

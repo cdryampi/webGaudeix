@@ -19,6 +19,7 @@ class NewsletterAdmin(TranslationAdmin, admin.ModelAdmin):
                 'evento_especial',
                 'nombre_interno',
                 'link_tracking',
+                'aux_img',
                 'subtitulo',
                 'html_file'
                 

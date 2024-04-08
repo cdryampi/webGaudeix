@@ -833,3 +833,21 @@ msgstr "Precio"
 
 msgid "Data de finalització"
 msgstr "Fecha de finalización"
+
+msgid "Agenda cultural Cabrera de Mar"
+msgstr "Agenda cultural de Cabrera de Mar"
+
+msgid "Necessites un reproductor?"
+msgstr "¿Necesitas un reproductor?"
+
+msgid "Per utilitzar correctament aquest arxiu .m3u, necessites tenir instal·lat un reproductor compatible com VLC."
+msgstr "Para utilizar correctamente este archivo .m3u, necesitas tener instalado un reproductor compatible como VLC."
+
+msgid "lloc oficial"
+msgstr "Sitio oficial"
+
+msgid "Pots descarregar VLC des del seu"
+msgstr "Puedes descargar VLC desde su"
+
+msgid "La instal·lació és ràpida i fàcil."
+msgstr "La instalación es rápida y fácil."

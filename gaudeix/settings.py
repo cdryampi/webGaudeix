@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'gaudeix_utils',
     'newsletter',
     'alerta',
+    'traducciones'
 
     #'corsheaders',
     #'admin_tree'
@@ -183,7 +184,7 @@ USE_L10N = True
 USE_TZ = True
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = settings["LANGUAGE_CODE"]
-MODELTRANSLATION_LANGUAGES = (settings["LANGUAGE_CODE"],'en', 'es')
+MODELTRANSLATION_LANGUAGES = (settings["LANGUAGE_CODE"],'en', 'es', 'fr')
 MODELTRANSLATION_FIELDS = {
     'blog.Post': ['titulo', 'descripcion'],
     'agenda.Agenda': ['descripcion_corta',],
@@ -217,6 +218,7 @@ LANGUAGES = [
     ('ca', 'Català'),
     ('es', 'Español'),
     ('en', 'English'),
+    ('fr', 'Francès')
 ]
 
 
@@ -271,6 +273,15 @@ CKEDITOR_CONFIGS = {
     'default': {
         'allowedContent': True,
     },
+    'idiomas_toolbar': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ]
+    }
 }
 
 

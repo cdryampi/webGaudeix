@@ -40,6 +40,7 @@ urlpatterns = [
     path('sv/',include('subvenciones.urls')),
     path('c-d/', include('compra_y_descubre.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('', include('traducciones.urls')),
     # re_path(
     #     r'^imagen-autocomplete/$',
     #     ImagenAutocomplete.as_view(),

@@ -110,12 +110,25 @@
 {% endblock %}
 
 {% block asides %}
-  {% if categorias %}
-    <div class="container">
-      <div class="col-12">
-        <h2 class="text-center h2">{% blocktrans %}Descobreix els Tresors de Cabrera de Mar{% endblocktrans %}</h2>
+<aside class="container-fuild agenda-pdf-link py-2 my-2">
+  <div class="col-md-12 col-lg-12 agenda-special-categories p-5">
+      <div class="text-center  m-0 p-2 bg-light agenda-pdf-link">
+          <a href="{% url 'agenda:calendario_pdf' %}" class="btn btn-outline-dark btn-lg">
+              <i class="fas fa-file-download"></i>
+              {% blocktrans %}Descarrega tota l'agenda en PDF{% endblocktrans %}
+          </a>
       </div>
-    </div>
+  </div>
+</aside>
+
+  {% if categorias %}
+    <aside class="container-fuild py-0 my-0">
+      <div class="container">
+        <div class="col-12">
+          <h2 class="text-center h2">{% blocktrans %}Descobreix els Tresors de Cabrera de Mar{% endblocktrans %}</h2>
+        </div>
+      </div>
+    </aside>
     {% include 'blog/selecciones/categorias_seleccion.html' %}
   {% endif %}
 {% endblock asides %}

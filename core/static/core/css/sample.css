@@ -545,6 +545,27 @@ header .dropdown-submenu .dropdown-menu {
 
 /* End parallax */
 
+@media (max-width: 1024px) {
+  .parallax {
+      background-attachment: scroll; /* Desactiva el efecto parallax */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .parallax-container {
+      height: auto; /* Permite que el contenedor crezca con el contenido */
+      min-height: 50vh; /* Asegura una altura mínima en orientación horizontal */
+  }
+  .parallax {
+      position: fixed; /* Intenta mantener el efecto parallax, pero podría necesitar ajustes basados en el comportamiento específico deseado */
+      /* Resto de propiedades necesarias para ajustar la visualización */
+  }
+  .parallax-content {
+      /* Ajustes adicionales si es necesario para asegurar que el contenido se muestre correctamente */
+  }
+}
+
+
 /* Redes sociales */
 
 .container-social{
@@ -1675,12 +1696,23 @@ table.table-custom tr.even {
   background-attachment: fixed;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 991px) {
   .super_destacado_container_image_parallax {
       height: 40vh;
       background-attachment: scroll;
   }
 }
+
+/* Estilos específicos para tablets en orientación horizontal */
+@media screen and (min-width: 992px) and (max-width: 1366px) {
+  .super_destacado_container_image_parallax {
+    height: 50vh;
+    background-attachment: scroll;
+  }
+}
+
+
+
 /* end personalización */
 
 /* freebox */
@@ -1764,3 +1796,10 @@ iframe {
   height: auto; /* Ajusta la altura automáticamente basado en el aspect ratio */
 }
 /* end ckeditor */
+
+.carousel-item {
+  transition: opacity 0.6s ease-in-out;
+}
+
+
+

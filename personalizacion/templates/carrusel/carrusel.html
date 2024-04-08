@@ -1,128 +1,120 @@
 {% load i18n %}
 {% block extra_css %}
     <style>
-        #carrusel-home{
-          height: 100%;
-          position: relative;
-        }
-        .red-container{
-          position: relative;
-        }
-        .carousel-caption{
-          position: absolute;
-          left: 0%;
-          bottom: 55%;
-          text-align: center;
-          width: 100%;
-        }
+/* Parallax y Carrusel Estilos Generales */
+#carrusel-home {
+    height: 100%;
+    position: relative;
+}
 
-        .carousel-indicators {
-          position: absolute;
-          bottom: 5px;
-          left: 45%;
-          transform: translateX(-50%);
-          z-index: 15;
-          display: flex;
-        }
-        
-        .carousel-indicators li {
-          background-color: transparent; /* Fondo transparente para el li */
-          border: none; /* Elimina el borde predeterminado si es necesario */
-          width: 15px;
-          height: 15px;
-          margin: 0 2px;
-          padding: 0; /* Asegura que no haya padding adicional */
-          position: relative; /* Posición relativa para posicionar correctamente el enlace interno */
-      }
-      
-      .carousel-indicators li a {
-          display: block; /* Hace que el enlace llene el espacio del li */
-          border: 2px solid #fff; /* Borde blanco para el enlace */
-          border-radius: 50%; /* Redondea los bordes para hacerlo circular */
-          width: 100%; /* Asegura que el enlace llene completamente el li */
-          height: 100%; /* Asegura que el enlace llene completamente el li */
-          background-color: rgba(255, 255, 255, 0.5); /* Fondo ligeramente blanco y transparente para el enlace */
-      }
-      
-      .carousel-indicators li.active a {
-          background-color: #fff; /* Fondo más sólido para el indicador activo */
-      }
-      
-        
-        .carousel-indicators .active {
-          background-color: #777;
-        }
-        
-        .carousel-control-prev {
-          left: 10px;
-        }
-        
-        .carousel-control-next {
-          right: 10px;
-        }
-        
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-          color: #fff;
-        }
-          
-        .carousel-item {
-          position: relative;
-          width: 100%;
-        }
+.red-container {
+    position: relative;
+}
 
-        .carousel-item img {
-            animation: zoomIn 15s ease-in-out forwards;
-            animation-fill-mode: forwards;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.carousel-caption {
+    position: absolute;
+    left: 0%;
+    bottom: 55%;
+    text-align: center;
+    width: 100%;
+}
 
-        .carousel-caption-title{
-          font-size: 3.5rem;
-        }
-        
-        .carousel-inner {
-          position: relative;
-          width: 100%;
-          padding-top: 56.25%; /* Esto mantiene un ratio de 16:9 */
-          overflow: hidden;
-        }
-        
-        .carousel-item {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-        }
-      
-        
-        @media (max-width: 768px) {
+.carousel-indicators {
+    position: absolute;
+    bottom: 5px;
+    transform: translateX(-50%);
+    z-index: 15;
+    display: flex;
+}
 
-          .carousel-item img {
-            animation: none;
-          }
-          .carousel-caption{
-            bottom: 35%;
-          }
-          .carousel-caption-title{
-            font-size: 1.25rem;
-          }
-          .red-container{
-            padding: 2.5rem;
-          }
-          .carousel-inner {
-            height: 100% !important;
-          }
-          
-        }
+.carousel-indicators li {
+    background-color: transparent;
+    border: none;
+    width: 15px;
+    height: 15px;
+    margin: 0 2px;
+    position: relative;
+}
 
-      
+.carousel-indicators li a {
+    display: block;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.carousel-indicators li.active a {
+    background-color: #fff;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    color: #fff;
+}
+
+.carousel-item {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.carousel-item {
+  transition: opacity 0.6s ease-in-out;
+}
+
+
+
+.carousel-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-caption-title {
+    font-size: 3.5rem;
+}
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* Mantiene la relación de aspecto 16:9 */
+    overflow: hidden;
+}
+
+
+@keyframes zoomIn {
+  from {
+      transform: scale(1);
+  }
+  to {
+      transform: scale(1.1);
+  }
+}
+@media (max-width: 768px) {
+    .carousel-item img {
+        animation: none;
+    }
+    .carousel-caption {
+        bottom: 35%;
+    }
+    .carousel-caption-title {
+        font-size: 1.25rem;
+    }
+    .red-container {
+        padding: 2.5rem;
+    }
+    .carousel-inner {
+        height: 100% !important;
+    }
+}
+
     </style>
 {% endblock extra_css %}
 
@@ -130,13 +122,13 @@
 <div id="carrusel-home" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       {% for imagen in carrusel.imatges.all %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}" style="padding-top: (9 / 16 * 100%);">
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" style="">
             <picture>
-                <source srcset="{{ imagen.large_thumbnail.url }}" media="(min-width: 1200px)">
-                <source srcset="{{ imagen.medium_thumbnail.url }}" media="(min-width: 768px)">
-                <source srcset="{{ imagen.small_thumbnail.url }}" media="(min-width: 576px)">
+                <source srcset="{{ imagen.large_thumbnail.url }}" media="(min-width: 800px)">
+                <source srcset="{{ imagen.medium_thumbnail.url }}" media="(min-width: 566px)">
+                <source srcset="{{ imagen.small_thumbnail.url }}" media="(min-width: 400px)">
                 <!-- Fallback para navegadores que no soportan el elemento <picture> -->
-                <img src="{{ imagen.large_thumbnail.url }}" alt="{{ imagen.descripcion }}" class="d-block w-100" loading="lazy">
+                <img src="{{ imagen.imagen.url }}" alt="{{ imagen.descripcion }}" class="d-block w-100" loading="lazy">
             </picture>
             {% if imagen.descripcion %}
             <span class="carousel-caption">

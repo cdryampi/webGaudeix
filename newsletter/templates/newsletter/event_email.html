@@ -670,11 +670,11 @@ a {text-decoration: none;}
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td style="text-align:center; padding: 30px;" class="pl35"><a target="_blank" href="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %}{{ url_domain }}{% endif %}" style="text-decoration: none;"> 
-                    <img src="{{ url_domain }}{{ header.logo.url }}"
+                    <img src="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %}{{ url_domain }}{{ header.logo.url }}{% endif %}"
                         alt="Gaudeix Cabrera de Mar" width="250" height="85" style="display: inline-block;" class="lightimage">
                       <div class="darkimageWrapper" style="mso-hide: all; display: none;"> 
                         <img
-                          src="{{ url_domain }}{{ header.logo.url }}"
+                          src="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %}{{ url_domain }}{{ header.logo.url }}{% endif %}"
                           width="80" alt="Gaudeix Cabrera de Mar." class="darkimage" style="display: none;"> 
                       </div>
                     </a>
@@ -698,12 +698,12 @@ a {text-decoration: none;}
                               {% if referencia.tipo == 'subblog' %}
                               <td align="center" valign="middle" class="menuitem">
                                 <p style="text-transform: uppercase;font-size: 18px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 1; color: #ffffff; text-decoration: none; margin: 10px; direction: ltr;"
-                                class="menutext"><a target="_blank" href="{{url_domain}}{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}" style="text-decoration:none; color:#ffffff;">{{ referencia.subblog.titulo }}</a></p>
+                                class="menutext"><a target="_blank" href="{% if newsletter.link_tracking %}{{ newsletter.link_tracking }}{% else %}{{url_domain}}{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %} {% endif %} " style="text-decoration:none; color:#ffffff;">{{ referencia.subblog.titulo }}</a></p>
                               </td>
                               {% elif  referencia.tipo == 'categoria' %}
                               <td align="center" valign="middle" class="menuitem">
                                 <p style="text-transform: uppercase;font-size: 18px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 1; color: #ffffff; text-decoration: none; margin: 10px; direction: ltr;"
-                                class="menutext"><a target="_blank" href="{{url_domain}}{% url 'blog:categoria' slug=referencia.categoria.slug %}" style="text-decoration:none; color:#ffffff;">{{ referencia.categoria.titulo }}</a></p>
+                                class="menutext"><a target="_blank" href="{% if newsletter.link_tracking %}{{ newsletter.link_tracking}}{% else %}{{url_domain}}{% url 'blog:categoria' slug=referencia.categoria.slug %}{% endif %}" style="text-decoration:none; color:#ffffff;">{{ referencia.categoria.titulo }}</a></p>
                               </td>
                               {% endif %}  
                           {% endfor %}
@@ -797,7 +797,7 @@ a {text-decoration: none;}
                         <td align="center"
                           style="font-size: 16px; text-transform:uppercase; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 26px; color: #000;padding: 0.6em 50px 0.6em 50px; direction: ltr"
                           class="button"><a
-                            href="{{url_domain}}{{evento_especial.get_absolute_url}}"
+                            href="{% if newsletter.link_tracking%}{{newsletter.link_tracking}}{% else %}{{url_domain}}{{evento_especial.get_absolute_url}}{% endif %}"
                             style="text-decoration: none; color: #ffffff; font-size: 16px; display:inline-block; line-height:22px; text-align:center; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; font-weight: normal!important;">
                           {% blocktrans %}Saber més{% endblocktrans %}</a></td>
                       </tr>
@@ -811,6 +811,38 @@ a {text-decoration: none;}
       </tr>
     </tbody>
   </table>
+  {% if newsletter.aux_img %}
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
+      style="min-width: 100%; background-color: {% if header.color_fondo_header %}{{header.color_fondo_header}}{% else %}#000000{% endif %};">
+        <tr>
+          <td align="center">
+            <table role="presentation" width="640" border="0" cellpadding="0" cellspacing="0" style="width: 640px; "
+              class="w100pc">
+              <tr>
+                <td align="center" class="pt20 nopadbot" style="padding-bottom: 20px;">
+                  <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                      <td style="text-align:center; padding: 30px;" class="pl35"><a target="_blank" href="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %}{{ url_domain }}{% endif %}" style="text-decoration: none;"> 
+                        <img src="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %}{{ url_domain }}{{ newsletter.aux_img.url }}{% endif %}"
+                            alt="Gaudeix Cabrera de Mar" width="auto" height="auto" style="display: inline-block;" class="lightimage">
+                          <div class="darkimageWrapper" style="mso-hide: all; display: none;"> 
+                            <img
+                              src="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %}{{ url_domain }}{{ newsletter.aux_img.url }}{% endif %}"
+                              width="auto" alt="Gaudeix Cabrera de Mar." class="darkimage" style="display: none;"> 
+                          </div>
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+    </table>
+  {% endif %}
+
+
 
 
 
@@ -911,7 +943,7 @@ a {text-decoration: none;}
                                             <td align="center"
                                               style="font-size: 16px; text-transform:uppercase; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 26px; color: #fff;padding: 0.6em 50px 0.6em 50px; direction: ltr"
                                               class="button"><a target="_blank"
-                                                href="{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}"
+                                                href="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %}{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}{% endif %}"
                                                 style="text-decoration: none; color: {% if evento_especial.color %}{{evento_especial.color}}{% else %}#000000{% endif %}; font-size: 16px; display:inline-block; line-height:22px; text-align:center; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; font-weight: normal!important;">
                                                 {% blocktrans %}Saber més{% endblocktrans %}</a></td>
                                           </table>
@@ -920,7 +952,7 @@ a {text-decoration: none;}
                                 </th>
                                 <!-- Bloque de Imagen -->
                                 <th width="150" align="center" valign="middle" class="colsplit">
-                                  <a target="_blank" href="{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}">
+                                  <a target="_blank" href="{% if newsletter.link_tracking %}{% else %} {{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}{% endif %}">
                                     <img src="{% with imagen=post.postgaleriaimagen_set.first %}{% if imagen %}{{ url_domain }}{{ imagen.imagen.medium_thumbnail.url |urlencode }}{% else %}{% with imagenbanner=post.postimagen %}{{ url_domain }}{{ imagenbanner.imagen.medium_thumbnail.url |urlencode }}{% endwith %}{% endif %}{% endwith %}" width="320" height="auto" border="0" style="display:block;">
                                   </a>
                                 </th>
@@ -930,7 +962,7 @@ a {text-decoration: none;}
                               <tr>
                                 <!-- Bloque de Imagen -->
                                 <th width="150" align="center" valign="middle" class="colsplit">
-                                  <a target="_blank" href="{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}">
+                                  <a target="_blank" href="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %} {{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}{% endif %}">
                                     <img src="{% with imagen=post.postgaleriaimagen_set.first %}{% if imagen %}{{ url_domain }}{{ imagen.imagen.medium_thumbnail.url |urlencode }}{% else %}{% with imagenbanner=post.postimagen %}{{ url_domain }}{{ imagenbanner.imagen.medium_thumbnail.url |urlencode }}{% endwith %}{% endif %}{% endwith %}" width="320" height="auto" border="0" style="display:block;">
                                   </a>
                                 </th>
@@ -990,7 +1022,7 @@ a {text-decoration: none;}
                                             <td align="center"
                                               style="font-size: 16px; text-transform:uppercase; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 26px; color: #fff;padding: 0.6em 50px 0.6em 50px; direction: ltr"
                                               class="button"><a target="_blank"
-                                                href="{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}"
+                                                href="{% if newsletter.link_tracking %}{{newsletter.link_tracking}}{% else %}{{ url_domain }}{% if post.agenda %}{% url 'agenda:detalle_agenda' slug=post.slug %}{% elif post.visitaguiada %}{% url 'agenda:visites-guiades' slug=post.slug %}{% elif post.mappoint %}{% url 'map:mapa' slug=post.slug %}{% else %}{{ post.get_absolute_url }}{% endif %}{% endif %}"
                                                 style="text-decoration: none; color: {% if evento_especial.color %}{{evento_especial.color}}{% else %}#000000{% endif %}; font-size: 16px; display:inline-block; line-height:22px; text-align:center; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; font-weight: normal!important;">
                                               {% blocktrans %}Saber més{% endblocktrans %}</a></td>
                                             </table>
@@ -1117,9 +1149,8 @@ a {text-decoration: none;}
                 <tr>
                   <td valign="top" align="center">
                     <table role="presentation" border="0" cellspacing="0" cellpadding="0" class="w200px">
-                      <tr>
-                        
                         {% for especial in categorias_especiales.all %}
+                          {% if forloop.counter0|divisibleby:4 and not forloop.first %}</tr><tr>{% endif %}
                             <th width="112" align="center" valign="top" class="colsplit"
                             style="font-weight: normal; padding:10px 10px 10px; background-color:{{especial.color}};">
                             <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"
@@ -1155,55 +1186,56 @@ a {text-decoration: none;}
                               </tr>
                             </table>
                           </th>
+                          {% if forloop.last %}
+                            <th width="112" align="center" valign="top" class="colsplit"
+                              style="font-weight: normal; padding:10px 10px 10px;background-color:{{header.color_fondo_header}}">
+                              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"
+                                style="width: 100%;">
+                                <tr>
+                                  <td align="center" valign="middle" style="display:block; width: 100px;" class="unstack">
+                                    <!--<![endif]-->
+                                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                                      <tr>
+                                        <td align="center" valign="middle" style="display: block; padding: 10px 0px 10px 0;"
+                                        class="unstack"><a target="_blank" href="tel:{{ footer.footerinformacion.telefono }}"> <img src="{{ url_domain }}{% static 'core/img/logos/logo-cabrera-transparent.png' %}" width="auto" height="75"
+                                            style="display: block; height:75px;" class="lightimage">
+                                          <div class="darkimageWrapper" style="mso-hide: all; display: none;"> <img
+                                              src="{{ url_domain }}{% static 'core/img/logos/logo-cabrera-transparent.png' %}"
+                                              width="auto" height="75" class="darkimage" style="display: none; mso-hide: all; height:75px;">
+                                          </div>
+                                        </a>
+                                        <!--[if !mso]><!-- -->
+                                        </td>
+
+                                        <td align="center" valign="middle" style="display:block;" class="unstack">
+                                          
+                                            <table role="presentation" width="100%" valign="middle" border="0" cellpadding="0"
+                                            cellspacing="0">
+                                            <tr>
+                                              
+                                              <td align="center" valign="middle"
+                                                style="height:auto !important; font-size: 12px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 18px; color: #000000; text-decoration: none;">
+                                                  <p style=" margin: 0; direction: ltr;"> <a target="_blank" href="tel:{{ footer.footerinformacion.telefono }}"
+                                                    style="color: #ffffff; text-decoration: none; text-align: center!important;">
+                                                    {% blocktrans %}Telèfon{% endblocktrans %}<br>
+                                                    {{ footer.footerinformacion.telefono }}<br>
+                                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                  </a> </p>
+                                              </td>
+                                          </table>
+
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </th>
+                            {% if not forloop.counter|add:"1"|divisibleby:4 %}</tr>{% endif %}
+                          {% endif %}
                         {% endfor %}
-                        <th width="112" align="center" valign="top" class="colsplit"
-                          style="font-weight: normal; padding:10px 10px 10px;background-color:{{header.color_fondo_header}}">
-                          <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"
-                            style="width: 100%;">
-                            <tr>
-                              <td align="center" valign="middle" style="display:block; width: 100px;" class="unstack">
-                                <!--<![endif]-->
-                                <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
-                                  <tr>
-                                    <td align="center" valign="middle" style="display: block; padding: 10px 0px 10px 0;"
-                                    class="unstack"><a target="_blank" href="tel:{{ footer.footerinformacion.telefono }}"> <img src="{{ url_domain }}{% static 'core/img/logos/logo-cabrera-transparent.png' %}" width="auto" height="75"
-                                        style="display: block; height:75px;" class="lightimage">
-                                      <div class="darkimageWrapper" style="mso-hide: all; display: none;"> <img
-                                          src="{{ url_domain }}{% static 'core/img/logos/logo-cabrera-transparent.png' %}"
-                                          width="auto" height="75" class="darkimage" style="display: none; mso-hide: all; height:75px;">
-                                      </div>
-                                    </a>
-                                    <!--[if !mso]><!-- -->
-                                    </td>
-
-                                    <td align="center" valign="middle" style="display:block;" class="unstack">
-                                      
-                                        <table role="presentation" width="100%" valign="middle" border="0" cellpadding="0"
-                                        cellspacing="0">
-                                        <tr>
-                                          
-                                          <td align="center" valign="middle"
-                                            style="height:auto !important; font-size: 12px; font-family: 'Oswald', Helvetica, Trebuchet, Arial, sans-serif; line-height: 18px; color: #000000; text-decoration: none;">
-                                              <p style=" margin: 0; direction: ltr;"> <a target="_blank" href="tel:{{ footer.footerinformacion.telefono }}"
-                                                style="color: #ffffff; text-decoration: none; text-align: center!important;">
-                                                {% blocktrans %}Telèfon{% endblocktrans %}<br>
-                                                {{ footer.footerinformacion.telefono }}<br>
-                                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                              </a> </p>
-                                          </td>
-                                          
-                                        </tr>
-                                      </table>
-
-                                    </td>
-                                  </tr>
-                                </table>
-                              </td>
-                            </tr>
-                          </table>
-                        </th>
-                      </tr>
+                        {% if not categorias_especiales.all|length|add:"1"|divisibleby:4 %}</tr>{% endif %}
                     </table>
                   </td>
                 </tr>

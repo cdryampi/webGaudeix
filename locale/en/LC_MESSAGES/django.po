@@ -1,840 +1,858 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 09:45+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: .\agenda\admin.py:199
-msgid "Selecciona el tipus d'esdeveniment"
-msgstr "Select the type of event"
-
-
-#: .\agenda\models.py:120
-msgid "Tipus d'esdeveniment"
-msgstr ""
-
-#: .\agenda\models.py:455
-msgid "Nens"
-msgstr "Children"
-
-#: .\agenda\models.py:456
-msgid "Joves"
-msgstr "Youth"
-
-
-#: .\agenda\models.py:457
-msgid "Adults"
-msgstr "Adults"
-
-
-#: .\agenda\models.py:458
-msgid "Totes les edats"
-msgstr "All ages"
-
-
-#: .\agenda\models.py:462 .\blog\models.py:209
-msgid "Sí"
-msgstr "Yes"
-
-
-#: .\agenda\models.py:463 .\blog\models.py:208
-msgid "No"
-msgstr "No"
-
-
-#: .\alerta\models.py:86
-msgid "La fecha de inicio debe ser anterior a la fecha de fin."
-msgstr "The start date must be earlier than the end date."
-
-
-#: .\map\models.py:54
-msgid "Municipi"
-msgstr "Municipality"
-
-#: .\map\models.py:61
-msgid "Comarca"
-msgstr "Region"
-
-
-#: .\map\models.py:68
-msgid "Comunitat Autònoma"
-msgstr "Autonomous Community"
-
-
-#: .\map\models.py:75
-msgid "País"
-msgstr "Country"
-
-
-#: .\map\models.py:82
-msgid "Codi postal"
-msgstr "Postal code"
-
-
-#: .\map\models.py:88
-msgid "Carrer"
-msgstr "Street"
-
-
-
-# post template blog\templates\post\detalle_post.html
-msgid "Fes clic a les imatges per veure la galeria completa"
-msgstr "Click on the images to view the full gallery"
-
-
-msgid "Agenda"
-msgstr "Agenda"
-
-
-msgid "No et perdis cap activitat, gaudeix Cabrera!"
-msgstr "Don't miss any activity, enjoy Cabrera!"
-
-
-msgid "Tota l'agenda"
-msgstr "The entire agenda"
-
-# core base.html title
-msgid "Inici"
-msgstr "Home"
-
-#categoria_especial.html
-msgid "Et proposem els millors plans a Cabrera de Mar!"
-msgstr "We offer you the best plans in Cabrera de Mar!"
-
-msgid "Escull amb qui vols venir i et presentem un munt d'opcions per gaudir al màxim."
-msgstr "Choose who you want to come with and we'll present you with a bunch of options to enjoy to the fullest."
-
-
-#super_destacado.html
-
-msgid "No et pots perdre"
-msgstr "You can't miss"
-
-msgid "Saber més"
-msgstr "See more"
-
-
-#destacado.html
-
-msgid "Destacats"
-msgstr "Highlights"
-
-msgid "Cabrera de Mar és un municipi de la comarca del Maresme situat en una petita vall oberta al litoral, entre les localitats de Vilassar de Mar i Mataró. Combina muntanya i mar amb una gran riquesa arqueològica en el poblat iber, al peu del castell de Burriac i en diversos jaciments romans en el nucli urbà."
-msgstr "Cabrera de Mar is a municipality in the Maresme region located in a small valley open to the coast, between the towns of Vilassar de Mar and Mataró. It combines mountains and sea with a great archaeological wealth in the Iberian settlement, at the foot of the Burriac castle, and in various Roman sites in the urban core."
-
-msgid "Situat a uns 28 quilòmetres de Barcelona i a 104 metres sobre el nivell del mar, el centre del municipi es troba a 2.5 quilòmetres de distància del mar, en una petita vall entre dues muntanyes: Burriac i Montcabrer."
-msgstr "Located about 28 kilometers from Barcelona and 104 meters above sea level, the center of the municipality is 2.5 kilometers away from the sea, in a small valley between two mountains: Burriac and Montcabrer."
-
-#categorias_seleccion.html
-
-msgid "Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac, la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera. Aquests són només alguns dels llocs més emblemàtics del nostre municipi, on cada racó us farà viure una experiència única i inoblidable."
-msgstr "Discover the places you shouldn't miss if you visit Cabrera de Mar: the Burriac Castle, the Iberian Necropolis, the ancient city of Ilturo, the parish of Saint Feliu, or the Cabrera beaches. These are just some of the most emblematic places of our municipality, where each corner will offer you a unique and unforgettable experience."
-
-#com_llegar.html
-
-msgid "Com Arribar a Cabrera de Mar"
-msgstr "How to Get to Cabrera de Mar"
-
-msgid "Horaris de tren"
-msgstr "Train Schedules"
-
-msgid "Busca la millor Ruta"
-msgstr "Find the Best Route"
-
-msgid "Horaris de Bus"
-msgstr "Bus Schedules"
-
-msgid "Aeroport del Prat"
-msgstr "El Prat Airport"
-
-msgid "Aeroport de Girona"
-msgstr "Girona Airport"
-
-#cookies.html
-
-msgid "Per a més informació podeu consultar la nostra política de galetes"
-msgstr "For more information, you can consult our cookie policy"
-
-msgid "aquí"
-msgstr "here"
-
-# footer.html
-
-msgid "diversitat e inclusió"
-msgstr "diversity and inclusion"
-
-#map.html
-
-msgid "Descobreix els llocs icònics de Cabrera de Mar"
-msgstr "Discover the iconic places of Cabrera de Mar"
-
-msgid "informació"
-msgstr "information"
-
-
-
-
-
-msgid "Llegenda"
-msgstr "Legend"
-
-
-msgid "Punt d'informació"
-msgstr "Information Point"
-
-msgid "Jaciments arqueològics"
-msgstr "Archaeological Sites"
-
-msgid "Patrimoni cultural"
-msgstr "Cultural Heritage"
-
-msgid "Estació"
-msgstr "Station"
-
-msgid "Restaurant"
-msgstr "Restaurant"
-
-msgid "Biblioteca"
-msgstr "Library"
-
-msgid "Hotel"
-msgstr "Hotel"
-
-msgid "Ajuntament"
-msgstr "City Hall"
-
-msgid "Centre Cultural"
-msgstr "Cultural Center"
-
-msgid "Esports"
-msgstr "Sports"
-
-msgid "Serveis"
-msgstr "Services"
-
-msgid "Transports"
-msgstr "Transportation"
-
-msgid "Aparcaments"
-msgstr "Parking Lots"
-
-msgid "Flora i fauna"
-msgstr "Flora and fauna"
-
-msgid "patrimoni"
-msgstr "heritage"
-
-msgid "jaciments"
-msgstr "sites"
-
-msgid "Platges"
-msgstr "Beaches"
-
-msgid "platges"
-msgstr "Beaches"
-
-#teenvio_form.html
-
-msgid "Butlletí electrònic"
-msgstr "Electronic newsletter"
-
-msgid "Notificació"
-msgstr "Notification"
-
-msgid "Subscripció exitosa"
-msgstr "Successful subscription"
-
-msgid "tancar"
-msgstr "close"
-
-msgid "Introduïu el vostre correu electrònic"
-msgstr "Enter your email address"
-
-#carrusel_categorias.html
-
-msgid "Aquesta imatge no està disponible"
-msgstr "This image is not available"
-
-msgid "No hi ha imatges disponibles per a aquesta categoria"
-msgstr "There are no images available for this category"
-
-msgid "Descobreix els Tresors de Cabrera de Mar"
-msgstr "Discover the Treasures of Cabrera de Mar"
-
-# categoria_normal.html
-
-msgid "Contingut relacionat"
-msgstr "Related content"
-
-msgid "No hi ha posts disponibles"
-msgstr "No posts available"
-
-msgid "També et pot interessar"
-msgstr "You may also be interested"
-
-msgid "Festes principals"
-msgstr "Main festivals"
-
-msgid "Altres festes"
-msgstr "Other festivals"
-
-msgid "Principals llocs"
-msgstr "Main places"
-
-msgid "Rutes personalitzades de Cabrera de Mar"
-msgstr "Customized routes of Cabrera de Mar"
-
-msgid "Rutes principals"
-msgstr "Main routes"
-
-msgid "No hi ha rutes disponibles"
-msgstr "No routes available"
-
-msgid "Explora Cabrera de Mar: Descobreix els seus racons amb les nostres rutes temàtiques"
-msgstr "Explore Cabrera de Mar: Discover its corners with our thematic routes"
-
-msgid "Descobreix les nostres increïbles visites guiades!"
-msgstr "Discover our amazing guided tours!"
-
-msgid "Viu la Cultura i les Festes a Cabrera de Mar"
-msgstr "Experience the Culture and Festivals in Cabrera de Mar"
-
-
-
-msgid "Tots"
-msgstr "All"
-
-msgid "Juliol jove"
-msgstr "Youth July"
-
-msgid "Música"
-msgstr "Music"
-
-msgid "Teatre"
-msgstr "Theatre"
-
-msgid "Exposició"
-msgstr "Exhibition"
-
-msgid "Festes"
-msgstr "Festivals"
-
-msgid "Cinema"
-msgstr "Cinema"
-
-msgid "Dansa"
-msgstr "Dance"
-
-msgid "Visites guiades"
-msgstr "Guided tours"
-
-msgid "Conferències"
-msgstr "Conferences"
-
-msgid "Altres"
-msgstr "Others"
-
-msgid "Activitats turístiques"
-msgstr "Tourist activities"
-
-#ruta.html
-
-msgid "Descripció"
-msgstr "Description"
-
-msgid "Detalls"
-msgstr "Details"
-
-msgid "Itinerari"
-msgstr "Itinerary"
-
-msgid "Durada"
-msgstr "Duration"
-
-msgid "Pendent"
-msgstr "Pending"
-
-
-msgid "metres"
-msgstr "meters"
-
-msgid "quilòmetres"
-msgstr "kilometers"
-
-msgid "Tema"
-msgstr "Theme"
-
-msgid "Activitat"
-msgstr "Activity"
-
-msgid "Valoració"
-msgstr "Rating"
-
-msgid "Tipologia"
-msgstr "Typology"
-
-msgid "Dificultat"
-msgstr "Difficulty"
-
-msgid "No hi ha llocs disponibles"
-msgstr "No places available"
-
-msgid "Et recomanem l'App de Natura Local per fer aquesta ruta guiada i interpretada. Descarrega-te-la gratis aquí"
-msgstr "We recommend the Natura Local App for this guided and interpreted route. Download it for free here"
-
-msgid "Tu navegador no soporta la reproducción de audio"
-msgstr "Your browser does not support audio playback"
-
-msgid "descarregar playlist"
-msgstr "download playlist"
-
-msgid "Altres Rutes"
-msgstr "Other Routes"
-
-msgid "Activitats Relacionades"
-msgstr "Related Activities"
-
-msgid "Descobreix altres activitats interessants per a gaudir al màxim"
-msgstr "Discover other interesting activities to enjoy to the fullest"
-
-msgid "Gratis"
-msgstr "Free"
-
-msgid "Informació addicional"
-msgstr "Additional Information"
-
-msgid "Duració"
-msgstr "Duration"
-
-msgid "Data d'inici"
-msgstr "Start Date"
-
-msgid "Públic recomanat"
-msgstr "Recommended Audience"
-
-msgid "Ubicació"
-msgstr "Location"
-
-msgid "Veure al mapa"
-msgstr "View on Map"
-
-msgid "No s'ha proporcionat la ubicació"
-msgstr "Location not provided"
-
-msgid "Calendari d'Esdeveniments"
-msgstr "Events Calendar"
-
-msgid "Dl"
-msgstr "Mo"
-
-msgid "Dm"
-msgstr "Tu"
-
-msgid "Dc"
-msgstr "We"
-
-msgid "Dj"
-msgstr "Th"
-
-msgid "Dv"
-msgstr "Fr"
-
-msgid "Ds"
-msgstr "Sa"
-
-msgid "Dg"
-msgstr "Su"
-
-msgid "Duració diària"
-msgstr "Daily Duration"
-
-msgid "Certificats de Turisme Sostenible"
-msgstr "Sustainable Tourism Certificates"
-
-msgid "Esdeveniments de la visita guiada"
-msgstr "Guided Tour Events"
-
-#categoria_alojamiento.html
-
-msgid "Explora les nostres excepcionals opcions d'allotjament i viu una estada inoblidable!"
-msgstr "Explore our exceptional accommodation options and experience an unforgettable stay!"
-
-msgid "Adaptat per a persones amb mobilitat reduïda"
-msgstr "Adapted for people with reduced mobility"
-
-msgid "Pàrquing gratuït"
-msgstr "Free Parking"
-
-msgid "WiFi disponible"
-msgstr "WiFi available"
-
-msgid "Admet mascotes"
-msgstr "Pets allowed"
-
-msgid "Feu clic a les imatges per veure la galeria completa"
-msgstr "Click on the images to view the full gallery"
-
-#categoria_restaurante.html
-
-msgid "Explora les nostres excepcionals opcions de restauració i gaudeix d'una experiència culinària inoblidable!"
-msgstr "Explore our exceptional dining options and enjoy an unforgettable culinary experience!"
-
-msgid "restaurant"
-msgstr "restaurant"
-
-msgid "bar"
-msgstr "bar"
-
-msgid "masia"
-msgstr "country house"
-
-msgid "guingueta"
-msgstr "beach bar"
-
-msgid "Tipus d'estableciments"
-msgstr "Types of establishments"
-
-msgid "Pet Friendly"
-msgstr "Pet Friendly"
-
-msgid "Opcions vegetarianes"
-msgstr "Vegetarian options"
-
-msgid "WiFi"
-msgstr "WiFi"
-
-msgid "Apto para celíacos"
-msgstr "Suitable for coeliacs"
-
-msgid "Terrassa"
-msgstr "Terrace"
-
-msgid "Menú infantil"
-msgstr "Kids menu"
-
-msgid "Altres restaurants a Cabrera de Mar"
-msgstr "Other restaurants in Cabrera de Mar"
-
-msgid "Descobreix la deliciosa cuina catalana en els nostres restaurants locals"
-msgstr "Discover the delicious Catalan cuisine in our local restaurants"
-
-msgid "Direcció"
-msgstr "Address"
-
-msgid "Telèfon"
-msgstr "Phone"
-
-msgid "Lloc web"
-msgstr "Website"
-
-msgid "Accessibilitat per a persones amb discapacitat"
-msgstr "Accessibility for people with disabilities"
-
-msgid "Allotjaments Relacionats"
-msgstr "Related Accommodations"
-
-msgid "Descobreix altres allotjaments interessants per gaudir al màxim de la teva estada"
-msgstr "Discover other interesting accommodations to make the most of your stay"
-
-#model 'paginas estaticas'
-
-msgid "Nom"
-msgstr "Name"
-
-msgid "Introduïu el vostre nom"
-msgstr "Enter your name"
-
-msgid "Cognoms"
-msgstr "Last Name"
-
-msgid "Introduïu el vostre cognom"
-msgstr "Enter your last name"
-
-msgid "Email"
-msgstr "Email"
-
-msgid "Introduïu el vostre email"
-msgstr "Enter your email"
-
-msgid "Introduïu el vostre telèfon"
-msgstr "Enter your phone number"
-
-msgid "Adreça"
-msgstr "Address"
-
-msgid "Introduïu la vostra adreça"
-msgstr "Enter your address"
-
-msgid "Aquest camp es opcional"
-msgstr "This field is optional"
-
-msgid "Introduïu el codi postal"
-msgstr "Enter the postal code"
-
-msgid "Població"
-msgstr "Town/City"
-
-msgid "Introduïu la població"
-msgstr "Enter the town/city"
-
-msgid "Introduïu el país"
-msgstr "Enter the country"
-
-msgid "Missatge"
-msgstr "Message"
-
-msgid "Introduïu el vostre missatge"
-msgstr "Enter your message"
-
-msgid "He llegit i accepto la política de privacitat"
-msgstr "I have read and accept the privacy policy"
-
-msgid "De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials"
-msgstr "According to the provisions of Organic Law 15/1999, of December 13, on the Protection of Personal Data (LOPD), we inform you that your personal data are incorporated into files owned by the Ajuntament de Cabrera de Mar for the purpose of properly attending to your requests for information and preparing the budgets that you may request from us. To exercise the rights of access, rectification, cancellation, and opposition provided for in the Law, you can send a letter to Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Social Matters."
-
-msgid "Enviar"
-msgstr "Send"
-
-msgid "Introduïu una adreça de correu electrònic vàlida"
-msgstr "Please enter a valid email address"
-
-msgid "Formulari enviat amb èxit"
-msgstr "Form submitted successfully"
-
-msgid "S'ha produït un error en l'enviament del formulari. Si us plau, torneu-ho a intentar"
-msgstr "An error occurred while submitting the form. Please try again"
-
-msgid "Els camps marcats amb * són obligatoris"
-msgstr "Fields marked with * are mandatory"
-
-msgid "Polítiques de privacitat"
-msgstr "Privacy Policies"
-
-msgid "Veure més a Google Maps"
-msgstr "View more on Google Maps"
-
-msgid "Llocs Físics de Protecció contra les Violències Masclistes"
-msgstr "Physical Places for Protection against Male Violence"
-
-msgid "Col·laboració d'Entitats pel Pacte Integral"
-msgstr "Collaboration of Entities for the Integral Pact"
-
-msgid "Plans i Activitats per a la Igualtat"
-msgstr "Plans and Activities for Equality"
-
-msgid "Descàrrega de Recursos i Materials"
-msgstr "Download Resources and Materials"
-
-msgid "Veure arxiu"
-msgstr "View File"
-
-msgid "Polítiques de cookies"
-msgstr "Cookie Policies"
-
-msgid "Fes click"
-msgstr "Click"
-
-# footer footer.html
-
-msgid "privacitat"
-msgstr "privacy"
-
-# newsletter newsletter.html
-
-msgid "Anar a la web"
-msgstr "Go to website"
-
-msgid "MAR, MUNTANYA I HISTÒRIA"
-msgstr "SEA, MOUNTAIN AND HISTORY"
-
-msgid "PROPERES ACTIVITATS"
-msgstr "UPCOMING ACTIVITIES"
-
-msgid "Segueix-nos en"
-msgstr "Follow us on"
-
-msgid "De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials."
-msgstr "In accordance with the provisions of Organic Law 15/1999, of December 13, on the Protection of Personal Data (LOPD), we inform you that your personal data are incorporated into files owned by the Cabrera de Mar City Council in order to properly handle your requests for information and to prepare the budgets that you may request from us. To exercise the rights of access, rectification, cancellation and opposition provided for in the Law, you can send a letter to Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Social Matters."
-
-msgid "Fes clic al banner per veure a pantalla completa"
-msgstr "Click on the banner to view in full screen"
-
-msgid "Vols participar?"
-msgstr "Do you want to participate?"
-
-msgid "Si ets <span class=\"secondary-color h1\">comerciant</span>, adhereix el teu negoci a la campanya…"
-msgstr "If you are a <span class=\"secondary-color h1\">merchant</span>, join your business to the campaign…"
-
-msgid "Adhereix-te"
-msgstr "Join us"
-
-msgid "Si vols <span class=\"secondary-color h1\">participar</span>, completa el registre a xarxabarris.cat"
-msgstr "If you want to <span class=\"secondary-color h1\">participate</span>, complete the registration at xarxabarris.cat"
-
-msgid "Participa"
-msgstr "Participate"
-
-msgid "Gràcies per participar"
-msgstr "Thank you for participating"
-
-msgid "L'esdeveniment Compra i descobreix ha finalitzat!"
-msgstr "The Buy and Discover event has ended!"
-
-msgid "Només falten"
-msgstr "Only missing"
-
-msgid "dies"
-msgstr "days"
-
-msgid "hores"
-msgstr "hours"
-
-msgid "minuts"
-msgstr "minutes"
-
-msgid "ha començat!"
-msgstr "has started!"
-
-msgid "segons"
-msgstr "seconds"
-
-msgid "Gaudeix de l'event que has estat esperant"
-msgstr "Enjoy the event you've been waiting for"
-
-msgid "Descàrrega material addicional en PDF"
-msgstr "Download additional material in PDF"
-
-msgid "¡L'esdeveniment ha començat!"
-msgstr "The event has started!"
-
-msgid "Comerços Participants a"
-msgstr "Participating Shops in"
-
-msgid "a Cabrera de Mar"
-msgstr "in Cabrera de Mar"
-
-msgid "Sorteix dels guanyadors de l'última edició"
-msgstr "Draw the winners of the last edition"
-
-msgid "Tens problemes per veure el vídeo, fes"
-msgstr "Having trouble viewing the video, please"
-
-msgid "clic aquí"
-msgstr "click here"
-
-msgid "Llista dels guanyadors de l'última edició"
-msgstr "List of winners from the last edition"
-
-msgid "Descarrega't el programa"
-msgstr "Download the program"
-
-msgid "Descarregar PDF"
-msgstr "Download PDF"
-
-msgid "ha finalitzat!"
-msgstr "has finished!"
-
-
-msgid "Obtén les teves entrades aquí!"
-msgstr "Get your tickets here!"
-
-msgid "Missatges del Nostre Equip Municipal"
-msgstr "Messages from Our Municipal Team"
-
-msgid "Ajust de Pressupost"
-msgstr "Budget Adjustment"
-
-msgid "Activitats principals"
-msgstr "Main Activities"
-
-msgid "Detall de la mesura"
-msgstr "Measure Detail"
-
-
-msgid "Dades adicionals"
-msgstr "Additional data"
-
-msgid "Fes click al selector per veure altres dades"
-msgstr "Click on the selector to see other data"
-
-msgid "Selecciona una data de l'esdeveniment"
-msgstr "Select an event date"
-
-msgid "descarregar"
-msgstr "download"
-
-msgid "Comparteix l'acte"
-msgstr "Share the event"
-
-msgid "Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu"
-msgstr "Do you want to add the next activity to your schedule? Click on the icon of your device."
-
-msgid "Compra les teves entrades"
-msgstr "Buy your tickets"
-
-msgid "Comprar entrades"
-msgstr "Buy tickets"
-
-msgid "Descarrega tota l'agenda en PDF"
-msgstr "Download the entire schedule in PDF"
-
-msgid "Data"
-msgstr "Date"
-
-msgid "Generar els enllaços"
-msgstr "Generate the links"
-
-msgid "Gener"
-msgstr "January"
-
-msgid "Febrer"
-msgstr "February"
-
-msgid "Març"
-msgstr "March"
-
-msgid "Abril"
-msgstr "April"
-
-msgid "Maig"
-msgstr "May"
-
-msgid "Juny"
-msgstr "June"
-
-msgid "Juliol"
-msgstr "July"
-
-msgid "Agost"
-msgstr "August"
-
-msgid "Setembre"
-msgstr "September"
-
-msgid "Octubre"
-msgstr "October"
-
-msgid "Novembre"
-msgstr "November"
-
-msgid "Desembre"
-msgstr "December"
-
-msgid "Preu"
-msgstr "Price"
-
-msgid "Data de finalització"
-msgstr "End date"
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-29 09:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\agenda\admin.py:199
+msgid "Selecciona el tipus d'esdeveniment"
+msgstr "Select the type of event"
+
+
+#: .\agenda\models.py:120
+msgid "Tipus d'esdeveniment"
+msgstr ""
+
+#: .\agenda\models.py:455
+msgid "Nens"
+msgstr "Children"
+
+#: .\agenda\models.py:456
+msgid "Joves"
+msgstr "Youth"
+
+
+#: .\agenda\models.py:457
+msgid "Adults"
+msgstr "Adults"
+
+
+#: .\agenda\models.py:458
+msgid "Totes les edats"
+msgstr "All ages"
+
+
+#: .\agenda\models.py:462 .\blog\models.py:209
+msgid "Sí"
+msgstr "Yes"
+
+
+#: .\agenda\models.py:463 .\blog\models.py:208
+msgid "No"
+msgstr "No"
+
+
+#: .\alerta\models.py:86
+msgid "La fecha de inicio debe ser anterior a la fecha de fin."
+msgstr "The start date must be earlier than the end date."
+
+
+#: .\map\models.py:54
+msgid "Municipi"
+msgstr "Municipality"
+
+#: .\map\models.py:61
+msgid "Comarca"
+msgstr "Region"
+
+
+#: .\map\models.py:68
+msgid "Comunitat Autònoma"
+msgstr "Autonomous Community"
+
+
+#: .\map\models.py:75
+msgid "País"
+msgstr "Country"
+
+
+#: .\map\models.py:82
+msgid "Codi postal"
+msgstr "Postal code"
+
+
+#: .\map\models.py:88
+msgid "Carrer"
+msgstr "Street"
+
+
+
+# post template blog\templates\post\detalle_post.html
+msgid "Fes clic a les imatges per veure la galeria completa"
+msgstr "Click on the images to view the full gallery"
+
+
+msgid "Agenda"
+msgstr "Agenda"
+
+
+msgid "No et perdis cap activitat, gaudeix Cabrera!"
+msgstr "Don't miss any activity, enjoy Cabrera!"
+
+
+msgid "Tota l'agenda"
+msgstr "The entire agenda"
+
+# core base.html title
+msgid "Inici"
+msgstr "Home"
+
+#categoria_especial.html
+msgid "Et proposem els millors plans a Cabrera de Mar!"
+msgstr "We offer you the best plans in Cabrera de Mar!"
+
+msgid "Escull amb qui vols venir i et presentem un munt d'opcions per gaudir al màxim."
+msgstr "Choose who you want to come with and we'll present you with a bunch of options to enjoy to the fullest."
+
+
+#super_destacado.html
+
+msgid "No et pots perdre"
+msgstr "You can't miss"
+
+msgid "Saber més"
+msgstr "See more"
+
+
+#destacado.html
+
+msgid "Destacats"
+msgstr "Highlights"
+
+msgid "Cabrera de Mar és un municipi de la comarca del Maresme situat en una petita vall oberta al litoral, entre les localitats de Vilassar de Mar i Mataró. Combina muntanya i mar amb una gran riquesa arqueològica en el poblat iber, al peu del castell de Burriac i en diversos jaciments romans en el nucli urbà."
+msgstr "Cabrera de Mar is a municipality in the Maresme region located in a small valley open to the coast, between the towns of Vilassar de Mar and Mataró. It combines mountains and sea with a great archaeological wealth in the Iberian settlement, at the foot of the Burriac castle, and in various Roman sites in the urban core."
+
+msgid "Situat a uns 28 quilòmetres de Barcelona i a 104 metres sobre el nivell del mar, el centre del municipi es troba a 2.5 quilòmetres de distància del mar, en una petita vall entre dues muntanyes: Burriac i Montcabrer."
+msgstr "Located about 28 kilometers from Barcelona and 104 meters above sea level, the center of the municipality is 2.5 kilometers away from the sea, in a small valley between two mountains: Burriac and Montcabrer."
+
+#categorias_seleccion.html
+
+msgid "Coneix els llocs que no t'hauries de perdre si visites Cabrera de Mar: el castell Burriac, la Necròpolis ibers, l'antiga ciutat d'Ilturo, la parròquia de Sant Feliu o les platges Cabrera. Aquests són només alguns dels llocs més emblemàtics del nostre municipi, on cada racó us farà viure una experiència única i inoblidable."
+msgstr "Discover the places you shouldn't miss if you visit Cabrera de Mar: the Burriac Castle, the Iberian Necropolis, the ancient city of Ilturo, the parish of Saint Feliu, or the Cabrera beaches. These are just some of the most emblematic places of our municipality, where each corner will offer you a unique and unforgettable experience."
+
+#com_llegar.html
+
+msgid "Com Arribar a Cabrera de Mar"
+msgstr "How to Get to Cabrera de Mar"
+
+msgid "Horaris de tren"
+msgstr "Train Schedules"
+
+msgid "Busca la millor Ruta"
+msgstr "Find the Best Route"
+
+msgid "Horaris de Bus"
+msgstr "Bus Schedules"
+
+msgid "Aeroport del Prat"
+msgstr "El Prat Airport"
+
+msgid "Aeroport de Girona"
+msgstr "Girona Airport"
+
+#cookies.html
+
+msgid "Per a més informació podeu consultar la nostra política de galetes"
+msgstr "For more information, you can consult our cookie policy"
+
+msgid "aquí"
+msgstr "here"
+
+# footer.html
+
+msgid "diversitat e inclusió"
+msgstr "diversity and inclusion"
+
+#map.html
+
+msgid "Descobreix els llocs icònics de Cabrera de Mar"
+msgstr "Discover the iconic places of Cabrera de Mar"
+
+msgid "informació"
+msgstr "information"
+
+
+
+
+
+msgid "Llegenda"
+msgstr "Legend"
+
+
+msgid "Punt d'informació"
+msgstr "Information Point"
+
+msgid "Jaciments arqueològics"
+msgstr "Archaeological Sites"
+
+msgid "Patrimoni cultural"
+msgstr "Cultural Heritage"
+
+msgid "Estació"
+msgstr "Station"
+
+msgid "Restaurant"
+msgstr "Restaurant"
+
+msgid "Biblioteca"
+msgstr "Library"
+
+msgid "Hotel"
+msgstr "Hotel"
+
+msgid "Ajuntament"
+msgstr "City Hall"
+
+msgid "Centre Cultural"
+msgstr "Cultural Center"
+
+msgid "Esports"
+msgstr "Sports"
+
+msgid "Serveis"
+msgstr "Services"
+
+msgid "Transports"
+msgstr "Transportation"
+
+msgid "Aparcaments"
+msgstr "Parking Lots"
+
+msgid "Flora i fauna"
+msgstr "Flora and fauna"
+
+msgid "patrimoni"
+msgstr "heritage"
+
+msgid "jaciments"
+msgstr "sites"
+
+msgid "Platges"
+msgstr "Beaches"
+
+msgid "platges"
+msgstr "Beaches"
+
+#teenvio_form.html
+
+msgid "Butlletí electrònic"
+msgstr "Electronic newsletter"
+
+msgid "Notificació"
+msgstr "Notification"
+
+msgid "Subscripció exitosa"
+msgstr "Successful subscription"
+
+msgid "tancar"
+msgstr "close"
+
+msgid "Introduïu el vostre correu electrònic"
+msgstr "Enter your email address"
+
+#carrusel_categorias.html
+
+msgid "Aquesta imatge no està disponible"
+msgstr "This image is not available"
+
+msgid "No hi ha imatges disponibles per a aquesta categoria"
+msgstr "There are no images available for this category"
+
+msgid "Descobreix els Tresors de Cabrera de Mar"
+msgstr "Discover the Treasures of Cabrera de Mar"
+
+# categoria_normal.html
+
+msgid "Contingut relacionat"
+msgstr "Related content"
+
+msgid "No hi ha posts disponibles"
+msgstr "No posts available"
+
+msgid "També et pot interessar"
+msgstr "You may also be interested"
+
+msgid "Festes principals"
+msgstr "Main festivals"
+
+msgid "Altres festes"
+msgstr "Other festivals"
+
+msgid "Principals llocs"
+msgstr "Main places"
+
+msgid "Rutes personalitzades de Cabrera de Mar"
+msgstr "Customized routes of Cabrera de Mar"
+
+msgid "Rutes principals"
+msgstr "Main routes"
+
+msgid "No hi ha rutes disponibles"
+msgstr "No routes available"
+
+msgid "Explora Cabrera de Mar: Descobreix els seus racons amb les nostres rutes temàtiques"
+msgstr "Explore Cabrera de Mar: Discover its corners with our thematic routes"
+
+msgid "Descobreix les nostres increïbles visites guiades!"
+msgstr "Discover our amazing guided tours!"
+
+msgid "Viu la Cultura i les Festes a Cabrera de Mar"
+msgstr "Experience the Culture and Festivals in Cabrera de Mar"
+
+
+
+msgid "Tots"
+msgstr "All"
+
+msgid "Juliol jove"
+msgstr "Youth July"
+
+msgid "Música"
+msgstr "Music"
+
+msgid "Teatre"
+msgstr "Theatre"
+
+msgid "Exposició"
+msgstr "Exhibition"
+
+msgid "Festes"
+msgstr "Festivals"
+
+msgid "Cinema"
+msgstr "Cinema"
+
+msgid "Dansa"
+msgstr "Dance"
+
+msgid "Visites guiades"
+msgstr "Guided tours"
+
+msgid "Conferències"
+msgstr "Conferences"
+
+msgid "Altres"
+msgstr "Others"
+
+msgid "Activitats turístiques"
+msgstr "Tourist activities"
+
+#ruta.html
+
+msgid "Descripció"
+msgstr "Description"
+
+msgid "Detalls"
+msgstr "Details"
+
+msgid "Itinerari"
+msgstr "Itinerary"
+
+msgid "Durada"
+msgstr "Duration"
+
+msgid "Pendent"
+msgstr "Pending"
+
+
+msgid "metres"
+msgstr "meters"
+
+msgid "quilòmetres"
+msgstr "kilometers"
+
+msgid "Tema"
+msgstr "Theme"
+
+msgid "Activitat"
+msgstr "Activity"
+
+msgid "Valoració"
+msgstr "Rating"
+
+msgid "Tipologia"
+msgstr "Typology"
+
+msgid "Dificultat"
+msgstr "Difficulty"
+
+msgid "No hi ha llocs disponibles"
+msgstr "No places available"
+
+msgid "Et recomanem l'App de Natura Local per fer aquesta ruta guiada i interpretada. Descarrega-te-la gratis aquí"
+msgstr "We recommend the Natura Local App for this guided and interpreted route. Download it for free here"
+
+msgid "Tu navegador no soporta la reproducción de audio"
+msgstr "Your browser does not support audio playback"
+
+msgid "descarregar playlist"
+msgstr "download playlist"
+
+msgid "Altres Rutes"
+msgstr "Other Routes"
+
+msgid "Activitats Relacionades"
+msgstr "Related Activities"
+
+msgid "Descobreix altres activitats interessants per a gaudir al màxim"
+msgstr "Discover other interesting activities to enjoy to the fullest"
+
+msgid "Gratis"
+msgstr "Free"
+
+msgid "Informació addicional"
+msgstr "Additional Information"
+
+msgid "Duració"
+msgstr "Duration"
+
+msgid "Data d'inici"
+msgstr "Start Date"
+
+msgid "Públic recomanat"
+msgstr "Recommended Audience"
+
+msgid "Ubicació"
+msgstr "Location"
+
+msgid "Veure al mapa"
+msgstr "View on Map"
+
+msgid "No s'ha proporcionat la ubicació"
+msgstr "Location not provided"
+
+msgid "Calendari d'Esdeveniments"
+msgstr "Events Calendar"
+
+msgid "Dl"
+msgstr "Mo"
+
+msgid "Dm"
+msgstr "Tu"
+
+msgid "Dc"
+msgstr "We"
+
+msgid "Dj"
+msgstr "Th"
+
+msgid "Dv"
+msgstr "Fr"
+
+msgid "Ds"
+msgstr "Sa"
+
+msgid "Dg"
+msgstr "Su"
+
+msgid "Duració diària"
+msgstr "Daily Duration"
+
+msgid "Certificats de Turisme Sostenible"
+msgstr "Sustainable Tourism Certificates"
+
+msgid "Esdeveniments de la visita guiada"
+msgstr "Guided Tour Events"
+
+#categoria_alojamiento.html
+
+msgid "Explora les nostres excepcionals opcions d'allotjament i viu una estada inoblidable!"
+msgstr "Explore our exceptional accommodation options and experience an unforgettable stay!"
+
+msgid "Adaptat per a persones amb mobilitat reduïda"
+msgstr "Adapted for people with reduced mobility"
+
+msgid "Pàrquing gratuït"
+msgstr "Free Parking"
+
+msgid "WiFi disponible"
+msgstr "WiFi available"
+
+msgid "Admet mascotes"
+msgstr "Pets allowed"
+
+msgid "Feu clic a les imatges per veure la galeria completa"
+msgstr "Click on the images to view the full gallery"
+
+#categoria_restaurante.html
+
+msgid "Explora les nostres excepcionals opcions de restauració i gaudeix d'una experiència culinària inoblidable!"
+msgstr "Explore our exceptional dining options and enjoy an unforgettable culinary experience!"
+
+msgid "restaurant"
+msgstr "restaurant"
+
+msgid "bar"
+msgstr "bar"
+
+msgid "masia"
+msgstr "country house"
+
+msgid "guingueta"
+msgstr "beach bar"
+
+msgid "Tipus d'estableciments"
+msgstr "Types of establishments"
+
+msgid "Pet Friendly"
+msgstr "Pet Friendly"
+
+msgid "Opcions vegetarianes"
+msgstr "Vegetarian options"
+
+msgid "WiFi"
+msgstr "WiFi"
+
+msgid "Apto para celíacos"
+msgstr "Suitable for coeliacs"
+
+msgid "Terrassa"
+msgstr "Terrace"
+
+msgid "Menú infantil"
+msgstr "Kids menu"
+
+msgid "Altres restaurants a Cabrera de Mar"
+msgstr "Other restaurants in Cabrera de Mar"
+
+msgid "Descobreix la deliciosa cuina catalana en els nostres restaurants locals"
+msgstr "Discover the delicious Catalan cuisine in our local restaurants"
+
+msgid "Direcció"
+msgstr "Address"
+
+msgid "Telèfon"
+msgstr "Phone"
+
+msgid "Lloc web"
+msgstr "Website"
+
+msgid "Accessibilitat per a persones amb discapacitat"
+msgstr "Accessibility for people with disabilities"
+
+msgid "Allotjaments Relacionats"
+msgstr "Related Accommodations"
+
+msgid "Descobreix altres allotjaments interessants per gaudir al màxim de la teva estada"
+msgstr "Discover other interesting accommodations to make the most of your stay"
+
+#model 'paginas estaticas'
+
+msgid "Nom"
+msgstr "Name"
+
+msgid "Introduïu el vostre nom"
+msgstr "Enter your name"
+
+msgid "Cognoms"
+msgstr "Last Name"
+
+msgid "Introduïu el vostre cognom"
+msgstr "Enter your last name"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Introduïu el vostre email"
+msgstr "Enter your email"
+
+msgid "Introduïu el vostre telèfon"
+msgstr "Enter your phone number"
+
+msgid "Adreça"
+msgstr "Address"
+
+msgid "Introduïu la vostra adreça"
+msgstr "Enter your address"
+
+msgid "Aquest camp es opcional"
+msgstr "This field is optional"
+
+msgid "Introduïu el codi postal"
+msgstr "Enter the postal code"
+
+msgid "Població"
+msgstr "Town/City"
+
+msgid "Introduïu la població"
+msgstr "Enter the town/city"
+
+msgid "Introduïu el país"
+msgstr "Enter the country"
+
+msgid "Missatge"
+msgstr "Message"
+
+msgid "Introduïu el vostre missatge"
+msgstr "Enter your message"
+
+msgid "He llegit i accepto la política de privacitat"
+msgstr "I have read and accept the privacy policy"
+
+msgid "De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials"
+msgstr "According to the provisions of Organic Law 15/1999, of December 13, on the Protection of Personal Data (LOPD), we inform you that your personal data are incorporated into files owned by the Ajuntament de Cabrera de Mar for the purpose of properly attending to your requests for information and preparing the budgets that you may request from us. To exercise the rights of access, rectification, cancellation, and opposition provided for in the Law, you can send a letter to Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Social Matters."
+
+msgid "Enviar"
+msgstr "Send"
+
+msgid "Introduïu una adreça de correu electrònic vàlida"
+msgstr "Please enter a valid email address"
+
+msgid "Formulari enviat amb èxit"
+msgstr "Form submitted successfully"
+
+msgid "S'ha produït un error en l'enviament del formulari. Si us plau, torneu-ho a intentar"
+msgstr "An error occurred while submitting the form. Please try again"
+
+msgid "Els camps marcats amb * són obligatoris"
+msgstr "Fields marked with * are mandatory"
+
+msgid "Polítiques de privacitat"
+msgstr "Privacy Policies"
+
+msgid "Veure més a Google Maps"
+msgstr "View more on Google Maps"
+
+msgid "Llocs Físics de Protecció contra les Violències Masclistes"
+msgstr "Physical Places for Protection against Male Violence"
+
+msgid "Col·laboració d'Entitats pel Pacte Integral"
+msgstr "Collaboration of Entities for the Integral Pact"
+
+msgid "Plans i Activitats per a la Igualtat"
+msgstr "Plans and Activities for Equality"
+
+msgid "Descàrrega de Recursos i Materials"
+msgstr "Download Resources and Materials"
+
+msgid "Veure arxiu"
+msgstr "View File"
+
+msgid "Polítiques de cookies"
+msgstr "Cookie Policies"
+
+msgid "Fes click"
+msgstr "Click"
+
+# footer footer.html
+
+msgid "privacitat"
+msgstr "privacy"
+
+# newsletter newsletter.html
+
+msgid "Anar a la web"
+msgstr "Go to website"
+
+msgid "MAR, MUNTANYA I HISTÒRIA"
+msgstr "SEA, MOUNTAIN AND HISTORY"
+
+msgid "PROPERES ACTIVITATS"
+msgstr "UPCOMING ACTIVITIES"
+
+msgid "Segueix-nos en"
+msgstr "Follow us on"
+
+msgid "De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials."
+msgstr "In accordance with the provisions of Organic Law 15/1999, of December 13, on the Protection of Personal Data (LOPD), we inform you that your personal data are incorporated into files owned by the Cabrera de Mar City Council in order to properly handle your requests for information and to prepare the budgets that you may request from us. To exercise the rights of access, rectification, cancellation and opposition provided for in the Law, you can send a letter to Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Social Matters."
+
+msgid "Fes clic al banner per veure a pantalla completa"
+msgstr "Click on the banner to view in full screen"
+
+msgid "Vols participar?"
+msgstr "Do you want to participate?"
+
+msgid "Si ets <span class=\"secondary-color h1\">comerciant</span>, adhereix el teu negoci a la campanya…"
+msgstr "If you are a <span class=\"secondary-color h1\">merchant</span>, join your business to the campaign…"
+
+msgid "Adhereix-te"
+msgstr "Join us"
+
+msgid "Si vols <span class=\"secondary-color h1\">participar</span>, completa el registre a xarxabarris.cat"
+msgstr "If you want to <span class=\"secondary-color h1\">participate</span>, complete the registration at xarxabarris.cat"
+
+msgid "Participa"
+msgstr "Participate"
+
+msgid "Gràcies per participar"
+msgstr "Thank you for participating"
+
+msgid "L'esdeveniment Compra i descobreix ha finalitzat!"
+msgstr "The Buy and Discover event has ended!"
+
+msgid "Només falten"
+msgstr "Only missing"
+
+msgid "dies"
+msgstr "days"
+
+msgid "hores"
+msgstr "hours"
+
+msgid "minuts"
+msgstr "minutes"
+
+msgid "ha començat!"
+msgstr "has started!"
+
+msgid "segons"
+msgstr "seconds"
+
+msgid "Gaudeix de l'event que has estat esperant"
+msgstr "Enjoy the event you've been waiting for"
+
+msgid "Descàrrega material addicional en PDF"
+msgstr "Download additional material in PDF"
+
+msgid "¡L'esdeveniment ha començat!"
+msgstr "The event has started!"
+
+msgid "Comerços Participants a"
+msgstr "Participating Shops in"
+
+msgid "a Cabrera de Mar"
+msgstr "in Cabrera de Mar"
+
+msgid "Sorteix dels guanyadors de l'última edició"
+msgstr "Draw the winners of the last edition"
+
+msgid "Tens problemes per veure el vídeo, fes"
+msgstr "Having trouble viewing the video, please"
+
+msgid "clic aquí"
+msgstr "click here"
+
+msgid "Llista dels guanyadors de l'última edició"
+msgstr "List of winners from the last edition"
+
+msgid "Descarrega't el programa"
+msgstr "Download the program"
+
+msgid "Descarregar PDF"
+msgstr "Download PDF"
+
+msgid "ha finalitzat!"
+msgstr "has finished!"
+
+
+msgid "Obtén les teves entrades aquí!"
+msgstr "Get your tickets here!"
+
+msgid "Missatges del Nostre Equip Municipal"
+msgstr "Messages from Our Municipal Team"
+
+msgid "Ajust de Pressupost"
+msgstr "Budget Adjustment"
+
+msgid "Activitats principals"
+msgstr "Main Activities"
+
+msgid "Detall de la mesura"
+msgstr "Measure Detail"
+
+
+msgid "Dades adicionals"
+msgstr "Additional data"
+
+msgid "Fes click al selector per veure altres dades"
+msgstr "Click on the selector to see other data"
+
+msgid "Selecciona una data de l'esdeveniment"
+msgstr "Select an event date"
+
+msgid "descarregar"
+msgstr "download"
+
+msgid "Comparteix l'acte"
+msgstr "Share the event"
+
+msgid "Vols afegir l'activitat més propera a la teva agenda fes click al icone del teu dispositiu"
+msgstr "Do you want to add the next activity to your schedule? Click on the icon of your device."
+
+msgid "Compra les teves entrades"
+msgstr "Buy your tickets"
+
+msgid "Comprar entrades"
+msgstr "Buy tickets"
+
+msgid "Descarrega tota l'agenda en PDF"
+msgstr "Download the entire schedule in PDF"
+
+msgid "Data"
+msgstr "Date"
+
+msgid "Generar els enllaços"
+msgstr "Generate the links"
+
+msgid "Gener"
+msgstr "January"
+
+msgid "Febrer"
+msgstr "February"
+
+msgid "Març"
+msgstr "March"
+
+msgid "Abril"
+msgstr "April"
+
+msgid "Maig"
+msgstr "May"
+
+msgid "Juny"
+msgstr "June"
+
+msgid "Juliol"
+msgstr "July"
+
+msgid "Agost"
+msgstr "August"
+
+msgid "Setembre"
+msgstr "September"
+
+msgid "Octubre"
+msgstr "October"
+
+msgid "Novembre"
+msgstr "November"
+
+msgid "Desembre"
+msgstr "December"
+
+msgid "Preu"
+msgstr "Price"
+
+msgid "Data de finalització"
+msgstr "End date"
+
+msgid "Agenda cultural Cabrera de Mar"
+msgstr "Cabrera de Mar Cultural Agenda"
+
+msgid "Necessites un reproductor?"
+msgstr "Do you need a player?"
+
+msgid "Per utilitzar correctament aquest arxiu .m3u, necessites tenir instal·lat un reproductor compatible com VLC."
+msgstr "To properly use this .m3u file, you need to have a compatible player installed such as VLC."
+
+msgid "lloc oficial"
+msgstr "Official site"
+
+msgid "Pots descarregar VLC des del seu"
+msgstr "You can download VLC from its"
+
+msgid "La instal·lació és ràpida i fàcil."
+msgstr "The installation is quick and easy."
