@@ -32,8 +32,13 @@ header .dropdown-submenu .dropdown-menu {
   top: 0;
   left: 100%;
   margin-top: -1px;
+  background-color: #f8f9fa;
 }
 
+.topbar-link{
+  font-size: 1rem;
+  text-decoration: underline !important;
+}
 
 @media (max-width: 991px) {
   /* Muestra el botón de hamburguesa en pantallas pequeñas */
@@ -58,6 +63,19 @@ header .dropdown-submenu .dropdown-menu {
   }
 }
 
+@media (max-width: 1366px) {
+  /* Muestra el botón de hamburguesa en pantallas pequeñas a medianas */
+  header .navbar-toggler {
+      display: block;
+  }
+
+  /* Estilos adicionales para el menú en modo móvil a tablet */
+  header .navbar-nav .dropdown-menu {
+      position: static;
+      float: none;
+  }
+}
+
 
 
 /* Custom */
@@ -72,6 +90,9 @@ header .dropdown-submenu .dropdown-menu {
   border-color: #e9ecef;
 }
 
+#main-content a {
+  text-decoration: underline;
+}
 
 /* end Custom */
 
@@ -93,8 +114,15 @@ header .dropdown-submenu .dropdown-menu {
 }
 
 .dropdown-menu a:hover {
-  background-color: #f8f8f8; /* Color de fondo al pasar el ratón */
+  background-color: #ffffff; /* Color de fondo al pasar el ratón */
 }
+.text-header-link:hover, .text-header-link:active, .text-header-link:focus{
+  color: rgba(230, 230, 230) !important;
+}
+.enlace-externo-link:hover, .enlace-externo-link:active, .enlace-externo-link:focus{
+  color: rgba(255, 255, 255) !important;
+}
+
 @media (max-width: 767px) {
   .dropdown-menu {
     background-color: #ffffff; /* Color de fondo */
@@ -520,6 +548,27 @@ header .dropdown-submenu .dropdown-menu {
 
 /* End parallax */
 
+@media (max-width: 1024px) {
+  .parallax {
+      background-attachment: scroll; /* Desactiva el efecto parallax */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .parallax-container {
+      height: auto; /* Permite que el contenedor crezca con el contenido */
+      min-height: 50vh; /* Asegura una altura mínima en orientación horizontal */
+  }
+  .parallax {
+      position: fixed; /* Intenta mantener el efecto parallax, pero podría necesitar ajustes basados en el comportamiento específico deseado */
+      /* Resto de propiedades necesarias para ajustar la visualización */
+  }
+  .parallax-content {
+      /* Ajustes adicionales si es necesario para asegurar que el contenido se muestre correctamente */
+  }
+}
+
+
 /* Redes sociales */
 
 .container-social{
@@ -528,7 +577,7 @@ header .dropdown-submenu .dropdown-menu {
     right: 0;
     display: flex;
     flex-flow: wrap;
-    width: 190px;
+    width: auto !important;
     justify-content: space-around;
     padding: 20px;
     background: #000000;
@@ -537,6 +586,7 @@ header .dropdown-submenu .dropdown-menu {
 .list-group{
     display: flex;
     flex-direction: row;
+    padding: 0;
 }
 
 .container-social .list-group .list-group-item{
@@ -568,6 +618,9 @@ header .dropdown-submenu .dropdown-menu {
   .container-social.parallax-mobile{
     bottom: 0 !important;
   }
+  .container-social .list-group-item img {
+    width: 1.5rem;
+  }
 }
 @media only screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
   .video-hero {
@@ -581,12 +634,10 @@ header .dropdown-submenu .dropdown-menu {
 /* inicio subBlog especiales */
 .categoria-especial-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     justify-content: center;
     align-items: center;
     align-items: stretch;
-    grid-auto-rows: 150px;
-    padding: 1rem;
     margin: 0;
    
 }
@@ -683,27 +734,6 @@ section.categoria-especial-container .col-especial-subBlog{
     line-height: 1;
   }
   
-  .card-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* background-color: rgba(0, 0, 0, 0.5); */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: 2;
-  }
-  .card:hover .card-overlay {
-    opacity: 2.5;
-  }
-  .card-header:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-
   /* Estilos responsive */
 @media (max-width: 767px) {
 
@@ -1283,6 +1313,104 @@ table.table-custom tr.even {
   }
   
 
+/*
+ * Property styles in unhighlighted state.
+*/
+/* Estilos básicos para el contenido del marcador. */
+.property {
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  color: #263238;
+  display: flex;
+  font-size: 14px;
+  gap: 15px;
+  height: 30px; /* Tamaño inicial del marcador */
+  justify-content: center;
+  padding: 4px;
+  position: relative;
+  transition: all 0.3s ease-out;
+  width: 30px; /* Tamaño inicial del marcador */
+  cursor: pointer; /* Hace que el cursor cambie a mano al pasar por encima */
+}
+
+.property::after {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid #FFFFFF;
+  content: "";
+  height: 0;
+  left: 50%;
+  position: absolute;
+  top: 100%;
+  transform: translate(-50%, -50%) scale(0); /* Inicia la transformación escalando a 0 para ocultarlo. */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Suaviza la transformación y la opacidad. */
+  width: 0;
+  z-index: 1;
+  opacity: 0; /* Inicia con opacidad 0 para ocultarlo completamente. */
+}
+
+.property.highlight::after {
+  transform: translate(-50%, -50%) scale(1); /* Escala a su tamaño normal para mostrarlo. */
+  opacity: 1; /* Ajusta la opacidad a 1 para hacerlo completamente visible. */
+}
+
+
+.property .icon {
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+}
+
+.property .icon i {
+  font-size: 20px; /* Tamaño del icono */
+}
+
+.property .details {
+  display: none; /* Ocultar detalles por defecto */
+}
+
+.property.highlight {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  flex-direction: column;
+  height: auto; /* Altura automática cuando se expande */
+  padding: 15px;
+  width: 250px; /* Ancho del detalle expandido */
+  z-index: 2; /* Asegurar que se muestre por encima de otros elementos */
+}
+
+.property.highlight::after {
+  display: block; /* Mostrar el triángulo cuando está destacado */
+}
+
+.property.highlight .details {
+  display: flex; /* Mostrar detalles cuando está destacado */
+  flex-direction: column;
+}
+.info-window-link {
+  z-index: 1000; /* Ajusta según sea necesario para asegurar visibilidad */
+  cursor: pointer; /* Asegura que se muestre el cursor de enlace */
+}
+.info-window-link a {
+  pointer-events: auto; /* Asegura que los eventos del mouse sean capturados */
+}
+
+
+.property img {
+  max-width: 100%; /* Asegurar que la imagen no desborde el contenedor */
+  height: auto;
+  border-radius: 8px; /* Opcional: bordes redondeados para la imagen */
+}
+/* Ajusta este estilo para cambiar el aspecto de los iconos según el tipo de propiedad. */
+.fa-landmark { color: #6C757D; } /* Ejemplo para patrimonio. */
+.fa-archway{ color: #FFC107; } /* Ejemplo para jacimientos. */
+.fa-umbrella-beach { color: #007BFF; } /* Ejemplo para playas. */
+.fa-info-circle { color: #17A2B8; } /* Ejemplo para información. */
+.fa-thumbtack { color: #69920C; }
+/* Añade más reglas según los tipos de icono que tengas. */
+
 
 /* fin mapa portada */
 
@@ -1571,12 +1699,23 @@ table.table-custom tr.even {
   background-attachment: fixed;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 991px) {
   .super_destacado_container_image_parallax {
       height: 40vh;
       background-attachment: scroll;
   }
 }
+
+/* Estilos específicos para tablets en orientación horizontal */
+@media screen and (min-width: 992px) and (max-width: 1366px) {
+  .super_destacado_container_image_parallax {
+    height: 50vh;
+    background-attachment: scroll;
+  }
+}
+
+
+
 /* end personalización */
 
 /* freebox */
@@ -1618,6 +1757,17 @@ table.table-custom tr.even {
   .modal-dialog.modal-dialog-centered {
     max-width: calc(80% - 30px);
   }
+  .categoria-especial-container{
+    grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+    padding: 0;
+    margin: 0;
+  }
+  .categoria-especial-container .caption{
+    display: none;
+  }
+  .categoria-especial .img-fluid.align-middle {
+    height: 95px;
+  }
 }
 
 /* Para pantallas pequeñas (sm) */
@@ -1642,3 +1792,17 @@ table.table-custom tr.even {
 }
 
 /* end modal */
+
+/* ckeditor */
+iframe {
+  width: 100% !important; /* Asegura que el iframe tome el ancho completo del contenedor */
+  height: auto; /* Ajusta la altura automáticamente basado en el aspect ratio */
+}
+/* end ckeditor */
+
+.carousel-item {
+  transition: opacity 0.6s ease-in-out;
+}
+
+
+

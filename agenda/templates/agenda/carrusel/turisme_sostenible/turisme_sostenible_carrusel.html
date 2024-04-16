@@ -1,0 +1,33 @@
+{% load i18n %}
+<section class="container-fluid p-0">
+    <div id="carruselTurisme" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for imagen in turisme_sostenible.postgaleriaimagen_set.all %}
+            <li data-target="#carruselTurisme" data-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active"{% endif %}></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+            {% for imagen in turisme_sostenible.postgaleriaimagen_set.all %}
+                {% if imagen and imagen.imagen.archivo.url %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <a href="{{ imagen.imagen.archivo.url }}" data-fancybox="gallery" title="{{ imagen.imagen.titulo }}">
+                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid fancybox">
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carruselTurisme" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+        </a>
+        <a class="carousel-control-next" href="#carruselTurisme" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Següent</span>
+        </a>
+    </div>
+    <div class="col-12">
+        <small class="text-center">{% blocktrans %}Fes clic a les imatges per veure la galeria completa{% endblocktrans %}</small>
+    </div>
+</section>

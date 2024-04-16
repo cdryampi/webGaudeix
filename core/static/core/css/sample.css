@@ -90,6 +90,9 @@ header .dropdown-submenu .dropdown-menu {
   border-color: #e9ecef;
 }
 
+.underline {
+  text-decoration: underline !important;
+}
 
 /* end Custom */
 

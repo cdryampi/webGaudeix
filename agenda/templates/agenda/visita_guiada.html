@@ -128,8 +128,8 @@
         }
         .calendar-day {
           padding: 0px;
-          width: 2.5rem;
-          height: 2.5rem;
+          width: 1.5rem;
+          height: 1.5rem;
         }
         .calendar-weekdays{
           padding: 0px;
@@ -148,8 +148,8 @@
         }
         .calendar-day {
           padding: 0px;
-          width: 2.5rem;
-          height: 2.5rem;
+          width: 1.5rem;
+          height: 1.5rem;
         }
         .calendar-weekdays{
           padding: 0px;
@@ -198,14 +198,21 @@
                                             <i class="fas fa-clock"></i>
                                             <strong>{% blocktrans %}Duració{% endblocktrans %}:</strong> {{ visites.duracion|format_duration }}
                                         </li>
-                                        <li class="mb-3">
+                                        {% if visites.fechas.all %}
+                                          <li class="mb-3">
                                             <i class="fas fa-calendar-alt"></i>
-                                            <strong>{% blocktrans %}Data d'inici{% endblocktrans %}:</strong> {{ visites.fecha_inicio|date:"j F Y" }}
-                                        </li>
-                                        <li class="mb-3">
-                                            <i class="fas fa-calendar-alt"></i>
-                                            <strong>{% blocktrans %}Data de finalització{% endblocktrans %}:</strong> {{ visites.fecha_fin|date:"j F Y" }}
-                                        </li>
+                                            <strong>{% blocktrans %}Dades{% endblocktrans %}:</strong>
+                                            <ul class="list-group">
+                                              {% for fecha in visites.fechas.all %}
+                                                  <li class="list-group-item">
+                                                      <i class="fa fa-calendar" aria-hidden="true"></i> 
+                                                      {{ fecha.fecha|date:"d M Y" }}
+                                                  </li>
+                                              {% endfor %}
+                                            </ul>                                          
+                                          </li>
+                                        {% endif %}
+
                                         <li class="mb-3">
                                           <i class="fas fa-users"></i>
                                           <strong>{% blocktrans %}Públic recomanat{% endblocktrans %}:</strong> 
@@ -220,26 +227,20 @@
                                           </a>
                                         </li>
                                         {% endif %}
-
-                                        <li>
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <strong>{% blocktrans %}Ubicació{% endblocktrans %}:</strong>
-                                            {% if visites.mapa %}
-
-                                              {% if visites.mapa.enlace_google_maps %}
-                                              
-                                                <a href="{{ visites.mapa.enlace_google_maps }}" target="_blank">{% blocktrans %}Veure al mapa{% endblocktrans %}</a>
-                                              
-                                              {% else %}
-
-                                                <a href="https://maps.google.com/maps?q={{ visites.mapa.latitud }},{{ visites.mapa.longitud }}" target="_blank">{% blocktrans %}Veure al mapa{% endblocktrans %}</a>
-                                              
-                                              {% endif %}
-
-                                            {% else %}
-                                              {% blocktrans %}No s'ha proporcionat la ubicació{% endblocktrans %}.
-                                            {% endif %}
-                                        </li>
+                                        {% if visites.mapa %}
+                                          <li>
+                                              <i class="fas fa-map-marker-alt"></i>
+                                              <strong>{% blocktrans %}Ubicació{% endblocktrans %}:</strong>
+                                                {% if visites.mapa.enlace_google_maps %}
+                                                  <p>
+                                                    <a href="{% url 'map:mapa' slug=visites.mapa.slug %}" class="font-weight-bold" title="{{ visites.mapa.titulo }}">{{ visites.mapa.titulo }}</a>{% if visites.mapa.calle %} - <span>{{ visites.mapa.calle }}</span>{% endif %},
+                                                      <span>{{ visites.mapa.codigo_postal }}</span> <span>{{ visites.mapa.comunidad_autonoma }}</span>
+                                                  </p>
+                                                {% else %}
+                                                  <a href="{% url 'map:mapa' slug=visites.mapa.slug %}" target="_blank">{% blocktrans %}Veure al mapa{% endblocktrans %}</a>
+                                                {% endif %}
+                                          </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>
@@ -292,133 +293,143 @@
     </div>
 </section>
 
+{% if visites.mostrar_calendario == 'si' and visites.fechas.all %}
 
 <aside class="pb-5 pt-3">
-    <div class="container p-1">
-        <h3 class="text-center py-3">{% blocktrans %}Calendari d'Esdeveniments{% endblocktrans %}</h3>
-        <div class="row mx-0">
-            <div class="col-12 col-lg-8 col-md-6 col-sm-12">
-                <div class="calendar">
-                  <div class="calendar-header">
-                    <button id="prev-month-button" class="btn btn-link">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <h2 class="calendar-title" id="current-month-title"></h2>
-                    <button id="next-month-button" class="btn btn-link">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                
-                    <div class="calendar-body">
-                        <div class="calendar-weekdays">
-                            <div class="calendar-weekday">{% blocktrans %}Dl{% endblocktrans %}</div>
-                            <div class="calendar-weekday">{% blocktrans %}Dt{% endblocktrans %}</div>
-                            <div class="calendar-weekday">{% blocktrans %}Dc{% endblocktrans %}</div>
-                            <div class="calendar-weekday">{% blocktrans %}Dj{% endblocktrans %}</div>
-                            <div class="calendar-weekday">{% blocktrans %}Dv{% endblocktrans %}</div>
-                            <div class="calendar-weekday">{% blocktrans %}Ds{% endblocktrans %}</div>
-                            <div class="calendar-weekday">{% blocktrans %}Dg{% endblocktrans %}</div>
-                        </div>
-                        <div class="calendar-days" id="calendar-days"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4 col-md-6 col-sm-12 mt-3 mt-lg-0 mt-md-0 mt-sm-0">
-                <div class="card mb-1">
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            {% load custom_filters %}
-                            {% with fecha_inicio=visites.fecha_inicio fecha_fin=visites.fecha_fin %}
-                            {% if fecha_inicio == fecha_fin %}
-                            {{ fecha_inicio|date:"j F" }}
-                            {% else %}
-                            {{ fecha_inicio|date:"j F" }} - {{ fecha_fin|date:"j F" }}
-                            {% endif %}
-                            {% endwith %}
-                        </h4>
-                        <h5 class="card-title" id="event-title">{% blocktrans %}Duració diària{% endblocktrans %}:</h5>
-                        <p class="card-text"><i class="fas fa-clock"></i>{{ visites.duracion|format_duration }}</p>
-                    </div>
-                </div>
-
-                {% if visites.certificados.exists %}
-                <div class="container-fluid mx-0 py-2">
-                    <div class="row">
-                        <div class="col-12 py-3">
-                            <h4 class="titulo-certificados text-center">{% blocktrans %}Certificats de Turisme Sostenible{% endblocktrans %}</h4>
-                        </div>
-                        {% for certificado in visites.certificados.all %}
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                {% if certificado.enlace_externo and certificado.logo %}
-                                    <a href="{{ certificado.enlace_externo }}" class="link" title="{{ certificado.nombre }}">
-                                        <div class="certificado">
-                                            <img src="{{ certificado.logo.url }}" alt="{{ certificado.nombre }}" class="certificado-imagen img-thumbnail">
-                                        </div>
-                                    </a>
-                                {% elif certificado.logo %}
-                                    <div class="certificado">
-                                        <img src="{{ certificado.logo.url }}" alt="{{ certificado.nombre }}" class="certificado-imagen img-thumbnail">
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-            </div>
-        </div>
-    </div>
-    {% if agendas_relacionadas %}
-    <aside class="container p-3">
-      <div class="py-3">
-          <h4 class="related-activities-title">{% blocktrans %}Esdeveniments de la visita guiada{% endblocktrans %}:</h4>
-      </div>
-      <div class="row row-inline-cards justify-content-center px-0">
-          {% for objeto in agendas_relacionadas %}
-          <div class="col-12 col-md-6 col-lg-4 py-3">
-              <a href="
-                {% spaceless %}
-                  {{ objeto.get_absolute_url }}
-                {% endspaceless %}" class="related-activity-link my-1">
-
-                  <article class="card related-activity-card mb-3 h-100">
-                    {% with imagen=objeto.postgaleriaimagen_set.first %}
-                    {% if not imagen %}
-                      {% with imagenPost=objeto.postimagen %}
-                        {% if imagenPost and imagenPost.imagen.archivo.url %}
-                          <div class="image-container">
-                            <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ imagenPost.imagen.titulo }}" title="{{ imagenPost.imagen.titulo }}" class="img-fluid">
-                          </div>
-                        {% endif %}
-                      {% endwith %}
-                    {% else %}
-                        {% if imagen and imagen.imagen.archivo.url %}
-                          <div class="image-container">
-                            <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid">
-                          </div>
-                        {% endif %}
-
-                    {% endif %}
-                  {% endwith %}
-                  
-                      <div class="card-body text-center">
-                          <h5 class="card-title related-activity-title">{{ objeto.titulo }}</h5>
-                          <p class="card-text related-activity-description">
-                            {% autoescape on %}
-                              {% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}...{% else %}{{ objeto.descripcion_corta }}{% endif %}
-                            {% endautoescape %}
-                            </p>
+  <div class="container p-1">
+      <h3 class="text-center py-3">{% blocktrans %}Calendari d'Esdeveniments{% endblocktrans %}</h3>
+      <div class="row mx-0">
+          <div class="col-12 col-lg-8 col-md-6 col-sm-12">
+              <div class="calendar">
+                <div class="calendar-header">
+                  <button id="prev-month-button" class="btn btn-link">
+                      <i class="fas fa-chevron-left"></i>
+                  </button>
+                  <h2 class="calendar-title" id="current-month-title"></h2>
+                  <button id="next-month-button" class="btn btn-link">
+                      <i class="fas fa-chevron-right"></i>
+                  </button>
+              </div>
+              
+                  <div class="calendar-body">
+                      <div class="calendar-weekdays">
+                          <div class="calendar-weekday">{% blocktrans %}Dl{% endblocktrans %}</div>
+                          <div class="calendar-weekday">{% blocktrans %}Dt{% endblocktrans %}</div>
+                          <div class="calendar-weekday">{% blocktrans %}Dc{% endblocktrans %}</div>
+                          <div class="calendar-weekday">{% blocktrans %}Dj{% endblocktrans %}</div>
+                          <div class="calendar-weekday">{% blocktrans %}Dv{% endblocktrans %}</div>
+                          <div class="calendar-weekday">{% blocktrans %}Ds{% endblocktrans %}</div>
+                          <div class="calendar-weekday">{% blocktrans %}Dg{% endblocktrans %}</div>
                       </div>
-                  </article>
-              </a>
+                      <div class="calendar-days" id="calendar-days"></div>
+                  </div>
+              </div>
           </div>
-          {% endfor %}
+          <div class="col-12 col-lg-4 col-md-6 col-sm-12 mt-3 mt-lg-0 mt-md-0 mt-sm-0">
+              <div class="card mb-1">
+                  <div class="card-body">
+                      <h4 class="card-title">{% blocktrans %}Dades de disponibilitat{% endblocktrans %}</h4>
+                      <ul class="list-group">
+                        {% for fecha in visites.fechas.all %}
+                            <li class="list-group-item">
+                                <i class="fa fa-calendar" aria-hidden="true"></i> 
+                                {{ fecha.fecha|date:"d M Y" }}
+                            </li>
+                        {% endfor %}
+                      </ul>                    
+                      <h5 class="card-title" id="event-title">{% blocktrans %}Duració diària{% endblocktrans %}:</h5>
+                      <p class="card-text"><i class="fas fa-clock"></i> {{ visites.duracion|format_duration }}</p>
+                  </div>
+              </div>
+
+              {% if visites.certificados.exists %}
+              <div class="container-fluid mx-0 py-2">
+                  <div class="row">
+                      <div class="col-12 py-3">
+                          <h4 class="titulo-certificados text-center">{% blocktrans %}Certificats de Turisme Sostenible{% endblocktrans %}</h4>
+                      </div>
+                      {% for certificado in visites.certificados.all %}
+                          <div class="col-lg-4 col-md-6 col-sm-12">
+                              {% if certificado.enlace_externo and certificado.logo %}
+                                  <a href="{{ certificado.enlace_externo }}" class="link" title="{{ certificado.nombre }}">
+                                      <div class="certificado">
+                                          <img src="{{ certificado.logo.url }}" alt="{{ certificado.nombre }}" class="certificado-imagen img-thumbnail">
+                                      </div>
+                                  </a>
+                              {% elif certificado.logo %}
+                                  <div class="certificado">
+                                      <img src="{{ certificado.logo.url }}" alt="{{ certificado.nombre }}" class="certificado-imagen img-thumbnail">
+                                  </div>
+                              {% endif %}
+                          </div>
+                      {% endfor %}
+                  </div>
+              </div>
+          {% endif %}
+          </div>
       </div>
-  </aside>
-    {% endif %}
+  </div>
+  {% if agendas_relacionadas %}
+  <aside class="container p-3">
+    <div class="py-3">
+        <h4 class="related-activities-title">{% blocktrans %}Esdeveniments de la visita guiada{% endblocktrans %}:</h4>
+    </div>
+    <div class="row row-inline-cards justify-content-center px-0">
+        {% for objeto in agendas_relacionadas %}
+        <div class="col-12 col-md-6 col-lg-4 py-3">
+            <a href="
+              {% spaceless %}
+                {{ objeto.get_absolute_url }}
+              {% endspaceless %}" class="related-activity-link my-1">
+
+                <article class="card related-activity-card mb-3 h-100">
+                  {% with imagen=objeto.postgaleriaimagen_set.first %}
+                  {% if not imagen %}
+                    {% with imagenPost=objeto.postimagen %}
+                      {% if imagenPost and imagenPost.imagen.archivo.url %}
+                        <div class="image-container">
+                          <img src="{{ imagenPost.imagen.archivo.url }}" alt="{{ imagenPost.imagen.titulo }}" title="{{ imagenPost.imagen.titulo }}" class="img-fluid">
+                        </div>
+                      {% endif %}
+                    {% endwith %}
+                  {% else %}
+                      {% if imagen and imagen.imagen.archivo.url %}
+                        <div class="image-container">
+                          <img src="{{ imagen.imagen.archivo.url }}" title="{{ imagen.imagen.titulo }}" alt="{{ imagen.imagen.titulo }}" class="img-fluid">
+                        </div>
+                      {% endif %}
+
+                  {% endif %}
+                {% endwith %}
+                
+                    <div class="card-body text-center">
+                        <h5 class="card-title related-activity-title">{{ objeto.titulo }}</h5>
+                        <p class="card-text related-activity-description">
+                          {% autoescape on %}
+                            {% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}...{% else %}{{ objeto.descripcion_corta }}{% endif %}
+                          {% endautoescape %}
+                          </p>
+                    </div>
+                </article>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</aside>
+  {% endif %}
+
+  <div class="jumbotron jumbotron-fluid bg-light text-center my-3">
+    <div class="container">
+      <h4 class="display-4">{% blocktrans %}Compra les teves entrades{% endblocktrans %}</h4>
+      <p class="lead">{% blocktrans %}Tens la oportunitat de comprar les teves entrades per a aquest esdeveniment{% endblocktrans %}.</p>
+      <a href="{{link_tickets}}" class="btn btn-outline-dark btn-lg" target="_blank">{% blocktrans %}Comprar entrades{% endblocktrans %}</a>
+    </div>
+  </div>
 
 </aside>
 
+
+{% endif %}
 
 {% endblock %}
 
@@ -435,139 +446,79 @@
 {% endblock asides %}
 
 {% block extra_script %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  Fancybox.bind('.fancybox', {
+    groupAll: true, // Opciones de configuración de FancyBox
+    });
+  });
+</script>
+  {% if visites.mostrar_calendario == 'si' and visites.fechas.all %}
   <script>
-    const obtenerValorCookie = (nombre) => {
-      let nombreCookie = `${nombre}=`;
-      let ca = document.cookie.split(';');
-      for(let i = 0; i < ca.length; i++) {
+    document.addEventListener('DOMContentLoaded', function() {
+      const obtenerValorCookie = (nombre) => {
+        let nombreCookie = `${nombre}=`;
+        let ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
           let c = ca[i].trim();
           if (c.indexOf(nombreCookie) === 0) return c.substring(nombreCookie.length, c.length);
-      }
-      return "";
-    };
-
-    // Obtener las fechas de inicio y fin del modelo de Django
-    let currentLanguage = obtenerValorCookie('django_language');
-
-    const fechaInicioString = '{{ visites.fecha_inicio }}';
-    const fechaFinString = '{{ visites.fecha_fin }}';
-
-    // Mapear los meses en catalán a sus equivalentes en inglés
-    const monthMap = {
-        '{{ gener }}': '{{ gener }}',
-        '{{ febrer }}': '{{ febrer }}',
-        '{{ març }}': '{{ març }}',
-        '{{ abril }}': '{{ abril }}',
-        '{{ maig }}': '{{ maig }}',
-        '{{ juny }}': '{{ juny }}',
-        '{{ juliol }}': '{{ juliol }}',
-        '{{ agost }}': '{{ agost }}',
-        '{{ setembre }}': '{{ setembre }}',
-        '{{ octubre }}': '{{ octubre }}',
-        '{{ novembre }}': '{{ novembre }}',
-        '{{ desembre }}': '{{ desembre }}'
-    };
-
-    // Obtener el día, mes y año de la fecha de inicio
-    const fechaInicioParts = fechaInicioString.split(' ');
-    const diaInicio = parseInt(fechaInicioParts[0]);
-    const mesInicio = monthMap[fechaInicioParts[1]];
-    const anyInicio = parseInt(fechaInicioParts[3]);
-
-    // Obtener el día, mes y año de la fecha de finalización
-    const fechaFinParts = fechaFinString.split(' ');
-    const diaFin = parseInt(fechaFinParts[0]);
-    const mesFin = monthMap[fechaFinParts[1]];
-    const anyFin = parseInt(fechaFinParts[3]);
-
-    // Crear los objetos Date con las fechas formateadas
-    const fechaInicioFormatted = '{{ visites.fecha_inicio|date:"m/d/Y" }}';
-    const fechaFinFormatted = '{{ visites.fecha_fin|date:"m/d/Y" }}';
-    let fechaInicio = new Date(fechaInicioFormatted);
-    let fechaFin = new Date(fechaFinFormatted);
-
-    // Copiar las fechas originales
-    let fechaInicioOriginal = new Date(fechaInicio);
-    let fechaFinOriginal = new Date(fechaFin);
-
-    // Verificar si ambas fechas son válidas y si la fecha de inicio es menor o igual a la fecha de finalización
-    if (!isNaN(fechaInicio.getTime()) && !isNaN(fechaFin.getTime()) && fechaInicio <= fechaFin) {
-      document.addEventListener('DOMContentLoaded', function() {
-        // Obtener el calendario marcado
-        const calendarDays = document.getElementById('calendar-days');
-
-        // Obtener los elementos de los botones
-        const prevMonthButton = document.getElementById('prev-month-button');
-        const nextMonthButton = document.getElementById('next-month-button');
-
-        // Agregar manejadores de eventos a los botones
-        prevMonthButton.addEventListener('click', function() {
-          fechaInicioOriginal.setMonth(fechaInicioOriginal.getMonth() - 1);
-          fechaFinOriginal.setMonth(fechaFinOriginal.getMonth() - 1);
-          actualizarCalendario();
-        });
-
-        nextMonthButton.addEventListener('click', function() {
-          fechaInicioOriginal.setMonth(fechaInicioOriginal.getMonth() + 1);
-          fechaFinOriginal.setMonth(fechaFinOriginal.getMonth() + 1);
-          actualizarCalendario();
-        });
-
-        // Función para actualizar el calendario
-        function actualizarCalendario() {
-          const currentYear = fechaInicioOriginal.getFullYear();
-          const currentMonth = fechaInicioOriginal.getMonth();
-
-          // Actualizar el título del mes
-          currentMonthTitle.textContent = fechaInicioOriginal.toLocaleString(currentLanguage, { month: 'long', year: 'numeric' });
-
-          // Generar los días del calendario
-          const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-          let calendarHTML = '';
-
-          for (let i = 1; i <= daysInMonth; i++) {
-
-            const date = new Date(currentYear, currentMonth, i);
-            if (date.getMonth() === fechaInicio.getMonth() && date.getFullYear() === fechaInicio.getFullYear()) {
-
-              const dayClass = (date >= fechaInicio && date <= fechaFin) ? 'calendar-day marked-date' : 'calendar-day';
-              calendarHTML += `<div class="${dayClass}">${i}</div>`;
-
-            }else if(date.getMonth() === fechaFin.getMonth() && date.getFullYear() === fechaFin.getFullYear()){
-
-              const dayClass = (date <= fechaFin) ? 'calendar-day marked-date' : 'calendar-day';
-              calendarHTML += `<div class="${dayClass}">${i}</div>`;
-
-            }else{
-
-              const dayClass = 'calendar-day';
-              calendarHTML += `<div class="${dayClass}">${i}</div>`;
-              
-            }
-          }
-
-          calendarDays.innerHTML = calendarHTML;
         }
-
-        // Obtener el elemento del título del mes
-        const currentMonthTitle = document.getElementById('current-month-title');
-
-        // Inicializar el calendario al cargar la página
-        actualizarCalendario();
-      });
-    }
-
-
-
-
+        return "";
+      };
+  
+      let currentLanguage = obtenerValorCookie('django_language');
+  
+      const fechas = {{ fechas_json|safe }};  // Asumimos que fechas_json es un array de fechas en formato 'YYYY-MM-DD'
+  
+      const calendarDays = document.getElementById('calendar-days');
+      const currentMonthTitle = document.getElementById('current-month-title');
+      const prevMonthButton = document.getElementById('prev-month-button');
+      const nextMonthButton = document.getElementById('next-month-button');
+  
+      let currentDate = new Date();
+      
+      function actualizarCalendario() {
+          const year = currentDate.getFullYear();
+          const month = currentDate.getMonth();
+  
+          // Actualizar el título del calendario
+          currentMonthTitle.textContent = currentDate.toLocaleString(currentLanguage, { month: 'long', year: 'numeric' });
+  
+          // Convertir fechas a un formato más simple para comparación directa
+          const fechasSet = new Set(fechas.map(date => {
+            const [y, m, d] = date.split('-');
+            return `${y}-${('0' + m).slice(-2)}-${('0' + d).slice(-2)}`;  // Asegura ceros a la izquierda
+         }));
         
-        document.addEventListener('DOMContentLoaded', function() {
-          // Inicializar FancyBox para todos los elementos con la clase "fancybox"
-          Fancybox.bind('.fancybox', {
-            // Opciones de configuración de FancyBox
-            groupAll: true,
-          });
-        });
+          // Calcular el número de días en el mes actual
+          const daysInMonth = new Date(year, month + 1, 0).getDate();
+  
+          let calendarHTML = '';
+          for (let day = 1; day <= daysInMonth; day++) {
+              const dateStr = `${year}-${('0' + (month + 1)).slice(-2)}-${('0' + day).slice(-2)}`;
+              const dayClass = fechasSet.has(dateStr) ? 'calendar-day marked-date' : 'calendar-day';
+              calendarHTML += `<div class="${dayClass}">${day}</div>`;
+          }
+  
+          calendarDays.innerHTML = calendarHTML;
+      }
+  
+      // Eventos para cambiar el mes
+      prevMonthButton.addEventListener('click', () => {
+          currentDate.setMonth(currentDate.getMonth() - 1);
+          actualizarCalendario();
+      });
+  
+      nextMonthButton.addEventListener('click', () => {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          actualizarCalendario();
+      });
+  
+      actualizarCalendario();  // Inicializar el calendario al cargar la página
+      // Inicializar FancyBox para todos los elementos con la clase "fancybox"
+  
+    });
   </script>
+  {% endif %}
+
 {% endblock extra_script %}

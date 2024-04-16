@@ -202,6 +202,7 @@ class EventoEspecialAdmin(TranslationAdmin, admin.ModelAdmin):
                 'publicado',
                 'medida_economica',
                 'categoria',
+                'link_google_form',
                 'color',
                 'mostrar_ahorro',
                 'parallax',

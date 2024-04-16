@@ -246,7 +246,7 @@
 {% if evento_especial.eventoespecialgaleriaimagen_set.all.count >= 4 %}
     <div class="container-fluid p-t-3 m-0 event-container bg-event">
         <div class="row justify-content-center mt-5">
-            <div class="col-12 d-flex flex-wrap">
+            <div class="col-12 d-flex flex-wrap" style="gap:.5rem;">
                 {% for imagen in evento_especial.eventoespecialgaleriaimagen_set.all %}
                     <a href="{{ imagen.imagen.archivo.url }}" class="fancybox">
                         <img src="{{ imagen.imagen.archivo.url }}" alt="{{ evento_especial.titulo }}" class="img-fluid collage-img" style="width: {{ imagen.imagen.archivo.width }}px; height: {{ imagen.imagen.archivo.height }}px;">
@@ -346,16 +346,34 @@
 
 
 {% if not  evento_especial.has_ended %}
-    <div class="container-fluid bg-gray p-0 m-0 pb-5">
-        <div class="container mt-3">
-            <div class="row justify-content-center">
-                <div class="link-div">
-                    <a href="https://entradas.codetickets.com/entradas/aj-cabrera-de-mar" target="_blank" class="link">{% blocktrans %}Obtén les teves entrades aquí!{% endblocktrans %}</a>
-                </div>              
+    {% if entrades %}
+        <div class="container-fluid bg-gray p-0 m-0 pb-5">
+            <div class="container mt-3">
+                <div class="row justify-content-center">
+                    <div class="link-div">
+                        <a href="{{ entrades }}" target="_blank" class="link">{% blocktrans %}Obtén les teves entrades aquí!{% endblocktrans %}</a>
+                    </div>              
+                </div>
+            <div>
+        </div>
+    {% endif %}
+
+{% endif %}
+
+{% if evento_especial.link_google_form %}
+    <div class="container-fluid bg-gray p-0 m-0 py-5">
+        <div class="jumbotron jumbotron-fluid bg-light text-center">
+            <div class="container">
+                <p class="lead">{% blocktrans %}Volem saber la teva opinió!{% endblocktrans %}</p>
+                <a href="{{ evento_especial.link_google_form }}" class="btn-download" target="_blank">
+                    {% blocktrans %}Explica'ns la teva experiència{% endblocktrans %}
+                </a>
             </div>
-        <div>
+        </div>
     </div>
 {% endif %}
+
+
 
 
 

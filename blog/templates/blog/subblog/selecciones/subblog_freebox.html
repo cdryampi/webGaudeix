@@ -1,66 +1,46 @@
 {% load static %}
 
 {% if subblogs %}
-    <section class="container-fluid " id="freebox-subblog-home">
-
+    <section class="container-fluid" id="freebox-subblog-home">
         <div class="row justify-content-center">
             {% for subblog in subblogs %}
-                <div class="card col-lg-4 col-md-3 col-sm-3 col-12 border-1 shadow m-3 p-0 ">
+                <div class="card col-lg-4 col-md-3 col-sm-3 col-12 border-1 shadow m-3 p-0">
                     {% if subblog.subblogimagen %}
                         <div class="img-container">
-                            <picture>
-                                <source srcset="{{ subblog.subblogimagen.imagen.small_thumbnail.url |urlencode }}" media="(min-width: 800px)">
-                                <source srcset="{{ subblog.subblogimagen.imagen.medium_thumbnail.url |urlencode }}" media="(min-width: 566px)">
-                                <source srcset="{{ subblog.subblogimagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 400px)">
-                                <img src="{{ subblog.subimagen.imagen.archivo.url }}" 
-                                    data-src="{{ subblog.subblogimagen.imagen.large_thumbanil.url }}"
-                                    alt="{{ subblog.titulo }}" 
-                                    class="img-fluid align-middle w-100"
-                                    title="{{ subblog.subblogimagen.imagen.titulo }}"
-                                    >
-                            </picture>
+                            <img src="{{ subblog.subblogimagen.imagen.archivo.url }}" 
+                                 alt="{{ subblog.titulo }}" 
+                                 class="img-fluid align-middle w-100"
+                                 title="{{ subblog.subblogimagen.imagen.titulo }}">
                         </div>
-                        {% else %}
-                            {% if subblog.subbloggaleriaimagen_set.count > 0 %}
-                                {% for imagen in subblog.subbloggaleriaimagen_set.all|slice:":1" %}
-                                    <div class="img-container">
-                                            <picture>
-                                                <source srcset="{{ imagen.imagen.small_thumbnail.url |urlencode }}" media="(min-width: 800px)">
-                                                <source srcset="{{ imagen.imagen.medium_thumbnail.url |urlencode }}" media="(min-width: 566px)">
-                                                <source srcset="{{ imagen.imagen.large_thumbnail.url |urlencode }}" media="(min-width: 400px)">
-                                                <img src="{{ imagen.imagen.archivo.url }}" 
-                                                    data-src="{{ imagen.image.large_thumbanil.url }}"
-                                                    alt="{{ subblog.titulo }}" 
-                                                    class="img-fluid align-middle w-100"
-                                                    title="{{ imagen.imagen.titulo }}"
-                                                    >
-                                            </picture>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
+                    {% elif subblog.subbloggaleriaimagen_set.count > 0 %}
+                        {% for imagen in subblog.subbloggaleriaimagen_set.all|slice:":1" %}
+                            <div class="img-container">
+                                <img src="{{ imagen.imagen.archivo.url }}" 
+                                     alt="{{ subblog.titulo }}" 
+                                     class="img-fluid align-middle w-100"
+                                     title="{{ imagen.imagen.titulo }}">
+                            </div>
+                        {% endfor %}
                     {% endif %}
-
 
                     <div class="p-2 text-center" style="background-color: {{ header.color_fondo_header }} !important;">
                         <a href="{% url 'blog:detalle-subblog' slug=subblog.slug %}" title="{{ subblog.titulo }}" class="text-center text-uppercase text-white font-weight-bold nav-link-freebox">{{ subblog.titulo }}</a>
                     </div>
                     {% if subblog.categoria_set.all.exists %}
                         <div class="mt-2 card-body">
-                                <ul class="list-unstyled">
-                                    {% for categoria in subblog.categoria_set.all|slice:":10" %}
-                                        <li class="m-3">
-                                            <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="link text-black-50 text-capitalize text-muted nav-link-freebox" style="color: {{ header.color_fondo_header }} !important;">
-                                                {{ categoria.titulo }}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                            <ul class="list-unstyled">
+                                {% for categoria in subblog.categoria_set.all|slice:":10" %}
+                                    <li class="m-3">
+                                        <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="link text-black-50 text-capitalize text-muted nav-link-freebox" style="color: {{ header.color_fondo_header }} !important;">
+                                            {{ categoria.titulo }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     {% endif %}
                 </div>
             {% endfor %}
         </div>
-
     </section>
 {% endif %}
-

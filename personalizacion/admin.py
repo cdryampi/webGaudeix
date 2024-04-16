@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import InternalLink, Personalizacion, TrenPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, AutoPistaPersonalizacion, AgendaParallax, InternalLink, SuperDestacado
+from .models import InternalLink, Personalizacion, TrenPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, AutoPistaPersonalizacion, AgendaParallax, InternalLink, SuperDestacado, IframeVideoHome
 from django.http import HttpResponseRedirect
 from django.core.files.storage import default_storage
 from gaudeix import settings
@@ -115,8 +115,6 @@ class InternalLinkAdmin(admin.ModelAdmin):
     ]
 
 
-
-
 class AgendaParallaxAdmin(admin.ModelAdmin):
     model = AgendaParallax
     fieldsets = [
@@ -132,6 +130,28 @@ class AgendaParallaxAdmin(admin.ModelAdmin):
             ),
         }),
     ]
+
+
+class IframVideoHomeAdmin(TranslationAdmin ,admin.ModelAdmin):
+    model = IframeVideoHome
+    fieldsets = [
+        (None, {
+            'fields': [
+                'internal_name',
+                'title',
+                'description',
+                'video_url',
+            ],
+            'description': (
+                "<p>Configura el vídeo auxiliar per a la portada del teu lloc web.</p>"
+                "<p>Aquest model permet utilitzar vídeos específics com a part del disseny visual de la portada, "
+                "millorant la interacció i l'experiència visual de l'usuari.</p>"
+                "<p>Assegura't de seleccionar vídeos que compleixin amb les necessitats de privacitat i que estiguin habilitats per a la incrustació.</p>"
+                "<p>Utilitza noms interns descriptius per facilitar la gestió i identificació dels vídeos en el sistema.</p>"
+            ),
+        }),
+    ]
+
 
 
 class SuperDestacadoAdmin(TranslationStackedInline):
@@ -178,6 +198,7 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
                 'horario',
                 'dias_vista_agenda',
                 'enlace_agenda',
+                'video_url',
                 'hora_agenda_fin',
                 'analytics_script',
                 'meta_keywords',
@@ -190,8 +211,10 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
                 "<p>Aquí pots seleccionar el parallax per l'agenda que més t'agradi.</p>"
                 "<p>Crea una barra superior amb informació destacada i enllaços importants per als teus usuaris.</p>"
                 "<p>Recorda tenir només una barra superior activa a la vegada per evitar resultats no desitjats.</p>"
+                "<p>Afegeix aquí l'URL de l'iframe del vídeo que desitgis utilitzar com a vídeo a una part de la portada.</p>"
                 "<p><strong>Nota:</strong> Si utilitzes Google Analytics, assegura't de mantenir actualitzat el script de Google Analytics en el camp 'Script de Google Analytics' quan sigui necessari per a un seguiment precís.</p>"
-                "<p>Nota: a 2023 encara tenim el canvi d'horari, llavors per l'hivern fes servir l'horari de l'hivern que resta 1 hora de més els enllaços del Google Calendar que fem servir als esdeveniments.</p>"
+                "<p><strong>Nota:</strong> a 2023 encara tenim el canvi d'horari, llavors per l'hivern fes servir l'horari de l'hivern que resta 1 hora de més els enllaços del Google Calendar que fem servir als esdeveniments.</p>"
+                
             ),
 
         }),
@@ -204,3 +227,4 @@ admin.site.register(Carrusel, CarruselAdmin)
 admin.site.register(Personalizacion, PersonalizacionAdmin)
 admin.site.register(AgendaParallax, AgendaParallaxAdmin)
 admin.site.register(InternalLink, InternalLinkAdmin)
+admin.site.register(IframeVideoHome, IframVideoHomeAdmin)

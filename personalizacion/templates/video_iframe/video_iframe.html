@@ -1,0 +1,21 @@
+{% load static %}
+{% load i18n %}
+
+{% if url_iframe_youtube %}
+    <aside class="container my-3">
+        {% if url_iframe_youtube.title %}
+            <h2 class="text-center h2 py-2">{{ url_iframe_youtube.title | safe }}</h2>
+        {% endif %}
+        {% if url_iframe_youtube.description %}
+            <p class="text-center lead py-2">{{url_iframe_youtube.description |safe}}</p>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-12 p-0">
+                <div class="embed-responsive embed-responsive-16by9" style="height: 40vh;">
+                    <iframe class="embed-responsive-item" src="{{ url_iframe_youtube.video_url }}" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </aside>
+{% endif %}

@@ -1,5 +1,5 @@
 from modeltranslation.translator import translator, TranslationOptions, register
-from .models import Personalizacion, TrenPersonalizacion, AutoPistaPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, SuperDestacado
+from .models import Personalizacion, TrenPersonalizacion, AutoPistaPersonalizacion, BusPersonalizacion, AeropuertoPersonalizacion, SuperDestacado, IframeVideoHome
 
 @register(Personalizacion)
 class PersonalizacionTranslationOptions(TranslationOptions):
@@ -25,3 +25,7 @@ class AeropuertoPersonalizacionTranslationOptions(TranslationOptions):
 @register(SuperDestacado)
 class SuperDestacadoTranslationOptions(TranslationOptions):
     fields = ('titulo','descripcion',)
+
+@register(IframeVideoHome)
+class IframeVideoHomeTranslationOptions(TranslationOptions):
+    fields = ('title' ,'description',)

@@ -127,10 +127,15 @@ def home(request):
 
     super_destacados = None
     carrusel =  None
+    url_iframe_youtube = None
+
     if personalizacion and personalizacion.superdestacado_set.all():
         super_destacados = personalizacion.superdestacado_set.all()
     if personalizacion and personalizacion.carrusel_portada:
         carrusel = personalizacion.carrusel_portada
+    if personalizacion and personalizacion.video_url:
+        url_iframe_youtube = personalizacion.video_url
+    
     # com arribar
     tren = None
     autopista = None
@@ -215,7 +220,8 @@ def home(request):
             'subblogs': subblog,
             'portada_meta_description': meta_description,
             'portada_meta_keywords': meta_keywords,
-            'carrusel': carrusel
+            'carrusel': carrusel,
+            'url_iframe_youtube': url_iframe_youtube
         }
     )
     

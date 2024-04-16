@@ -13,14 +13,123 @@ from multimedia_manager.models import Audio
 from django.core.exceptions import ValidationError
 from gaudeix.settings import DOMAIN_URL 
 from urllib.parse import urlparse, quote
-
+from colorfield.fields import ColorField
 User = get_user_model()
 
 # Create your models here.
 
+
+
+
+class TurismeSostenible(Post):
+    """
+        Modelo que representa a una landing del tursime sostenible.
+    """
+    titulo_auxiliar_buenas_practicas = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name="Títol auxiliar",
+        help_text="Afegeix el títol auxiliar per l'aside de bones pràctiques"
+    )
+
+    titulo_auxiliar_pdf = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name="Títol auxiliar PDF",
+        help_text="Afegeix el títol auxiliar per l'aside del PDF"
+    )
+
+    color_par = ColorField(
+        default='#FFFFFF',
+        verbose_name="Color per a elements parells",
+        help_text="Selecciona el color per als elements parells."
+    )
+    color_impar = ColorField(
+        default='#000000',
+        verbose_name="Color per a elements senars",
+        help_text="Selecciona el color per als elements senars."
+    )
+
+    class Meta:
+        verbose_name = "Turisme sostenible"
+        verbose_name_plural = "Turisme sostenible"
+
+
+class VisionMision(models.Model):
+    """
+        Clase que reprosenta a una visió o misión a alcanzar del turismo sostenible.
+    """
+    imagen = models.ImageField(
+        upload_to='vision_mision/',
+        verbose_name="imatge",
+        help_text='Imatge que surtirà a un costat de la descripció'
+    )
+    titulo = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name="Títol",
+        help_text="Afegeix el títol"
+    )
+    descripcion = RichTextField(
+        verbose_name='descripció',
+        help_text="Descripció que surtirá al costat de la imatge"
+    )
+    turisme_sostenible = models.ForeignKey(
+        TurismeSostenible,
+        null= True,
+        on_delete=models.CASCADE,
+        verbose_name="Turisme Sostenible relacionat",
+    )
+
+    orden = models.IntegerField(
+        default=0,
+        verbose_name="Ordre"
+    )
+
+
+    
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "bones pràctiques"
+        verbose_name_plural = "bones pràctiques"
+
+
+
+class PDFAuxiliar(models.Model):
+    archivo = models.FileField(upload_to='pdfs_auxiliares/')
+    titulo = models.CharField(max_length=255, verbose_name="Títol")
+    descripcion = models.TextField(blank=True, verbose_name="Descripció")
+    turisme_sostenible = models.ForeignKey(
+        'TurismeSostenible', 
+        on_delete=models.CASCADE, 
+        related_name='pdfs_auxiliares', 
+        verbose_name="Turisme Sostenible associat",
+        help_text="Selecciona el turisme sostenible al qual aquest PDF està associat"
+    )
+    orden = models.IntegerField(
+        default=0,
+        verbose_name="Ordre",
+        help_text="Defineix l'ordre de visualització dels PDFs"
+    )
+
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "PDF Auxiliar"
+        verbose_name_plural = "PDFs Auxiliars"
+
+    def __str__(self):
+        return f"{self.titulo} ({self.turisme_sostenible.titulo})"
+
+
+
+
+
 class Restaurante(Post):
     """
-    Modelo que representa a un Restaurante.
+        Modelo que representa a un Restaurante.
     """
     TIPO_CHOICES = [
         ('restaurant', 'Restaurant'),
@@ -145,7 +254,7 @@ class Restaurante(Post):
 
 class Alojamiento(Post):
     """
-    Modelo que representa a un Alojamiento.
+        Modelo que representa a un Alojamiento.
     """
     TIPO_CHOICES = [
         ('hotel', 'Hotel'),
@@ -680,6 +789,23 @@ class AudioRuta(models.Model):
         verbose_name_plural = "Àudios"
 
 
+class FechaVisita(models.Model):
+    fecha = models.DateField(
+        verbose_name="Dada de la visita guiada."
+    )
+    visita_guiada = models.ForeignKey(
+        'VisitaGuiada',
+        related_name='fechas',
+        on_delete=models.CASCADE
+    )
+    class Meta:
+        ordering = ['fecha']
+
+
+    def __str__(self):
+        return f"{self.fecha.strftime('%Y-%m-%d')}"
+
+
 class VisitaGuiada(Post):
 
     PUBLICO_RECOMENDADO_CHOICES = (
@@ -705,18 +831,6 @@ class VisitaGuiada(Post):
         default=timedelta(days=2), 
         help_text="Duració de la visita (en format DD HH:MM:SS)",
         verbose_name="Duració"
-    )
-
-    fecha_inicio = models.DateField(
-        default=timezone.now, 
-        help_text="Data d'inici del rang",
-        verbose_name="Data d'inici"
-    )
-
-    fecha_fin = models.DateField(
-        default=timezone.now() + timezone.timedelta(days=7),
-        help_text="Data de finalització del rang",
-        verbose_name="Data de finalització"
     )
 
     mostrar_calendario = models.CharField(

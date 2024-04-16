@@ -214,7 +214,13 @@ class EventoEspecial(BaseModel, MetadataModel):
         blank=True,
         verbose_name="Miniatura d'esdeveniment especial"
     )
-    
+
+    link_google_form = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Enllaç opcional pel formulari."
+    )
+
     flyer = models.ImageField(
         upload_to='eventos_especiales/flyers/',
         help_text="Puja el flyer de l'esdeveniment en format DIN A3",

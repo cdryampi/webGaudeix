@@ -40,6 +40,7 @@ class EventoEspecialView(BaseContextMixin,DetailView):
         autopista = None
         bus =  None
         aeroport = None
+        entrades = None
 
         if personalizacion and personalizacion.trenpersonalizacion:
             tren = personalizacion.trenpersonalizacion
@@ -52,6 +53,8 @@ class EventoEspecialView(BaseContextMixin,DetailView):
         
         if personalizacion and personalizacion.aeropuertopersonalizacion:
             aeroport = personalizacion.aeropuertopersonalizacion
+        if personalizacion and personalizacion.enlace_agenda:
+            entrades = personalizacion.enlace_agenda
 
         redes_sociales= RedSocial.objects.filter().all()
         
@@ -62,6 +65,7 @@ class EventoEspecialView(BaseContextMixin,DetailView):
 
         context['redes_sociales'] = redes_sociales
         context['parallax'] = parallax
+        context['entrades'] = entrades
         context['now'] = timezone.now()
 
         return context

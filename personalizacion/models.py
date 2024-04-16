@@ -123,6 +123,36 @@ class AgendaParallax(models.Model):
         verbose_name_plural = "Imatges per l'agenda"
 
 
+class IframeVideoHome(models.Model):
+    """
+        Clase que representa a un vídeo youtube de la portada
+    """
+    internal_name = models.CharField(
+        max_length=255,
+        verbose_name="Nom intern", 
+        help_text="Nom intern per identificar el vídeo dins del sistema."
+    )
+    title = models.CharField(
+        max_length=255,
+        verbose_name="Títol", 
+        help_text="Títol del vídeo que es mostrarà públicament."
+    )
+    description = models.TextField(
+        verbose_name="Descripció",    
+        null=True,
+        blank=True,
+        help_text="Descripció detallada del contingut del vídeo."
+    )
+    video_url = models.URLField(
+        verbose_name="URL del vídeo", 
+        help_text="URL de l'iframe del vídeo. Utilitza URLs que respectin la privacitat com 'youtube-nocookie' per a YouTube."
+    )
+
+    def __str__(self):
+        return self.title
+
+
+
 class Personalizacion(models.Model):
     # modelo que representa la personalización del sitio.
     HORARIOS = (
@@ -232,6 +262,16 @@ class Personalizacion(models.Model):
         help_text="Selecciona les paraules clau meta relacionades amb el lloc.",
         blank=True,
     )
+    video_url = models.OneToOneField(
+        IframeVideoHome,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Vídeo auxiliar per la portada",
+        help_text="Selecciona el vídeo auxiliar per a la portada (si n'hi ha un)."
+    )
+
+    
     objects = PersonalizacionManager()
 
     class Meta:

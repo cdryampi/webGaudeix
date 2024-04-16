@@ -105,11 +105,19 @@
         .header-text{
             font-size: 2rem;
         }
-
+        iframe {
+            width: 100% !important;
+            height: revert-layer;
+        }
+        
         /* Establecer una sola columna para tabletas y dispositivos móviles */
         @media (max-width: 768px) {
             .container-grid {
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            .paso-img{
+                max-height: 250px;
+                object-fit: cover!important;
             }
         }
         .title-countdown{
@@ -166,10 +174,8 @@
     <div class="container-fluid bg-gray pt-2 pt-sm-2 pt-md-3 pt-lg-3 pt-xl-4 m-0">
         <div class="container mt-3">
             <div class="row justify-content-center">
-                <div class="col-lg-6 col-12 align-content-end">
-                    <h1 class="titulo-principal">{{ compra_y_descubre.titulo | safe }}</h1>
-                </div>
                 <div class="col-lg-6 col-12 border-left-evento align-content-start inside-primary-color">
+                    <h1 class="titulo-principal">{{ compra_y_descubre.titulo | safe }}</h1>
                     {% autoescape on %}
                         {{ compra_y_descubre.descripcion_corta | safe }}
                     {% endautoescape %}

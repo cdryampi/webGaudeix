@@ -137,7 +137,7 @@
             </div>       
                 {% for alojamiento in alojamientos %}
                     {% if alojamiento.publicado %}
-                        <a href="{% url 'agenda:allotjament' slug=alojamiento.slug %}" class="related-activity-link my-1">
+                        <a href="{% url 'agenda:allotjament' slug=alojamiento.slug %}" class="related-activity-link my-1 p-3">
                             <div class="card related-activity-card mb-3 h-100">
                                 <div class="p-3 {% if alojamiento.tipo == 'hotel' %}tipo-hotel{% elif alojamiento.tipo == 'alberg' %}tipo-alberg{% elif alojamiento.tipo == 'turístic' %}tipo-turistic{% elif alojamiento.tipo == 'autocaravanes' %}tipo-autocaravanes{% endif %}" style="display: flex; align-items: center; flex-wrap: wrap;">
                                     <!-- Icono y texto para alojamientos adaptados para personas con movilidad reducida -->

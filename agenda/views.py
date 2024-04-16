@@ -1,4 +1,4 @@
-from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Idioma, AudioRuta, PlayListRuta, Alojamiento, Restaurante
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Idioma, AudioRuta, PlayListRuta, Alojamiento, Restaurante, TurismeSostenible
 from blog.models import Post
 from django.views import View
 from django.http import HttpResponse
@@ -30,10 +30,50 @@ from django.utils.translation import get_language_from_request
 from gaudeix.settings import NOMBRES_MESES, NOMBRES_DIAS
 
 
+class TurismeSostenibleView(BaseContextMixin, DetailView):
+    model = TurismeSostenible
+    template_name = 'agenda/turisme_sostenible.html'
+    context_object_name = 'turisme_sostenible'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # current_object = self.get_object()  # Esta línea es redundante.
+
+        return context
+
+
 class RestauranteView(BaseContextMixin, DetailView):
     model = Restaurante
     template_name = 'agenda/restaurante.html'
     context_object_name = 'restaurante'
+
+
+
+    def get_object(self, queryset=None):
+        # Obtener el objeto de la agenda utilizando el slug en lugar del ID
+        
+        slug = self.kwargs.get('slug')
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, slug=slug)
+        return obj
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # current_object = self.get_object()  # Esta línea es redundante.
+        restaurantes = Restaurante.objects.filter(publicado=True).exclude(pk=self.object.pk)
+
+        # Verificar si hay al menos 4 alojamientos para evitar errores
+        if restaurantes.count() > 4:
+            restaurantes = restaurantes.order_by('?')[:4]
+        else:
+            restaurantes = restaurantes.order_by('-fecha_creacion')[:4]  # O cualquier otro criterio
+
+        context['coleccion_destacados'] = restaurantes
+
+        return context
+
 
 
 
@@ -121,12 +161,13 @@ class VisitaGuiadaView(BaseContextMixin, DetailView):
         visita_guiadas = VisitaGuiada.objects.filter(publicado=True).exclude(pk=current_object.pk)
         categorias = Categoria.objects.filter(publicado= True).all()
 
-        print(self.get_object().certificados.all())
+        fechas = [fecha.fecha.strftime("%Y-%m-%d") for fecha in current_object.fechas.all()]
         #print("Agendas Relacionadas:", agendas_relacionadas)
 
         context['coleccion_destacados'] = visita_guiadas
         context['categorias'] = categorias
         context['agendas_relacionadas'] = current_object.agendas.all()
+        context['fechas_json'] = fechas
         return context
 
 class RutaView(BaseContextMixin, DetailView):

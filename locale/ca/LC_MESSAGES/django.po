@@ -1113,3 +1113,27 @@ msgstr "Pots descarregar VLC des del seu"
 msgid "La instal·lació és ràpida i fàcil."
 
 msgstr "La instal·lació és ràpida i fàcil."
+
+msgid "DECÀLEG DE BONES PRÀCTIQUES SOSTENIBLES destinat als visitants i a la població de Cabrera de Mar"
+msgstr "DECÀLEG DE BONES PRÀCTIQUES SOSTENIBLES destinat als visitants i a la població de Cabrera de Mar"
+
+msgid "Dades"
+msgstr "Dades"
+
+msgid "Dades de disponibilitat"
+msgstr "Dades de disponibilitat"
+
+msgid "Punt d'Interès: Desxobreix-ho al Mapa"
+msgstr "Punt d'Interès: Desxobreix-ho al Mapa"
+
+msgid "Veure ubicació en Google Maps"
+msgstr "Veure ubicació en Google Maps"
+
+msgid "Veure mapa"
+msgstr "Veure mapa"
+
+msgid "Explica'ns la teva experiència"
+msgstr "Explica'ns la teva experiència"
+
+msgid "Volem saber la teva opinió!"
+msgstr "Volem saber la teva opinió!"

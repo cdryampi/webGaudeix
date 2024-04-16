@@ -239,7 +239,8 @@ class Categoria(MetadataModel, BaseModel):
         ('lloc','lloc'),
         ('festes_i_tradicions','festes, tradicions i cultura'),
         ('allotjament', 'allotjament'),
-        ('restaurant', 'restaurant')
+        ('restaurant', 'restaurant'),
+        ('turisme_sostenible', 'turisme sostenible')
         
         # Agrega más tipos según tus necesidades
     )
@@ -830,4 +831,3 @@ class Noticia(MetadataModel):
     class Meta:
         verbose_name = "Notícia"
         verbose_name_plural = "Notícies"
-

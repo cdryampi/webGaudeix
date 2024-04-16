@@ -1138,3 +1138,27 @@ msgstr "Situé à environ 28 kilomètres de Barcelone et à 104 mètres au-dessu
 #: .\topbar\templates\topbar\topbar.html:27
 msgid "Fes click"
 msgstr "Cliquez"
+
+msgid "DECÀLEG DE BONES PRÀCTIQUES SOSTENIBLES destinat als visitants i a la població de Cabrera de Mar"
+msgstr "DÉCALOGUE DES BONNES PRATIQUES DURABLES destiné aux visiteurs et à la population de Cabrera de Mar"
+
+msgid "Dades"
+msgstr "Données"
+
+msgid "Dades de disponibilitat"
+msgstr "Données de disponibilité"
+
+msgid "Punt d'Interès: Desxobreix-ho al Mapa"
+msgstr "Point d'Intérêt: Découvrez-le sur la Carte"
+
+msgid "Veure ubicació en Google Maps"
+msgstr "Voir l'emplacement sur Google Maps"
+
+msgid "Veure mapa"
+msgstr "Voir la carte"
+
+msgid "Explica'ns la teva experiència"
+msgstr "Racontez-nous votre expérience"
+
+msgid "Volem saber la teva opinió!"
+msgstr "Nous voulons connaître votre avis!"

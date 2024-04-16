@@ -142,7 +142,7 @@
             {% if categoria.tipo == 'visitas_guiadas' %}
 
                 {% for visita in visitas_guiadas %}
-                <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="related-activity-link my-1">
+                <a href="{% url 'agenda:visites-guiades' slug=visita.slug %}" class="related-activity-link my-1 p-3">
                     <div class="card related-activity-card mb-3 h-100">
                         <div class="tipo-visita {% if visita.publico_recomendado == 'nens' %}nens{% elif visita.publico_recomendado == 'adults' %}adults{% else %}otro{% endif %}" style="display: flex; align-items: center; flex-wrap: wrap; padding:1rem;">
 
@@ -161,9 +161,15 @@
                                 {{ visita.duracion|format_duration }}
                             </span>
 
-                            {% if visita.fecha_inicio <= visita.fecha_fin %}
+                            {% if visita.fechas.all %}
                                 <span style="margin: 0 10px;">|</span>
-                                <i class="fas fa-calendar-alt" style="margin-right: 5px;"></i>{{ visita.fecha_inicio|date:"d M, Y" }} - {{ visita.fecha_fin|date:"d M, Y" }}
+                                {% for fecha in visita.fechas.all %}
+                                    <div>
+                                        <i class="fas fa-calendar-alt" style="margin-right: 5px;"></i>
+                                        {{ fecha.fecha|date:"d M, Y" }}
+                                        <span style="margin: 0 10px;">|</span>
+                                    </div>
+                                {% endfor %}
                             {% endif %}
                             {% if visita.mapa and visita.mapa.titulo %}
                                 <span style="margin-left: 10px;">|</span>
@@ -175,10 +181,10 @@
 
                         </div>
 
-                        <div class="row p-3">
+                        <div class="row pt-3">
                             {% if visita.postimagen.imagen %}
                                 {% with imagen=visita.postimagen.imagen %}
-                                    <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
                                         <img src="{{ imagen.archivo.url }}" alt="Imagen de la visita"
                                             class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
                                     </div>
@@ -187,7 +193,7 @@
                                 {% if visita.postgaleriaimagen_set.exists %}
                                     {% with imagen=visita.postgaleriaimagen_set.first %}
                                         {% if imagen %}
-                                            <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
+                                            <div class="col-lg-4 col-md-6 col-sm-12 col-12">
                                                 <img src="{{ imagen.imagen.archivo.url }}" alt="Imagen de la visita"
                                                     class="img-fluid w-100 h-auto border-0" style="object-fit: cover; max-height: 300px;">
                                             </div>
@@ -195,7 +201,7 @@
                                     {% endwith %}
                                 {% endif %}
                             {% endif %}
-                            <div class="col-lg-8 col-md-6 col-sm-12">
+                            <div class="col-lg-8 col-md-6 col-sm-12 col-12">
                                 <div class="card-body" style="padding: 20px;">
                                     <h2 class="card-title">{{ visita.titulo }}</h2>
                                     <div class="card-text">

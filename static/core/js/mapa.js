@@ -17,77 +17,131 @@ function truncateDescription(description, wordCount) {
   return finalDescription;
 }
 
-function initMap() {
+async function initMap() {
+  const { Map } = await google.maps.importLibrary("maps");
+  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+    "marker",
+  );
   const mapContainer = document.getElementById('map-container');
   const mapLoading = document.getElementById('map-loading');
 
   fetch('/map/api/map-points/')
     .then(response => response.json())
     .then(data => {
-      const map = new google.maps.Map(mapContainer, {
+      const map = new Map(mapContainer, {
         center: { lat: 41.5179554, lng: 2.3883919 },
         zoom: 14,
-        mapTypeId: 'satellite'
+        mapTypeId: 'satellite',
+        mapId: "4504f8b37365c3d0"
       });
-      console.log(data);
-      data.forEach(point => {
 
-        const marker = new google.maps.Marker({
+      data.forEach(point => {
+        const marker = new AdvancedMarkerElement({
           position: { lat: point.latitud, lng: point.longitud },
           map: map,
           title: point.titulo,
-          icon: {
-            path: 'M -1.547 12 l 6.563 -6.609 -1.406 -1.406 -5.156 5.203 -2.063 -2.109 -1.406 1.406 z M 0 0 q 2.906 0 4.945 2.039 t 2.039 4.945 q 0 1.453 -0.727 3.328 t -1.758 3.516 -2.039 3.070 -1.711 2.273 l -0.75 0.797 q -0.281 -0.328 -0.75 -0.867 t -1.688 -2.156 -2.133 -3.141 -1.664 -3.445 -0.75 -3.375 q 0 -2.906 2.039 -4.945 t 4.945 -2.039 z',
-            fillColor: getColorForIcon(point.icono),
-            fillOpacity: 1,
-            strokeWeight: 0,
-            rotation: 0,
-            scale: 2,
-            anchor: new google.maps.Point(0, 20)
-          }
+          content: buildContent(point),
         });
-
-
-        const content = `
-                        <div class="info-window">
-                            <h4 class="info-window-title">${point.titulo}</h4>
-                            <p class="info-window-image"><img src="${point.small_thumbnail_url}" alt="${point.titulo}" style="width: 100%; height: 200px; object-fit: cover;"></p>
-                            <p class="info-window-description">${truncateDescription(point.descripcion, 20)}</p>
-                            <div class="row">
-                              <div class="col-6">
-                                <p class="info-window-link">
-                                  <a href="map/${point.slug}" class="text-danger">Veure més</a>
-                                </p>
-                              </div>
-                              <div class="col-6">
-                                ${point.enlace_google_maps ? `<p class="info-window-link"><a href="${point.enlace_google_maps}" target="_blank" rel="noopener noreferrer" class="text-danger">Veure més a Google Maps</a></p>` : ''}
-                              </div>
-                            </div>
-                        </div>
-                          `;
-
-        // Crear el InfoWindow para mostrar el título del marcador
-        const infoWindow = new google.maps.InfoWindow({
-            content: content
-          });
-
-
         // Agregar evento de clic al marcador para mostrar el InfoWindow
-        marker.addListener('click', () => {
-          infoWindow.setContent(infoWindow);
-          infoWindow.open(map, marker);
+
+        marker.addListener('click', ({ domEvent, latLng }) => {
+          // Centra el mapa en la posición del marcador cuando se hace clic
+          map.panTo(new google.maps.LatLng({ lat: latLng.lat(), lng: latLng.lng() }));
+
+          // Ajusta la vista del mapa para mejorar la visibilidad del marcador
+          // Este valor '100' es un ejemplo; ajusta según la necesidad de tu diseño/UI
+          map.panBy(0, -180);
+
+          // Activa la lógica de resaltado para el marcador seleccionado
+          toggleHighlight(marker, point);
         });
 
       });
 
     })
-    .catch(() => {
+    .catch((error) => {
       //document.getElementById('map-error').style.display = 'block';
       // Ocultar el spinner de carga en caso de error
       //mapLoading.style.display = 'none';
-      console.log("Error")
+      console.log(error);
     });
 }
+
+
+
+function toggleHighlight(markerView, property) {
+  if (markerView.content.classList.contains("highlight")) {
+    markerView.content.classList.remove("highlight");
+    markerView.zIndex = null;
+  } else {
+    markerView.content.classList.add("highlight");
+    markerView.zIndex = 1;
+  }
+}
+
+function buildContent(property) {
+  // Crea el contenedor principal para el contenido del marcador.
+
+
+  const baseURL = `${window.location.protocol}//${window.location.host}`;
+
+  const googleMapsIcon = '<i class="fas fa-map-marked-alt px-1" aria-hidden="true"></i>';
+  const internalLinkIcon = '<i class="fas fa-link px-1" aria-hidden="true"></i>';
+  
+  const content = document.createElement("div");
+  content.className = "property";
+
+  // Icono según el tipo de propiedad.
+  const iconMapping = {
+    patrimoni: "fas fa-landmark",
+    jaciments: "fas fa-archway",
+    platges: "fas fa-umbrella-beach",
+    informació: "fas fa-info-circle",
+    // Añade más iconos según necesites.
+  };
+
+  // Obtiene la clase del icono basado en el tipo de propiedad.
+  const iconClass = iconMapping[property.icono] || "fas fa-question";
+
+  // Crea el contenido HTML dinámico.
+  content.innerHTML = `
+    <div class="icon">
+        <i class="${iconClass}" aria-hidden="true"></i>
+    </div>
+    <div class="details">
+        <div class="address address text-center text-uppercase text-primary h6">${property.titulo}</div>
+        <div class="description">${truncateDescription(property.descripcion, 20)}</div>
+        <div class="features">
+            <div>
+                <i class="fas fa-camera fa-lg mb-2" aria-hidden="true" title="image"></i>
+                <span class="fa-sr-only">image</span>
+                <img src="${property.small_thumbnail_url}" alt="${property.titulo}" style="width: 100%; height: 200px; object-fit: cover;">
+            </div>
+                <div class="row justify-content-center">
+                  ${property.enlace_google_maps ? `<div class="info-window-link py-2">${googleMapsIcon}<a class="link-opacity-100" href="${property.enlace_google_maps}" 
+                  target="_blank" rel="noopener noreferrer">Google Maps</a></div>` : ''}
+                  <div class="info-window-link py-2">${internalLinkIcon}<a href="${baseURL}/map/${property.slug}/" target="_blank" rel="noopener noreferrer">${property.titulo}</a></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+  `;
+  setTimeout(() => {
+    const links = content.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.stopPropagation(); // Previene la propagación del evento
+            // Opcionalmente, maneja el clic aquí, por ejemplo, abriendo el enlace en una nueva pestaña
+            // Esto podría no ser necesario si ya estás usando target="_blank" en tus enlaces
+            console.log("click inside");
+        });
+    });
+}, 0);
+  return content;
+}
+
+
 
 function getColorForIcon(icono) {
   switch (icono) {

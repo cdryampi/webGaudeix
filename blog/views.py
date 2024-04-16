@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from .models import Post,SubBlog,Categoria, CategoriaBannerImagen, Noticia, SubCategoria
-from agenda.models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Alojamiento, Restaurante
+from agenda.models import Agenda, VisitaGuiada, Ruta, VariationAgenda, Alojamiento, Restaurante, VisionMision, TurismeSostenible
 from map.models import MapPoint
 from django.http import JsonResponse
 from django.views.generic import View
@@ -225,7 +225,14 @@ class CategoriaDetailView(BaseContextMixin, DetailView):
             posts = Post.objects.filter(publicado = True, categoria = categoria)
             context['posts'] = posts
             context['festes'] = festes
-            
+
+        elif categoria.tipo == 'turisme_sostenible':
+            # Si la categoría es de tipo 'turisme_sostenible'.
+            landings = TurismeSostenible.objects.filter(categoria = self.get_object()).all()
+
+            if landings.count() == 1 and categoria.mostrar_primer_hijo:
+                return redirect('agenda:turisme_sostenible', slug=landings.first().slug)
+
         return self.render_to_response(context)
 
 class FiltrarAgendaView(View):
@@ -412,6 +419,7 @@ class SubCategoriaDetailView(BaseContextMixin, DetailView):
             if llocs.count() == 1 and subcategoria.mostrar_primer_hijo:
                 return redirect('map:mapa', slug = llocs.first().slug)
             context['posts'] = posts
+        
         elif subcategoria.tipo == 'festes_i_tradicions':
             # Si la categoría es de tipo 'festes_i_tradicions', obtener las festividades relacionadas
             festes = EventoEspecial.objects.filter(categoria = self.get_object().categoria).all()
@@ -421,6 +429,16 @@ class SubCategoriaDetailView(BaseContextMixin, DetailView):
 
             context['posts'] = posts
             context['festes'] = festes
+        
+        elif subcategoria.tipo == 'turisme_sostenible':
+            # Si la categoría es de tipo 'turisme_sostenible', obtener las landings de turismo relacionadas
+            landings = TurismeSostenible.objects.filter(publicado= True, subcategoria = subcategoria)
+            posts = Post.objects.filter(publicado = True, subcategoria = subcategoria)
+            if landings.count() == 1 and subcategoria.mostrar_primer_hijo:
+                return redirect('agenda:turisme_sostenible', slug=landings.first().slug)
+            
+            context['landings'] = landings
+            context['relacionados'] = posts
             
         return self.render_to_response(context)
     

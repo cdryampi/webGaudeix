@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db.models import Q
 from multimedia_manager.models import Imagen, Fichero, Audio
-from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible, Idioma, AudioRuta, PlayListRuta, Alojamiento, Restaurante
+from .models import Agenda, VisitaGuiada, Ruta, VariationAgenda, CertificadoTurismoSostenible, Idioma, AudioRuta, PlayListRuta, Alojamiento, Restaurante, TurismeSostenible, VisionMision, FechaVisita, PDFAuxiliar
 from map.models import MapPoint
 from django.forms import DurationField
 from blog.models import PostImagen, PostGaleriaImagen, PostFichero, Categoria, Tag
@@ -10,15 +10,16 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from django.utils.html import format_html
-from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TranslationAdmin, TranslationStackedInline
 from blog.admin_modulos.admin_post import PostImagenInline
+
+
+
+
 
 class RutaAudioInline(admin.TabularInline):
     model = AudioRuta
     extra = 1
-
-
-
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'audio':
             playlist_id = None
@@ -278,11 +279,14 @@ class VisitaGuidadaForm(forms.ModelForm):
         return instance
 
 
+class FechaVisitaInline(admin.TabularInline):
+    model = FechaVisita
+    extra = 1
 
 
 class VisitaGuidadaAdmin(TranslationAdmin, admin.ModelAdmin):
     form = VisitaGuidadaForm
-    inlines = [PostImagenInlineRuta, PostGaleriaImagenInline, PostFicheroImagenInline]
+    inlines = [FechaVisitaInline, PostImagenInlineRuta, PostGaleriaImagenInline, PostFicheroImagenInline]
     filter_horizontal = ('agendas','tags','certificados')
     autocomplete_fields = ['mapa', 'categoria']
     
@@ -297,8 +301,6 @@ class VisitaGuidadaAdmin(TranslationAdmin, admin.ModelAdmin):
                 'categoria',
                 'precio',
                 'certificados',
-                'fecha_inicio',
-                'fecha_fin',
                 'duracion_dias',
                 'duracion_horas',
                 'publico_recomendado',
@@ -327,7 +329,10 @@ class VisitaGuidadaAdmin(TranslationAdmin, admin.ModelAdmin):
     ]
     
     exclude = ['duracion']  # Excluir el campo duracion en el administrador
-
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "categoria":
+            kwargs["queryset"] = Categoria.objects.filter(tipo="visitas_guiadas")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 
@@ -383,7 +388,10 @@ class RutaAdmin(TranslationAdmin, admin.ModelAdmin):
 
         })
     ]
-
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "categoria":
+            kwargs["queryset"] = Categoria.objects.filter(tipo="senderisme")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 
@@ -535,6 +543,62 @@ class RestauranteAdmin(TranslationAdmin, admin.ModelAdmin):
 
 
 
+
+
+class VisionMisionPersonalizacionAdminInLine(TranslationStackedInline):
+    model = VisionMision
+    extra = 1
+
+class PDFAuxiliarInline(TranslationStackedInline):
+    model = PDFAuxiliar
+    extra = 1
+
+
+class TurismeSostenibleAdmin(TranslationAdmin, admin.ModelAdmin):
+
+    inlines = [PDFAuxiliarInline, VisionMisionPersonalizacionAdminInLine, PostImagenInline, PostGaleriaImagenInline, PostFicheroImagenInline]
+    autocomplete_fields = ['categoria',]
+    filter_horizontal = ('tags',)
+    
+    fieldsets = [
+        (None, {
+            'fields': [
+                'titulo',
+                'metatitulo',
+                'descripcion',
+                'metadescripcion',
+                'publicado',
+                'color_par',
+                'color_impar',
+                'categoria',
+                'subcategoria',
+                'titulo_auxiliar_buenas_practicas',
+                'titulo_auxiliar_pdf',
+                'tags',
+            ],
+            'description': (
+                "<p><strong><em>Gestiona el turisme sostenible des de aquí.</em></strong></p>"
+                "<p><em>Introdueix la informació rellevant sobre les activitats, iniciatives, "
+                "o rutes de turisme sostenible. Assegura't de detallar els aspectes que "
+                "contribueixen a la sostenibilitat i com els visitants poden participar de "
+                "manera responsable.</em></p>"
+                "<p><em>Recorda utilitzar tags rellevants per millorar el SEO i ajudar als "
+                "visitants a trobar fàcilment la informació sobre turisme sostenible "
+                "que busquen.</em></p>"
+                "<p><em>Utilitza els camps de 'categoria' i 'subcategoria' per organitzar "
+                "millor les activitats i assegurar que els usuaris puguin navegar fàcilment "
+                "per elles.</em></p>"
+            ),
+        }),
+    ]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "categoria":
+            kwargs["queryset"] = Categoria.objects.filter(tipo="turisme_sostenible")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+
 admin.site.register(Restaurante, RestauranteAdmin)
 admin.site.register(Alojamiento, AlojamientoAdmin)
 admin.site.register(Idioma, IdiomaAdmin)
@@ -543,3 +607,4 @@ admin.site.register(Agenda, AgendaAdmin)
 admin.site.register(VisitaGuiada, VisitaGuidadaAdmin)
 admin.site.register(CertificadoTurismoSostenible, CertificadoTurismoSostenibleAdmin)
 admin.site.register(PlayListRuta, PlayListAdmin)
+admin.site.register(TurismeSostenible, TurismeSostenibleAdmin)

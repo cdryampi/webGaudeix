@@ -1,6 +1,5 @@
 from modeltranslation.translator import translator, TranslationOptions, register
-from .models import Agenda, Ruta, VisitaGuiada, Alojamiento, Restaurante
-
+from .models import Agenda, Ruta, VisitaGuiada, Alojamiento, Restaurante, VisionMision, TurismeSostenible, PDFAuxiliar
 
 @register(Agenda)
 class AgendaTranslationOptions(TranslationOptions):
@@ -21,3 +20,15 @@ class AlojamientoTranslationOptions(TranslationOptions):
 @register(Restaurante)
 class RestauranteTranslationOptions(TranslationOptions):
     fields = ('descripcion_corta',)
+
+@register(TurismeSostenible)
+class TurismeSostenibleTranslationOptions(TranslationOptions):
+    fields = ('titulo_auxiliar_buenas_practicas', 'titulo_auxiliar_pdf' )
+
+@register(VisionMision)
+class VisionMisionTranslationOptions(TranslationOptions):
+    fields = ('descripcion','titulo',)
+
+@register(PDFAuxiliar)
+class PDFAuxiliarTranslationOptions(TranslationOptions):
+    fields = ('titulo', 'descripcion', )

@@ -192,6 +192,14 @@
     {% endif %}
 
     {% if portada %}
+    
+        {% if url_iframe_youtube %}
+            {% include 'video_iframe/video_iframe.html' %}
+        {% endif %}
+
+    {% endif %}
+
+    {% if portada %}
         {% if ultimos_eventos %}
             <aside class="container">
                 {% include 'agenda/selecciones/selector_agendas.html' %}

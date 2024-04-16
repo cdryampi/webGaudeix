@@ -1,0 +1,287 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load color_filters %}
+
+{% block meta_description %}
+  {% if subcategoria.metadescripcion %}
+    <meta name="Description" content="{{ subcategoria.metadescripcion | safe | striptags }}">
+    <meta property="og:description" content="{{ subcategoria.metadescripcion | safe | striptags }}">
+  {% else %}
+    {% if subcategoria.descripcion %}
+      <meta name="Description" content="{{ subcategoria.descripcion | safe | striptags | truncatewords_html:150 }}">
+      <meta property="og:description" content="{{ subcategoria.descripcion | striptags | truncatewords_html:150 | safe }}">
+    {% endif %}
+  {% endif %}
+{% endblock meta_description%}
+
+{% block meta_keywords %}
+  {% if subcategoria.tags.all %}
+    <meta name="Keywords" content="{% for tag in subcategoria.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+{% endblock meta_keywords %}
+
+{% block canonical %}
+  <link rel="canonical" href="{{ canonical_url }}"/>
+{% endblock canonical %}
+
+{% block title %}
+  {{ subcategoria.titulo |striptags | safe  }}
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+    div#map {
+        height: 500px;
+    }
+    #carruselTurisme .carousel-inner img {
+        height: 350px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .carousel-control-prev{
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .carousel-control-next {
+        width: 37%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 0.9;
+    }
+    .img-cat-banner{
+        max-height: 50vh !important;
+        width: 100%;
+        object-fit: cover;
+    }
+
+
+    .mision-container {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        border-radius: 5px; /* Opcional: para bordes redondeados */
+        margin-bottom: 20px; /* Espacio entre tarjetas */
+    }
+    
+    .odd {
+        background-color: #f2f2f2; /* Color de fondo para elementos impares */
+    }
+    
+    .even {
+        background-color: #ffffff; /* Color de fondo para elementos pares */
+    }
+    
+    .mision-imagen {
+        max-height: 250px !important;
+        width: auto;
+        margin: 0 auto; /* Centra la imagen horizontalmente */
+    }
+    
+</style>
+{% endblock %}
+
+{% block media %}
+  {% if subcategoria.postgaleriaimagen_set.all.count %}
+    {% include 'agenda/carrusel/turisme_sostenible/turisme_sostenible_carrusel.html' %}
+  {% endif %}
+
+{% endblock media %}
+
+{% block content %}
+
+<section class="mx-0 px-0 pt-0 container-fluid">
+    <div class="p-3">
+        <h1 class="text-center">{{ subcategoria.titulo }}</h1>
+    </div>
+    <div class="container p-lg-5 p-sm-5 p-md-5 p-lg-5 p-2 content-agenda-detail-container justify-content-center">
+        <div class="container p-2">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-12 p-1">
+                            <div class="descripcion">
+                                <p>{{ subcategoria.descripcion | safe }}</p>
+                            </div>                     
+                        <div class="social-share-buttons pt-3 text-center">
+                            <!-- Botones para compartir en redes sociales -->
+                            <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+                                <i class="fab fa-facebook-f fa-2x px-2"></i>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ subcategoria.titulo }}" target="_blank">
+                                <i class="fab fa-twitter fa-2x px-2"></i>
+                            </a>
+                            <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank">
+                                <i class="fab fa-instagram fa-2x px-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-12 pt-5 pt-lg-0 pt-sm-0 pt-xl-0 pt-md-5">
+                        <div class="row">
+                            <div class="col-12">
+                                {% if subcategoria.postimagen %}
+                                    <a href="{{ subcategoria.postimagen.imagen.archivo.url }}" data-fancybox="single-image">
+                                        <img src="{{ subcategoria.postimagen.imagen.archivo.url }}" title="{{ subcategoria.postimagen.imagen.titulo }}" alt="{{ subcategoria.postimagen.imagen.titulo }}" class="img-fluid fancybox">
+                                    </a>
+                                    <div class="col-12">
+                                    <small class="text-center">{% blocktrans %}Fes clic a l'imatge per veure-la en resolució completa{% endblocktrans %}</small>
+                                    </div>
+                                {% else %}
+                                    {% with imagenes=subcategoria.postgaleriaimagen_set.all %}
+                                        {% if imagenes %}
+                                            {% if imagenes.first and imagenes.first.imagen.archivo.url %}
+                                            <a href="{{ imagenes.first.imagen.archivo.url }}" data-fancybox="single-image">
+                                                <img src="{{ imagenes.first.imagen.archivo.url }}" alt="{{ imagenes.first.imagen.titulo }}" class="img-fluid fancybox">
+                                            </a>
+                                            <div class="col-12">
+                                            <small class="text-center">{% blocktrans %}Fes clic a l'imatge per veure-la en resolució completa{% endblocktrans %}</small>
+                                            </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    </div>              
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block asides %}
+    {% comment %} {% if coleccion_destacados %}
+        {% include 'agenda/selecciones/restaurante_relacionado.html' %}
+    {% endif %} {% endcomment %}
+    {% if subcategoria.visionmision_set.all %}
+        <aside class="container p-lg-5 p-sm-5 p-md-5 p-lg-5 p-2">
+            <div class="col-md-12 col-lg-12 col-12 bg-white">
+                {% if subcategoria.titulo_auxiliar_buenas_practicas %}
+                    <div class="col-12 py-3">
+                        <h2 class="text-center">
+                            {{ subcategoria.titulo_auxiliar_buenas_practicas }}
+                        </h2>
+                    </div>
+                {% endif %}
+                <div class="row justify-content-center py-3">
+                    {% with misiones=subcategoria.visionmision_set.all %}
+                        {% if misiones %}
+                            {% for mision in misiones %}
+                                {% if forloop.counter|divisibleby:2 %}
+                                <div class="col-12 mision-container my-3" style="background-color: {{ subcategoria.color_impar }}; color: {% if subcategoria.color_par|is_light %} #000000 {% else %} #ffffff {% endif %};">
+                                {% else %}
+                                <div class="col-12 mision-container my-3" style="background-color: {{ subcategoria.color_par }}; color: {% if subcategoria.color_impar|is_light %} #000000 {% else %} #ffffff {% endif %};">
+                                {% endif %}
+                                    <div class="row">
+                                        {% if forloop.counter|divisibleby:2 %}
+                                            <div class="col-md-4 col-lg-4 col-12 pt-md-2 pt-lg-0 pt-xl-0 pt-5 text-right m-0 px-0">
+                                                {% if mision.imagen %}
+                                                    <a href="{{ mision.imagen.url }}" data-fancybox="single-image">
+                                                        <img src="{{ mision.imagen.url }}" title="{{ mision.imagen.titulo }}" alt="{{ mision.imagen.titulo }}" class="img-fluid fancybox mision-imagen">
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-8 col-lg-8 col-12 pt-md-2 pt-lg-0 pt-xl-0 pt-5 d-flex align-items-center justify-content-center flex-column p-5">
+                                                <h3 class="pt-2">{{ mision.orden }}. {{ mision.titulo }}</h3>
+                                                <div>
+                                                    {{ mision.descripcion|safe }}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-8 col-lg-8 col-12 pt-md-2 pt-lg-0 pt-xl-0 pt-5 d-flex align-items-center justify-content-center flex-column p-5">
+                                                <h3 class="pt-2">{{ mision.orden }}. {{ mision.titulo }}</h3>
+                                                <div>
+                                                    {{ mision.descripcion|safe }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-lg-4 col-12 pt-md-2 pt-lg-0 pt-xl-0 pt-5 text-left m-0 px-0">
+                                                {% if mision.imagen %}
+                                                    <a href="{{ mision.imagen.url }}" data-fancybox="single-image">
+                                                        <img src="{{ mision.imagen.url }}" title="{{ mision.imagen.titulo }}" alt="{{ mision.imagen.titulo }}" class="img-fluid fancybox mision-imagen">
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+    
+
+    {% if subcategoria.postfichero.fichero.archivo.url %}
+        <aside class="container-fuild py-0 my-0">
+            <div class="col-md-12 col-lg-12 agenda-special-categories p-5">
+                <div class="text-center  m-0 py-5 bg-light">
+                    <a href="{{subcategoria.postfichero.fichero.archivo.url}}" class="btn btn-btn-outline-info btn-lg" target="_blank">
+                        <i class="fas fa-file-download"></i>
+                        {% blocktrans %}Política de turisme responsable{% endblocktrans %}
+                    </a>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
+    {% if subcategoria.pdfs_auxiliares.all %}
+        <aside class="container-fluid py-3 my-0">
+            {% if subcategoria.titulo_auxiliar_pdf %}
+                <div class="col-md-12 col-lg-12 agenda-special-categories p-5">
+                    <h2 class="text-center">{{subcategoria.titulo_auxiliar_pdf}}</h2>
+                </div>
+            {% endif %}
+
+            <div class="row">
+                {% for pdf in subcategoria.pdfs_auxiliares.all %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{{ pdf.archivo.url }}" target="_blank" class="text-decoration-none">{{ pdf.titulo }}</a>
+                                </h5>
+                                {% if pdf.descripcion %}
+                                    <p class="card-text">{{ pdf.descripcion }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </aside>
+    {% endif %}
+
+
+    {% if ultimos_eventos %}
+        {% include 'agenda/selecciones/selector_agendas.html' %}
+    {% endif %}
+{% endblock asides %}
+
+{% block extra_script %}
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar FancyBox para todos los elementos con la clase "fancybox"
+        Fancybox.bind('.fancybox', {
+        // Opciones de configuración de FancyBox
+        groupAll: true,
+        });
+    });
+
+  </script>
+{% endblock extra_script %}
