@@ -243,6 +243,18 @@
     </div>
 </div>
 
+{% if evento_especial.descripcion_larga %}
+<div class="container-fluid bg-gray my-3">
+    <div class="container my-3">
+        <div class="row">
+            {% autoescape on %}
+                {{ evento_especial.descripcion_larga |safe }}
+            {% endautoescape %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% if evento_especial.eventoespecialgaleriaimagen_set.all.count >= 4 %}
     <div class="container-fluid p-t-3 m-0 event-container bg-event">
         <div class="row justify-content-center mt-5">
@@ -263,7 +275,6 @@
 {% endif %}
 
 
-
 {% if evento_especial.eventofichero %}
     <div class="container-fluid bg-gray p-0 m-0">
         <div class="container mt-3">
@@ -281,6 +292,7 @@
         </div>
     </div>
 {% endif %}
+
 
 
 

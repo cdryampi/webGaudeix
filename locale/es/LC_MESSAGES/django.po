@@ -21,76 +21,61 @@ msgstr ""
 msgid "Selecciona el tipus d'esdeveniment"
 msgstr "Selecciona el tipo de evento"
 
-
 #: .\agenda\models.py:120
 msgid "Tipus d'esdeveniment"
-msgstr ""
+msgstr "Tipus d'esdeveniment"
 
 #: .\agenda\models.py:455
 msgid "Nens"
 msgstr "Niños"
 
-
 #: .\agenda\models.py:456
 msgid "Joves"
 msgstr "Jóvenes"
-
 
 #: .\agenda\models.py:457
 msgid "Adults"
 msgstr "Adultos"
 
-
 #: .\agenda\models.py:458
 msgid "Totes les edats"
 msgstr "Todas las edades"
-
 
 #: .\agenda\models.py:462 .\blog\models.py:209
 msgid "Sí"
 msgstr "Sí"
 
-
 #: .\agenda\models.py:463 .\blog\models.py:208
 msgid "No"
 msgstr "No"
-
 
 #: .\alerta\models.py:86
 msgid "La fecha de inicio debe ser anterior a la fecha de fin."
 msgstr "La fecha de inicio debe ser anterior a la fecha de fin."
 
-
 #: .\map\models.py:54
 msgid "Municipi"
 msgstr "Municipio"
-
 
 #: .\map\models.py:61
 msgid "Comarca"
 msgstr "Comarca"
 
-
 #: .\map\models.py:68
 msgid "Comunitat Autònoma"
 msgstr "Comunidad Autónoma"
-
 
 #: .\map\models.py:75
 msgid "País"
 msgstr "País"
 
-
 #: .\map\models.py:82
 msgid "Codi postal"
 msgstr "Código postal"
 
-
 #: .\map\models.py:88
 msgid "Carrer"
 msgstr "Calle"
-
-
 
 # post template blog\templates\post\detalle_post.html
 msgid "Fes clic a les imatges per veure la galeria completa"
@@ -104,7 +89,6 @@ msgstr "¡No te pierdas ninguna actividad, disfruta de Cabrera!"
 
 msgid "Tota l'agenda"
 msgstr "Toda la agenda"
-
 
 # core base.html title
 msgid "Inici"
@@ -136,7 +120,6 @@ msgstr "Cabrera de Mar es un municipio de la comarca del Maresme situado en un p
 
 msgid "Situat a uns 28 quilòmetres de Barcelona i a 104 metres sobre el nivell del mar, el centre del municipi es troba a 2.5 quilòmetres de distància del mar, en una petita vall entre dues muntanyes: Burriac i Montcabrer."
 msgstr "Situado a unos 28 kilómetros de Barcelona y a 104 metros sobre el nivel del mar, el centro del municipio se encuentra a 2.5 kilómetros de distancia del mar, en un pequeño valle entre dos montañas: Burriac y Montcabrer."
-
 
 #categorias_seleccion.html
 
@@ -183,13 +166,8 @@ msgstr "Descubre los lugares icónicos de Cabrera de Mar"
 msgid "informació"
 msgstr "información"
 
-
-
-
-
 msgid "Llegenda"
 msgstr "Leyenda"
-
 
 msgid "Punt d'informació"
 msgstr "Punto de información"
@@ -261,7 +239,6 @@ msgstr "cerrar"
 
 msgid "Introduïu el vostre correu electrònic"
 msgstr "Introduce tu dirección de correo electrónico"
-
 
 #carrusel_categorias.html
 
@@ -362,7 +339,6 @@ msgstr "Itinerario"
 msgid "Durada"
 msgstr "Duración"
 
-
 msgid "Pendent"
 msgstr "Pendiente"
 
@@ -425,7 +401,6 @@ msgstr "Público recomendado"
 
 msgid "No s'ha proporcionat la ubicació"
 msgstr "Ubicación no proporcionada"
-
 
 msgid "Calendari d'Esdeveniments"
 msgstr "Calendario de Eventos"
@@ -595,7 +570,6 @@ msgstr "Introduce tu mensaje"
 msgid "He llegit i accepto la política de privacitat"
 msgstr "He leído y acepto la política de privacidad"
 
-
 msgid "De conformitat amb el que disposa la Llei Orgànica 15/1999, de 13 de desembre, de Protecció de Dades de Caràcter Personal (LOPD), l'informem que les seves dades personals són incorporades en fitxers titularitat de Ajuntament de Cabrera de Mar amb la finalitat de poder atendre adequadament les seves peticions d'informació i elaborar els pressupostos que puguin sol·licitar-nos. Per exercir els drets d'accés, rectificació, cancel·lació i oposició que contempla la Llei pot dirigir-se mitjançant carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Assumptes Socials"
 msgstr "De conformidad con lo dispuesto en la Ley Orgánica 15/1999, de 13 de diciembre, de Protección de Datos de Carácter Personal (LOPD), le informamos de que sus datos personales se incorporan en ficheros titularidad del Ajuntament de Cabrera de Mar con la finalidad de poder atender adecuadamente sus solicitudes de información y elaborar los presupuestos que puedan solicitarnos. Para ejercer los derechos de acceso, rectificación, cancelación y oposición que contempla la Ley puede dirigirse mediante carta a Plaça de l'Ajuntament, 1, 08349 Cabrera de Mar, Barcelona, Ref. Asuntos Sociales"
 
@@ -741,8 +715,6 @@ msgstr "Descargar PDF"
 msgid "ha finalitzat!"
 msgstr "¡ha finalizado!"
 
-
-
 msgid "Obtén les teves entrades aquí!"
 msgstr "¡Obtén tus entradas aquí!"
 
@@ -790,7 +762,6 @@ msgstr "Fecha"
 
 msgid "Generar els enllaços"
 msgstr "Generar los enlaces"
-
 
 msgid "Gener"
 msgstr "Enero"
@@ -874,4 +845,4 @@ msgid "Explica'ns la teva experiència"
 msgstr "Cuéntanos tu experiencia"
 
 msgid "Volem saber la teva opinió!"
-msgstr "¡Queremos saber tu opinión!"
+msgstr "¡Queremos saber tu opinión! 2"

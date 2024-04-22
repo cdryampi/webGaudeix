@@ -186,6 +186,14 @@
             {% endif %}
         {% endif %}
     {% endif %}
+    {% if portada %}
+        {% if ultimos_eventos %}
+            <aside class="container">
+                {% include 'agenda/selecciones/selector_agendas.html' %}
+            </aside>
+        {% endif %}
+    {% endif %}
+
 
     {% if portada %}
         {% include 'map/map.html' %}
@@ -198,15 +206,6 @@
         {% endif %}
 
     {% endif %}
-
-    {% if portada %}
-        {% if ultimos_eventos %}
-            <aside class="container">
-                {% include 'agenda/selecciones/selector_agendas.html' %}
-            </aside>
-        {% endif %}
-    {% endif %}
-
 
     {% if portada %}
         {% include "como_llegar/como_llegar.html" %}

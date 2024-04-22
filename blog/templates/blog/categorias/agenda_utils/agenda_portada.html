@@ -73,32 +73,6 @@
 
 {% endblock extra_css %}
 
-{% block media %}
-  {% if carrusel %}
-    <div class="hero-agenda-especial">
-      {% comment %} Verifica si es un dispositivo móvil y el rango de imágenes {% endcomment %}
-      {% if not request.user_agent.is_pc and carrusel.imatges.all.count >= 5 and carrusel.imatges.all.count <= 10 %}
-        {% comment %} Asumiendo que deseas el carrusel estándar para dispositivos móviles {% endcomment %}
-        {% include 'carrusel/carrusel.html' %}
-      {% else %}
-        {% if carrusel.tipo == 'collage' %}
-          {% include 'carrusel/collage.html' %}
-        {% else %}
-          {% include 'carrusel/carrusel.html' %}
-        {% endif %}
-      {% endif %}
-    </div>
-  {% else %}
-    {% if parallax %}
-      <div class="hero-agenda-especial">
-        {% include 'parallax/parallax.html' %}
-      </div>
-    {% endif %}
-  {% endif %}
-{% endblock media %}
-
-
-
 {% block content %}
 <section class="p-lg-5 p-md-5 overflow-hidden">
   <div class="col-12">
@@ -120,6 +94,28 @@
       </div>
   </div>
 </aside>
+  {% if carrusel %}
+    <div class="hero-agenda-especial py-3">
+      {% comment %} Verifica si es un dispositivo móvil y el rango de imágenes {% endcomment %}
+      {% if not request.user_agent.is_pc and carrusel.imatges.all.count >= 5 and carrusel.imatges.all.count <= 10 %}
+        {% comment %} Asumiendo que deseas el carrusel estándar para dispositivos móviles {% endcomment %}
+        {% include 'carrusel/carrusel.html' %}
+      {% else %}
+        {% if carrusel.tipo == 'collage' %}
+          {% include 'carrusel/collage.html' %}
+        {% else %}
+          {% include 'carrusel/carrusel.html' %}
+        {% endif %}
+      {% endif %}
+    </div>
+  {% else %}
+    {% if parallax %}
+      <div class="hero-agenda-especial py-3">
+        {% include 'parallax/parallax.html' %}
+      </div>
+    {% endif %}
+  {% endif %}
+
 
   {% if categorias %}
     <aside class="container-fuild py-0 my-0">

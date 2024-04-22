@@ -165,6 +165,9 @@ class SuperDestacadoAdmin(TranslationStackedInline):
                 'destacado',
                 'mostrar_titulo',
                 'mostrar_descripcion',
+                'link_generico',
+                'flyer',
+                'color',
                 'orden',
                 'personalizacion'
             ],
@@ -173,13 +176,13 @@ class SuperDestacadoAdmin(TranslationStackedInline):
                 "<p>Aquest model permet afegir una referència al model 'esdeveniment especial'.</p>"
                 "<p>Pots afegir una descripció per a l'encapçalament de la secció del super destacat.</p>"
                 "<p>Es considera especialment útil per a destacar encara més els esdeveniments especials i els esdeveniments de 'compra i descobreix - comerç local'.</p>"
-                "<p>En el cas d'esdeveniments especials, el sistema utilitzarà la imatge del parallax assignat o la primera imatge de la seva galeria. Si no hi ha imatges disponibles, es mostrarà una imatge per defecte.</p>"
+                "<p>Si el camp 'Destacat' no està establert, l'enllaç generic ('Link generic') és obligatori, el qual permet proporcionar un enllaç alternatiu a un esdeveniment o pàgina específica. Això és crucial per assegurar que el super destacat tingui sempre una vinculació funcional.</p>"
+                "<p>En cas que 'Destacat' no estigui disponible, es pot utilitzar 'Flyer' per mostrar una imatge promocional o informativa. Si s'incorpora un flyer (programa en format DIN A3), el sistema seleccionarà entre dues plantilles diferents basant-se en la presència d'aquest i el donarà prioritat. Aquest flyer s'utilitzarà per a presentar visualment el super destacat, sobretot en absència d'una imatge vinculada al 'Destacat'.</p>"
                 "<p>Per als esdeveniments de 'compra i descobreix', el sistema utilitzarà la imatge principal. En absència d'imatges vinculades, es recorrerà a una imatge per defecte.</p>"
-                "<p><strong>Nota:</strong> Si s'incorpora un flyer (programa en format DIN A3), el sistema seleccionarà entre dues plantilles diferents basant-se en la presència d'aquest i el donarà prioritat.</p>"
+                "<p><strong>Nota:</strong> En el cas d'esdeveniments especials, el sistema utilitzarà la imatge del parallax assignat o la primera imatge de la seva galeria. Si no hi ha imatges disponibles, es mostrarà una imatge per defecte.</p>"
             ),
         }),
-    ]  
-
+    ]
 
 class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
 
@@ -189,6 +192,7 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
         (None, {
             'fields': [
                 'favicon',
+                'alerta',
                 'carrusel_portada',
                 'carrusel_agenda',
                 'parallax_portada',

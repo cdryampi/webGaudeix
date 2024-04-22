@@ -13,7 +13,13 @@
         <div class="row">
             <div class="col-12 p-0">
                 <div class="embed-responsive embed-responsive-16by9" style="height: 40vh;">
-                    <iframe class="embed-responsive-item" src="{{ url_iframe_youtube.video_url }}" allowfullscreen></iframe>
+                    <iframe 
+                        class="embed-responsive-item" 
+                        src="{{ url_iframe_youtube.video_url }}" 
+                        title="{% if url_iframe_youtube.title %}{{ url_iframe_youtube.title }}{% else %}youtube iframe{% endif %}" 
+                        allowfullscreen>
+                    </iframe>
+
                 </div>
             </div>
         </div>

@@ -48,7 +48,7 @@
     {% if alojamiento.postgaleriaimagen_set.first.imagen and alojamiento.postgaleriaimagen_set.first.imagen.archivo %}
         <div class="text-center">
             <img src="{{ alojamiento.postgaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ alojamiento.postgaleriaimagen_set.first.imagen.titulo }}"
-                class="img-fluid img-cat-banner" title="{{ alojamiento.postgaleriaimagen_set.first.imagen.titulo }}">
+                class="img-fluid img-cat-banner fancybox" title="{{ alojamiento.postgaleriaimagen_set.first.imagen.titulo }}">
         </div>
     {% else %}
         <p>{% blocktrans %}No hi ha imatges disponibles per a aquesta categoria{% endblocktrans %}.</p>

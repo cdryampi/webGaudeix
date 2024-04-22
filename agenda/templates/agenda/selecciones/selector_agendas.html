@@ -38,27 +38,27 @@
                                 <div class="container-fluid text-center p-0 m-0" style="">
                                     {% for idioma in objeto.agenda.idiomas.all %}
                                         {% if idioma.nombre == 'es' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/es.svg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/es.svg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'cat' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/cat.svg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/cat.svg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'en' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/en.svg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/en.svg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'fr' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/fr.svg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/fr.svg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'it' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/it.svg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/it.svg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'de' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/de.svg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/de.svg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'pt' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/pt.svg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/pt.svg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'ar' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/ar.svg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/ar.svg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'fem' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/fem.jpg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/fem.jpg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'au' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/au.jpg' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/au.jpg' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% elif idioma.nombre == 'inc' %}
-                                            <img class="img-fluid" src="{% static 'core/img/banderitas/inc.png' %}" height="25px" width="25px" />
+                                            <img class="img-fluid" src="{% static 'core/img/banderitas/inc.png' %}" height="25px" width="25px" alt="{{ idioma.nombre|capfirst }} Flag" />
                                         {% endif %}
                                     {% endfor %}
                                 </div>

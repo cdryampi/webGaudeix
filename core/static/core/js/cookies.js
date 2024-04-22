@@ -6,8 +6,7 @@
     expirationDate.setDate(expirationDate.getDate() + 365);
 
     // Establece la cookie "cookie_accepted" con valor "true" y fecha de expiración de 365 días
-    document.cookie = "cookie_accepted=true; expires=" + expirationDate.toUTCString() + "; path=/";
-
+    document.cookie = "cookie_accepted=true"+"; expires=" + expirationDate.toUTCString() + "; path=/; Secure; SameSite=Strict";
     // Oculta el mensaje de política de cookies
     document.querySelector(".cookies-message-container").style.display = "none";
   }
@@ -56,7 +55,7 @@
   function setCookie(name, value, durationInMinutes) {
     var expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + (durationInMinutes * 60 * 1000));
-    document.cookie = name + "=" + value + "; expires=" + expirationDate.toUTCString() + "; path=/";
+    document.cookie = name + "=" + value + "; expires=" + expirationDate.toUTCString() + "; path=/; Secure; SameSite=Strict";
   }
 
   // Agrega un event listener para el evento 'DOMContentLoaded' que llama a la función onDocumentLoad

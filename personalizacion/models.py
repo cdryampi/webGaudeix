@@ -7,7 +7,9 @@ from topbar.models import Topbar
 from ckeditor.fields import RichTextField
 from compra_y_descubre.models import CompraDescubre
 from eventos_especiales.models import EventoEspecial
+from alerta.models import Alerta
 from datetime import time
+from colorfield.fields import ColorField
 
 # Create your models here.
 class PersonalizacionManager(models.Manager):
@@ -180,6 +182,14 @@ class Personalizacion(models.Model):
         verbose_name="Favicon",
         help_text="Selecciona el favicon per al lloc (si n'hi ha un)."
     )
+    alerta = models.OneToOneField(
+        Alerta,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Alerta",
+        help_text="Selecciona una Alerta per la portada."
+    )
     carrusel_portada = models.ForeignKey(
         Carrusel,
         on_delete=models.SET_NULL,
@@ -312,7 +322,9 @@ class SuperDestacado(models.Model):
         InternalLink,
         on_delete=models.CASCADE,
         verbose_name="Destacat",
-        help_text="Selecciona un enllaç intern per fer la vinculació"
+        help_text="Selecciona un enllaç intern per fer la vinculació",
+        null=True,
+        blank=True
     )
     mostrar_titulo = models.BooleanField(
         default=True, 
@@ -321,6 +333,25 @@ class SuperDestacado(models.Model):
     mostrar_descripcion = models.BooleanField(
         default=True, 
         verbose_name="Mostrar descripció"
+    )
+    
+    link_generico = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Enllaç oblogatori quan no tenim viculat un descatat viculat.",
+        verbose_name="Enlla genèric"
+    )
+
+    flyer = models.ImageField(
+        upload_to='personalizacion/flyers/',
+        help_text="Puja el flyer de l'esdeveniment en format DIN A3",
+        null=True,
+        blank=True,
+        verbose_name="Flyer"
+    )
+    color = ColorField(
+        default='#FFFFFF',
+        verbose_name="Color"
     )
     personalizacion = models.ForeignKey(
         Personalizacion,
@@ -335,8 +366,15 @@ class SuperDestacado(models.Model):
         help_text="Defineix l'ordre del destacat",
         verbose_name="Ordre"
     )
+    
+    def clean(self):
+        # Valida que si `destacado` no está definido, `link_generico` debe ser obligatorio
+        if not self.destacado and not self.link_generico:
+            raise ValidationError("Si no se especifica un 'Destacat', el 'Enllaç genèric' es obligatorio.")
+        
+
     def __str__(self):
-        return f"Super Descat: {self.titulo} - {self.destacado}"
+        return f"Super Descat: {self.titulo}"
 
     class Meta:
         ordering = ['orden']

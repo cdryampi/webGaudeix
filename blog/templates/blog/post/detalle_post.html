@@ -111,9 +111,12 @@
 
     {% if post.postgaleriaimagen_set.first.imagen %}
         <div class="text-center">
-            <img src="{{ post.postgaleriaimagen_set.first.imagen.archivo.url }}" alt="{{ post.titulo }}"
-                class="img-fluid img-cat-banner">
+            <img src="{{ post.postgaleriaimagen_set.first.imagen.archivo.url }}" data-fancybox="{{ post.titulo }}" alt="{{ post.titulo }}"
+                class="img-fluid img-cat-banner fancybox">
         </div>
+        <div class="col-12">
+          <small class="text-center">{% blocktrans %}Fes clic a les imatges per veure la galeria completa{% endblocktrans %}</small>
+        </div> 
     {% endif %}
 
     </div>
@@ -121,7 +124,7 @@
 {% endblock media %}
 
 {% block content %}
-<section class="pb-5 px-0 container-fluid">
+<section class="pb-5 container-fluid">
     <div class="pb-5">
         <h1 class="text-center p-3 h2">
           {% autoescape on %}
@@ -138,9 +141,38 @@
         <div class="col-md-12 col-lg-12">
           <div class="row">
             <div class="col-md-6">
-              
-              <p>{{ post.descripcion | safe }}</p>
-                      
+
+              {% autoescape on %}
+                {{ post.descripcion | safe }}
+              {% endautoescape %}
+
+              <div class="table-responsive">
+                <table class="table table-bordered table-custom">
+                  <thead>
+                    <tr>
+                      <th colspan="2" class="table-header bg-dark text-white">{% blocktrans %}Dades adicionals{% endblocktrans %}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if post.postfichero and post.postfichero.fichero.archivo.url %}
+                    <tr>
+                      <td colspan="1" style="border-left:0px;">
+                        <i class="fas fa-file-pdf"></i>
+                        <strong>PDF:</strong>
+                        <a href="{{ post.postfichero.fichero.archivo.url }}" class="text-black topbar-link" title="{{ post.postfichero.fichero.titulo }}" download>
+                          {% if post.postfichero.fichero.titulo %}
+                            {{ post.postfichero.fichero.titulo }}
+                          {% else %}
+                            {% blocktrans %}descarregar{% endblocktrans %}
+                          {% endif %}
+                        </a>
+                      </td>
+                    </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+
               <div class="social-share-buttons">
                   <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
                     <i class="fab fa-facebook-f fa-2x px-2"></i>
@@ -173,19 +205,6 @@
     </div>
   </div>
 </section>
-
-{% if post.postfichero %}
-    <aside class="mx-0 px-0 pb-5 container-fluid">
-        <div class="row p-0 m-0">
-            <div class="col-md-12 p-0 m-0">
-                <a href="{{ post.postfichero.fichero.archivo.url }}" class="btn btn-light btn-lg btn-block" download>
-                    <i class="fas fa-file-pdf"></i>{% blocktrans %}Descarregar PDF{% endblocktrans %} "<b>{{ post.postfichero.fichero.titulo }}</b>"
-                </a>
-            </div>
-        </div>
-    </aside>
-{% endif %}
-
 
 {% endblock %}
 

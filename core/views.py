@@ -94,14 +94,7 @@ def home(request):
         return cached_page
 
 
-
-
-    # Intentar obtener la página desde la caché
-    cached_page = cache.get(cache_key)
-    if cached_page is not None:
-        return cached_page
-
-    alert = Alerta.objects.filter(publicado=True).first()
+    alert = None
 
     personalizacion = Personalizacion.objects.filter().first()
 
@@ -135,6 +128,9 @@ def home(request):
         carrusel = personalizacion.carrusel_portada
     if personalizacion and personalizacion.video_url:
         url_iframe_youtube = personalizacion.video_url
+    if personalizacion and personalizacion.alerta:
+        alert = personalizacion.alerta
+        
     
     # com arribar
     tren = None

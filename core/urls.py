@@ -9,10 +9,15 @@ from . import views
 
 urlpatterns = [
     # Otras URLs de la aplicación "core"
-    # ...
+    
+    # Página de inicio
     path('', views.home, name='home'),
+    # CSRF Token
     path('obtener-token-csrf/', obtener_token_csrf, name='obtener_token_csrf'),
+    # Cache Refresh
     path('refresh-cache/', refresh_cache, name='refresh_cache'),
+    # Robots.txt
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots.txt"),
-    path('redirect/<str:link_unico>', RedirectMultimediaFile.as_view(),name="redirect_file")
+    # Redireccionamiento de archivos multimedia
+    path('redirect/<str:link_unico>/', RedirectMultimediaFile.as_view(),name="redirect_file")
 ]

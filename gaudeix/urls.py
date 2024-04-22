@@ -28,7 +28,7 @@ from django.views.i18n import set_language
 
 urlpatterns = [
 
-    path('admin/', admin.site.urls),
+    path('admin_gaudeix/', admin.site.urls),
     path('', include(('core.urls', 'core'), namespace='core')),
     path('',include('blog.urls')),
     path('agenda/',include('agenda.urls')),
@@ -39,7 +39,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('sv/',include('subvenciones.urls')),
     path('c-d/', include('compra_y_descubre.urls')),
-    path('i18n/', include('django.conf.urls.i18n')),
+    path('idiomes/', include('django.conf.urls.i18n')),
     path('', include('traducciones.urls')),
     # re_path(
     #     r'^imagen-autocomplete/$',
