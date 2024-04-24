@@ -408,7 +408,9 @@ class Idioma(models.Model):
 
 
 class Agenda(Post):
-
+    """
+        Modelo que representa a una agenda
+    """
     entradas = models.BooleanField(
         default=False,
         help_text="Hi ha entrades?",

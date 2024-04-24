@@ -372,7 +372,7 @@
   {% if agendas_relacionadas %}
   <aside class="container p-3">
     <div class="py-3">
-        <h4 class="related-activities-title">{% blocktrans %}Esdeveniments de la visita guiada{% endblocktrans %}:</h4>
+        <h4 class="related-activities-title">{% blocktrans %}Esdeveniments de la visita guiada{% endblocktrans %} "{{ visites.titulo |safe }}":</h4>
     </div>
     <div class="row row-inline-cards justify-content-center px-0">
         {% for objeto in agendas_relacionadas %}
@@ -409,6 +409,13 @@
                             {% if objeto.descripcion_corta|wordcount > 10 %}{{ objeto.descripcion_corta|truncatewords:10 }}...{% else %}{{ objeto.descripcion_corta }}{% endif %}
                           {% endautoescape %}
                           </p>
+                          {% if objeto.agenda %}
+                            <div class="related-activity-details related-activity-details-agenda">
+                              <p class="related-activity-date-time">
+                                  <i class="fas fa-map-marker-alt" style="color: #3ebfab;"></i> <span>{{ objeto.ubicacion.titulo }}</span>
+                              </p>
+                            </div>
+                          {% endif %}
                     </div>
                 </article>
             </a>

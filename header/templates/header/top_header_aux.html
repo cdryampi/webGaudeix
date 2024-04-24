@@ -1,15 +1,17 @@
 {% load static %}
 {% load i18n %}
 
-{% if header.logos_auxiliares.all %}
+{% if header.logos_auxiliares.exists %}
     <div class="topbar" style="background-color: {{ header.color_top_bar_logos }}; color: {{ topbar.texto_color }};">
         <div class="container-fluid">
             <div class="row justify-content-center align-items-center text-center">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     {% for logo in header.logos_auxiliares.all %}
-                        <a class="navbar-brand" href="{{ logo.enlace }}" target="_blank" rel="noopener noreferrer">
-                            <img src="{{ logo.imagen.url }}" alt="{{ logo.titulo }}" class="logo-img" style="max-width: 8.5rem; max-height: 3rem; object-fit: contain;">
-                        </a>
+                        {% if logo.mostrar_portada %}
+                            <a class="navbar-brand" href="{{ logo.enlace }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ logo.imagen.url }}" alt="{{ logo.titulo }}" class="logo-img" style="max-width: 8.5rem; max-height: 3rem; object-fit: contain;">
+                            </a>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

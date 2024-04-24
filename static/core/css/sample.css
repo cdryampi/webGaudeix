@@ -90,8 +90,8 @@ header .dropdown-submenu .dropdown-menu {
   border-color: #e9ecef;
 }
 
-#main-content a {
-  text-decoration: underline;
+.underline {
+  text-decoration: underline !important;
 }
 
 /* end Custom */
@@ -1796,7 +1796,7 @@ table.table-custom tr.even {
 /* ckeditor */
 iframe {
   width: 100% !important; /* Asegura que el iframe tome el ancho completo del contenedor */
-  height: auto; /* Ajusta la altura automáticamente basado en el aspect ratio */
+  height: revert-layer; /* Ajusta la altura automáticamente basado en el aspect ratio */
 }
 /* end ckeditor */
 

@@ -11,7 +11,7 @@ class LogoAuxiliarInline(TranslationStackedInline):
     extra = 1
     fieldsets = (
         (None, {
-            'fields': ('imagen', 'titulo', 'enlace', 'orden'),
+            'fields': ('imagen', 'titulo', 'enlace', 'orden', 'mostrar_portada'),
             'description': _('Aquí pots gestionar els logos auxiliars. Afegeix un títol i un enllaç opcional per a cadascun.'),
         }),
     )

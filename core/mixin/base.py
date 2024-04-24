@@ -19,10 +19,14 @@ class BaseContextMixin:
         #context['categorias'] = Categoria.objects.filter(publicado=True)
         personalizacion = Personalizacion.objects.filter().first()
         topbar =None
+        google_script = None
         color_red_social = None
         color_red_social = obtener_color_mas_repetido()
+
         if personalizacion:
-            topbar = personalizacion.topbar            
+            topbar = personalizacion.topbar
+            google_script = personalizacion.analytics_script
+
         alert = Alerta.objects.filter(publicado=True).first()
         # ultimos eventos del portal
         now = timezone.now()
@@ -32,6 +36,8 @@ class BaseContextMixin:
             (Q(fecha=now.date(), hora__gte=now.time()) | Q(fecha__gt=now.date()))
         ).order_by('fecha', 'hora')[:4]
 
+
+        context['google_script'] = google_script
         context['diversidad'] = Diversidad.objects.filter().first()
         context['header_footer'] = HeaderFooter.objects.first()
         context['header'] = Header.objects.first()

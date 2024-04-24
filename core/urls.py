@@ -19,5 +19,5 @@ urlpatterns = [
     # Robots.txt
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots.txt"),
     # Redireccionamiento de archivos multimedia
-    path('redirect/<str:link_unico>/', RedirectMultimediaFile.as_view(),name="redirect_file")
+    path('redirect/<str:link_unico>', RedirectMultimediaFile.as_view(),name="redirect_file")
 ]

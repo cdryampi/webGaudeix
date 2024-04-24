@@ -4,42 +4,45 @@
     <section class="container-fluid" id="freebox-subblog-home">
         <div class="row justify-content-center">
             {% for subblog in subblogs %}
-                <div class="card col-lg-4 col-md-3 col-sm-3 col-12 border-1 shadow m-3 p-0">
-                    {% if subblog.subblogimagen %}
-                        <div class="img-container">
-                            <img src="{{ subblog.subblogimagen.imagen.archivo.url }}" 
-                                 alt="{{ subblog.titulo }}" 
-                                 class="img-fluid align-middle w-100"
-                                 title="{{ subblog.subblogimagen.imagen.titulo }}">
-                        </div>
-                    {% elif subblog.subbloggaleriaimagen_set.count > 0 %}
-                        {% for imagen in subblog.subbloggaleriaimagen_set.all|slice:":1" %}
+                {% if subblog.publicado %}
+                    <div class="card col-lg-4 col-md-3 col-sm-3 col-12 border-1 shadow m-3 p-0">
+                        {% if subblog.subblogimagen %}
                             <div class="img-container">
-                                <img src="{{ imagen.imagen.archivo.url }}" 
-                                     alt="{{ subblog.titulo }}" 
-                                     class="img-fluid align-middle w-100"
-                                     title="{{ imagen.imagen.titulo }}">
+                                <img src="{{ subblog.subblogimagen.imagen.archivo.url }}" 
+                                    alt="{{ subblog.titulo }}" 
+                                    class="img-fluid align-middle w-100"
+                                    title="{{ subblog.subblogimagen.imagen.titulo }}">
                             </div>
-                        {% endfor %}
-                    {% endif %}
+                        {% elif subblog.subbloggaleriaimagen_set.count > 0 %}
+                            {% for imagen in subblog.subbloggaleriaimagen_set.all|slice:":1" %}
+                                <div class="img-container">
+                                    <img src="{{ imagen.imagen.archivo.url }}" 
+                                        alt="{{ subblog.titulo }}" 
+                                        class="img-fluid align-middle w-100"
+                                        title="{{ imagen.imagen.titulo }}">
+                                </div>
+                            {% endfor %}
+                        {% endif %}
 
-                    <div class="p-2 text-center" style="background-color: {{ header.color_fondo_header }} !important;">
-                        <a href="{% url 'blog:detalle-subblog' slug=subblog.slug %}" title="{{ subblog.titulo }}" class="text-center text-uppercase text-white font-weight-bold nav-link-freebox">{{ subblog.titulo }}</a>
-                    </div>
-                    {% if subblog.categoria_set.all.exists %}
-                        <div class="mt-2 card-body">
-                            <ul class="list-unstyled">
-                                {% for categoria in subblog.categoria_set.all|slice:":10" %}
-                                    <li class="m-3">
-                                        <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="link text-black-50 text-capitalize text-muted nav-link-freebox" style="color: {{ header.color_fondo_header }} !important;">
-                                            {{ categoria.titulo }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                        <div class="p-2 text-center" style="background-color: {{ header.color_fondo_header }} !important;">
+                            <a href="{% url 'blog:detalle-subblog' slug=subblog.slug %}" title="{{ subblog.titulo }}" class="text-center text-uppercase text-white font-weight-bold nav-link-freebox">{{ subblog.titulo }}</a>
                         </div>
-                    {% endif %}
-                </div>
+                        {% if subblog.categoria_set.all.exists %}
+                            <div class="mt-2 card-body">
+                                <ul class="list-unstyled">
+                                    {% for categoria in subblog.categoria_set.all|slice:":10" %}
+                                        <li class="m-3">
+                                            <a href="{% url 'blog:categoria' slug=categoria.slug %}" class="link text-black-50 text-capitalize text-muted nav-link-freebox" style="color: {{ header.color_fondo_header }} !important;">
+                                                {{ categoria.titulo }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
             {% endfor %}
         </div>
     </section>

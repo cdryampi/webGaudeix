@@ -46,7 +46,9 @@ class Header(SingletonModel):
         default='#FFFFFF'
     )
 
-
+    def has_logo_portada(self):
+        return self.logos_auxiliares.filter(mostrar_portada=True).exists()
+    
     def __str__(self):
         return "Menú de navegación"
     
@@ -410,8 +412,13 @@ class LogoAuxiliar(models.Model):
         null=True,
         help_text="Enllaç opcional per al logo."
     )
+    mostrar_portada = models.BooleanField(
+        default=False,
+        help_text="Indica si vols que la imatge surti a la portada.",
+        verbose_name="mostrar portada"
+    )
     orden = models.PositiveIntegerField(default=0, verbose_name="Ordre")
-    
+
     class Meta:
         ordering = ['orden']
 

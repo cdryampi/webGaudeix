@@ -121,6 +121,7 @@ def home(request):
     super_destacados = None
     carrusel =  None
     url_iframe_youtube = None
+    google_script = None
 
     if personalizacion and personalizacion.superdestacado_set.all():
         super_destacados = personalizacion.superdestacado_set.all()
@@ -130,6 +131,8 @@ def home(request):
         url_iframe_youtube = personalizacion.video_url
     if personalizacion and personalizacion.alerta:
         alert = personalizacion.alerta
+    if personalizacion and personalizacion.analytics_script:
+        google_script = personalizacion.analytics_script
         
     
     # com arribar
@@ -217,7 +220,8 @@ def home(request):
             'portada_meta_description': meta_description,
             'portada_meta_keywords': meta_keywords,
             'carrusel': carrusel,
-            'url_iframe_youtube': url_iframe_youtube
+            'url_iframe_youtube': url_iframe_youtube,
+            'google_script': google_script,
         }
     )
     

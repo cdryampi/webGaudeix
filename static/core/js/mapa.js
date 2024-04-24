@@ -131,10 +131,7 @@ function buildContent(property) {
     const links = content.querySelectorAll('a');
     links.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.stopPropagation(); // Previene la propagación del evento
-            // Opcionalmente, maneja el clic aquí, por ejemplo, abriendo el enlace en una nueva pestaña
-            // Esto podría no ser necesario si ya estás usando target="_blank" en tus enlaces
-            console.log("click inside");
+            e.stopPropagation();
         });
     });
 }, 0);

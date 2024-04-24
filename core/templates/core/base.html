@@ -89,6 +89,13 @@
     <link rel="icon" href="{% static 'core/img/favicon/favicon.ico' %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static 'core/img/favicon/favicon.ico' %}" type="image/x-icon">
     <!--FI FAVICON-->
+    <script type="text/javascript" async src="https://www.google-analytics.com/analytics.js"></script>
+
+    {% block google_script %}
+        {% if google_script %}
+            {{ google_script |safe }}
+        {% endif %}
+    {% endblock google_script %}
 
     {% compress css %}
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -133,9 +140,9 @@
                     {% include 'portada-video/portada-video.html' %}
 
                 {% endif %}
-                
+            {% elif carrusel %}
+                {% include "carrusel/carrusel.html" %}
             {% else %}
-
                 {% include 'parallax/parallax.html' %}
 
             {% endif %}
@@ -186,6 +193,14 @@
             {% endif %}
         {% endif %}
     {% endif %}
+
+    {% if portada %}
+    
+        {% if url_iframe_youtube %}
+            {% include 'video_iframe/video_iframe.html' %}
+        {% endif %}
+
+    {% endif %}
     {% if portada %}
         {% if ultimos_eventos %}
             <aside class="container">
@@ -197,14 +212,6 @@
 
     {% if portada %}
         {% include 'map/map.html' %}
-    {% endif %}
-
-    {% if portada %}
-    
-        {% if url_iframe_youtube %}
-            {% include 'video_iframe/video_iframe.html' %}
-        {% endif %}
-
     {% endif %}
 
     {% if portada %}

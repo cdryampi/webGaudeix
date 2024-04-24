@@ -145,33 +145,35 @@
               {% autoescape on %}
                 {{ post.descripcion | safe }}
               {% endautoescape %}
+              {% if post.postfichero %}
+                <div class="table-responsive">
+                  <table class="table table-bordered table-custom">
+                    <thead>
+                      <tr>
+                        <th colspan="2" class="table-header bg-dark text-white">{% blocktrans %}Dades adicionals{% endblocktrans %}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if post.postfichero and post.postfichero.fichero.archivo.url %}
+                      <tr>
+                        <td colspan="1" style="border-left:0px;">
+                          <i class="fas fa-file-pdf"></i>
+                          <strong>PDF:</strong>
+                          <a href="{{ post.postfichero.fichero.archivo.url }}" class="text-black topbar-link" title="{{ post.postfichero.fichero.titulo }}" download>
+                            {% if post.postfichero.fichero.titulo %}
+                              {{ post.postfichero.fichero.titulo }}
+                            {% else %}
+                              {% blocktrans %}descarregar{% endblocktrans %}
+                            {% endif %}
+                          </a>
+                        </td>
+                      </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              {% endif %}
 
-              <div class="table-responsive">
-                <table class="table table-bordered table-custom">
-                  <thead>
-                    <tr>
-                      <th colspan="2" class="table-header bg-dark text-white">{% blocktrans %}Dades adicionals{% endblocktrans %}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% if post.postfichero and post.postfichero.fichero.archivo.url %}
-                    <tr>
-                      <td colspan="1" style="border-left:0px;">
-                        <i class="fas fa-file-pdf"></i>
-                        <strong>PDF:</strong>
-                        <a href="{{ post.postfichero.fichero.archivo.url }}" class="text-black topbar-link" title="{{ post.postfichero.fichero.titulo }}" download>
-                          {% if post.postfichero.fichero.titulo %}
-                            {{ post.postfichero.fichero.titulo }}
-                          {% else %}
-                            {% blocktrans %}descarregar{% endblocktrans %}
-                          {% endif %}
-                        </a>
-                      </td>
-                    </tr>
-                    {% endif %}
-                  </tbody>
-                </table>
-              </div>
 
               <div class="social-share-buttons">
                   <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
