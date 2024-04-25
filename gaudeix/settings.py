@@ -38,6 +38,7 @@ SECRET_KEY = config['SECRET_KEY']
 
 DOMAIN_URL = config['DOMAIN_URL']
 
+SCRIPT_PATH = config['SCRIPT_PATH']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = settings["DEBUG"]
 

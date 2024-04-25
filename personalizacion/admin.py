@@ -196,7 +196,6 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
                 'carrusel_portada',
                 'carrusel_agenda',
                 'parallax_portada',
-                'parallax_agenda',
                 'video_portada',
                 'topbar',
                 'horario',

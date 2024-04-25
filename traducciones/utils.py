@@ -5,8 +5,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import reverse
 from django.contrib import messages
+
 from .models import Translation
 from .forms import POEditForm
+from gaudeix.settings import SCRIPT_PATH
 
 @staff_member_required
 def edit_view(request, object_id):
@@ -21,7 +23,8 @@ def edit_view(request, object_id):
             translation.save_po_file_content(content)
 
             # Determinar el comando basado en el sistema operativo
-            compile_command = ['django-admin', 'compilemessages']
+            script_file = os.path.join(SCRIPT_PATH, 'compile_message.sh')
+            compile_command = script_file
             if os.name == 'nt':  # Para Windows
                 compile_command = ['python', '-m', 'django', 'compilemessages']
 

@@ -159,10 +159,11 @@
                             <span class="duracion-visita" style="margin-right: 5px;">
                                 <i class="fas fa-clock"></i>
                                 {{ visita.duracion|format_duration }}
+                                <span style="margin: 0 10px;">|</span>
                             </span>
 
                             {% if visita.fechas.all %}
-                                <span style="margin: 0 10px;">|</span>
+
                                 {% for fecha in visita.fechas.all %}
                                     <div>
                                         <i class="fas fa-calendar-alt" style="margin-right: 5px;"></i>
@@ -172,7 +173,6 @@
                                 {% endfor %}
                             {% endif %}
                             {% if visita.mapa and visita.mapa.titulo %}
-                                <span style="margin-left: 10px;">|</span>
                                 <span style="margin-right: 5px;margin-left: 5px;">
                                     <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i>
                                     {{ visita.mapa.titulo }}

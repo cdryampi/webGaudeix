@@ -202,6 +202,8 @@ class EventoEspecialAdmin(TranslationAdmin, admin.ModelAdmin):
                 'publicado',
                 'medida_economica',
                 'categoria',
+                'titulo_google_form',
+                'boton_texto_google_form',
                 'link_google_form',
                 'color',
                 'mostrar_ahorro',
@@ -213,7 +215,6 @@ class EventoEspecialAdmin(TranslationAdmin, admin.ModelAdmin):
                 'imagen_especial',
                 'flyer',
                 'tags',
-                'videos',
             ],
             'description': (
                 "<p><strong>Aquesta és la pàgina d'edició d'un esdeveniment especial.</strong></p>"

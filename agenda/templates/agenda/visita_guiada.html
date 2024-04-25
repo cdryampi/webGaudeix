@@ -32,7 +32,7 @@
 {% block extra_css %}
 <style>
   #carouselVisites .carousel-inner img {
-      height: 500px;
+      height: 50vh;
       object-fit: cover;
       width: 100%;
   }
@@ -461,71 +461,96 @@
   });
 </script>
   {% if visites.mostrar_calendario == 'si' and visites.fechas.all %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const obtenerValorCookie = (nombre) => {
-        let nombreCookie = `${nombre}=`;
-        let ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-          let c = ca[i].trim();
-          if (c.indexOf(nombreCookie) === 0) return c.substring(nombreCookie.length, c.length);
-        }
-        return "";
-      };
-  
-      let currentLanguage = obtenerValorCookie('django_language');
-  
-      const fechas = {{ fechas_json|safe }};  // Asumimos que fechas_json es un array de fechas en formato 'YYYY-MM-DD'
-  
-      const calendarDays = document.getElementById('calendar-days');
-      const currentMonthTitle = document.getElementById('current-month-title');
-      const prevMonthButton = document.getElementById('prev-month-button');
-      const nextMonthButton = document.getElementById('next-month-button');
-  
-      let currentDate = new Date();
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const obtenerValorCookie = (nombre) => {
+          const nombreCookie = `${nombre}=`;
+          const ca = document.cookie.split(';');
+          for (let i = 0; i < ca.length; i++) {
+            const c = ca[i].trim();
+            if (c.indexOf(nombreCookie) === 0) {
+              return c.substring(nombreCookie.length, c.length);
+            }
+          }
+          return "";
+        };
       
-      function actualizarCalendario() {
+        const currentLanguage = obtenerValorCookie('django_language');
+      
+        const fechas = {{ fechas_json|safe }};  // Asumimos que este es un array de fechas en formato 'YYYY-MM-DD'
+      
+        const calendarDays = document.getElementById('calendar-days');
+        const currentMonthTitle = document.getElementById('current-month-title');
+        const prevMonthButton = document.getElementById('prev-month-button');
+        const nextMonthButton = document.getElementById('next-month-button');
+      
+        let currentDate = new Date();
+      
+        function actualizarCalendario() {
           const year = currentDate.getFullYear();
           const month = currentDate.getMonth();
-  
+      
           // Actualizar el título del calendario
           currentMonthTitle.textContent = currentDate.toLocaleString(currentLanguage, { month: 'long', year: 'numeric' });
-  
+      
+          // Obtener el primer día de la semana para el mes actual
+          const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+          // Si 0 es domingo y 1 es lunes, puedes ajustar así:
+          const normalizedFirstDayOfMonth = (firstDayOfMonth + 6) % 7;  // Asegura que 0 sea lunes y 6 sea domingo
+
+          // Calcular el número total de días para un calendario completo (6 filas)
+          const totalDays = 42;
+      
+          // Calcular el número de días en el mes actual
+          const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
           // Convertir fechas a un formato más simple para comparación directa
           const fechasSet = new Set(fechas.map(date => {
             const [y, m, d] = date.split('-');
-            return `${y}-${('0' + m).slice(-2)}-${('0' + d).slice(-2)}`;  // Asegura ceros a la izquierda
-         }));
-        
-          // Calcular el número de días en el mes actual
-          const daysInMonth = new Date(year, month + 1, 0).getDate();
-  
+            return `${y}-${('0' + m).slice(-2)}-${('0' + d).slice(-2)}`;
+          }));
+      
           let calendarHTML = '';
-          for (let day = 1; day <= daysInMonth; day++) {
-              const dateStr = `${year}-${('0' + (month + 1)).slice(-2)}-${('0' + day).slice(-2)}`;
-              const dayClass = fechasSet.has(dateStr) ? 'calendar-day marked-date' : 'calendar-day';
-              calendarHTML += `<div class="${dayClass}">${day}</div>`;
+      
+          // Agregar días en blanco para cuadrar el primer día del mes
+          for (let i = 0; i < normalizedFirstDayOfMonth; i++) {
+            calendarHTML += `<div class="calendar-day blank"></div>`;
           }
-  
+      
+          // Agregar días reales del mes
+          for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${('0' + (month + 1)).slice(-2)}-${('0' + day).slice(-2)}`;
+            const dayClass = fechasSet.has(dateStr) ? 'calendar-day marked-date' : 'calendar-day';
+            calendarHTML += `<div class="${dayClass}">${day}</div>`;
+          }
+      
+          // Agregar días en blanco para completar hasta 42 días
+          const remainingDays = totalDays - (firstDayOfMonth + daysInMonth);
+          for (let i = 0; i < remainingDays; i++) {
+            calendarHTML += `<div class="calendar-day blank"></div>`;
+          }
+      
+          // Actualizar el contenido del calendario
           calendarDays.innerHTML = calendarHTML;
-      }
-  
-      // Eventos para cambiar el mes
-      prevMonthButton.addEventListener('click', () => {
+        }
+      
+        // Eventos para cambiar el mes
+        prevMonthButton.addEventListener('click', () => {
           currentDate.setMonth(currentDate.getMonth() - 1);
           actualizarCalendario();
-      });
-  
-      nextMonthButton.addEventListener('click', () => {
+        });
+      
+        nextMonthButton.addEventListener('click', () => {
           currentDate.setMonth(currentDate.getMonth() + 1);
           actualizarCalendario();
+        });
+      
+        actualizarCalendario();  // Inicializar el calendario al cargar la página
       });
-  
-      actualizarCalendario();  // Inicializar el calendario al cargar la página
-      // Inicializar FancyBox para todos los elementos con la clase "fancybox"
-  
-    });
-  </script>
+      
+
+    </script>
   {% endif %}
 
 {% endblock extra_script %}

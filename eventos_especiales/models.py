@@ -215,10 +215,26 @@ class EventoEspecial(BaseModel, MetadataModel):
         verbose_name="Miniatura d'esdeveniment especial"
     )
 
+    titulo_google_form = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Títol pel enllaç opcional pel formulari",
+        verbose_name="Títol pel enllaç"
+    )
+
+    boton_texto_google_form = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Títol pel botó de l'enllaç opcional per l'enllaç",
+        verbose_name="Títol pel botó de l'enllaç"
+    )
+
     link_google_form = models.URLField(
         blank=True,
         null=True,
-        help_text="Enllaç opcional pel formulari."
+        help_text="Enllaç opcional pel formulari"
     )
 
     flyer = models.ImageField(

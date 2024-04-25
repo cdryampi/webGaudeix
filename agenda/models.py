@@ -516,8 +516,8 @@ class VariationAgenda(models.Model):
         if fecha_hora_fin.time() >= time(23,59):
             fecha_hora_fin = fecha_hora_inicio
         # Formatear las fechas y horas en el formato adecuado
-        fecha_hora_inicio_str = fecha_hora_inicio.strftime("%Y%m%dT%H%M%SZ")
-        fecha_hora_fin_str = fecha_hora_fin.strftime("%Y%m%dT%H%M%SZ")
+        fecha_hora_inicio_str = fecha_hora_inicio.strftime("%Y%m%dT%H%M%S")
+        fecha_hora_fin_str = fecha_hora_fin.strftime("%Y%m%dT%H%M%S")
 
         # Crear el enlace de Google Calendar
         return f"https://calendar.google.com/calendar/render?action=TEMPLATE&text={self.agenda.titulo}&dates={fecha_hora_inicio_str}/{fecha_hora_fin_str}&details={self.agenda.descripcion_corta}&location={self.agenda.ubicacion}"
@@ -809,7 +809,9 @@ class FechaVisita(models.Model):
 
 
 class VisitaGuiada(Post):
-
+    """
+        Modelo que representa una visita guiada
+    """
     PUBLICO_RECOMENDADO_CHOICES = (
         ('nens', _('Nens')),
         ('joves', _('Joves')),
@@ -830,8 +832,8 @@ class VisitaGuiada(Post):
     )
 
     duracion = models.DurationField(
-        default=timedelta(days=2), 
-        help_text="Duració de la visita (en format DD HH:MM:SS)",
+        default=timedelta(hours=5),  # 48 horas como ejemplo
+        help_text="Duració de la visita (en format HH:MM:SS)",
         verbose_name="Duració"
     )
 
@@ -887,6 +889,8 @@ class VisitaGuiada(Post):
 
 
     def __str__(self):
-        duracion_dias = self.duracion.days
-        duracion_horas = self.duracion.seconds // 3600
-        return f"Visita Guiada : {self.titulo}"
+        # Convertir duracion a horas y minutos
+        total_seconds = self.duracion.total_seconds()
+        hours = int(total_seconds // 3600)
+        minutes = int((total_seconds % 3600) // 60)
+        return f"Visita Guiada : {self.titulo} - Duració: {hours} hores, {minutes} minuts"

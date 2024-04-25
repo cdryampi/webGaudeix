@@ -205,7 +205,7 @@ class Personalizacion(models.Model):
         null=True,
         blank=True,
         verbose_name="Carrusel-collage de portada",
-        help_text="Selecciona el carrusel-collage per a la portada (si n'hi ha un).",
+        help_text="Selecciona el carrusel-collage per a la agenda (si n'hi ha un).",
         related_name='personalizaciones_agenda'
     )
     parallax_portada = models.OneToOneField(

@@ -4,7 +4,7 @@ from .models import EventoEspecial, MedidaEconomica, Mensaje, Autor
 
 @register(EventoEspecial)
 class EventoEspecialTranslationOptions(TranslationOptions):
-    fields = ('titulo', 'descripcion_larga', 'descripcion_corta')  # Lista de campos que deseas traducir
+    fields = ('titulo', 'descripcion_larga', 'descripcion_corta', 'boton_texto_google_form', 'titulo_google_form')  # Lista de campos que deseas traducir
 
 @register(MedidaEconomica)
 class MedidaEconomicaTranslationOptions(TranslationOptions):

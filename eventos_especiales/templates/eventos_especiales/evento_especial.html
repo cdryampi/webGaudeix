@@ -376,9 +376,13 @@
     <div class="container-fluid bg-gray p-0 m-0 py-5">
         <div class="jumbotron jumbotron-fluid bg-light text-center">
             <div class="container">
-                <p class="lead">{% blocktrans %}Volem saber la teva opinió!{% endblocktrans %}</p>
+                <p class="lead">{% if evento_especial.titulo_google_form %}{{ evento_especial.titulo_google_form }}{% else %}{% blocktrans %}Volem saber la teva opinió!{% endblocktrans %}{% endif %}</p>
                 <a href="{{ evento_especial.link_google_form }}" class="btn-download" target="_blank">
-                    {% blocktrans %}Explica'ns la teva experiència{% endblocktrans %}
+                    {% if evento_especial.boton_texto_google_form %}
+                        {{ evento_especial.boton_texto_google_form }}
+                    {% else %}
+                        {% blocktrans %}Explica'ns la teva experiència{% endblocktrans %}
+                    {% endif %}
                 </a>
             </div>
         </div>

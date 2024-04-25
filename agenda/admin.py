@@ -229,9 +229,10 @@ class AgendaAdmin(TranslationAdmin, admin.ModelAdmin):
 
 
 class VisitaGuidadaForm(forms.ModelForm):
-    duracion_dias = forms.IntegerField(help_text="Duració en dies", required=False)
-    duracion_horas = forms.IntegerField(help_text="Duració en hores", required=False)
-
+    duracion_horas_totales = forms.IntegerField(
+        help_text="Duració total en hores", required=False)
+    duracion_minutos = forms.IntegerField(
+        help_text="Duració en minuts", required=False)
 
     class Meta:
         model = VisitaGuiada
@@ -241,23 +242,20 @@ class VisitaGuidadaForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.duracion:
             duracion = self.instance.duracion
-            duracion_dias = duracion.days
-            duracion_horas = duracion.seconds // 3600
-            self.initial['duracion_dias'] = duracion_dias
-            self.initial['duracion_horas'] = duracion_horas
+            total_seconds = duracion.total_seconds()
+            # Convertir a hores i minuts
+            total_hours = int(total_seconds // 3600)
+            minutes = int((total_seconds % 3600) // 60)
+            self.initial['duracion_horas_totales'] = total_hours
+            self.initial['duracion_minutos'] = minutes
 
     def clean(self):
         cleaned_data = super().clean()
-        duracion_dias = cleaned_data.get('duracion_dias')
-        duracion_horas = cleaned_data.get('duracion_horas')
+        duracion_horas = cleaned_data.get('duracion_horas_totales', 0)
+        duracion_minutos = cleaned_data.get('duracion_minutos', 0)
 
-        duracion = timedelta()
-
-        if duracion_dias:
-            duracion += timedelta(days=duracion_dias)
-
-        if duracion_horas:
-            duracion += timedelta(hours=duracion_horas)
+        # Càlcul de la duració
+        duracion = timedelta(hours=duracion_horas, minutes=duracion_minutos)
 
         cleaned_data['duracion'] = duracion
 
@@ -266,18 +264,16 @@ class VisitaGuidadaForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
 
-        duracion_dias = self.cleaned_data.get('duracion_dias')
-        duracion_horas = self.cleaned_data.get('duracion_horas')
+        duracion_horas = self.cleaned_data.get('duracion_horas_totales', 0)
+        duracion_minutos = self.cleaned_data.get('duracion_minutos', 0)
 
-        if duracion_dias is not None and duracion_horas is not None:
-            duracion = timedelta(days=duracion_dias, hours=duracion_horas)
-            instance.duracion = duracion
+        duracion = timedelta(hours=duracion_horas, minutes=duracion_minutos)
+        instance.duracion = duracion
 
         if commit:
             instance.save()
 
         return instance
-
 
 class FechaVisitaInline(admin.TabularInline):
     model = FechaVisita
@@ -301,15 +297,14 @@ class VisitaGuidadaAdmin(TranslationAdmin, admin.ModelAdmin):
                 'categoria',
                 'precio',
                 'certificados',
-                'duracion_dias',
-                'duracion_horas',
+                'duracion_horas_totales',
+                'duracion_minutos',
                 'publico_recomendado',
                 'mostrar_calendario',
                 'mapa',
                 'agendas',
                 'tags'
-                ],
-
+            ],
             'description': (
                 "<p><strong><em>Aquesta és l'administració d'una Visita Guiada.</em></strong></p>"
                 "<p><em>Aquí pots introduir totes les dades relacionades amb la teva visita guiada. "
@@ -317,23 +312,22 @@ class VisitaGuidadaAdmin(TranslationAdmin, admin.ModelAdmin):
                 "<p><em>Recorda que aquests camps estan destinats a recollir informació sobre la visita, "
                 "com el <strong>preu</strong>, la <strong>duració</strong>, les <strong>dates</strong> i altres detalls importants.</em></p>"
                 "<p><em>Tingues en compte que si les dates de <strong>inici</strong> i <strong>fi</strong> estan invertides, "
-                "el <strong>calendari</strong> pot no funcionar com esperat. A més, si la data passada és més gran que la de <strong>inici</strong>, "
+                "el <strong>calendari</strong> pot no funcionar com esperat. A més, si la data final és anterior a la d'inici, "
                 "pot haver-hi problemes amb les <strong>dates</strong>.</em></p>"
-                "<p><em>Si l'event no té <strong>preu</strong>, pots deixar-lo a 0,00, i el sistema el detectarà com a gratuït.</em></p>"
-                "<p><em>Recordeu que cal activar manualment el <strong>calendari</strong> perquè es mostri en el calendari a la web en <strong>mostrar calendari</strong>.</em></p>"
+                "<p><em>Si l'esdeveniment no té <strong>preu</strong>, pots deixar-lo a 0,00, i el sistema el detectarà com a gratuït.</em></p>"
+                "<p><em>Recorda que cal activar manualment el <strong>calendari</strong> perquè es mostri en el calendari a la web en <strong>mostrar calendari</strong>.</em></p>"
                 "<p><em>Assegura't d'afegir tags amb sentit perquè es faran servir per al <strong>SEO</strong>.</em></p>"
             ),
-
         }),
-        # Resto de los fieldsets
+        # Afegeix altres fieldsets si cal
     ]
     
-    exclude = ['duracion']  # Excluir el campo duracion en el administrador
+    exclude = ['duracion']  # Exclou el camp duració per evitar conflictes en l'administrador
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "categoria":
             kwargs["queryset"] = Categoria.objects.filter(tipo="visitas_guiadas")
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
 
 
 
