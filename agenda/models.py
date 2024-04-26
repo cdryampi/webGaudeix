@@ -578,13 +578,6 @@ class Ruta(Post):
         blank=True,
         verbose_name="Activitat"
     )
-    valoracion = models.FloatField(
-        help_text="Valoració de la ruta",
-        null=True,
-        blank=True,
-        verbose_name="Valoració"
-    )
-
     tipologia = models.CharField(
         max_length=20,
         choices=TIPOLOGIA_CHOICES,

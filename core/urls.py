@@ -18,6 +18,7 @@ urlpatterns = [
     path('refresh-cache/', refresh_cache, name='refresh_cache'),
     # Robots.txt
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots.txt"),
+    path('sitemap.xml', TemplateView.as_view(template_name="sitemap.xml", content_type="text/plain"), name="sitemap.txt"),
     # Redireccionamiento de archivos multimedia
     path('redirect/<str:link_unico>', RedirectMultimediaFile.as_view(),name="redirect_file")
 ]
