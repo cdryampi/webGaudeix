@@ -27,3 +27,6 @@
 
 # ignorar el config.json
 config.json
+venv/
+AGENTS.md
+db/

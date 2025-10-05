@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import json
+import urllib.parse
 
 BASE_LOCAL_DIR = Path(__file__).resolve().parent
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,13 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Cargar la configuración desde el archivo config.json
 
 config_file_path = os.path.join(BASE_LOCAL_DIR, 'config.json')
-with open(config_file_path, 'r') as config_file:
+with open(config_file_path, 'r', encoding='utf-8') as config_file:
     config = json.load(config_file)
 
 # Cargar la configuración desde el archivo settings.json
 
 settings_file_path = os.path.join(BASE_LOCAL_DIR, 'settings.json')
-with open(settings_file_path, 'r') as settings_file:
+with open(settings_file_path, 'r', encoding='utf-8') as settings_file:
     settings = json.load(settings_file)
 
 # Quick-start development settings - unsuitable for production
@@ -140,12 +141,12 @@ WSGI_APPLICATION = 'gaudeix.wsgi.application'
 # Base de datos
 DATABASES = {
     'default': {
-        'ENGINE': config["DATABASES"]["default"]["ENGINE"],
+        'ENGINE': 'django.db.backends.postgresql',  # Django 5.1+ usa psycopg3 automáticamente
         'NAME': config["DATABASES"]["default"]["NAME"],
         'USER': config["DATABASES"]["default"]["USER"],
         'PASSWORD': config["DATABASES"]["default"]["PASSWORD"],
         'HOST': config["DATABASES"]["default"]["HOST"],
-        'PORT': config["DATABASES"]["default"]["PORT"],
+        'PORT': str(config["DATABASES"]["default"]["PORT"]),
     }
 }
 
