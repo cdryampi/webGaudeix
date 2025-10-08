@@ -6,7 +6,7 @@ from core.models import BaseModel, MetadataModel
 from multimedia_manager.models import Fichero, Imagen, Parallax
 from multimedia_manager.models import Video
 from agenda.models import Agenda
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 from django.utils import timezone
 from django.urls import reverse
 from blog.models import Tag, Categoria, Post
@@ -75,7 +75,7 @@ class Mensaje(models.Model):
         verbose_name="Títol",
         help_text="Afegeix el títol del missatge, per exemple: 'Dies de família, dies de poble' o 'Les entitats, pilar fonamental de Nadal'"
     )
-    contenido = RichTextField(
+    contenido = CKEditor5Field(
         verbose_name="comentari",
         help_text="Afegeix un missatge per l'esdeveniment"
     )
@@ -175,14 +175,14 @@ class EventoEspecial(BaseModel, MetadataModel):
         verbose_name="Publicat"
     )
 
-    descripcion_larga = RichTextField(
+    descripcion_larga = CKEditor5Field(
         help_text="Descripció llarga de l'esdeveniment especial",
         null=True,
         blank=True,
         verbose_name="Descripció llarga"
     )
 
-    descripcion_corta = RichTextField(
+    descripcion_corta = CKEditor5Field(
         help_text="Descripció curta de l'esdeveniment especial",
         null=True,
         blank=True,

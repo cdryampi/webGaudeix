@@ -29,6 +29,7 @@ from django.views.i18n import set_language
 urlpatterns = [
 
     path('admin_gaudeix/', admin.site.urls),
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
     path('', include(('core.urls', 'core'), namespace='core')),
     path('',include('blog.urls')),
     path('agenda/',include('agenda.urls')),

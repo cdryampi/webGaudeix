@@ -1,6 +1,6 @@
 from django.db import models
 from core.models import BaseModel, MetadataModel
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 from django.utils import timezone
 from singleton_model import SingletonModel
 from django.contrib.auth import get_user_model
@@ -15,13 +15,13 @@ class SubvencionDescripcion(MetadataModel, SingletonModel):
         help_text="Introdueix el títol.",
     )
 
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Introdueix la descripció.",
     )
 
     imagen = models.ImageField(upload_to='subvencions',help_text='Selecciona una imatge per a la subvenció.', null=True, blank=True)
     
-    disclaimer = RichTextField(
+    disclaimer = CKEditor5Field(
         blank=True,
         help_text="Afegiu qualsevol informació addicional o notes importants aquí.",
     )
@@ -39,11 +39,11 @@ class Subvencion(MetadataModel, BaseModel):
         help_text="Introdueix el títol de la subvenció.",
     )
 
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Introdueix la descripció de la subvenció.",
     )
 
-    disclaimer = RichTextField(
+    disclaimer = CKEditor5Field(
         blank=True,
         help_text="Afegiu qualsevol informació addicional o notes importants aquí.",
     )

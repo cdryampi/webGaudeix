@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 from core.models import MetadataModel
 from map.models import MapPoint
 from django.contrib.auth import get_user_model
@@ -38,7 +38,7 @@ class PaginaLegal(models.Model):
     encabezado = models.CharField(max_length=200) # Campo para el encabezado de la página
     imagen = models.ImageField(upload_to='legal_images/', null=True, blank=True) # Campo para la imagen asociada a la página
 
-    contenido = RichTextField()
+    contenido = CKEditor5Field()
     # Otros campos necesarios para tu modelo
     def clean(self):
         # Verificar si ya existe una instancia con el mismo tipo
@@ -81,7 +81,7 @@ class Diversidad(MetadataModel):
         verbose_name="plans",
         related_name="planes_diversidad"  # Related name personalizado para la relación planes
     )
-    descripcion_auxiliar = RichTextField(
+    descripcion_auxiliar = CKEditor5Field(
         help_text= "Explica a el pla de igualtat",
         verbose_name= "descripció auxiliar",
         blank= True,
@@ -230,7 +230,7 @@ class PuntoInformacion(PaginaEstatica):
         help_text="Banner del punt d'informació",
         verbose_name="Banner del punt d'informació"
     )
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Descripció del punt d'informació",
         verbose_name="Descripció del punt d'informació"
     )
@@ -273,7 +273,7 @@ class Contacto(PaginaEstatica):
         help_text="Subtítulo del contacto",
         verbose_name="Subtítol del contacto"
     )
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Descripción del contacto",
         verbose_name="Descripció del contacte"
     )
