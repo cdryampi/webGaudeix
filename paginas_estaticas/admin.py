@@ -5,6 +5,7 @@ from .models import  PuntoInformacion, Contacto
 from .models import PaginaLegal, Cookies, Diversidad, PDFDiversidadFichero, DiversidadImagenBanner
 from multimedia_manager.models import Fichero, Imagen
 from django.db.models import Q
+from django.utils.safestring import mark_safe
 
 # Register your models here.
 
@@ -99,7 +100,7 @@ class PaginaLegalAdmin(TranslationAdmin, admin.ModelAdmin):
                 'encabezado',
                 'tipo',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Aquesta és l'administració d'una Pàgina Legal.</em></strong></p>"
                 "<p><em>Aquí pots introduir totes les dades relacionades amb la teva pàgina legal. "
                 "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"
@@ -125,7 +126,7 @@ class ContactoAdmin(TranslationAdmin, admin.ModelAdmin):
                 'subtitulo',
                 'descripcion',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Aquesta és l'administració de la pàgina de contacte.</em></strong></p>"
                 "<p><em>Aquí pots introduir totes les dades relacionades amb la pàgina de contacte. "
                 "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"
@@ -150,7 +151,7 @@ class PuntoInformacionAdmin(TranslationAdmin, admin.ModelAdmin):
                 'descripcion',
                 'mapa',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Aquesta és l'administració del Punt d'Informació Turística.</em></strong></p>"
                 "<p><em>Aquí pots introduir totes les dades relacionades amb el punt d'informació turística. "
                 "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"
@@ -171,7 +172,7 @@ class CookiesAdmin(TranslationAdmin, admin.ModelAdmin):
                 'titulo',
                 'contenido',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Aquesta és l'administració de la Política de Cookies.</em></strong></p>"
                 "<p><em>Aquí pots definir el text i les condicions de la política de cookies que serà mostrada als usuaris.</em></p>"
                 "<p><em>Assegura't de proporcionar una explicació clara i detallada sobre les cookies i com es faran servir.</em></p>"

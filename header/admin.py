@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 
 class LogoAuxiliarInline(TranslationStackedInline):
@@ -52,7 +53,7 @@ class HeaderAdmin(admin.ModelAdmin):
                 'color_entrada',
                 'color_top_bar_logos'
             ],
-               'description': (
+               'description': mark_safe(
                     "<p><strong>Aquesta és la pàgina d'edició de la capçalera superior.</strong></p>"
                     "<p>Afegeix un logotip sense fons o juga amb els colors de la capçalera.</p>"
                     "<p>Tingues en compte els colors que fas servir; el text de la capçalera ha de ser llegible.</p>"
@@ -77,7 +78,7 @@ class HeaderFooterAdmin(admin.ModelAdmin):
                 'color_fondo_header',
                 'color_letra',
             ],
-               'description': (
+               'description': mark_safe(
                     "<p><strong>Aquesta és la pàgina d'edició de la capçalera inferior.</strong></p>"
                     "<p><em>Pots seleccionar el tipus de referència que vols tenir a la capçalera inferior del lloc web.</em></p>"
                     "<p>Afegeix un logotip sense fons o juga amb els colors de la capçalera.</p>"
@@ -105,7 +106,7 @@ class EnlaceExternoAdminWeb(TranslationAdmin, admin.ModelAdmin):
                 'color_letra',
                 'estil_del_text'
             ],
-               'description': (
+               'description': mark_safe(
                     "<p><strong>Aquesta és la pàgina d'edició d'un enllaç extern.</strong></p>"
                     "<p><em>En aquests enllaços pots afegir referències externes cap a altres webs.</em></p>"
                     "<p><em>Els camps són obligatoris i has de posar el títol i l'enllaç.</em></p>"

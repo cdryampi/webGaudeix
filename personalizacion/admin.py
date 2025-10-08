@@ -8,6 +8,7 @@ from modeltranslation.admin import TranslationAdmin, TranslationStackedInline
 from multimedia_manager.models import Carrusel, ImagenCarrusel
 import os
 from django.conf import settings
+from django.utils.safestring import mark_safe
 
 
 
@@ -82,7 +83,7 @@ class CarruselAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {
             'fields': ['titulo', 'descripcion', 'tipo', 'activo'],
-            'description': (
+            'description': mark_safe(
                 "<p>Defineix un carrusel d'imatges per ser mostrat en diferents parts del lloc web.</p>"
                 "<p>Aquest model permet afegir diverses imatges i ordenar-les segons la necessitat.</p>"
                 "<p>Pots utilitzar aquestes imatges per destacar contingut, promocions, esdeveniments o qualsevol cosa que consideris important.</p>"
@@ -106,7 +107,7 @@ class InternalLinkAdmin(admin.ModelAdmin):
                 'evento_especial',
                 'compra_y_descubre',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Enllaç intern per afegir referències cap als models d''esdeveniments especials' i 'compra i descobreix'.</p>"
                 "<p>En aquest model pots afegir tantes referències com vulguis.</p>"
                 "<p>S'ha de tenir en compte que només es pot afegir els esdeveniments compra i descobreix.</p>"
@@ -123,7 +124,7 @@ class AgendaParallaxAdmin(admin.ModelAdmin):
                 'titulo',
                 'parallax_agenda'
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Parallax per l'agenda.</p>"
                 "<p>Aquest model fa que puguis fer servir els mateixos parallax dels altres models a personalització.</p>"
                 "<p>S'ha de tenir en compte fer servir títols descriptius amb coherència per poder identificar els parallax per l'agenda.</p>"
@@ -142,7 +143,7 @@ class IframVideoHomeAdmin(TranslationAdmin ,admin.ModelAdmin):
                 'description',
                 'video_url',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Configura el vídeo auxiliar per a la portada del teu lloc web.</p>"
                 "<p>Aquest model permet utilitzar vídeos específics com a part del disseny visual de la portada, "
                 "millorant la interacció i l'experiència visual de l'usuari.</p>"
@@ -171,7 +172,7 @@ class SuperDestacadoAdmin(TranslationStackedInline):
                 'orden',
                 'personalizacion'
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Super destacat per a l'inici.</p>"
                 "<p>Aquest model permet afegir una referència al model 'esdeveniment especial'.</p>"
                 "<p>Pots afegir una descripció per a l'encapçalament de la secció del super destacat.</p>"
@@ -207,7 +208,7 @@ class PersonalizacionAdmin(TranslationAdmin, admin.ModelAdmin):
                 'meta_keywords',
                 'meta_description_portada'
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Configura la personalització del teu lloc web.</p>"
                 "<p>Aquí pots ajustar aspectes visuals i funcionals per adaptar el teu lloc a les teves necessitats.</p>"
                 "<p>Personalitza el favicon, afegeix efectes de parallax i selecciona un vídeo per a la portada.</p>"
