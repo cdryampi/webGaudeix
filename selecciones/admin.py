@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import SeleccionDestacados
 from .forms import SeleccionForm
+from django.utils.safestring import mark_safe
 
 # Register your models here.
 
@@ -17,7 +18,7 @@ class SeleccionDestacadosAdmin(admin.ModelAdmin):
                 'publicado',
                 ],
 
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Aquesta és l'administració d'una Selecció de continguts.</em></strong></p>"
                 "<p><em>En aquesta secció, pots gestionar els elements que apareixeran a la portada del teu lloc web utilitzant un carrousel anomenat <i>Swipper</i>. És una manera eficaç de destacar i presentar les entrades, com ara publicacions, visites guiades, rutes, llocs d'interès i molt més.</em></p>"
                 "<p><em>Assegura't de no sobrecarregar amb massa elements, ja que això podria afectar negativament el temps de carrega i l'experiència de l'usuari a la pàgina d'inici.</em></p>"

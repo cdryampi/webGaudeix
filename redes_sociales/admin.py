@@ -1,12 +1,13 @@
 from django.contrib import admin
 from .models import RedSocial
+from django.utils.safestring import mark_safe
 
 class RedSocialAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'link', 'fondo')
     fieldsets = [
         (None, {
             'fields': ['titulo', 'imagen', 'link', 'fondo', 'orden'],
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Gestió de Xarxes Socials</em></strong></p>"
                 "<p>Aquesta secció permet afegir, modificar i visualitzar les xarxes socials associades amb el lloc web. Cada xarxa social pot ser representada per un títol, una imatge (preferiblement el logotip), un enllaç directe al perfil o pàgina, i un color de fons específic.</p>"
                 "<p>El <em>títol</em> identifica la xarxa social, mentre que l'<em>imatge</em> hauria de ser una representació visual clara i reconeixible.</p>"

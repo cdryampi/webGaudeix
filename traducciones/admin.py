@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Translation
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 
 
@@ -14,7 +15,7 @@ class TranslationAdmin(admin.ModelAdmin):
                 'language_code',
                 'custom_change_view_button'
             ],
-            'description': (
+            'description': mark_safe(
                             "<p><strong>Informació sobre les traduccions i els fitxers .po:</strong></p>"
                             "<p>Les traduccions en aquest sistema es gestionen a través de fitxers .po, que són fitxers de text utilitzats per la localització de software. Cada fitxer .po conté parelles de text original (msgid) i la seva traducció (msgstr) en un idioma específic.</p>"
                             "<p>Quan tradueixes contingut en el sistema, estàs modificant els fitxers .po associats amb cada idioma. Aquests canvis no són efectius immediatament en la web; primer han de ser compilats en fitxers .mo, que són els que Django utilitza per carregar les traduccions en l'aplicació.</p>"

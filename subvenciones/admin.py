@@ -3,6 +3,7 @@ from .models import Subvencion, SubvencionDescripcion
 from .models import PDFCollectionConvocatoriaFichero, PDFCollectionJustificacioFichero, PDFCollectionResolucioFichero, PDFCollectionTotesFichero
 from multimedia_manager.models import Fichero
 from django.db.models import Q
+from django.utils.safestring import mark_safe
 
 # Register your models here.
 
@@ -143,7 +144,7 @@ class SubvencionAdmin(admin.ModelAdmin):
                 'disclaimer',
                 'publicado'
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Administració de Subvencions</em></strong></p>"
                 "<p>Aquesta secció permet afegir, modificar i esborrar les subvencions. Es poden gestionar tots els detalls rellevants de cada subvenció, incloent títol, descripció, imatge i disclaimers.</p>"
                 "<p>Utilitza el camp <em>disclaimer</em> per a afegir informació addicional o advertències importants relacionades amb la subvenció.</p>"
@@ -163,7 +164,7 @@ class SubvencionDescripcionAdmin(admin.ModelAdmin):
                 'imagen',
                 'disclaimer',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Administració de la Descripció General de Subvencions</em></strong></p>"
                 "<p>Aquesta secció permet configurar la descripció general que apareixerà en la secció de subvencions del lloc web. És un lloc centralitzat per gestionar la informació que es mostra en totes les subvencions.</p>"
                 "<p>Assegura't de proporcionar un títol atractiu, una descripció detallada, i seleccionar una imatge representativa per a la secció de subvencions.</p>"
