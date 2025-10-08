@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from multimedia_manager.models import Imagen
 from django.db.models import Q
@@ -94,7 +95,7 @@ class SubBlogAdmin(TranslationAdmin, admin.ModelAdmin):
                 'metadescripcion',
                 'tags'
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong>Aquesta és la pàgina d'edició d'un SubBlog.</strong></p>"
                 "<p><em>Un SubBlog és una entitat principal del lloc web que serveix per agrupar diversos tipus de continguts com Post, Agendes, Visites Guiades, Rutes de Senderisme i altres. Aquesta agrupació permet organitzar i presentar diferents elements relacionats sota un mateix tema o categoria.</em></p>"
                 "<p><em>Si decideixes <strong>despublicar</strong> aquest SubBlog, els continguts associats deixaran de ser visibles per als usuaris i no es mostrarà als visitants del lloc. Tingues en compte que això pot afectar altres parts de la web que utilitzen aquesta agrupació.</em></p>"

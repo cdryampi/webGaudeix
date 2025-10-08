@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Topbar
 from modeltranslation.admin import TranslationAdmin
+from django.utils.safestring import mark_safe
 
 @admin.register(Topbar)
 class TopbarAdmin(TranslationAdmin, admin.ModelAdmin):
@@ -17,7 +18,7 @@ class TopbarAdmin(TranslationAdmin, admin.ModelAdmin):
                 'texto_color',
                 'publicado',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong><em>Aquesta és l'administració d'un TopBar.</em></strong></p>"
                 "<p><em>Aquí pots introduir totes les dades relacionades amb el teu TopBar."
                 "Assegura't d'omplir tots els camps necessaris amb la informació correcta.</em></p>"

@@ -5,6 +5,7 @@ from multimedia_manager.models import Imagen, Fichero
 from django.db.models import Q
 from .utils import export_map_points_csv
 from modeltranslation.admin import TranslationAdmin
+from django.utils.safestring import mark_safe
 
 
 class PostFicheroInline(admin.TabularInline):
@@ -132,7 +133,7 @@ class MapPointAdmin(TranslationAdmin, admin.ModelAdmin):
                 'enlace_google_maps',
                 'tags'
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong>Aquesta és la pàgina d'edició d'un Map Point.</strong></p>"
                 "<p><em>Els <u>llocs(Map points)</u> són una part auxiliar del lloc web i es poden afegir totes les direccions que tinguin relació amb Cabrera de Mar.</em></p>"
                 "<p>Assegura't de completar els camps i de marcar l'opció <strong>publicat</strong> perquè es mostri a la web.</p>"

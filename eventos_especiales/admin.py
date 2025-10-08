@@ -26,7 +26,7 @@ class MensajeAdmin(TranslationAdmin, admin.ModelAdmin):
                 'contenido',
                 'mensaje_despedida'
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Aquesta és la pàgina d'administració dels missatges.</p>"
                 "<p>Aquí pots gestionar els missatges individuals que es vinculen amb els esdeveniments especials.</p>"
                 "<p>Cada missatge ara inclou un títol, que pot ser una frase o una declaració impactant com 'Dies de família, dies de poble' o 'Les entitats, pilar fonamental de Nadal'.</p>"
@@ -50,7 +50,7 @@ class MedidaEconomicaAdmin(TranslationAdmin, admin.ModelAdmin):
                 'impacto_economico',
                 'publicado'
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Mesures econòmiques per l'esdeveniment especials pensat pel programa d'estabilització econòmica sostenible.</p>"
                 "<p>En aquest model pots afegir les mesures que vols.</p>"
                 "<p>Aquest model el fem servir el popup que explica les mesures d'estalvi o d'altres tipus.</p>"
@@ -125,7 +125,7 @@ class EventoMensajeAdmin(admin.ModelAdmin):
                 'evento_especial',
                 'mensaje',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Aquesta és la pàgina d'edició d'un missatge vinculat.</p>"
                 "<p>En aquest model pots vincular els missatges amb l'esdeveniment especial.</p>"
                 "<p>S'ha pensat per afegir les paraules del batlle/alcade i pels regidors, permetent una gestió centralitzada i organitzada dels missatges clau de l'event.</p>"
@@ -146,7 +146,7 @@ class AutorAdmin(TranslationAdmin, admin.ModelAdmin):
                 'cargo',
                 'foto',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p>Aquesta és la pàgina d'administració dels autors.</p>"
                 "<p>Aquí pots gestionar la informació dels autors dels missatges associats als esdeveniments especials.</p>"
                 "<p>Cada autor pot ser un batlle, un alcalde, un regidor, o qualsevol altra figura destacada que contribueixi amb paraules o discursos a l'esdeveniment.</p>"
@@ -216,7 +216,7 @@ class EventoEspecialAdmin(TranslationAdmin, admin.ModelAdmin):
                 'flyer',
                 'tags',
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong>Aquesta és la pàgina d'edició d'un esdeveniment especial.</strong></p>"
                 "<p><em>Els <u>esdeveniments especials</u> són una part auxiliar del lloc web i pots crear-ne tants com desitgis.</em></p>"
                 "<p>Assegura't de completar tots els camps i de marcar l'opció <strong>publicat</strong> perquè l'esdeveniment aparegui destacat a la web. També pots afegir un <strong>logo especial</strong> per destacar l'esdeveniment encara més, afegint un logo (en negatiu) al capçalera.</p>"

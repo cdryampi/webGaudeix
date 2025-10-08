@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Footer, FooterEmpresa, FooterInformacion
+from django.utils.safestring import mark_safe
 
 class FooterEmpresaInline(admin.StackedInline):
     model = FooterEmpresa
@@ -8,7 +9,7 @@ class FooterEmpresaInline(admin.StackedInline):
     fieldsets = (
         (None, {  # None significa que no hay título para este fieldset
             'fields': ('titulo', 'imagen', 'enlace','footer'),
-            'description': (
+            'description': mark_safe(
                 "<p><strong>Configuració de les empreses en el footer:</strong></p>"
                 "<p>Aquí pots gestionar les empreses que apareixen en el footer. "
                 "Inclou un <strong>títol</strong> per a l'empresa, "

@@ -24,7 +24,7 @@ class NewsletterAdmin(TranslationAdmin, admin.ModelAdmin):
                 'html_file'
                 
             ],
-            'description': (
+            'description': mark_safe(
                 "<p><strong>Aquesta és la pàgina d'edició d'una plantilla de una Newsletter.</strong></p>"
                 "<p><em>Les <u>Newsletter</u> serveix per poder generar una plantilla HTML per facilitar l'enviament una notificació pels subscriptors amb una eina externa.</em></p>"
                 "<p>Assegura't d'adaptar la plantilla si cal.</p>"
