@@ -2,7 +2,6 @@
 
 import datetime
 from django.db import migrations, models
-from django.utils.timezone import utc
 
 
 class Migration(migrations.Migration):
@@ -15,16 +14,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='agenda',
             name='fecha',
-            field=models.DateField(default=datetime.datetime(2023, 5, 31, 9, 20, 6, 437352, tzinfo=utc)),
+            field=models.DateField(default=datetime.datetime(2023, 5, 31, 9, 20, 6, 437352, tzinfo=datetime.timezone.utc)),
         ),
         migrations.AlterField(
             model_name='agenda',
             name='hora_fin',
-            field=models.TimeField(default=datetime.datetime(2023, 5, 31, 1, 0, 6, 437352, tzinfo=utc)),
+            field=models.TimeField(default=datetime.datetime(2023, 5, 31, 1, 0, 6, 437352, tzinfo=datetime.timezone.utc)),
         ),
         migrations.AlterField(
             model_name='agenda',
             name='hora_inicio',
-            field=models.TimeField(default=datetime.datetime(2023, 5, 31, 0, 0, 6, 437352, tzinfo=utc)),
+            field=models.TimeField(default=datetime.datetime(2023, 5, 31, 0, 0, 6, 437352, tzinfo=datetime.timezone.utc)),
         ),
     ]

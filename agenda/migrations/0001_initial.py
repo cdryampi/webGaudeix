@@ -5,7 +5,6 @@ import datetime
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-from django.utils.timezone import utc
 import django.utils.timezone
 
 
@@ -30,9 +29,9 @@ class Migration(migrations.Migration):
                 ('metadescripcion', models.TextField(blank=True, help_text='Metadescripció per a SEO', null=True)),
                 ('titulo', models.CharField(max_length=255)),
                 ('imagen', models.ImageField(upload_to='eventos/')),
-                ('fecha', models.DateField(default=datetime.datetime(2023, 5, 31, 7, 33, 26, 590916, tzinfo=utc))),
-                ('hora_inicio', models.TimeField(default=datetime.datetime(2023, 5, 31, 0, 0, 26, 590916, tzinfo=utc))),
-                ('hora_fin', models.TimeField(default=datetime.datetime(2023, 5, 31, 1, 0, 26, 590916, tzinfo=utc))),
+                ('fecha', models.DateField(default=datetime.datetime(2023, 5, 31, 7, 33, 26, 590916, tzinfo=datetime.timezone.utc))),
+                ('hora_inicio', models.TimeField(default=datetime.datetime(2023, 5, 31, 0, 0, 26, 590916, tzinfo=datetime.timezone.utc))),
+                ('hora_fin', models.TimeField(default=datetime.datetime(2023, 5, 31, 1, 0, 26, 590916, tzinfo=datetime.timezone.utc))),
                 ('ubicacion', models.CharField(max_length=255)),
                 ('descripcion_corta', models.CharField(max_length=255)),
                 ('descripcion_larga', ckeditor.fields.RichTextField()),

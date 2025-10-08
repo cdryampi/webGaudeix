@@ -1,5 +1,5 @@
 from django.db import models
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 from core.models import MetadataModel, BaseModel
 from django.utils import timezone
 from multimedia_manager.models import Imagen, Fichero
@@ -54,7 +54,7 @@ class SubBlog(MetadataModel, BaseModel):
         editable=False,
         max_length=100
     )
-    contenido = RichTextField(
+    contenido = CKEditor5Field(
         help_text="Contingut del subblog",
         verbose_name="Contingut"
     )
@@ -193,7 +193,7 @@ class Categoria(MetadataModel, BaseModel):
         help_text="Subtítol de categoria",
         verbose_name="Subtítol"
     )
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Descripció de categoría",
         verbose_name="Descripció"
     )
@@ -411,7 +411,7 @@ class SubCategoria(MetadataModel, BaseModel):
         null=True,
         blank=True
     )
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Descripció de la subcategoría",
         verbose_name="Descripció"
     )
@@ -581,7 +581,7 @@ class Post(MetadataModel, BaseModel):
         help_text="Aquest camp està limitat per un màxim de 50 caràcters",
         verbose_name="Títol"
     )
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Descripció de Post",
         verbose_name="Descripció"
     )

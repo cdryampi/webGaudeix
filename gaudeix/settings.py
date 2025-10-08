@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import json
+import urllib.parse
 
 BASE_LOCAL_DIR = Path(__file__).resolve().parent
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,13 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Cargar la configuración desde el archivo config.json
 
 config_file_path = os.path.join(BASE_LOCAL_DIR, 'config.json')
-with open(config_file_path, 'r') as config_file:
+with open(config_file_path, 'r', encoding='utf-8') as config_file:
     config = json.load(config_file)
 
 # Cargar la configuración desde el archivo settings.json
 
 settings_file_path = os.path.join(BASE_LOCAL_DIR, 'settings.json')
-with open(settings_file_path, 'r') as settings_file:
+with open(settings_file_path, 'r', encoding='utf-8') as settings_file:
     settings = json.load(settings_file)
 
 # Quick-start development settings - unsuitable for production
@@ -56,7 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ckeditor',
+    'django_ckeditor_5',
     'dal',
     'dal_select2',
     'core',
@@ -140,12 +141,12 @@ WSGI_APPLICATION = 'gaudeix.wsgi.application'
 # Base de datos
 DATABASES = {
     'default': {
-        'ENGINE': config["DATABASES"]["default"]["ENGINE"],
+        'ENGINE': 'django.db.backends.postgresql',  # Django 5.1+ usa psycopg3 automáticamente
         'NAME': config["DATABASES"]["default"]["NAME"],
         'USER': config["DATABASES"]["default"]["USER"],
         'PASSWORD': config["DATABASES"]["default"]["PASSWORD"],
         'HOST': config["DATABASES"]["default"]["HOST"],
-        'PORT': config["DATABASES"]["default"]["PORT"],
+        'PORT': str(config["DATABASES"]["default"]["PORT"]),
     }
 }
 
@@ -186,6 +187,10 @@ USE_TZ = True
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = settings["LANGUAGE_CODE"]
 MODELTRANSLATION_LANGUAGES = (settings["LANGUAGE_CODE"],'en', 'es', 'fr')
+
+# Configuración para soportar CKEditor5Field en modeltranslation
+MODELTRANSLATION_CUSTOM_FIELDS = ('CKEditor5Field',)
+
 MODELTRANSLATION_FIELDS = {
     'blog.Post': ['titulo', 'descripcion'],
     'agenda.Agenda': ['descripcion_corta',],
@@ -269,26 +274,99 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Ckeditor
-CKEDITOR_CONFIGS = {
+# CKEditor 5 Configuration
+customColorPalette = [
+    {
+        'color': 'hsl(4, 90%, 58%)',
+        'label': 'Red'
+    },
+    {
+        'color': 'hsl(340, 82%, 52%)',
+        'label': 'Pink'
+    },
+    {
+        'color': 'hsl(291, 64%, 42%)',
+        'label': 'Purple'
+    },
+    {
+        'color': 'hsl(262, 52%, 47%)',
+        'label': 'Deep Purple'
+    },
+    {
+        'color': 'hsl(231, 48%, 48%)',
+        'label': 'Indigo'
+    },
+    {
+        'color': 'hsl(207, 90%, 54%)',
+        'label': 'Blue'
+    },
+]
+
+CKEDITOR_5_CONFIGS = {
     'default': {
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
         'allowedContent': True,
     },
+    'extends': {
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|',
+            'bulletedList', 'numberedList',
+            '|',
+            'blockQuote',
+        ],
+        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+        'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+                    'insertTable',],
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side',  '|'],
+            'styles': [
+                'full',
+                'side',
+                'alignLeft',
+                'alignRight',
+                'alignCenter',
+            ]
+
+        },
+        'table': {
+            'contentToolbar': [ 'tableColumn', 'tableRow', 'mergeTableCells',
+            'tableProperties', 'tableCellProperties' ],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            }
+        },
+        'heading' : {
+            'options': [
+                { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
+                { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
+                { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
+                { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' }
+            ]
+        }
+    },
     'idiomas_toolbar': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source']
-        ]
+        'toolbar': ['bold', 'italic', 'underline', '|',
+                    'numberedList', 'bulletedList', '|', 
+                    'outdent', 'indent', '|',
+                    'alignment:left', 'alignment:center', 'alignment:right', 'alignment:justify', '|',
+                    'link', 'unlink', '|',
+                    'removeFormat', 'sourceEditing'],
+        'allowedContent': True,
     }
 }
 
-
-CKEDITOR_UPLOAD_PATH = "media/"
-CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+CKEDITOR_5_UPLOAD_PATH = "uploads/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 #GOOGLE_MAPS_API_KEY = 'kAIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ'

@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from blog.models import Post, Categoria, SubBlog, Tag
 from multimedia_manager.models import Video, Parallax, VideosEmbed, Carrusel
 from topbar.models import Topbar
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 from compra_y_descubre.models import CompraDescubre
 from eventos_especiales.models import EventoEspecial
 from alerta.models import Alerta
@@ -394,7 +394,7 @@ class TrenPersonalizacion(models.Model):
         verbose_name="Títol"
     )
     
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Descripció de com arribar a Cabrera de Mar amb tren.",
         null=True,
         blank=True,
@@ -432,7 +432,7 @@ class AutoPistaPersonalizacion(models.Model):
         help_text="Títol de 'com arribar a Cabrera per autopista'.",
         verbose_name="Títol"
     )
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Explicació de com arribar a Cabrera de Mar per autopista.",
         null=True,
         blank=True,
@@ -467,7 +467,7 @@ class BusPersonalizacion(models.Model):
         help_text="Títol de 'com arribar a Cabrera de Mar amb bus'.",
         verbose_name="Títol"
     )
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Explicació de com arribar a Cabrera de Mar amb bus.",
         null=True,
         blank=True,
@@ -502,7 +502,7 @@ class AeropuertoPersonalizacion(models.Model):
         help_text="Títol de 'com arribar a Cabrera de Mar amb avió'.",
         verbose_name="Títol"
     )
-    descripcion = RichTextField(
+    descripcion = CKEditor5Field(
         help_text="Explicació de com arribar a Cabrera de Mar amb avió.",
         null=True,
         blank=True,
