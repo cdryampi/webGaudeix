@@ -1,0 +1,31 @@
+{
+  "name": "webgaudeix",
+  "version": "1.0.0",
+  "description": "El proyecto Gaudeix es un sistema de gestión de contenido (CMS) desarrollado específicamente para mejorar la comunicación y el acceso a la información en municipios. Construido sobre Django 4.2.1, este CMS robusto y flexible ofrece una solución integral \"todo en uno\" para la gestión de contenido web, la promoción del turismo local, y el soporte al comercio y eventos en el municipio.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdryampi/webGaudeix.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cdryampi/webGaudeix/issues"
+  },
+  "homepage": "https://github.com/cdryampi/webGaudeix#readme",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.14",
+    "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "vite": "^7.1.9"
+  }
+}

@@ -1,0 +1,54 @@
+/* Tailwind CSS v4 - Entry Point */
+@import "tailwindcss";
+
+/* 
+ * Gaudeix Custom Theme
+ * Design tokens basados en Google Stitch
+ */
+
+/* Custom theme configuration */
+@theme {
+  /* Colores principales de Gaudeix */
+  --color-gaudeix-primary: #3ebfab;
+  --color-gaudeix-primary-dark: #2d9a88;
+  --color-gaudeix-primary-light: #5fcfbb;
+  
+  --color-gaudeix-secondary: #69920c;
+  --color-gaudeix-secondary-dark: #557309;
+  --color-gaudeix-secondary-light: #7aaa0d;
+  
+  --color-gaudeix-accent: #e76500;
+  --color-gaudeix-warning: #ffc107;
+  --color-gaudeix-info: #17a2b8;
+  --color-gaudeix-ocean: #007bff;
+  
+  --color-gaudeix-dark: #2c3e50;
+  
+  /* Tipografía */
+  --font-oswald: 'Oswald', sans-serif;
+  --font-sans: 'Helvetica', 'Trebuchet', 'Arial', sans-serif;
+  
+  /* Breakpoints personalizados */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1366px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* Estilos base globales */
+@layer base {
+  a {
+    @apply cursor-pointer;
+  }
+}
+
+/* Componentes personalizados */
+@layer components {
+  /* Los componentes se importarán aquí */
+}
+
+/* Utilidades personalizadas */
+@layer utilities {
+  /* Las utilidades personalizadas se importarán aquí */
+}

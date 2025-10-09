@@ -1,8 +1,11 @@
-# Ignorar directorio de archivos estáticos generados por collectstatic
-/static/
-
-# Ignorar directorio de archivos estáticos generados por whitenoise
+# Ignorar archivos estáticos generados
+/static/dist/
 /staticfiles/
+
+# Node.js y archivos generados por Vite
+node_modules/
+*.local
+.DS_Store
 
 # Ignorar archivo .webassets-cache/ generado por django-webassets
 .webassets-cache/
@@ -30,4 +33,3 @@ config.json
 venv/
 AGENTS.md
 db/
-/static/
