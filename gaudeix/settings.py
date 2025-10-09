@@ -41,7 +41,7 @@ DOMAIN_URL = config['DOMAIN_URL']
 
 SCRIPT_PATH = config['SCRIPT_PATH']
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = settings["DEBUG"]
+DEBUG = False  # ← Modo producción para testing
 
 ALLOWED_HOSTS = settings["ALLOWED_HOSTS"]
 
@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'imagekit',
     'embed_video',
     'compressor',
+    'django_vite',
     'django_user_agents',
     'selecciones',
     'subvenciones',
@@ -359,7 +360,7 @@ CKEDITOR_5_CONFIGS = {
     },
     'idiomas_toolbar': {
         'toolbar': ['bold', 'italic', 'underline', '|',
-                    'numberedList', 'bulletedList', '|', 
+                    'numberedList', 'bulletedList', '|',
                     'outdent', 'indent', '|',
                     'alignment:left', 'alignment:center', 'alignment:right', 'alignment:justify', '|',
                     'link', 'unlink', '|',
@@ -624,6 +625,20 @@ JAZZMIN_UI_TWEAKS = {
         "warning": "btn-warning",
         "danger": "btn-danger",
         "success": "btn-success"
+    }
+}
+
+# ============================================================================
+# DJANGO-VITE CONFIGURATION
+# ============================================================================
+# https://github.com/MrBin99/django-vite
+
+DJANGO_VITE = {
+    'default': {
+        'dev_mode': DEBUG,
+        'dev_server_host': 'localhost',
+        'dev_server_port': 5173,
+        'manifest_path': BASE_DIR / 'static' / 'dist' / '.vite' / 'manifest.json',
     }
 }
 

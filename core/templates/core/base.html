@@ -2,7 +2,7 @@
 {% load embed_video_tags %}
 {% load compress %}
 {% load i18n %}
-{% load vite_assets %}
+{% load django_vite %}
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -98,15 +98,13 @@
         {% endif %}
     {% endblock google_script %}
 
-    {% compress css %}
+    {% comment %} {% compress css %}
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'core/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/sample.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/swiper/swiper-bundle.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/js/gallery-js/fancybox.css' %}">
-    {# Tailwind CSS v4 from Vite - Incluido en compress para COMPRESS_OFFLINE #}
-    {% vite_css 'css/main.css' %}
-    {% endcompress %}
+    {% endcompress %} {% endcomment %}
 
     {% compress js %}
         <script src="{% static 'core/bootstrap/js/jquery-3.5.1.slim.min.js' %}"></script>
@@ -116,6 +114,9 @@
         <script src="{% static 'core/js/swiper/swiper-bundle.min.js' %}"></script>
         <script src="{% static 'core/js/popper.min.js' %}"></script>
     {% endcompress %}
+
+    {# Vite: Tailwind CSS + JS moderno (después de Bootstrap para tener prioridad) #}
+    {% vite_asset 'js/main.js' %}
 
     {% block extra_css %}
 
@@ -275,10 +276,7 @@
             <script src="{% static 'core/js/swiper/custom-swiper.js' %}"></script>
             <script src="{% static 'core/js/imagen.js' %}"></script>
             <script src="{% static 'core/js/cookies.js' %}"></script>
-            {# Tailwind CSS v4 JavaScript from Vite - Incluido en compress para COMPRESS_OFFLINE #}
-            {% vite_js 'js/main.js' %}
         {% endcompress %}
-
 
     {% block extra_script %}
     {% endblock extra_script %}

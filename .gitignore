@@ -31,5 +31,19 @@ node_modules/
 # ignorar el config.json
 config.json
 venv/
+
+# Documentación interna (no subir al repo)
 AGENTS.md
+FRONTEND.md
+TAILWIND_INTEGRATION.md
+VITE_DJANGO.md
+INTEGRATION_SUMMARY.md
+QUICK_START.md
+TROUBLESHOOTING_TAILWIND.md
+STATIC_FILES.md
+
+# Database
 db/
+
+# --- IGNORE ---
+/static/

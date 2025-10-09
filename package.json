@@ -16,12 +16,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/cdryampi/webGaudeix/issues"
   },
   "homepage": "https://github.com/cdryampi/webGaudeix#readme",
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.1.14",
     "tailwindcss": "^4.1.14"
   },

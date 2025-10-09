@@ -1,7 +1,8 @@
 /* Tailwind CSS v4 - Entry Point */
+
 @import "tailwindcss";
 
-/* 
+/*
  * Gaudeix Custom Theme
  * Design tokens basados en Google Stitch
  */
@@ -12,22 +13,22 @@
   --color-gaudeix-primary: #3ebfab;
   --color-gaudeix-primary-dark: #2d9a88;
   --color-gaudeix-primary-light: #5fcfbb;
-  
+
   --color-gaudeix-secondary: #69920c;
   --color-gaudeix-secondary-dark: #557309;
   --color-gaudeix-secondary-light: #7aaa0d;
-  
+
   --color-gaudeix-accent: #e76500;
   --color-gaudeix-warning: #ffc107;
   --color-gaudeix-info: #17a2b8;
   --color-gaudeix-ocean: #007bff;
-  
+
   --color-gaudeix-dark: #2c3e50;
-  
+
   /* Tipografía */
-  --font-oswald: 'Oswald', sans-serif;
-  --font-sans: 'Helvetica', 'Trebuchet', 'Arial', sans-serif;
-  
+  --font-oswald: "Oswald", sans-serif;
+  --font-sans: "Helvetica", "Trebuchet", "Arial", sans-serif;
+
   /* Breakpoints personalizados */
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
@@ -50,5 +51,41 @@
 
 /* Utilidades personalizadas */
 @layer utilities {
-  /* Las utilidades personalizadas se importarán aquí */
+  /* Blur utilities - necesarios para efectos de desenfoque */
+  .blur-3xl {
+    filter: blur(64px);
+  }
+
+  /* Backdrop blur - para efectos de cristal */
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+
+  /* Animación ping - para efectos pulsantes */
+  @keyframes ping {
+    75%,
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  .animate-ping {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  /* Animación pulse */
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }

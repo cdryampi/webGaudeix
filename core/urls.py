@@ -9,9 +9,13 @@ from . import views
 
 urlpatterns = [
     # Otras URLs de la aplicación "core"
-    
+
     # Página de inicio
     path('', views.home, name='home'),
+    # Test Tailwind CSS (temporal)
+    path('test-tailwind/', TemplateView.as_view(template_name="core/test_tailwind.html"), name='test_tailwind'),
+    # Preview 404 (temporal - para testing)
+    path('preview-404/', TemplateView.as_view(template_name="core/404/404.html"), name='preview_404'),
     # CSRF Token
     path('obtener-token-csrf/', obtener_token_csrf, name='obtener_token_csrf'),
     # Cache Refresh

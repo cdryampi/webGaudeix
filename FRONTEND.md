@@ -31,6 +31,7 @@ npm run build
 ```
 
 Los archivos compilados se generarán en `static/dist/` con:
+
 - CSS minificado y optimizado
 - JavaScript minificado
 - Manifest file para integración con Django
