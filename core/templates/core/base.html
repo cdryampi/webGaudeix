@@ -9,7 +9,7 @@
     <title>{% block title %}{% blocktrans %}Inici{% endblocktrans %}{% endblock title %} - Cabrera de Mar</title>
     <!-- Agrega aquí tus etiquetas de estilo CSS, enlaces a archivos estáticos, etc. -->
     {% load static %}
-    
+
     <!--metas-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0 minimum-scale=1.0">
     <meta property="og:type" content="website">
@@ -34,7 +34,7 @@
             {% endif %}
         {% endif %}
     {% endblock meta_description%}
-    
+
     {% block meta_keywords %}
         {% if portada %}
             {% if portada_meta_keywords %}
@@ -77,7 +77,7 @@
     <link rel="preload" href="{% static 'core/css/fonts.css' %}" as="style">
     <link rel="stylesheet" href="{% static 'core/css/fonts.css' %}" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="{% static 'core/css/fonts.css' %}"></noscript>
-    
+
     <!-- end fuentes -->
 
     <!--FAVICON-->
@@ -86,7 +86,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'core/img/favicon/favicon-16x16.png' %}">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    
+
     <link rel="icon" href="{% static 'core/img/favicon/favicon.ico' %}" type="image/x-icon">
     <link rel="shortcut icon" href="{% static 'core/img/favicon/favicon.ico' %}" type="image/x-icon">
     <!--FI FAVICON-->
@@ -104,10 +104,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/sample.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/swiper/swiper-bundle.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/js/gallery-js/fancybox.css' %}">
-    {% endcompress %}
-
-    {# Tailwind CSS v4 from Vite #}
+    {# Tailwind CSS v4 from Vite - Incluido en compress para COMPRESS_OFFLINE #}
     {% vite_css 'css/main.css' %}
+    {% endcompress %}
 
     {% compress js %}
         <script src="{% static 'core/bootstrap/js/jquery-3.5.1.slim.min.js' %}"></script>
@@ -119,10 +118,10 @@
     {% endcompress %}
 
     {% block extra_css %}
-        
+
     {% endblock extra_css %}
 
-    
+
 </head>
 <body>
     <!-- Agrega aquí el contenido común a todas las páginas -->
@@ -132,7 +131,7 @@
         </header>
         {% if portada %}
             {% comment %} {% include 'parallax/parallax.html' %} {% endcomment %}
-            
+
             {% if video_local %}
 
                 {% if user_agent.is_mobile %}
@@ -164,7 +163,7 @@
         {% endif %}
 
         {% block media %}
-        
+
         {% endblock media %}
 
         {% if portada %}
@@ -199,7 +198,7 @@
     {% endif %}
 
     {% if portada %}
-    
+
         {% if url_iframe_youtube %}
             {% include 'video_iframe/video_iframe.html' %}
         {% endif %}
@@ -228,7 +227,7 @@
 
 
     {% block asides %}
-        
+
 
 
     {% endblock asides %}
@@ -256,13 +255,13 @@
             {% if user_agent.is_pc %}
 
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ&callback=initMap" async></script>
-            
+
             {% endif %}
 
             <script>
                 document.addEventListener("DOMContentLoaded",async function(){try{let e=await fetch("/obtener-token-csrf/"),t=await e.json(),r=t.csrf_token,n=document.querySelectorAll("form");n.forEach(function(e){let t=e.querySelector('[name="csrfmiddlewaretoken"]');if(t)t.value=r;else{let n=document.createElement("input");n.type="hidden",n.name="csrfmiddlewaretoken",n.value=r,e.appendChild(n)}let a=document.querySelectorAll(".idioma-link");a.forEach(e=>{e.removeAttribute("data-disabled")})})}catch(a){console.error("Error al obtener el token CSRF:",a)}});
             </script>
-  
+
 
     {% endif %}
 
@@ -276,14 +275,13 @@
             <script src="{% static 'core/js/swiper/custom-swiper.js' %}"></script>
             <script src="{% static 'core/js/imagen.js' %}"></script>
             <script src="{% static 'core/js/cookies.js' %}"></script>
+            {# Tailwind CSS v4 JavaScript from Vite - Incluido en compress para COMPRESS_OFFLINE #}
+            {% vite_js 'js/main.js' %}
         {% endcompress %}
-        
-        {# Tailwind CSS v4 JavaScript from Vite #}
-        {% vite_js 'js/main.js' %}
 
 
     {% block extra_script %}
     {% endblock extra_script %}
-    
+
 </body>
 </html>
