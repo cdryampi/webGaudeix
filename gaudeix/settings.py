@@ -98,6 +98,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Servir archivos estáticos en DEBUG=False
     'django.contrib.sessions.middleware.SessionMiddleware',  # Esto debe venir antes de middlewares que dependen de la sesión
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -369,7 +370,10 @@ CKEDITOR_5_CONFIGS = {
 
 CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# STATIC_ROOT debe ser diferente de las carpetas en STATICFILES_DIRS
+# Django recogerá archivos de STATICFILES_DIRS y los copiará a STATIC_ROOT
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 #GOOGLE_MAPS_API_KEY = 'kAIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ'
 
