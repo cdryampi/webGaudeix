@@ -2,6 +2,7 @@
 {% load embed_video_tags %}
 {% load compress %}
 {% load i18n %}
+{% load vite_assets %}
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -104,6 +105,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'core/css/swiper/swiper-bundle.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'core/js/gallery-js/fancybox.css' %}">
     {% endcompress %}
+
+    {# Tailwind CSS v4 from Vite #}
+    {% vite_css 'css/main.css' %}
 
     {% compress js %}
         <script src="{% static 'core/bootstrap/js/jquery-3.5.1.slim.min.js' %}"></script>
@@ -274,6 +278,8 @@
             <script src="{% static 'core/js/cookies.js' %}"></script>
         {% endcompress %}
         
+        {# Tailwind CSS v4 JavaScript from Vite #}
+        {% vite_js 'js/main.js' %}
 
 
     {% block extra_script %}

@@ -264,6 +264,7 @@ NOMBRES_DIAS = {
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core/static'),
+    os.path.join(BASE_DIR, 'static/dist'),  # Vite/Tailwind build output
 ]
 
 

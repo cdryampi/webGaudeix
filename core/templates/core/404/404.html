@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
 {% block meta_description %}
     <meta name="Description" content="Cabrera de Mar - 404 pàgina no trobada">
 {% endblock meta_description %}
@@ -7,43 +8,57 @@
 {% block meta_keywords %}
     <meta name="Keywords" content="Cabrera de Mar, gaudeix, 404, pàgina no trobada, error">
 {% endblock meta_keywords %}
+
 {% block extra_css %}
-    <style>
-        .error-page {
-            /* Estilos personalizados para la página completa */
-        }
-
-        .error-404 {
-            /* Estilos personalizados para el jumbotron del error 404 */
-        }
-
-        .error-title {
-            font-size: 2.5rem; /* Tamaño de fuente más grande para el título */
-            color: #3EBFAB; /* Color del título, puedes cambiarlo según tu paleta de colores */
-        }
-        .error-404-color{
-            background-color: #3EBFAB;
-            color: #3EBFAB;
-        }
-
-        .error-message {
-            font-size: 1.2rem; /* Tamaño de fuente para el mensaje */
-            margin-bottom: 1.5rem; /* Espaciado debajo del mensaje */
-        }
-
-        .btn-home {
-            padding: .75rem 1.5rem; /* Padding más grande para el botón */
-            font-size: 1.1rem; /* Tamaño de fuente para el botón */
-            border-radius: .5rem; /* Bordes redondeados para el botón */
-        }
-    </style>
+    {# Sin estilos personalizados - usando Tailwind CSS #}
 {% endblock extra_css %}
+
 {% block content %}
-    <div class="container error-page">
-        <div class="jumbotron text-center error-404 bg-white">
-            <h1 class="error-title">Error 404: Pàgina no trobada</h1>
-            <p class="error-message">Ho sentim, la pàgina que estàs buscant no existeix.</p>
-            <a href="{% url 'core:home' %}" class="btn error-404-color btn-home">Tornar a l'inici</a>
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4 py-16">
+        <div class="max-w-2xl w-full text-center">
+            {# Número 404 grande y estilizado #}
+            <div class="mb-8">
+                <h1 class="text-9xl font-bold text-gaudeix-primary mb-4 animate-pulse">
+                    404
+                </h1>
+                <div class="h-1 w-32 bg-gaudeix-primary mx-auto rounded-full"></div>
+            </div>
+
+            {# Mensaje principal #}
+            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                    Pàgina no trobada
+                </h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-8">
+                    Ho sentim, la pàgina que estàs buscant no existeix o ha estat moguda.
+                </p>
+
+                {# Botón de vuelta al inicio #}
+                <a href="{% url 'core:home' %}" 
+                   class="inline-flex items-center gap-2 bg-gaudeix-primary hover:bg-gaudeix-primary-dark text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span>Tornar a l'inici</span>
+                </a>
+            </div>
+
+            {# Sugerencias adicionales #}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-white rounded-lg p-4 shadow hover:shadow-md transition-shadow">
+                    <div class="text-gaudeix-secondary text-2xl mb-2">🏠</div>
+                    <p class="text-gray-700 font-medium">Torna a la pàgina principal</p>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow hover:shadow-md transition-shadow">
+                    <div class="text-gaudeix-accent text-2xl mb-2">🔍</div>
+                    <p class="text-gray-700 font-medium">Utilitza el cercador</p>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow hover:shadow-md transition-shadow">
+                    <div class="text-gaudeix-info text-2xl mb-2">📧</div>
+                    <p class="text-gray-700 font-medium">Contacta amb nosaltres</p>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
+
