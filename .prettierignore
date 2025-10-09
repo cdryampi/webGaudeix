@@ -1,0 +1,25 @@
+# Ignorar plantillas Django - el formateo automático rompe las etiquetas
+**/templates/**/*.html
+*.html
+
+# Ignorar archivos estáticos compilados
+static/dist/
+static/CACHE/
+staticfiles/
+
+# Ignorar node_modules
+node_modules/
+
+# Ignorar archivos de Django
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+
+# Ignorar entorno virtual
+venv/
+.venv/
+
+# Ignorar archivos de configuración local
+.env
+*.log
