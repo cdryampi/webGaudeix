@@ -1,24 +1,24 @@
 {% load static %}
 {% load i18n %}
 
-<!-- Logo Section -->
-<div class="flex items-center space-x-3 rtl:space-x-reverse">
-    {% if evento_especial_activo.logo_especial %}
+<!-- Logo Section - Optimizado para Mobile/Tablet/Desktop -->
+<div class="flex items-center gap-2 sm:gap-3">
+    {% if evento_especial_activo.logo_especial and not mobile_mode %}
         <a href="{% url 'eventos_especiales:evento_especial' slug=evento_especial_activo.slug %}"
            class="flex items-center hover:opacity-80 transition-opacity">
             <img src="{{ evento_especial_activo.logo_especial.url }}"
-                 class="h-8 md:h-10"
+                 class="header-logo"
                  alt="{{ evento_especial_activo.titulo }}">
         </a>
     {% endif %}
     <a href="{% url 'core:home' %}" class="flex items-center hover:opacity-80 transition-opacity">
         {% if header.logo %}
             <img src="{{ header.logo.url }}"
-                 class="h-8 md:h-10"
-                 alt="Cabrera de Mar">
+                 class="header-logo"
+                 alt="Gaudeix Cabrera de Mar">
         {% else %}
-            <span class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap text-white">
-                Gaudeix Cabrera de Mar
+            <span class="self-center text-lg sm:text-xl md:text-2xl font-semibold whitespace-nowrap text-white">
+                Gaudeix
             </span>
         {% endif %}
     </a>

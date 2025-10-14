@@ -1,79 +1,63 @@
 {% load i18n %}
 
-<!-- SubBlog con Categorías (multinivel) -->
+<!-- SubBlog - Estilo Minimalista Responsive (multinivel) -->
 {% if referencia.subblog.publicado %}
     <li>
-        <button id="dropdownSubblog{{ referencia.subblog.id }}"
-                data-dropdown-toggle="dropdownMenuSubblog{{ referencia.subblog.id }}"
-                class="flex items-center justify-between w-full py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-gaudeix-primary md:p-0 md:w-auto transition-colors font-medium text-sm">
+        <button id="dropdownSubblog{{ referencia.subblog.id }}{% if mobile_mode %}-mobile{% endif %}"
+                data-dropdown-toggle="dropdownMenuSubblog{{ referencia.subblog.id }}{% if mobile_mode %}-mobile{% endif %}"
+                class="header-dropdown-btn">
             {{ referencia.subblog.titulo }}
-            <svg class="w-2.5 h-2.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            <svg class="w-4 h-4 ml-auto lg:ml-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
         </button>
-        <!-- Dropdown menu -->
-        <div id="dropdownMenuSubblog{{ referencia.subblog.id }}"
-             class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-52 border border-gray-200">
-            <ul class="py-1.5" aria-labelledby="dropdownSubblog{{ referencia.subblog.id }}">
+        <!-- Dropdown Level 1 -->
+        <div id="dropdownMenuSubblog{{ referencia.subblog.id }}{% if mobile_mode %}-mobile{% endif %}"
+             class="header-dropdown-menu min-w-[180px] sm:min-w-[220px]">
+            <ul class="py-2">
                 {% for categoria in categorias_header %}
                     {% if categoria.subblog == referencia.subblog and categoria.publicado %}
                         {% if categoria.subcat_public.exists %}
-                            {# Categoría con subcategorías - Nivel 2 #}
-                            <li aria-labelledby="dropdownSubblog{{ referencia.subblog.id }}">
-                                <button id="doubleDropdownCat{{ categoria.id }}"
-                                        data-dropdown-toggle="doubleDropdownMenuCat{{ categoria.id }}"
+                            {# Level 2: Category with subcategories #}
+                            <li>
+                                <button id="doubleDropdownCat{{ categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
+                                        data-dropdown-toggle="doubleDropdownMenuCat{{ categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
                                         data-dropdown-placement="right-start"
                                         type="button"
-                                        class="flex items-center justify-between w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors">
+                                        class="header-dropdown-link w-full">
                                     {{ categoria.titulo }}
-                                    <svg class="w-2.5 h-2.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                    <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                     </svg>
                                 </button>
-                                {# Submenu nivel 3 #}
-                                <div id="doubleDropdownMenuCat{{ categoria.id }}"
-                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-48 border border-gray-200">
-                                    <ul class="py-1.5" aria-labelledby="doubleDropdownCat{{ categoria.id }}">
+                                {# Level 3: Subcategories #}
+                                <div id="doubleDropdownMenuCat{{ categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
+                                     class="header-dropdown-menu min-w-[180px] sm:min-w-[200px]">
+                                    <ul class="py-2">
                                         {% for subcat in categoria.subcategorias.all %}
                                             {% if subcat.publicado %}
                                                 <li>
                                                     <a href="{% url 'blog:subcategoria' slug=subcat.slug %}"
-                                                       class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors">
+                                                       class="header-dropdown-link">
                                                         {{ subcat.titulo }}
                                                     </a>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
-                                        {% if categoria.ver_mas %}
-                                            <li class="border-t border-gray-100">
-                                                <a href="{% url 'blog:categoria' slug=categoria.slug %}"
-                                                   class="block px-4 py-2.5 text-sm text-gaudeix-primary font-semibold hover:bg-gray-50 transition-colors">
-                                                    {% blocktrans %}Veure més{% endblocktrans %} →
-                                                </a>
-                                            </li>
-                                        {% endif %}
                                     </ul>
                                 </div>
                             </li>
                         {% else %}
-                            {# Categoría sin subcategorías #}
+                            {# Simple category without subcategories #}
                             <li>
                                 <a href="{% url 'blog:categoria' slug=categoria.slug %}"
-                                   class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors">
+                                   class="header-dropdown-link">
                                     {{ categoria.titulo }}
                                 </a>
                             </li>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
-                {% if referencia.subblog.ver_mas %}
-                    <li class="border-t border-gray-100">
-                        <a href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}"
-                           class="block px-4 py-2.5 text-sm text-gaudeix-primary font-semibold hover:bg-gray-50 transition-colors">
-                            {% blocktrans %}Veure més{% endblocktrans %} →
-                        </a>
-                    </li>
-                {% endif %}
             </ul>
         </div>
     </li>

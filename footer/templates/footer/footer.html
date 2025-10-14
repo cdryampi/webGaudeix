@@ -1,61 +1,152 @@
 {% load i18n %}
-<div class="container-fluid p-0 m-0">
-    <div>
-        {% include 'header/headerFooter.html' %}
-        {% include 'api/teenvio_form.html' %}
-        <div class="row p-0 m-0">
-            <div class="col-md-12">
-                <div class="footer-images row justify-content-around p-0 m-0 py-3">
-                    {% for empresa in footer.footerempresa_set.all %}
-                        <div class="footer-image px-2 py-1">
-                            {% if empresa.enlace %}
-                              <a href="{{ empresa.enlace }}" target="_blank" title="{{ empresa.titulo }}">
-                                <img src="{{ empresa.imagen.url }}" alt="{{ empresa.titulo }}">
-                              </a>
-                              {% else %}
-                              <img src="{{ empresa.imagen.url }}" alt="{{ empresa.titulo }}">
-                            {% endif %}
-                            
-                        </div>
-                    {% endfor %}
+
+{# Footer con Tailwind CSS y Dark Mode - Inspirado en Flowbite #}
+<footer class="w-full">
+    {# HeaderFooter Navigation #}
+    {% include 'header/headerFooter.html' %}
+
+    {# Newsletter Form #}
+    {% include 'api/teenvio_form.html' %}
+
+    {# Logos de Empresas Colaboradoras #}
+    <div class="w-full bg-white dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-12">
+                {% for empresa in footer.footerempresa_set.all %}
+                    <div class="flex-shrink-0 hover:opacity-80 transition-opacity duration-200">
+                        {% if empresa.enlace %}
+                            <a href="{{ empresa.enlace }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               title="{{ empresa.titulo }}"
+                               class="block">
+                                <img src="{{ empresa.imagen.url }}"
+                                     alt="{{ empresa.titulo }}"
+                                     class="h-12 lg:h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200">
+                            </a>
+                        {% else %}
+                            <img src="{{ empresa.imagen.url }}"
+                                 alt="{{ empresa.titulo }}"
+                                 class="h-12 lg:h-16 w-auto object-contain opacity-70">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {# Footer Principal - Color Gaudeix #}
+    <div class="w-full py-12 transition-colors duration-300"
+         style="background-color: #3EBFAB;">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 text-white">
+                {# Logo y Información de Contacto #}
+                <div class="space-y-4">
+                    <a href="{% url 'core:home' %}"
+                       class="inline-block hover:opacity-80 transition-opacity duration-200">
+                        <img src="{{ footer.footerinformacion.imagen.url }}"
+                             alt="Gaudeix"
+                             class="h-14 w-auto object-contain">
+                    </a>
+
+                    <div class="space-y-3 text-sm">
+                        <p class="flex items-start gap-2">
+                            <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>{{ footer.footerinformacion.direccion }}</span>
+                        </p>
+
+                        <p class="flex items-center gap-2">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            <a href="tel:{{ footer.footerinformacion.telefono }}"
+                               class="hover:underline transition-all duration-200">
+                                {{ footer.footerinformacion.telefono }}
+                            </a>
+                        </p>
+
+                        <p class="flex items-center gap-2">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <a href="mailto:{{ footer.footerinformacion.correo_contacto }}"
+                               class="hover:underline transition-all duration-200 break-all">
+                                {{ footer.footerinformacion.correo_contacto }}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                {# Enlaces Legales #}
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold uppercase">
+                        {% trans "Información Legal" %}
+                    </h3>
+                    <ul class="space-y-2 text-sm">
+                        {% for legal in footer.footerinformacion.paginas_legales.all %}
+                            <li>
+                                {% if legal.tipo == 'privacitat' %}
+                                    <a href="{% url 'paginas_estaticas:privacitat' %}"
+                                       class="hover:underline hover:opacity-80 transition-all duration-200 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        {{ legal.titulo }}
+                                    </a>
+                                {% elif legal.tipo == 'avis_legal' %}
+                                    <a href="{% url 'paginas_estaticas:avis_legal' %}"
+                                       class="hover:underline hover:opacity-80 transition-all duration-200 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        {{ legal.titulo }}
+                                    </a>
+                                {% elif legal.tipo == 'cookies' %}
+                                    <a href="{% url 'paginas_estaticas:politica_cookies' %}"
+                                       class="hover:underline hover:opacity-80 transition-all duration-200 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        {{ legal.titulo }}
+                                    </a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+
+                        {% if diversidad %}
+                            <li>
+                                <a href="{% url 'paginas_estaticas:igualtat' %}"
+                                   class="hover:underline hover:opacity-80 transition-all duration-200 flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    {% trans "Diversitat e inclusió" %}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                {# Espaciador para mejor diseño en pantallas grandes #}
+                <div class="hidden lg:block"></div>
+                <div class="hidden xl:block"></div>
+            </div>
+
+            {# Copyright y Powered by #}
+            <div class="mt-12 pt-8 border-t border-white/20">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-white text-sm">
+                    <p class="text-center md:text-left">
+                        © {{ current_year|default:"2025" }} Gaudeix de Cabrera de Mar.
+                        {% trans "Tots els drets reservats." %}
+                    </p>
+                    <p class="text-center md:text-right opacity-80">
+                        {% trans "Desenvolupat amb" %} ❤️ {% trans "per la comunitat" %}
+                    </p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container-fluid p-0 m-0 py-3" style="background-color: #3EBFAB;">
-        <div class="row m-0 p-0 justify-content-around">
-          <div class="footer-container">
-            <div class="footer-item">
-              <a href="{% url 'core:home'  %}">
-                <img src="{{ footer.footerinformacion.imagen.url }}" alt="{{ Gaudeix }}" width="157" height="57">
-              </a>
-            </div>
-            <div class="footer-item pb-1">
-              <p>{{ footer.footerinformacion.direccion }}</p>
-            </div>
-            <div class="footer-item">
-              <p class="mb-1"><a href="tel:{{ footer.footerinformacion.telefono }}">{{ footer.footerinformacion.telefono }}</a></p>
-            </div>
-            <div class="footer-item">
-              <p class="mb-1"><a href="mailto:{{ footer.footerinformacion.correo_contacto }}">{{ footer.footerinformacion.correo_contacto }}</a></p>
-            </div>
-            {% for legal in footer.footerinformacion.paginas_legales.all %}
-            <div class="footer-item">
-              {% if legal.tipo == 'privacitat' %}
-              <p class="mb-1"><a href="{% url 'paginas_estaticas:privacitat' %}">{{ legal.titulo }}</a></p>
-              {% elif legal.tipo == 'avis_legal' %}
-              <p class="mb-1"><a href="{% url 'paginas_estaticas:avis_legal' %}">{{ legal.titulo }}</a></p>
-              {% elif legal.tipo == 'cookies' %}
-              <p class="mb-1"><a href="{% url 'paginas_estaticas:politica_cookies' %}">{{ legal.titulo }}</a></p>
-              {% endif %}
-            </div>
-            {% endfor %}
-            <div class="footer-item">
-              {% if diversidad %}
-                <p class="mb-1"><a href="{% url 'paginas_estaticas:igualtat' %}">{% blocktrans %}diversitat e inclusió{% endblocktrans %}</a></p>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
+</footer>

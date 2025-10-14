@@ -1,46 +1,77 @@
 {% load static %}
 {% if header_footer %}
-<div class="container-fluid p-0 header-container">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header_footer.color_fondo_header }} !important;">
-        <div class="container">
-            <div class="navbar-collapse">
-                <ul class="navbar-nav d-flex justify-content-center justify-content-lg-between justify-content-md-between justify-content-sm-between w-100 text-center">
+{# Header Footer con Tailwind CSS y Dark Mode #}
+<div class="w-full p-0">
+    <nav class="sticky top-0 z-50 transition-colors duration-300"
+         style="background-color: {{ header_footer.color_fondo_header }};">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-center">
+                <ul class="flex flex-wrap items-center justify-center gap-1 py-3 text-center w-full lg:justify-between md:justify-between">
                     {% for referencia in header_footer.referencia_set.all %}
                         <li class="nav-item">
                             {% if referencia.tipo == 'externo' %}
-                                <a class="nav-link text-white text-uppercase" href="{{ referencia.externo.enlace }}" target="_blank" style="color: {{ header_footer.color_letra}} !important;">
+                                <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                   href="{{ referencia.externo.enlace }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   style="color: {{ header_footer.color_letra }} !important;">
                                     {{ referencia.externo.titulo }}
                                 </a>
                             {% elif referencia.tipo == 'post' %}
-                                <a class="nav-link text-white text-uppercase" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}" style="color: {{ header_footer.color_letra}} !important;">
+                                <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                   href="{% url 'blog:detalle_post' slug=referencia.post.slug %}"
+                                   style="color: {{ header_footer.color_letra }} !important;">
                                     {{ referencia.post.titulo }}
                                 </a>
                             {% elif referencia.tipo == 'categoria' %}
-                                <a class="nav-link text-white text-uppercase" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}" style="color: {{ header_footer.color_letra}} !important;">
+                                <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                   href="{% url 'blog:categoria' slug=referencia.categoria.slug %}"
+                                   style="color: {{ header_footer.color_letra }} !important;">
                                     {{ referencia.categoria.titulo }}
                                 </a>
                             {% elif referencia.tipo == 'subblog' %}
                                 {% if referencia.subblog.publicado %}
-                                    <a class="nav-link text-white text-uppercase" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">{{ referencia.subblog.titulo }}</a>
+                                    <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                       href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}"
+                                       style="color: {{ header_footer.color_letra }} !important;">
+                                        {{ referencia.subblog.titulo }}
+                                    </a>
                                 {% endif %}
                             {% elif referencia.tipo == 'contacto' %}
-                                <a class="nav-link text-white text-uppercase" href="{% url 'paginas_estaticas:contacto' %}" style="color: {{ header_footer.color_letra}} !important;">
+                                <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                   href="{% url 'paginas_estaticas:contacto' %}"
+                                   style="color: {{ header_footer.color_letra }} !important;">
                                     {{ referencia.contacto.titulo }}
                                 </a>
                             {% elif referencia.tipo == 'evento_especial' %}
                                 {% if referencia.evento_especial %}
-                                    <a class="nav-link text-white text-uppercase" href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}" style="color: {{ header_footer.color_letra}} !important;">
+                                    <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                       href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}"
+                                       style="color: {{ header_footer.color_letra }} !important;">
                                         {{ referencia.evento_especial.titulo }}
                                     </a>
                                 {% endif %}
                             {% elif referencia.tipo == 'subvencion' %}
-                                <a class="nav-link text-white text-uppercase" href="{% url 'subvencions:subvencions' %}" target="_blank" style="color: {{ header_footer.color_letra}} !important;">subvencions</a>
+                                <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                   href="{% url 'subvencions:subvencions' %}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   style="color: {{ header_footer.color_letra }} !important;">
+                                    Subvencions
+                                </a>
                             {% elif referencia.tipo == 'punt_informacio' %}
-                                    <a class="nav-link text-white text-uppercase" href="{% url 'paginas_estaticas:punt' %}" style="color: {{ header.color_letra}} !important;">{{ referencia.punt_informacio.titulo }}</a>
-                            
+                                <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                   href="{% url 'paginas_estaticas:punt' %}"
+                                   style="color: {{ header_footer.color_letra }} !important;">
+                                    {{ referencia.punt_informacio.titulo }}
+                                </a>
                             {% elif referencia.tipo == 'compra_y_descubre' %}
                                 {% if referencia.compra_y_descubre %}
-                                    <a class="nav-link text-white text-uppercase" href="{% url 'compra_y_descubre:compra_y_descubre' slug=referencia.compra_y_descubre.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.compra_y_descubre.titulo }}</a>
+                                    <a class="block px-3 py-2 text-sm font-bold uppercase hover:opacity-80 transition-opacity duration-200"
+                                       href="{% url 'compra_y_descubre:compra_y_descubre' slug=referencia.compra_y_descubre.slug %}"
+                                       style="color: {{ header_footer.color_letra }} !important;">
+                                        {{ referencia.compra_y_descubre.titulo }}
+                                    </a>
                                 {% endif %}
                             {% endif %}
                         </li>

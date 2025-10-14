@@ -1,41 +1,65 @@
 {% load static %}
 {% load i18n %}
-<div class="topbar" style="background-color: {{ topbar.fondo }}; color: {{ topbar.texto_color }}">
-    <div class="container-fluid">
-        <div class="row justify-content-center align-items-center text-center">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="topbar-description">
-                    {% if topbar %}
-                        <!-- Versión para pantallas pequeñas -->
-                        <p class="d-lg-none d-md-none">
-                            {{ topbar.descripcion_corta_movil }} 
-                            {% if topbar.enlace_externo %}
-                                {% if topbar.titulo_externo %}
-                                    <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">{{ topbar.titulo_externo }}</a>
-                                {% else %}
-                                    <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">{% blocktrans %}Fes click{% endblocktrans %}</a>
-                                {% endif %}
+
+{# Topbar con Tailwind CSS y Dark Mode #}
+<div class="py-2 px-4 transition-colors duration-300"
+     style="background-color: {{ topbar.fondo|default:'#f3f4f6' }}; color: {{ topbar.texto_color|default:'#1f2937' }}">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex items-center justify-center text-center">
+            <div class="w-full lg:w-2/3">
+                {% if topbar %}
+                    {# Versión para pantallas pequeñas (móvil) #}
+                    <p class="block md:hidden text-sm font-medium leading-relaxed">
+                        {{ topbar.descripcion_corta_movil }}
+                        {% if topbar.enlace_externo %}
+                            {% if topbar.titulo_externo %}
+                                <a class="underline hover:opacity-80 transition-opacity duration-200 font-semibold"
+                                   href="{{ topbar.enlace_externo }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    {{ topbar.titulo_externo }}
+                                </a>
+                            {% else %}
+                                <a class="underline hover:opacity-80 transition-opacity duration-200 font-semibold"
+                                   href="{{ topbar.enlace_externo }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    {% blocktrans %}Fes click{% endblocktrans %}
+                                </a>
                             {% endif %}
-                        </p>
-                        <!-- Versión para pantallas grandes -->
-                        <p class="d-none d-lg-block d-md-block">
-                            {{ topbar.descripcion }} 
-                            {% if topbar.enlace_externo %}
-                                {% if topbar.titulo_externo %}
-                                    <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">{{ topbar.titulo_externo }}</a>
-                                {% else %}
-                                    <a class="topbar-link" href="{{ topbar.enlace_externo }}" target="_blank">{% blocktrans %}Fes click{% endblocktrans %}</a>
-                                {% endif %}
+                        {% endif %}
+                    </p>
+
+                    {# Versión para pantallas grandes (tablet y desktop) #}
+                    <p class="hidden md:block text-sm font-medium leading-relaxed">
+                        {{ topbar.descripcion }}
+                        {% if topbar.enlace_externo %}
+                            {% if topbar.titulo_externo %}
+                                <a class="underline hover:opacity-80 transition-opacity duration-200 font-semibold"
+                                   href="{{ topbar.enlace_externo }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    {{ topbar.titulo_externo }}
+                                </a>
+                            {% else %}
+                                <a class="underline hover:opacity-80 transition-opacity duration-200 font-semibold"
+                                   href="{{ topbar.enlace_externo }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    {% blocktrans %}Fes click{% endblocktrans %}
+                                </a>
                             {% endif %}
-                        </p>
-                    {% else %}
-                        <!-- Contenido estático relacionado con el clima -->
-                        <p class="d-lg-none d-md-none">
-                            Gaudeix de Cabrera de Mar
-                        </p>
-                    {% endif %}
-                </div>
-                
+                        {% endif %}
+                    </p>
+                {% else %}
+                    {# Contenido estático predeterminado #}
+                    <p class="block md:hidden text-sm font-medium">
+                        Gaudeix de Cabrera de Mar
+                    </p>
+                    <p class="hidden md:block text-sm font-medium">
+                        Gaudeix de Cabrera de Mar - Descobreix el nostre municipi
+                    </p>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -11,8 +11,10 @@ import "../css/main.css";
 // Importar Flowbite para componentes UI interactivos
 import "flowbite";
 
-// Importar componente de theme toggle
+// Importar componentes personalizados
 import "./components/theme-toggle.js";
+import "./components/mobile-menu.js";
+import "./components/dropdown-init.js";
 
 console.log("🎨 Gaudeix - Frontend con Tailwind CSS + Vite + Flowbite");
 
@@ -32,8 +34,3 @@ const templates = import.meta.glob(
 console.log(
   `📄 Templates detectados para Tailwind: ${Object.keys(templates).length}`
 );
-
-// Aquí se importarán los módulos necesarios cuando se creen
-// import './modules/menu.js';
-// import './modules/carousel.js';
-// import './modules/map.js';

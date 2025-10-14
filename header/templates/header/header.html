@@ -2,51 +2,82 @@
 {% load i18n %}
 
 {% if header %}
-<!-- Header Flowbite + Tailwind CSS v4 - Optimizado para logo blanco -->
-<nav class="bg-gradient-to-r from-gray-800 to-gray-900 border-b border-gray-700" id="navbar">
-    <div class="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
+<!-- Header Minimalista Optimizado Mobile/Tablet -->
+<nav class="header-nav" id="navbar">
+    <div class="max-w-screen-2xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
+        <div class="flex items-center justify-between gap-3 sm:gap-4">
 
-        <!-- Logo Section -->
-        {% include 'header/partials/_logo.html' %}
+            <!-- Logo Section - Optimizado para mobile -->
+            {% include 'header/partials/_logo.html' %}
 
-        <!-- Mobile menu button -->
-        {% include 'header/partials/_mobile_button.html' %}
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden lg:flex flex-1 max-w-xl">
+                {% include 'header/partials/_search.html' %}
+            </div>
 
-        <!-- Desktop Navigation -->
-        <div class="hidden w-full md:block md:w-auto" id="navbar-multi-level">
-            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg bg-gray-800 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
+            <!-- Navigation Desktop Only -->
+            <div class="hidden lg:flex lg:w-auto lg:items-center">
+                <ul class="header-desktop-menu">
+                    {% for referencia in referencias %}
+                        {# Solo mostrar tipos esenciales #}
+                        {% if referencia.tipo == 'post' %}
+                            {% include 'header/partials/_nav_post.html' %}
+                        {% elif referencia.tipo == 'categoria' %}
+                            {% include 'header/partials/_nav_categoria.html' %}
+                        {% elif referencia.tipo == 'subblog' %}
+                            {% include 'header/partials/_nav_subblog.html' %}
+                        {% elif referencia.tipo == 'contacto' or referencia.tipo == 'punt_informacio' %}
+                            {% include 'header/partials/_nav_otros.html' %}
+                        {% endif %}
+                    {% endfor %}
 
+                    {# Theme Toggle y Language Selector - Desktop #}
+                    {% include 'header/partials/_theme_toggle.html' with extra_li_classes='lg:pl-2 lg:ml-2 lg:border-l border-white/30 dark:border-gray-700' %}
+                    {% include 'header/partials/_language_selector.html' %}
+                </ul>
+            </div>
+
+            <!-- Mobile menu button -->
+            {% include 'header/partials/_mobile_button.html' %}
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay - Separado completamente del desktop -->
+    <div id="mobile-menu-overlay" class="header-mobile-overlay">
+        <div class="header-mobile-container">
+            <!-- Mobile Header -->
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/20 dark:border-gray-700">
+                {% include 'header/partials/_logo.html' with mobile_mode=True %}
+                <button type="button" class="mobile-close-btn" id="mobile-close-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Search -->
+            <div class="mb-6">
+                {% include 'header/partials/_search.html' %}
+            </div>
+
+            <!-- Mobile Navigation -->
+            <ul class="header-mobile-menu">
                 {% for referencia in referencias %}
-
-                    {# Link Externo #}
-                    {% if referencia.tipo == 'externo' %}
-                        {% include 'header/partials/_nav_externo.html' %}
-
-                    {# Post #}
-                    {% elif referencia.tipo == 'post' %}
-                        {% include 'header/partials/_nav_post.html' %}
-
-                    {# Categoría con Subcategorías #}
+                    {% if referencia.tipo == 'post' %}
+                        {% include 'header/partials/_nav_post.html' with mobile_mode=True %}
                     {% elif referencia.tipo == 'categoria' %}
-                        {% include 'header/partials/_nav_categoria.html' %}
-
-                    {# SubBlog con Categorías (multinivel) #}
+                        {% include 'header/partials/_nav_categoria.html' with mobile_mode=True %}
                     {% elif referencia.tipo == 'subblog' %}
-                        {% include 'header/partials/_nav_subblog.html' %}
-
-                    {# Otros tipos: contacto, evento especial, punt informació, compra y descubre #}
-                    {% else %}
-                        {% include 'header/partials/_nav_otros.html' %}
+                        {% include 'header/partials/_nav_subblog.html' with mobile_mode=True %}
+                    {% elif referencia.tipo == 'contacto' or referencia.tipo == 'punt_informacio' %}
+                        {% include 'header/partials/_nav_otros.html' with mobile_mode=True %}
                     {% endif %}
-
                 {% endfor %}
 
-                {# Theme Toggle #}
-                {% include 'header/partials/_theme_toggle.html' %}
-
-                {# Language Selector #}
-                {% include 'header/partials/_language_selector.html' %}
-
+                {# Theme Toggle y Language Selector - Mobile #}
+                <li class="mobile-divider"></li>
+                {% include 'header/partials/_theme_toggle.html' with extra_li_classes='w-full' mobile_mode=True %}
+                {% include 'header/partials/_language_selector.html' with extra_li_classes='w-full' mobile_mode=True %}
             </ul>
         </div>
     </div>

@@ -119,6 +119,15 @@
 
     {% endblock extra_css %}
 
+    {# Script para detectar modo oscuro ANTES de que se renderice la página #}
+    <script>
+        // Detectar y aplicar tema inmediatamente (evita flash)
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 
 </head>
 <body>
@@ -267,12 +276,15 @@
 
 
         {% comment %} {% compress js %} {% endcomment %}
+            <script defer src="{% static 'core/js/components/theme-toggle.js' %}"></script>
+            <script defer src="{% static 'core/js/components/mobile-menu.js' %}"></script>
+            <script defer src="{% static 'core/js/components/dropdown-init.js' %}"></script>
+            <script defer src="{% static 'core/js/main.js' %}"></script>
+            <script defer src="{% static 'core/js/gallery-js/fancybox.js' %}"></script>
+            <script defer src="{% static 'core/js/swiper/custom-swiper.js' %}"></script>
+            <script defer src="{% static 'core/js/imagen.js' %}"></script>
+            <script defer src="{% static 'core/js/cookies.js' %}"></script>
 
-            <script src="{% static 'core/js/main.js' %}"></script>
-            <script src="{% static 'core/js/gallery-js/fancybox.js' %}"></script>
-            <script src="{% static 'core/js/swiper/custom-swiper.js' %}"></script>
-            <script src="{% static 'core/js/imagen.js' %}"></script>
-            <script src="{% static 'core/js/cookies.js' %}"></script>
         {% comment %} {% endcompress %} {% endcomment %}
 
     {% block extra_script %}

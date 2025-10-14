@@ -1,40 +1,20 @@
-<!-- Otros tipos de navegación: contacto, evento especial, punt informació, compra y descubre -->
+<!-- Navegación: Contacto y Punt Informació - Estilo Minimalista -->
 
 {# Contacto #}
 {% if referencia.tipo == 'contacto' %}
     <li>
         <a href="{% url 'paginas_estaticas:contacto' %}"
-           class="block py-2 px-3 text-white rounded-sm hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-gaudeix-primary md:p-0 transition-colors font-medium text-sm">
+           class="header-link">
             {{ referencia.contacto.titulo }}
         </a>
     </li>
-
-{# Evento Especial (destacado) #}
-{% elif referencia.tipo == 'evento_especial' %}
-    {% if referencia.evento_especial.publicado %}
-        <li>
-            <a href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}"
-               class="block py-2 px-3 text-white bg-gaudeix-accent rounded-sm md:bg-gaudeix-accent md:p-2 hover:bg-gaudeix-accent/90 transition-colors font-semibold text-sm">
-                {{ referencia.evento_especial.titulo }}
-            </a>
-        </li>
-    {% endif %}
 
 {# Punt Informació #}
 {% elif referencia.tipo == 'punt_informacio' %}
     <li>
         <a href="{% url 'paginas_estaticas:punt' %}"
-           class="block py-2 px-3 text-white rounded-sm hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-gaudeix-primary md:p-0 transition-colors font-medium text-sm">
+           class="header-link">
             {{ referencia.punt_informacio.titulo }}
-        </a>
-    </li>
-
-{# Compra y Descubre #}
-{% elif referencia.tipo == 'compra_y_descubre' %}
-    <li>
-        <a href="{% url 'compra_y_descubre:compra_y_descubre' slug=referencia.compra_y_descubre.slug %}"
-           class="block py-2 px-3 text-white rounded-sm hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-gaudeix-primary md:p-0 transition-colors font-medium text-sm">
-            {{ referencia.compra_y_descubre.titulo }}
         </a>
     </li>
 {% endif %}
