@@ -38,15 +38,11 @@
   --color-gaudeix-dark: #2c3e50;
 
   /* Tipografía */
-  --font-oswald: "Oswald", sans-serif;
-  --font-sans: "Helvetica", "Trebuchet", "Arial", sans-serif;
+  --font-family-oswald: "Oswald", sans-serif;
+  --font-family-sans: "Helvetica", "Trebuchet", "Arial", sans-serif;
 
   /* Breakpoints personalizados */
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
   --breakpoint-xl: 1366px;
-  --breakpoint-2xl: 1536px;
 }
 
 /* Estilos base globales */
