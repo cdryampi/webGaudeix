@@ -1,5 +1,5 @@
 {
-  "DEBUG": true,
+  "DEBUG": false,
   "ALLOWED_HOSTS": ["*"],
   "LANGUAGE_CODE": "ca",
   "TIME_ZONE": "Europe/Madrid",

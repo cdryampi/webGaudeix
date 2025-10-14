@@ -1,334 +1,60 @@
 {% load static %}
 {% load i18n %}
+
 {% if header %}
-<!-- Header migrado a Tailwind CSS v4 -->
-<div class="w-full p-0">
+<!-- Header Flowbite + Tailwind CSS v4 - Optimizado para logo blanco -->
+<nav class="bg-gradient-to-r from-gray-800 to-gray-900 border-b border-gray-700" id="navbar">
+    <div class="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
 
-    {% include "header/top_header_aux.html" %}
+        <!-- Logo Section -->
+        {% include 'header/partials/_logo.html' %}
 
-    <nav class="sticky top-0 z-50 shadow-lg" id="navbar" style="background-color: {{ header.color_fondo_header }} !important;">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between h-16 xl:h-20">
-                <!-- Logo Section -->
-                <div class="flex items-center space-x-4">
-                    {% if evento_especial_activo.logo_especial %}
-                        <a href="{% url 'eventos_especiales:evento_especial' slug=evento_especial_activo.slug %}" class="flex items-center">
-                            <img src="{{ evento_especial_activo.logo_especial.url }}" alt="{{ evento_especial_activo.titulo }}" class="h-10 w-auto">
-                        </a>
-                     {% endif %}
-                    <a href="{% url 'core:home' %}" class="flex items-center">
-                        {% if header.logo %}
-                            <img src="{{ header.logo.url }}" alt="Cabrera de mar" class="h-10 w-auto">
-                        {% else %}
-                            <span class="text-white text-xl font-bold">Gaudeix Cabrera de Mar</span>
-                        {% endif %}
-                    </a>
-                </div>
+        <!-- Mobile menu button -->
+        {% include 'header/partials/_mobile_button.html' %}
 
-                <!-- Mobile menu button -->
-                <button
-                    type="button"
-                    class="xl:hidden inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-gaudeix-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-colors"
-                    aria-controls="mobile-menu"
-                    aria-expanded="false"
-                    id="mobile-menu-button">
-                    <span class="sr-only">{% trans "Abrir menú" %}</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
+        <!-- Desktop Navigation -->
+        <div class="hidden w-full md:block md:w-auto" id="navbar-multi-level">
+            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg bg-gray-800 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
 
-                <!-- Desktop Navigation -->
-                <div class="hidden xl:flex xl:items-center xl:space-x-1">
-                    <ul class="flex items-center space-x-1">
+                {% for referencia in referencias %}
 
-                    {% for referencia in referencias %}
-                        {% if referencia.tipo == 'externo' %}
-                            <li>
-                                <a class="px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200 {{ referencia.externo.estil_del_text }}"
-                                   href="{{ referencia.externo.enlace }}"
-                                   target="_blank"
-                                   style="color: {{ referencia.externo.color_letra }} !important;">
-                                    {{ referencia.externo.titulo }}
-                                </a>
-                            </li>
-                        {% elif referencia.tipo == 'post' %}
-                            <li>
-                                <a class="px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200"
-                                   href="{% url 'blog:detalle_post' slug=referencia.post.slug %}"
-                                   style="color: {{ header.color_letra}} !important;">
-                                    {{ referencia.post.titulo }}
-                                </a>
-                            </li>
-                        {% elif referencia.tipo == 'categoria' %}
-                                {% if referencia.categoria.subcat_public.exists %}
-                                    <li class="relative group">
-                                        <a class="px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200 cursor-pointer inline-flex items-center"
-                                           style="color: {{ header.color_letra}} !important;">
-                                            {{ referencia.categoria.titulo }}
-                                            <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </a>
-                                        <ul class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                                            {% for subcat in referencia.categoria.subcategorias.all %}
-                                                {% if subcat.publicado %}
-                                                    <li>
-                                                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors"
-                                                           href="{% url 'blog:subcategoria' slug=subcat.slug %}">
-                                                            {{ subcat.titulo }}
-                                                        </a>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
+                    {# Link Externo #}
+                    {% if referencia.tipo == 'externo' %}
+                        {% include 'header/partials/_nav_externo.html' %}
 
-                                            {% if referencia.categoria.ver_mas %}
-                                                <li>
-                                                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors"
-                                                       href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">
-                                                        {% blocktrans %}Saber més{% endblocktrans %}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
+                    {# Post #}
+                    {% elif referencia.tipo == 'post' %}
+                        {% include 'header/partials/_nav_post.html' %}
 
-                                        </ul>
-                                    </li>
-                                {% else %}
-                                    <li>
-                                        <a class="px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200"
-                                           href="{% url 'blog:categoria' slug=referencia.categoria.slug %}"
-                                           style="color: {{ header.color_letra}} !important;">
-                                            {{ referencia.categoria.titulo }}
-                                        </a>
-                                    </li>
-                                {% endif %}
-                        {% elif referencia.tipo == 'subblog' %}
-                            {% if referencia.subblog.publicado %}
-                                <li class="relative group">
-                                    <a class="px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200 cursor-pointer inline-flex items-center"
-                                       style="color: {{ header.color_letra}} !important;">
-                                        {{ referencia.subblog.titulo }}
-                                        <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </a>
-                                    <ul class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                                        {% for categoria in categorias_header %}
-                                            {% if categoria.subblog == referencia.subblog %}
-                                                {% if categoria.subcat_public.exists %}
-                                                    {% if categoria.publicado %}
-                                                        <li class="relative group/submenu">
-                                                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors cursor-pointer">
-                                                                {{ categoria.titulo }}
-                                                                <svg class="inline ml-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                                                </svg>
-                                                            </a>
-                                                            <ul class="absolute left-full top-0 mt-0 ml-1 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover/submenu:block">
-                                                                {% for subcat in categoria.subcategorias.all %}
-                                                                    {% if subcat.publicado %}
-                                                                        <li>
-                                                                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors"
-                                                                               href="{% url 'blog:subcategoria' slug=subcat.slug %}">
-                                                                                {{ subcat.titulo }}
-                                                                            </a>
-                                                                        </li>
-                                                                    {% endif %}
-                                                                {% endfor %}
+                    {# Categoría con Subcategorías #}
+                    {% elif referencia.tipo == 'categoria' %}
+                        {% include 'header/partials/_nav_categoria.html' %}
 
-                                                                {% if categoria.ver_mas %}
-                                                                    <li>
-                                                                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors"
-                                                                           href="{% url 'blog:categoria' slug=categoria.slug %}">
-                                                                            {% blocktrans %}Saber més{% endblocktrans %}
-                                                                        </a>
-                                                                    </li>
-                                                                {% endif %}
-                                                            </ul>
-                                                        </li>
-                                                    {% endif %}
-                                                {% else %}
-                                                    {% if categoria.publicado %}
-                                                        <li>
-                                                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors"
-                                                               href="{% url 'blog:categoria' slug=categoria.slug %}">
-                                                                {{ categoria.titulo }}
-                                                            </a>
-                                                        </li>
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if referencia.subblog.ver_mas %}
-                                            <li>
-                                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors"
-                                                   href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">
-                                                    {% blocktrans %}Saber més{% endblocktrans %}
-                                                </a>
-                                            </li>
-                                        {% endif %}
+                    {# SubBlog con Categorías (multinivel) #}
+                    {% elif referencia.tipo == 'subblog' %}
+                        {% include 'header/partials/_nav_subblog.html' %}
 
-                                    </ul>
-                                </li>
-                            {% endif %}
-                        {% elif referencia.tipo == 'contacto' %}
-                            <li>
-                                <a class="px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200"
-                                   href="{% url 'paginas_estaticas:contacto' %}"
-                                   style="color: {{ header.color_letra}} !important;">
-                                    {{ referencia.contacto.titulo }}
-                                </a>
-                            </li>
-                        {% elif referencia.tipo == 'evento_especial' %}
-                            {% if referencia.evento_especial.publicado %}
-                                <li class="bg-white rounded-b shadow mx-2 my-0">
-                                    <a class="block px-3 py-2 text-black font-bold hover:opacity-80 transition-opacity"
-                                       href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}"
-                                       style="color: {{ header.color_fondo_header}} !important;">
-                                        {{ referencia.evento_especial.titulo }}
-                                    </a>
-                                </li>
-                            {% endif %}
+                    {# Otros tipos: contacto, evento especial, punt informació, compra y descubre #}
+                    {% else %}
+                        {% include 'header/partials/_nav_otros.html' %}
+                    {% endif %}
 
-                        {% elif referencia.tipo == 'punt_informacio' %}
-                            <li>
-                                <a class="px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200"
-                                   href="{% url 'paginas_estaticas:punt' %}"
-                                   style="color: {{ header.color_letra}} !important;">
-                                    {{ referencia.punt_informacio.titulo }}
-                                </a>
-                            </li>
+                {% endfor %}
 
-                        {% elif referencia.tipo == 'compra_y_descubre' %}
-                            <li>
-                                <a class="px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200"
-                                   href="{% url 'compra_y_descubre:compra_y_descubre' slug=referencia.compra_y_descubre.slug %}"
-                                   style="color: {{ header.color_letra}} !important;">
-                                    {{ referencia.compra_y_descubre.titulo }}
-                                </a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
+                {# Theme Toggle #}
+                {% include 'header/partials/_theme_toggle.html' %}
 
-                    {# Language selector #}
-                    <div class="relative group ml-2">
-                        <a class="px-3 py-2 text-white font-bold cursor-pointer inline-flex items-center">
-                            {% if request.LANGUAGE_CODE == 'ca' %}
-                                <img src="{% static 'core/img/banderitas/cat.svg' %}" alt="Catalan Flag" class="h-5 w-5" />
-                            {% else %}
-                                <img src="{% static 'core/img/banderitas/' %}{{ request.LANGUAGE_CODE }}.svg" alt="{{ request.LANGUAGE_CODE }}" class="h-5 w-5" />
-                            {% endif %}
-                        </a>
+                {# Language Selector #}
+                {% include 'header/partials/_language_selector.html' %}
 
-                        <div class="absolute right-0 mt-2 w-20 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                            {% get_current_language as LANGUAGE_CODE %}
-                            {% get_available_languages as LANGUAGES %}
-                            {% for lang in LANGUAGES %}
-                                <a href="{% url 'set_language' %}"
-                                   class="block px-4 py-2 text-center hover:bg-gaudeix-primary transition-colors"
-                                   onclick="event.preventDefault(); document.getElementById('form-lang-{{ lang.0 }}').submit();">
-                                    {% if lang.0 == 'ca' %}
-                                        <img class="inline-block h-9 w-9" src="{% static 'core/img/banderitas/cat.svg' %}" />
-                                    {% else %}
-                                        <img class="inline-block h-9 w-9" src="{% static 'core/img/banderitas/' %}{{ lang.0 }}.svg" />
-                                    {% endif %}
-                                </a>
-                                <form id="form-lang-{{ lang.0 }}" action="{% url 'set_language' %}" method="post" class="hidden">
-                                    {% csrf_token %}
-                                    <input name="next" type="hidden" value="{{ request.path }}">
-                                    <input type="hidden" name="language" value="{{ lang.0 }}">
-                                </form>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Mobile menu -->
-            <div class="xl:hidden" id="mobile-menu" style="background-color: {{ header.color_fondo_header }} !important;">
-                <div class="px-2 pt-2 pb-3 space-y-1 hidden" id="mobile-menu-content">
-                    {% for referencia in referencias %}
-                        {% if referencia.tipo == 'externo' %}
-                            <a href="{{ referencia.externo.enlace }}"
-                               target="_blank"
-                               class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors {{ referencia.externo.estil_del_text }}"
-                               style="color: {{ referencia.externo.color_letra }} !important;">
-                                {{ referencia.externo.titulo }}
-                            </a>
-                        {% elif referencia.tipo == 'post' %}
-                            <a href="{% url 'blog:detalle_post' slug=referencia.post.slug %}"
-                               class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors"
-                               style="color: {{ header.color_letra}} !important;">
-                                {{ referencia.post.titulo }}
-                            </a>
-                        {% elif referencia.tipo == 'categoria' %}
-                            <a href="{% url 'blog:categoria' slug=referencia.categoria.slug %}"
-                               class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors"
-                               style="color: {{ header.color_letra}} !important;">
-                                {{ referencia.categoria.titulo }}
-                            </a>
-                        {% elif referencia.tipo == 'subblog' %}
-                            {% if referencia.subblog.publicado %}
-                                <a href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}"
-                                   class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors"
-                                   style="color: {{ header.color_letra}} !important;">
-                                    {{ referencia.subblog.titulo }}
-                                </a>
-                            {% endif %}
-                        {% elif referencia.tipo == 'contacto' %}
-                            <a href="{% url 'paginas_estaticas:contacto' %}"
-                               class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors"
-                               style="color: {{ header.color_letra}} !important;">
-                                {{ referencia.contacto.titulo }}
-                            </a>
-                        {% elif referencia.tipo == 'evento_especial' %}
-                            {% if referencia.evento_especial.publicado %}
-                                <a href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}"
-                                   class="block px-3 py-2 rounded-md bg-white text-black font-bold hover:opacity-80 transition-opacity my-2"
-                                   style="color: {{ header.color_fondo_header}} !important;">
-                                    {{ referencia.evento_especial.titulo }}
-                                </a>
-                            {% endif %}
-                        {% elif referencia.tipo == 'punt_informacio' %}
-                            <a href="{% url 'paginas_estaticas:punt' %}"
-                               class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors"
-                               style="color: {{ header.color_letra}} !important;">
-                                {{ referencia.punt_informacio.titulo }}
-                            </a>
-                        {% elif referencia.tipo == 'compra_y_descubre' %}
-                            <a href="{% url 'compra_y_descubre:compra_y_descubre' slug=referencia.compra_y_descubre.slug %}"
-                               class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors"
-                               style="color: {{ header.color_letra}} !important;">
-                                {{ referencia.compra_y_descubre.titulo }}
-                            </a>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
+            </ul>
         </div>
-    </nav>
-    {% if topbar %}
-        {% include 'topbar/topbar.html' %}
-    {% endif %}
-</div>
+    </div>
+</nav>
 
-<script>
-// Mobile menu toggle
-document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenuContent = document.getElementById('mobile-menu-content');
-
-    if (mobileMenuButton && mobileMenuContent) {
-        mobileMenuButton.addEventListener('click', function() {
-            mobileMenuContent.classList.toggle('hidden');
-            const expanded = mobileMenuContent.classList.contains('hidden') ? 'false' : 'true';
-            mobileMenuButton.setAttribute('aria-expanded', expanded);
-        });
-    }
-});
-</script>
+{% if topbar %}
+    {% include 'topbar/topbar.html' %}
+{% endif %}
 
 {% else %}
     {% include 'header/header_default.html' %}

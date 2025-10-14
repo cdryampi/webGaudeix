@@ -1,0 +1,51 @@
+{% load static %}
+{% load i18n %}
+
+<!-- Language Selector -->
+<li>
+    <button id="dropdownLanguage"
+            data-dropdown-toggle="dropdownMenuLanguage"
+            class="flex items-center justify-center gap-1.5 w-full py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-gaudeix-primary md:p-2 md:w-auto transition-colors font-medium rounded-lg">
+        {% if request.LANGUAGE_CODE == 'ca' %}
+            <img src="{% static 'core/img/banderitas/cat.svg' %}" alt="Català" class="h-5 w-5 rounded-sm" />
+        {% else %}
+            <img src="{% static 'core/img/banderitas/' %}{{ request.LANGUAGE_CODE }}.svg"
+                 alt="{{ request.LANGUAGE_CODE }}" class="h-5 w-5 rounded-sm" />
+        {% endif %}
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        </svg>
+    </button>
+    <!-- Language Dropdown -->
+    <div id="dropdownMenuLanguage"
+         class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-40 border border-gray-200">
+        <ul class="py-1.5">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% for lang in LANGUAGES %}
+                <li>
+                    <a href="#"
+                       class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors {% if lang.0 == LANGUAGE_CODE %}bg-gray-100 font-medium{% endif %}"
+                       onclick="event.preventDefault(); document.getElementById('form-lang-{{ lang.0 }}').submit();">
+                        {% if lang.0 == 'ca' %}
+                            <img class="h-5 w-5 rounded-sm" src="{% static 'core/img/banderitas/cat.svg' %}" alt="Català" />
+                        {% else %}
+                            <img class="h-5 w-5 rounded-sm" src="{% static 'core/img/banderitas/' %}{{ lang.0 }}.svg" alt="{{ lang.1 }}" />
+                        {% endif %}
+                        <span>{{ lang.1 }}</span>
+                        {% if lang.0 == LANGUAGE_CODE %}
+                            <svg class="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        {% endif %}
+                    </a>
+                    <form id="form-lang-{{ lang.0 }}" action="{% url 'set_language' %}" method="post" class="hidden">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.path }}">
+                        <input type="hidden" name="language" value="{{ lang.0 }}">
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</li>

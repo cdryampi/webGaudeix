@@ -1,13 +1,13 @@
 {% load embed_video_tags %}
-{% load compress %}
+{% comment %} {% load compress %} {% endcomment %}
 {% load i18n %}
 {% load django_vite %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="ca">
 <head>
     <title>{% block title %}{% blocktrans %}Inici{% endblocktrans %}{% endblock title %} - Cabrera de Mar</title>
-    <!-- Agrega aquí tus etiquetas de estilo CSS, enlaces a archivos estáticos, etc. -->
-    {% load static %}
 
     <!--metas-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0 minimum-scale=1.0">
@@ -106,11 +106,11 @@
     {% endblock google_script %}
 
     {% comment %} Scripts de jQuery y Swiper - necesarios para funcionalidad existente {% endcomment %}
-    {% compress js %}
+    {% comment %} {% compress js %} {% endcomment %}
         <script src="{% static 'core/bootstrap/js/jquery-3.5.1.slim.min.js' %}"></script>
         <script src="{% static 'core/js/swiper/swiper-bundle.min.js' %}"></script>
         <script src="{% static 'core/js/popper.min.js' %}"></script>
-    {% endcompress %}
+    {% comment %} {% endcompress %} {% endcomment %}
 
     {# Vite: Tailwind CSS + JS moderno (después de Bootstrap para tener prioridad) #}
     {% vite_asset 'js/main.js' %}
@@ -242,13 +242,13 @@
     <!-- Agrega aquí tus scripts JavaScript u otros recursos -->
     {% if portada %}
 
-        {% compress js %}
+        {% comment %} {% compress js %} {% endcomment %}
 
             <script src="{% static 'core/js/mapa.js' %}"></script>
             {% comment %} <script src="{% static 'core/js/video-home.js' %}"></script> {% endcomment %}
             <script src="{% static 'core/js/velocity.min.js' %}"></script>
 
-        {% endcompress %}
+        {% comment %} {% endcompress %} {% endcomment %}
 
             {% if user_agent.is_pc %}
 
@@ -266,14 +266,14 @@
 
 
 
-        {% compress js %}
+        {% comment %} {% compress js %} {% endcomment %}
 
             <script src="{% static 'core/js/main.js' %}"></script>
             <script src="{% static 'core/js/gallery-js/fancybox.js' %}"></script>
             <script src="{% static 'core/js/swiper/custom-swiper.js' %}"></script>
             <script src="{% static 'core/js/imagen.js' %}"></script>
             <script src="{% static 'core/js/cookies.js' %}"></script>
-        {% endcompress %}
+        {% comment %} {% endcompress %} {% endcomment %}
 
     {% block extra_script %}
     {% endblock extra_script %}

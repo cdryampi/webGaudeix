@@ -2,19 +2,28 @@
 {% load i18n %}
 
 {% if header.logos_auxiliares.exists %}
-    <div class="topbar" style="background-color: {{ header.color_top_bar_logos }}; color: {{ topbar.texto_color }};">
-        <div class="container-fluid">
-            <div class="row justify-content-center align-items-center text-center">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <!-- Top bar minimalista con logos auxiliares -->
+    <div class="fixed top-16 lg:top-20 left-0 right-0 z-40 py-3 bg-gray-50 border-b border-gray-200">
+        <div class="max-w-screen-2xl mx-auto px-4">
+            <div class="flex justify-center items-center">
+                <div class="flex flex-wrap justify-center items-center gap-6 lg:gap-8">
                     {% for logo in header.logos_auxiliares.all %}
                         {% if logo.mostrar_portada %}
-                            <a class="navbar-brand" href="{{ logo.enlace }}" target="_blank" rel="noopener noreferrer">
-                                <img src="{{ logo.imagen.url }}" alt="{{ logo.titulo }}" class="logo-img" style="max-width: 8.5rem; max-height: 3rem; object-fit: contain;">
+                            <a href="{{ logo.enlace }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="inline-flex items-center hover:opacity-70 transition-opacity duration-200"
+                               title="{{ logo.titulo }}">
+                                <img src="{{ logo.imagen.url }}"
+                                     alt="{{ logo.titulo }}"
+                                     class="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200">
                             </a>
                         {% endif %}
                     {% endfor %}
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
+    <!-- Spacer adicional para compensar top bar -->
+    <div class="h-16"></div>
 {% endif %}
