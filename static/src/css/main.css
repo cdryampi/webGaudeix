@@ -3,6 +3,18 @@
 @import "tailwindcss";
 
 /*
+ * Configurar las fuentes de contenido para escaneo de clases
+ * Esto permite a Tailwind detectar clases en templates de Django
+ * Rutas relativas desde static/src/css/
+ */
+@source "../../../**/templates/**/*.html";
+@source "../../../**/*.html";
+@source "../**/*.{js,jsx,ts,tsx}";
+
+/* Import custom components */
+@import "./components/header.css";
+
+/*
  * Gaudeix Custom Theme
  * Design tokens basados en Google Stitch
  */

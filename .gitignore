@@ -41,9 +41,16 @@ INTEGRATION_SUMMARY.md
 QUICK_START.md
 TROUBLESHOOTING_TAILWIND.md
 STATIC_FILES.md
+TAILWIND_TEMPLATE_SCANNING.md
+diagnose-tailwind.ps1
 
 # Database
 db/
 
-# --- IGNORE ---
-/static/
+# --- STATIC FILES ---
+# Ignorar archivos compilados, pero mantener código fuente
+/static/dist/
+/staticfiles/
+
+# Permitir código fuente de Vite
+!/static/src/
