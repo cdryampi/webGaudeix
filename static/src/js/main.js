@@ -20,7 +20,7 @@ const templates = import.meta.glob(
     "../../*/templates/**/*.html",
     "../../**/templates/**/*.html",
   ],
-  { query: "?raw", import: "default", eager: false }
+  { query: "?raw", import: "default", eager: true }
 );
 
 console.log(
