@@ -41,7 +41,7 @@ DOMAIN_URL = config['DOMAIN_URL']
 
 SCRIPT_PATH = config['SCRIPT_PATH']
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # ← Modo producción para testing
+DEBUG = settings['DEBUG']  # ← Modo producción para testing
 
 ALLOWED_HOSTS = settings["ALLOWED_HOSTS"]
 
@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     'dal',
     'dal_select2',
     'core',
-    'bootstrap4',
     'blog',
     'redes_sociales',
     'topbar',
