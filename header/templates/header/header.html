@@ -1,187 +1,92 @@
 {% load static %}
 {% load i18n %}
+
 {% if header %}
-<div class="container-fluid p-0 header-container">
-    
-    {% include "header/top_header_aux.html" %}
+<!-- Header Minimalista Optimizado Mobile/Tablet -->
+<nav class="header-nav" id="navbar">
+    <div class="max-w-screen-2xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
+        <div class="flex items-center justify-between gap-3 sm:gap-4">
 
-    <nav class="navbar navbar-expand-xl navbar-dark bg-dark menu-fijo" id="navbar" style="background-color: {{ header.color_fondo_header }} !important;">
-        <div class="container-fluid">
-            <div class="justify-content-center">
-                {% if evento_especial_activo.logo_especial %}
-                    <a class="navbar-brand" href="{% url 'eventos_especiales:evento_especial' slug=evento_especial_activo.slug %}">
-                        <img src="{{ evento_especial_activo.logo_especial.url }}" alt="evento_especial_activo.titulo" class="logo-img">
-                    </a>
-                 {% endif %}
-                <a class="navbar-brand" href="{% url 'core:home' %}">
-                    {% if header.logo %}
-                        <img src="{{ header.logo.url }}" alt="Cabrera de mar" class="logo-img">
-                    {% else %}
-                        <span class="logo-text">Gaudeix Cabrera de Mar</span>
-                    {% endif %}
-                </a>
+            <!-- Logo Section - Optimizado para mobile -->
+            {% include 'header/partials/_logo.html' %}
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden lg:flex flex-1 max-w-xl">
+                {% include 'header/partials/_search.html' %}
             </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" style="background-color: {{ header.color_fondo_header }} !important;" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
 
+            <!-- Navigation Desktop Only -->
+            <div class="hidden lg:flex lg:w-auto lg:items-center">
+                <ul class="header-desktop-menu">
                     {% for referencia in referencias %}
-                        {% if referencia.tipo == 'externo' %}
-                            <li class="nav-item">
-                                <a class="nav-link text-white font-weight-bold {{ referencia.externo.estil_del_text }}" href="{{ referencia.externo.enlace }}" target="_blank" style="color: {{ referencia.externo.color_letra }} !important;">{{ referencia.externo.titulo }}</a>
-                            </li>
-                        {% elif referencia.tipo == 'post' %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-white font-weight-bold" href="{% url 'blog:detalle_post' slug=referencia.post.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.post.titulo }}</a>
-                            </li>
+                        {# Solo mostrar tipos esenciales #}
+                        {% if referencia.tipo == 'post' %}
+                            {% include 'header/partials/_nav_post.html' %}
                         {% elif referencia.tipo == 'categoria' %}
-                                {% if referencia.categoria.subcat_public.exists %}
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle text-white font-weight-bold text-header-link" href="javascript:void(0)" id="navbarDropdownCategoriaouter{{ referencia.categoria.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {{ referencia.categoria.titulo }}
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategoriaouter{{ referencia.categoria.id }}">
-                                            {% for subcat in referencia.categoria.subcategorias.all %}
-                                                {% if subcat.publicado %}
-                                                    <li class="nav-item">
-                                                        <a class="dropdown-item" href="{% url 'blog:subcategoria' slug=subcat.slug %}">{{ subcat.titulo }}</a>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-
-                                            {% if referencia.categoria.ver_mas %}
-                                                <li class="nav-item">
-                                                    <a class="dropdown-item" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
-                                                </li>
-                                            {% endif %}
-
-                                        </ul>
-                                    </li>
-                                {% else %}
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white font-weight-bold" href="{% url 'blog:categoria' slug=referencia.categoria.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.categoria.titulo }}</a>
-                                    </li>
-                                {% endif %}
+                            {% include 'header/partials/_nav_categoria.html' %}
                         {% elif referencia.tipo == 'subblog' %}
-                            {% if referencia.subblog.publicado %}
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white font-weight-bold text-header-link" href="javascript:void(0)" id="navbarDropdownSubblog{{ referencia.subblog.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {{ referencia.subblog.titulo }}
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownSubblog{{ referencia.subblog.id }}">
-                                        {% for categoria in categorias_header %}
-                                            {% if categoria.subblog == referencia.subblog %}
-                                                {% if categoria.subcat_public.exists %}
-                                                    {% if categoria.publicado %}
-                                                        <li class="dropdown-submenu">
-                                                            <a class="dropdown-toggle" href="javascript:void(0)" id="navbarDropdownCategoriaInner{{ categoria.id }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                {{ categoria.titulo }}
-                                                            </a>
-                                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategoriaInner{{ categoria.id }}">
-                                                                {% for subcat in categoria.subcategorias.all %}
-                                                                    {% if subcat.publicado %}
-                                                                        <li class="nav-item">
-                                                                            <a class="dropdown-item" href="{% url 'blog:subcategoria' slug=subcat.slug %}">{{ subcat.titulo }}</a>
-                                                                        </li>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                                
-                                                                {% if categoria.ver_mas %}
-                                                                    <li class="nav-item">
-                                                                        <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
-                                                                    </li>
-                                                                {% endif %}
-                                                            </ul>
-                                                        </li>
-                                                    {% endif %}
-                                                {% else %}
-                                                    {% if categoria.publicado %}
-                                                        <li class="nav-item">
-                                                            <a class="dropdown-item" href="{% url 'blog:categoria' slug=categoria.slug %}">{{ categoria.titulo }}</a>
-                                                        </li>
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if referencia.subblog.ver_mas %}
-                                            <li class="nav-item">
-                                                <a class="dropdown-item" href="{% url 'blog:detalle-subblog' slug=referencia.subblog.slug %}">{% blocktrans %}Saber més{% endblocktrans %}</a>
-                                            </li>
-                                        {% endif %}
-
-                                    </ul>
-                                </li>
-                            {% endif %}
-                        {% elif referencia.tipo == 'contacto' %}
-                            <li class="nav-item">
-                                <a class="nav-link text-white font-weight-bold" href="{% url 'paginas_estaticas:contacto' %}" style="color: {{ header.color_letra}} !important;">{{ referencia.contacto.titulo }}</a>
-                            </li>
-                        {% elif referencia.tipo == 'evento_especial' %}
-                            {% if referencia.evento_especial.publicado %}
-                                <li class="nav-item active bg-white rounded-bottom shadow mx-0 mx-md-0 mx-sm-0 mx-lg-2 mx-xl-3 my-2 my-md-2 my-sm-2 my-lg-0 my-xl-0">
-                                    <a class="nav-link text-black font-weight-bold evento_especial_link" href="{% url 'eventos_especiales:evento_especial' slug=referencia.evento_especial.slug %}" style="color: {{ header.color_fondo_header}} !important;">
-                                        {{ referencia.evento_especial.titulo }}
-                                    </a>
-                                </li>
-                            {% endif %}
-
-                        {% elif referencia.tipo == 'punt_informacio' %}
-                            <li class="nav-item">
-                                <a class="nav-link text-white font-weight-bold" href="{% url 'paginas_estaticas:punt' %}" style="color: {{ header.color_letra}} !important;">{{ referencia.punt_informacio.titulo }}</a>
-                            </li>
-                        
-                        {% elif referencia.tipo == 'compra_y_descubre' %}
-                            <li class="nav-item">
-                                <a class="nav-link text-white font-weight-bold" href="{% url 'compra_y_descubre:compra_y_descubre' slug=referencia.compra_y_descubre.slug %}" style="color: {{ header.color_letra}} !important;">{{ referencia.compra_y_descubre.titulo }}</a>
-                            </li>
+                            {% include 'header/partials/_nav_subblog.html' %}
+                        {% elif referencia.tipo == 'contacto' or referencia.tipo == 'punt_informacio' %}
+                            {% include 'header/partials/_nav_otros.html' %}
                         {% endif %}
                     {% endfor %}
-                </ul>
-                {% comment %} idioma {% endcomment %}
-                <ul class="navbar-nav ml-0">
-                    <div class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle text-white font-weight-bold" id="navbarDropdownLang" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {% if request.LANGUAGE_CODE == 'ca' %}
-                                <img src="{% static 'core/img/banderitas/cat.svg' %}" alt="Catalan Flag" height="20px" width="20px" />
-                            {% else %}
-                                <img src="{% static 'core/img/banderitas/' %}{{ request.LANGUAGE_CODE }}.svg" alt="{{ request.LANGUAGE_CODE }}" height="20px" width="20px" />
-                            {% endif %}
-                        </a>
-                        
-                        
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownLang" id="dropdown-lang" style="min-width: 5rem;">
-                            {% get_current_language as LANGUAGE_CODE %}
-                            {% get_available_languages as LANGUAGES %}
-                            {% for lang in LANGUAGES %}
-                                <a href="{% url 'set_language' %}" class="dropdown-item"
-                                   onclick="event.preventDefault(); document.getElementById('form-lang-{{ lang.0 }}').submit();" data-disabled="true">
-                                    {% if lang.0 == 'ca' %}
-                                        <img class="img-fluid" src="{% static 'core/img/banderitas/cat.svg' %}" height="35px" width="35px" />
-                                    {% else %}
-                                        <img class="img-fluid" src="{% static 'core/img/banderitas/' %}{{ lang.0 }}.svg" height="35px" width="35px" />
-                                    {% endif %}
-                                </a>
-                                <form id="form-lang-{{ lang.0 }}" action="{% url 'set_language' %}" method="post" style="display: none;">
-                                    {% csrf_token %}
-                                    <input name="next" type="hidden" value="{{ request.path }}">
-                                    <input type="hidden" name="language" value="{{ lang.0 }}">
-                                </form>
-                            {% endfor %}
-                        </div>
-                                               
-                        
-                        {% comment %} end idioma {% endcomment %}
-                    </div>
+
+                    {# Theme Toggle y Language Selector - Desktop #}
+                    {% include 'header/partials/_theme_toggle.html' with extra_li_classes='lg:pl-2 lg:ml-2 lg:border-l border-white/30 dark:border-gray-700' %}
+                    {% include 'header/partials/_language_selector.html' %}
                 </ul>
             </div>
+
+            <!-- Mobile menu button -->
+            {% include 'header/partials/_mobile_button.html' %}
         </div>
-    </nav>
-    {% if topbar %}
-        {% include 'topbar/topbar.html' %}
-    {% endif %}
-</div>
+    </div>
+
+    <!-- Mobile Menu Overlay - Separado completamente del desktop -->
+    <div id="mobile-menu-overlay" class="header-mobile-overlay">
+        <div class="header-mobile-container">
+            <!-- Mobile Header -->
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/20 dark:border-gray-700">
+                {% include 'header/partials/_logo.html' with mobile_mode=True %}
+                <button type="button" class="mobile-close-btn" id="mobile-close-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Search -->
+            <div class="mb-6">
+                {% include 'header/partials/_search.html' %}
+            </div>
+
+            <!-- Mobile Navigation -->
+            <ul class="header-mobile-menu">
+                {% for referencia in referencias %}
+                    {% if referencia.tipo == 'post' %}
+                        {% include 'header/partials/_nav_post.html' with mobile_mode=True %}
+                    {% elif referencia.tipo == 'categoria' %}
+                        {% include 'header/partials/_nav_categoria.html' with mobile_mode=True %}
+                    {% elif referencia.tipo == 'subblog' %}
+                        {% include 'header/partials/_nav_subblog.html' with mobile_mode=True %}
+                    {% elif referencia.tipo == 'contacto' or referencia.tipo == 'punt_informacio' %}
+                        {% include 'header/partials/_nav_otros.html' with mobile_mode=True %}
+                    {% endif %}
+                {% endfor %}
+
+                {# Theme Toggle y Language Selector - Mobile #}
+                <li class="mobile-divider"></li>
+                {% include 'header/partials/_theme_toggle.html' with extra_li_classes='w-full' mobile_mode=True %}
+                {% include 'header/partials/_language_selector.html' with extra_li_classes='w-full' mobile_mode=True %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% if topbar %}
+    {% include 'topbar/topbar.html' %}
+{% endif %}
+
 {% else %}
     {% include 'header/header_default.html' %}
 {% endif %}

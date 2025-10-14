@@ -1,0 +1,20 @@
+<!-- Navegación: Contacto y Punt Informació - Estilo Minimalista -->
+
+{# Contacto #}
+{% if referencia.tipo == 'contacto' %}
+    <li>
+        <a href="{% url 'paginas_estaticas:contacto' %}"
+           class="header-link">
+            {{ referencia.contacto.titulo }}
+        </a>
+    </li>
+
+{# Punt Informació #}
+{% elif referencia.tipo == 'punt_informacio' %}
+    <li>
+        <a href="{% url 'paginas_estaticas:punt' %}"
+           class="header-link">
+            {{ referencia.punt_informacio.titulo }}
+        </a>
+    </li>
+{% endif %}

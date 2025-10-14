@@ -1,24 +1,64 @@
 {% load static %}
-<div class="container-fluid p-0 header-container">
+<!-- Header migrado a Tailwind CSS v4 -->
+<div class="w-full p-0">
+    <!-- Topbar -->
     <div class="topbar">
         <!-- Contenido estático de la barra superior -->
         <!-- ... -->
     </div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark menu-fijo" id="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'core:home' %}">
-                <img src="{% static 'img/logo-cabrera-main.png' %}" alt="Logo" class="logo-img">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="#">Subblogs</a></li>
-                    <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="#">Categories</a></li>
-                    <li class="nav-item"><a class="nav-link text-white font-weight-bold" href="#">Agenda</a></li>
-                    <!-- Agrega aquí más elementos de menú estáticos -->
-                </ul>
+
+    <!-- Navigation -->
+    <nav class="bg-gaudeix-dark sticky top-0 z-50 shadow-lg" id="navbar">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="{% url 'core:home' %}" class="flex items-center">
+                    <img src="{% static 'img/logo-cabrera-main.png' %}" alt="Logo" class="h-10 w-auto">
+                </a>
+
+                <!-- Mobile menu button -->
+                <button
+                    type="button"
+                    class="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-gaudeix-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-colors"
+                    aria-controls="mobile-menu"
+                    aria-expanded="false"
+                    onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <span class="sr-only">Abrir menú</span>
+                    <!-- Hamburger icon -->
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <!-- Desktop menu -->
+                <div class="hidden lg:flex lg:items-center lg:space-x-6">
+                    <a href="#" class="text-white font-bold hover:text-gaudeix-primary transition-colors duration-200">
+                        Subblogs
+                    </a>
+                    <a href="#" class="text-white font-bold hover:text-gaudeix-primary transition-colors duration-200">
+                        Categories
+                    </a>
+                    <a href="#" class="text-white font-bold hover:text-gaudeix-primary transition-colors duration-200">
+                        Agenda
+                    </a>
+                    <!-- Agrega aquí más elementos de menú -->
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div class="hidden lg:hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="#" class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors duration-200">
+                        Subblogs
+                    </a>
+                    <a href="#" class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors duration-200">
+                        Categories
+                    </a>
+                    <a href="#" class="block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors duration-200">
+                        Agenda
+                    </a>
+                    <!-- Agrega aquí más elementos de menú -->
+                </div>
             </div>
         </div>
     </nav>

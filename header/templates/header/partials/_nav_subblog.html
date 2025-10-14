@@ -1,0 +1,64 @@
+{% load i18n %}
+
+<!-- SubBlog - Estilo Minimalista Responsive (multinivel) -->
+{% if referencia.subblog.publicado %}
+    <li>
+        <button id="dropdownSubblog{{ referencia.subblog.id }}{% if mobile_mode %}-mobile{% endif %}"
+                data-dropdown-toggle="dropdownMenuSubblog{{ referencia.subblog.id }}{% if mobile_mode %}-mobile{% endif %}"
+                class="header-dropdown-btn">
+            {{ referencia.subblog.titulo }}
+            <svg class="w-4 h-4 ml-auto lg:ml-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+        </button>
+        <!-- Dropdown Level 1 -->
+        <div id="dropdownMenuSubblog{{ referencia.subblog.id }}{% if mobile_mode %}-mobile{% endif %}"
+             class="header-dropdown-menu min-w-[180px] sm:min-w-[220px]">
+            <ul class="py-2">
+                {% for categoria in categorias_header %}
+                    {% if categoria.subblog == referencia.subblog and categoria.publicado %}
+                        {% if categoria.subcat_public.exists %}
+                            {# Level 2: Category with subcategories #}
+                            <li>
+                                <button id="doubleDropdownCat{{ categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
+                                        data-dropdown-toggle="doubleDropdownMenuCat{{ categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
+                                        data-dropdown-placement="right-start"
+                                        type="button"
+                                        class="header-dropdown-link w-full">
+                                    {{ categoria.titulo }}
+                                    <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </button>
+                                {# Level 3: Subcategories #}
+                                <div id="doubleDropdownMenuCat{{ categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
+                                     class="header-dropdown-menu min-w-[180px] sm:min-w-[200px]">
+                                    <ul class="py-2">
+                                        {% for subcat in categoria.subcategorias.all %}
+                                            {% if subcat.publicado %}
+                                                <li>
+                                                    <a href="{% url 'blog:subcategoria' slug=subcat.slug %}"
+                                                       class="header-dropdown-link">
+                                                        {{ subcat.titulo }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </li>
+                        {% else %}
+                            {# Simple category without subcategories #}
+                            <li>
+                                <a href="{% url 'blog:categoria' slug=categoria.slug %}"
+                                   class="header-dropdown-link">
+                                    {{ categoria.titulo }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </li>
+{% endif %}

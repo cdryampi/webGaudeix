@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gaudeix - Tailwind CSS + Vite Setup Test</title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center">
+      <div class="max-w-2xl mx-auto p-8">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+          <h1 class="text-4xl font-bold text-gaudeix-primary mb-4">
+            🎨 Gaudeix Cabrera de Mar
+          </h1>
+          <p class="text-xl text-gray-700 mb-6">
+            Tailwind CSS v4 + Vite configurado correctamente
+          </p>
+
+          <div class="space-y-4">
+            <div
+              class="p-4 bg-gaudeix-primary/10 rounded-lg border-l-4 border-gaudeix-primary"
+            >
+              <p class="font-semibold text-gaudeix-primary">Color Primary</p>
+              <p class="text-sm text-gray-600">#3EBFAB - Turquesa Gaudeix</p>
+            </div>
+
+            <div
+              class="p-4 bg-gaudeix-secondary/10 rounded-lg border-l-4 border-gaudeix-secondary"
+            >
+              <p class="font-semibold text-gaudeix-secondary">
+                Color Secondary
+              </p>
+              <p class="text-sm text-gray-600">#69920C - Verde Oliva</p>
+            </div>
+
+            <div
+              class="p-4 bg-gaudeix-accent/10 rounded-lg border-l-4 border-gaudeix-accent"
+            >
+              <p class="font-semibold text-gaudeix-accent">Color Accent</p>
+              <p class="text-sm text-gray-600">#E76500 - Naranja</p>
+            </div>
+          </div>
+
+          <div class="mt-8 flex gap-4">
+            <button
+              class="bg-gaudeix-primary hover:bg-gaudeix-primary-dark text-white px-6 py-3 rounded-lg font-semibold transition"
+            >
+              Botón Primary
+            </button>
+            <button
+              class="bg-gaudeix-secondary hover:bg-gaudeix-secondary-dark text-white px-6 py-3 rounded-lg font-semibold transition"
+            >
+              Botón Secondary
+            </button>
+          </div>
+
+          <div class="mt-8 text-sm text-gray-500">
+            <p>
+              ✅ Vite servidor en:
+              <code class="bg-gray-100 px-2 py-1 rounded"
+                >http://localhost:5173</code
+              >
+            </p>
+            <p>✅ Sistema de build funcionando</p>
+            <p>✅ Tailwind CSS v4 con custom theme</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>

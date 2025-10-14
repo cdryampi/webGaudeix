@@ -24,33 +24,88 @@ El proyecto Gaudeix es un sistema de gestión de contenido (CMS) desarrollado es
 
 ## Tecnologías Utilizadas
 
-- Django 4.2.1
-- Python
-- HTML, CSS, JS
+- Django 5.2.7
+- Python 3.x
+- **Vite 7.1.9** - Build tool moderno con HMR
+- **Tailwind CSS 4.1.14** - Framework CSS utility-first
+- HTML, CSS, JavaScript
 - ImageKit
 - APIs externas
 - CKEditor para edición de texto enriquecido
-- Bootstrap 4 para diseño responsive
+- Bootstrap 4 (legacy, en proceso de migración a Tailwind)
 
 ## Inicio Rápido
 
-Para comenzar a usar Gaudeix CMS, sigue estos pasos:
+### Instalación
 
 1. Clone el repositorio:
-   ```
-   git clone [https://github.com/cdryampi/webGaudeix/]
-   ```
-2. Instale las dependencias:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Realice las migraciones necesarias:
-   ```
-   python manage.py migrate
-   ```
-4. Inicie el servidor de desarrollo:
-   ```
-   python manage.py runserver
+
+   ```bash
+   git clone https://github.com/cdryampi/webGaudeix/
+   cd webGaudeix
    ```
 
-Visite `http://localhost:8000` en su navegador para ver el proyecto en acción.
+2. Cree y active el entorno virtual:
+
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\activate  # Windows
+   ```
+
+3. Instale dependencias Python:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Instale dependencias Node.js:
+
+   ```bash
+   npm install
+   ```
+
+5. Realice las migraciones:
+   ```bash
+   python manage.py migrate
+   ```
+
+### Desarrollo (con Vite HMR)
+
+```bash
+# Terminal 1: Vite dev server
+npm run dev
+
+# Terminal 2: Django server
+.\venv\Scripts\activate
+python manage.py runserver
+```
+
+Visite `http://localhost:8000` en su navegador.
+
+### Producción
+
+```bash
+# Build assets
+npm run build
+
+# Collect static files
+python manage.py collectstatic --noinput
+
+# Run server
+python manage.py runserver
+```
+
+## 📚 Documentación
+
+- **[VITE_WORKFLOW.md](./VITE_WORKFLOW.md)** - Guía completa de Vite + Tailwind CSS
+- **[AGENTS.md](./AGENTS.md)** - Guías para desarrollo con LLMs
+
+## 🎨 Sistema de Diseño
+
+El proyecto utiliza Tailwind CSS 4 con tokens personalizados Gaudeix:
+
+- `--color-gaudeix-primary`: #3ebfab (Turquesa)
+- `--color-gaudeix-secondary`: #69920c (Verde)
+- `--color-gaudeix-accent`: #e76500 (Naranja)
+
+Ver `static/src/css/main.css` para más detalles.

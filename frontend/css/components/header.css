@@ -1,0 +1,200 @@
+/* Header Component - Minimalista Responsive Optimizado */
+
+@layer components {
+  /* Header base - color sólido minimalista */
+  .header-nav {
+    @apply bg-[#3EBFAB] dark:bg-black border-b border-[#3EBFAB]/20 dark:border-gray-800 transition-colors duration-300 sticky top-0 z-50;
+  }
+
+  /* Logo container - transición suave */
+  .header-logo {
+    @apply h-7 sm:h-8 md:h-10 transition-all duration-300 hover:opacity-90;
+  }
+
+  /* Desktop navigation list */
+  .header-desktop-menu {
+    @apply flex flex-row gap-1 items-center;
+  }
+
+  /* Desktop nav links - estilo minimalista con font-bold */
+  .header-link {
+    @apply block w-full rounded-lg px-3 py-2.5 text-left text-white dark:text-gray-200 hover:bg-white/10 hover:text-white/90 dark:hover:bg-gray-800/60 dark:hover:text-gray-200 transition-colors duration-200 lg:w-auto lg:rounded-md lg:px-3 lg:py-2 lg:text-center lg:hover:bg-white/15;
+    font-size: var(--header-font-size) !important;
+    font-weight: var(--header-font-weight) !important;
+    letter-spacing: var(--header-letter-spacing) !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Dropdown button style - consistente con nav links */
+  .header-dropdown-btn {
+    @apply flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-white dark:text-gray-200 hover:bg-white/10 hover:text-white/90 dark:hover:bg-gray-800/60 dark:hover:text-gray-200 transition-colors duration-200 lg:w-auto lg:rounded-md lg:px-3 lg:py-2 lg:justify-center lg:hover:bg-white/15;
+    font-size: var(--header-font-size) !important;
+    font-weight: var(--header-font-weight) !important;
+    letter-spacing: var(--header-letter-spacing) !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Dropdown menus - minimalista con sombras suaves */
+  .header-dropdown-menu {
+    @apply z-10 hidden bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-800 min-w-[180px] sm:min-w-[200px];
+  }
+
+  .header-dropdown-menu ul {
+    @apply py-2;
+  }
+
+  .header-dropdown-menu li a,
+  .header-dropdown-menu li button {
+    @apply block px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-[#3EBFAB] hover:text-white dark:hover:bg-gray-800 transition-colors;
+    font-size: var(--header-dropdown-font-size) !important;
+    font-weight: var(--header-dropdown-font-weight) !important;
+    letter-spacing: 0.01em !important;
+    line-height: 1.5 !important;
+  }
+
+  .header-dropdown-link {
+    @apply flex items-center justify-between gap-2 px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-[#3EBFAB] hover:text-white dark:hover:bg-gray-800 transition-colors;
+    font-size: var(--header-dropdown-font-size) !important;
+    font-weight: var(--header-dropdown-font-weight) !important;
+    letter-spacing: 0.01em !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Mobile menu overlay - Full screen con animación */
+  .header-mobile-overlay {
+    @apply fixed inset-0 bg-[#3EBFAB] dark:bg-black z-40 hidden overflow-y-auto;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  .header-mobile-overlay.show {
+    @apply block;
+  }
+
+  .header-mobile-container {
+    @apply max-w-screen-sm mx-auto px-4 py-6;
+  }
+
+  /* Mobile close button */
+  .mobile-close-btn {
+    @apply p-2 text-white dark:text-gray-200 hover:bg-white/10 rounded-lg transition-colors;
+  }
+
+  /* Mobile menu styles - Limpio y espacioso */
+  .header-mobile-menu {
+    @apply flex flex-col gap-1 w-full;
+  }
+
+  .header-mobile-menu > li {
+    @apply w-full;
+  }
+
+  .header-mobile-menu > li > .header-dropdown-btn {
+    @apply w-full justify-between;
+  }
+
+  .header-mobile-menu > li > .header-link {
+    @apply w-full text-left;
+  }
+
+  /* Mobile divider */
+  .mobile-divider {
+    @apply w-full h-px bg-white/20 dark:bg-gray-700 my-4;
+  }
+
+  /* Language selector - con font-bold */
+  .header-language-btn {
+    @apply flex items-center justify-between gap-2 w-full rounded-lg px-3 py-2.5 text-white dark:text-gray-200 hover:bg-white/10 hover:text-white/90 dark:hover:bg-gray-800/60 dark:hover:text-gray-200 transition-colors duration-200 lg:w-auto lg:rounded-md lg:px-3 lg:py-2 lg:justify-center lg:hover:bg-white/15;
+    font-size: var(--header-font-size) !important;
+    font-weight: var(--header-font-weight) !important;
+    letter-spacing: var(--header-letter-spacing) !important;
+    line-height: 1.4 !important;
+  }
+
+  .header-language-dropdown {
+    @apply z-10 hidden bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-800 w-40;
+  }
+
+  .header-language-item {
+    @apply flex items-center gap-3 px-3 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-[#3EBFAB] hover:text-white dark:hover:bg-gray-800 transition-colors;
+    font-size: var(--header-dropdown-font-size) !important;
+    font-weight: var(--header-dropdown-font-weight) !important;
+    letter-spacing: 0.01em !important;
+    line-height: 1.5 !important;
+  }
+
+  .header-language-item.active {
+    @apply bg-gray-100 dark:bg-gray-700;
+    font-weight: 700 !important;
+  }
+
+  /* Theme toggle button - colores optimizados */
+  .header-theme-toggle {
+    @apply flex w-full items-center justify-start gap-2 rounded-lg px-3 py-2.5 text-yellow-300 dark:text-blue-400 hover:bg-white/10 hover:text-yellow-200 dark:hover:bg-gray-800/60 dark:hover:text-blue-300 transition-colors duration-200 lg:w-auto lg:rounded-md lg:px-3 lg:py-2 lg:justify-center lg:hover:bg-white/15;
+    font-size: var(--header-font-size) !important;
+    font-weight: var(--header-font-weight) !important;
+    letter-spacing: var(--header-letter-spacing) !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Search bar - UX mejorada */
+  .search-wrapper {
+    @apply relative w-full max-w-xl;
+  }
+
+  .header-search {
+    @apply w-full px-4 py-2.5 pl-11 bg-white/90 dark:bg-gray-900/90 border border-white/30 dark:border-gray-700 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 dark:focus:ring-blue-500/50 focus:border-white/50 dark:focus:border-blue-500/50 transition-all;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+  }
+
+  .header-search:focus {
+    @apply bg-white dark:bg-gray-900;
+  }
+
+  .search-button {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 p-1 text-gray-600 dark:text-gray-400 hover:text-[#3EBFAB] dark:hover:text-blue-400 transition-all duration-200 hover:scale-110;
+  }
+
+  .search-button:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .search-button:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  /* Animación de slide in para mobile menu */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive adjustments para tablet */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .header-link,
+    .header-dropdown-btn,
+    .header-language-btn,
+    .header-theme-toggle {
+      font-size: var(--header-font-size-tablet) !important;
+    }
+  }
+
+  /* Top bar con logos auxiliares */
+  .header-topbar {
+    @apply py-2 sm:py-3 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300;
+  }
+
+  .header-topbar-logo {
+    @apply inline-flex items-center hover:opacity-70 transition-opacity duration-200;
+  }
+
+  .header-topbar-logo img {
+    @apply h-8 sm:h-10 w-auto object-contain;
+  }
+}

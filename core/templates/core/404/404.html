@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
 {% block meta_description %}
     <meta name="Description" content="Cabrera de Mar - 404 pàgina no trobada">
 {% endblock meta_description %}
@@ -7,43 +8,81 @@
 {% block meta_keywords %}
     <meta name="Keywords" content="Cabrera de Mar, gaudeix, 404, pàgina no trobada, error">
 {% endblock meta_keywords %}
-{% block extra_css %}
-    <style>
-        .error-page {
-            /* Estilos personalizados para la página completa */
-        }
 
-        .error-404 {
-            /* Estilos personalizados para el jumbotron del error 404 */
-        }
-
-        .error-title {
-            font-size: 2.5rem; /* Tamaño de fuente más grande para el título */
-            color: #3EBFAB; /* Color del título, puedes cambiarlo según tu paleta de colores */
-        }
-        .error-404-color{
-            background-color: #3EBFAB;
-            color: #3EBFAB;
-        }
-
-        .error-message {
-            font-size: 1.2rem; /* Tamaño de fuente para el mensaje */
-            margin-bottom: 1.5rem; /* Espaciado debajo del mensaje */
-        }
-
-        .btn-home {
-            padding: .75rem 1.5rem; /* Padding más grande para el botón */
-            font-size: 1.1rem; /* Tamaño de fuente para el botón */
-            border-radius: .5rem; /* Bordes redondeados para el botón */
-        }
-    </style>
-{% endblock extra_css %}
 {% block content %}
-    <div class="container error-page">
-        <div class="jumbotron text-center error-404 bg-white">
-            <h1 class="error-title">Error 404: Pàgina no trobada</h1>
-            <p class="error-message">Ho sentim, la pàgina que estàs buscant no existeix.</p>
-            <a href="{% url 'core:home' %}" class="btn error-404-color btn-home">Tornar a l'inici</a>
+    <div class="bg-gray-100" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 4rem 1rem;">
+        <div style="max-width: 600px; width: 100%; text-align: center;">
+
+            {# Marco con imagen estilo cuadro #}
+            <div style="margin-bottom: 3rem; display: flex; justify-content: center;">
+                <div class="bg-white shadow-lg" style="padding: 1.5rem; transform: rotate(-2deg);">
+                    <div class="bg-gray-200" style="padding: 0.5rem;">
+                        <img src="https://picsum.photos/400/300?random=404"
+                             alt="404"
+                             style="width: 100%; height: auto; max-width: 400px; display: block;">
+                        <div class="bg-white" style="margin-top: 0.5rem; padding: 0.75rem; text-align: center;">
+                            <span style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">404</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Título #}
+            <h1 style="font-size: 2.25rem; font-weight: 700; color: #111827; margin-bottom: 1rem;">
+                Pàgina no encontrada
+            </h1>
+
+            {# Descripción #}
+            <p style="font-size: 1.125rem; color: #4b5563; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                La pàgina que busques no existe o ha estat moguda. Per favor, verifica la URL o utiliza el buscador para encontrar lo que necesites.
+            </p>
+
+            {# Botón principal con icono Home de Heroicons #}
+            <div style="margin-bottom: 2rem;">
+                <a href="{% url 'core:home' %}"
+                   class="bg-gaudeix-primary hover:bg-gaudeix-primary-dark text-white"
+                   style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem; border-radius: 0.375rem; font-weight: 600; text-decoration: none; transition: all 0.3s;">
+                    {# Heroicons: Home (outline) #}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 1.25rem; height: 1.25rem;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+                    Volver al inicio
+                </a>
+            </div>
+
+            {# Input de búsqueda con icono MagnifyingGlass de Heroicons #}
+            <div style="max-width: 400px; margin: 0 auto 3rem;">
+                <div style="position: relative;">
+                    <input type="text"
+                           placeholder="Buscar en el sitio"
+                           class="border border-gray-300"
+                           style="width: 100%; padding: 0.875rem 3rem 0.875rem 1rem; border-radius: 0.375rem; font-size: 1rem;">
+
+                    {# Heroicons: MagnifyingGlass (outline) #}
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke-width="1.5"
+                         stroke="currentColor"
+                         style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); width: 1.25rem; height: 1.25rem; color: #9ca3af;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                </div>
+            </div>
+
+            {# Icono decorativo grande de ExclamationTriangle de Heroicons #}
+            <div style="margin-top: 2rem; display: flex; justify-content: center; opacity: 0.08;">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="1"
+                     stroke="currentColor"
+                     style="width: 12rem; height: 12rem;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                </svg>
+            </div>
+
         </div>
     </div>
 {% endblock %}
+

@@ -41,7 +41,7 @@ DOMAIN_URL = config['DOMAIN_URL']
 
 SCRIPT_PATH = config['SCRIPT_PATH']
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = settings["DEBUG"]
+DEBUG = settings['DEBUG']  # ← Modo producción para testing
 
 ALLOWED_HOSTS = settings["ALLOWED_HOSTS"]
 
@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     'dal',
     'dal_select2',
     'core',
-    'bootstrap4',
     'blog',
     'redes_sociales',
     'topbar',
@@ -81,6 +80,7 @@ INSTALLED_APPS = [
     'imagekit',
     'embed_video',
     'compressor',
+    'django_vite',
     'django_user_agents',
     'selecciones',
     'subvenciones',
@@ -98,6 +98,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Servir archivos estáticos en DEBUG=False
     'django.contrib.sessions.middleware.SessionMiddleware',  # Esto debe venir antes de middlewares que dependen de la sesión
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -264,6 +265,7 @@ NOMBRES_DIAS = {
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core/static'),
+    os.path.join(BASE_DIR, 'static/dist'),  # Vite/Tailwind build output
 ]
 
 
@@ -357,7 +359,7 @@ CKEDITOR_5_CONFIGS = {
     },
     'idiomas_toolbar': {
         'toolbar': ['bold', 'italic', 'underline', '|',
-                    'numberedList', 'bulletedList', '|', 
+                    'numberedList', 'bulletedList', '|',
                     'outdent', 'indent', '|',
                     'alignment:left', 'alignment:center', 'alignment:right', 'alignment:justify', '|',
                     'link', 'unlink', '|',
@@ -368,7 +370,10 @@ CKEDITOR_5_CONFIGS = {
 
 CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# STATIC_ROOT debe ser diferente de las carpetas en STATICFILES_DIRS
+# Django recogerá archivos de STATICFILES_DIRS y los copiará a STATIC_ROOT
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 #GOOGLE_MAPS_API_KEY = 'kAIzaSyA7t0HCgOTtsO3whwMzARtjbO-cvkPIyyQ'
 
@@ -619,6 +624,20 @@ JAZZMIN_UI_TWEAKS = {
         "warning": "btn-warning",
         "danger": "btn-danger",
         "success": "btn-success"
+    }
+}
+
+# ============================================================================
+# DJANGO-VITE CONFIGURATION
+# ============================================================================
+# https://github.com/MrBin99/django-vite
+
+DJANGO_VITE = {
+    'default': {
+        'dev_mode': DEBUG,
+        'dev_server_host': 'localhost',
+        'dev_server_port': 5173,
+        'manifest_path': BASE_DIR / 'static' / 'dist' / '.vite' / 'manifest.json',
     }
 }
 

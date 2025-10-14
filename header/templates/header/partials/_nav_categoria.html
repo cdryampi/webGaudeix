@@ -1,0 +1,38 @@
+{% load i18n %}
+
+<!-- Categoría - Estilo Minimalista Responsive -->
+{% if referencia.categoria.subcat_public.exists %}
+    <li>
+        <button id="dropdownCategoria{{ referencia.categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
+                data-dropdown-toggle="dropdownMenuCategoria{{ referencia.categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
+                class="header-dropdown-btn">
+            {{ referencia.categoria.titulo }}
+            <svg class="w-4 h-4 ml-auto lg:ml-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+        </button>
+        <!-- Dropdown -->
+        <div id="dropdownMenuCategoria{{ referencia.categoria.id }}{% if mobile_mode %}-mobile{% endif %}"
+             class="header-dropdown-menu">
+            <ul class="py-2">
+                {% for subcat in referencia.categoria.subcategorias.all %}
+                    {% if subcat.publicado %}
+                        <li>
+                            <a href="{% url 'blog:subcategoria' slug=subcat.slug %}"
+                               class="header-dropdown-link">
+                                {{ subcat.titulo }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </li>
+{% else %}
+    <li>
+        <a href="{% url 'blog:categoria' slug=referencia.categoria.slug %}"
+           class="header-link">
+            {{ referencia.categoria.titulo }}
+        </a>
+    </li>
+{% endif %}
