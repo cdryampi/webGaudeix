@@ -48,9 +48,12 @@ diagnose-tailwind.ps1
 db/
 
 # --- STATIC FILES ---
-# Ignorar archivos compilados, pero mantener código fuente
-/static/dist/
-/staticfiles/
+# Ignorar TODA la carpeta static (contiene archivos generados y de terceros)
+# El código fuente de Vite se mantiene en /frontend/
+/static/
 
-# Permitir código fuente de Vite
-!/static/src/
+# --- FRONTEND ---
+# Permitir código fuente de Vite, pero ignorar archivos temporales
+!/frontend/
+/frontend/.vite/
+/frontend/dist/

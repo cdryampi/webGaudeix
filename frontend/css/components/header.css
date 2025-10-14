@@ -1,0 +1,77 @@
+/* Header Component - Tailwind CSS v4 */
+
+@layer components {
+  /* Header base styles */
+  .header-nav {
+    @apply sticky top-0 z-50 shadow-lg;
+    transition: top 0.3s ease-in-out;
+  }
+
+  /* Logo styles */
+  .header-logo {
+    @apply h-10 w-auto;
+  }
+
+  /* Nav link styles */
+  .header-link {
+    @apply px-3 py-2 text-white font-bold hover:text-gaudeix-primary transition-colors duration-200;
+  }
+
+  /* Dropdown menu styles - con !important para sobrescribir Bootstrap */
+  .header-dropdown {
+    @apply absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block;
+    display: none !important;
+  }
+
+  .group:hover .header-dropdown {
+    display: block !important;
+  }
+
+  .header-dropdown-item {
+    @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gaudeix-primary hover:text-white transition-colors;
+    text-decoration: none !important;
+  }
+
+  /* Submenu styles for nested dropdowns */
+  .header-submenu {
+    @apply absolute left-full top-0 mt-0 ml-1 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover/submenu:block;
+    display: none !important;
+  }
+
+  .group\/submenu:hover .header-submenu {
+    display: block !important;
+  }
+
+  /* Mobile menu styles */
+  .header-mobile-menu {
+    @apply xl:hidden px-2 pt-2 pb-3 space-y-1;
+  }
+
+  .header-mobile-link {
+    @apply block px-3 py-2 rounded-md text-white font-bold hover:bg-gaudeix-primary transition-colors;
+    text-decoration: none !important;
+  }
+
+  /* Language selector */
+  .header-lang-dropdown {
+    @apply absolute right-0 mt-2 w-20 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block;
+    display: none !important;
+  }
+
+  .group:hover .header-lang-dropdown {
+    display: block !important;
+  }
+
+  /* Topbar logos container */
+  .header-topbar-logos {
+    @apply flex flex-wrap justify-center items-center gap-4;
+  }
+
+  .header-topbar-logo {
+    @apply inline-flex items-center hover:opacity-80 transition-opacity;
+  }
+
+  .header-topbar-logo img {
+    @apply max-w-[8.5rem] max-h-12 object-contain;
+  }
+}

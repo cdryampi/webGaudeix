@@ -4,7 +4,7 @@ import path from "path";
 
 export default defineConfig({
   plugins: [tailwindcss()],
-  root: "./static/src",
+  root: "./frontend",
   base: "/static/",
   build: {
     outDir: path.resolve(__dirname, "static/dist"),
@@ -12,7 +12,8 @@ export default defineConfig({
     manifest: true,
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, "static/src/js/main.js"),
+        main: path.resolve(__dirname, "frontend/js/main.js"),
+        styles: path.resolve(__dirname, "frontend/css/main.css"),
       },
     },
   },
@@ -25,7 +26,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "static/src"),
+      "@": path.resolve(__dirname, "frontend"),
     },
   },
 });
