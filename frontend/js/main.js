@@ -8,7 +8,10 @@
 // Importar Tailwind CSS
 import "../css/main.css";
 
-console.log("🎨 Gaudeix - Frontend con Tailwind CSS + Vite");
+// Importar Flowbite para componentes UI interactivos
+import "flowbite";
+
+console.log("🎨 Gaudeix - Frontend con Tailwind CSS + Vite + Flowbite");
 
 // Importar dinámicamente los templates para content scanning de Tailwind v4
 // Esto permite que Tailwind detecte las clases usadas en los templates Django

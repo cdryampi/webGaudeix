@@ -10,6 +10,7 @@
 @source "../../**/templates/**/*.html";
 @source "../../**/*.html";
 @source "../**/*.{js,jsx,ts,tsx}";
+@source "../../node_modules/flowbite/**/*.js";
 
 /* Import custom components */
 @import "./components/header.css";
