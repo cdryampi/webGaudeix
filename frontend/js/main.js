@@ -5,6 +5,23 @@
  * Vite lo procesará y creará un bundle optimizado.
  */
 
+// ============================================
+// IMPORTANTE: Page Preloader PRIMERO
+// ============================================
+// Importar el preloader de página completa ANTES que cualquier otra cosa
+// Esto bloqueará la pantalla con una animación hasta que todo esté cargado
+import "./page-preloader-simple.js";
+
+// ============================================
+// Preload de progreso (barra superior)
+// ============================================
+// Importar el sistema de preload de NProgress para navegación
+import "./preload.js";
+
+// ============================================
+// Imports principales
+// ============================================
+
 // Importar Tailwind CSS
 import "../css/main.css";
 
