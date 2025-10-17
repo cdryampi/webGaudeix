@@ -98,6 +98,148 @@
     {% comment %} Tailwind CSS v4 - Sistema de diseño principal {% endcomment %}
     {% vite_asset 'css/main.css' %}
 
+    {% comment %} CSS inline del preloader - CRÍTICO: Debe estar ANTES de que se renderice el body {% endcomment %}
+    <style>
+        /* Preloader - Simple y efectivo */
+        .page-preloader {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            z-index: 9999999 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            transition: opacity 0.4s ease-out, visibility 0.4s ease-out !important;
+        }
+
+        .page-preloader.hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .preloader-content {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 2rem !important;
+            text-align: center !important;
+        }
+
+        .preloader-logo {
+            max-width: 320px !important;
+            width: 90% !important;
+            height: auto !important;
+            object-fit: contain !important;
+            animation: fadeInScale 0.6s ease-out !important;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .preloader-title {
+            color: white !important;
+            font-size: 2rem !important;
+            font-weight: 700 !important;
+            font-family: 'Montserrat', sans-serif !important;
+            margin: 0 !important;
+            animation: fadeIn 0.8s ease-out 0.2s both !important;
+        }
+
+        .preloader-text {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-size: 1.25rem !important;
+            font-weight: 500 !important;
+            font-family: 'Montserrat', sans-serif !important;
+            margin: 0 !important;
+            animation: fadeIn 0.8s ease-out 0.4s both !important;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+        }
+
+        /* Spinner simple */
+        .preloader-spinner {
+            width: 50px !important;
+            height: 50px !important;
+            position: relative !important;
+            animation: fadeIn 0.8s ease-out 0.6s both !important;
+        }
+
+        .spinner-circle {
+            width: 100% !important;
+            height: 100% !important;
+            border: 4px solid rgba(255, 255, 255, 0.3) !important;
+            border-top-color: white !important;
+            border-radius: 50% !important;
+            animation: spin 1s linear infinite !important;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .preloader-logo {
+                max-width: 240px !important;
+            }
+            .preloader-title {
+                font-size: 1.5rem !important;
+            }
+            .preloader-text {
+                font-size: 1rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .preloader-logo {
+                max-width: 200px !important;
+            }
+            .preloader-title {
+                font-size: 1.25rem !important;
+            }
+        }
+    </style>
+
     {% block google_script %}
         {% if google_script %}
             {{ google_script |safe }}

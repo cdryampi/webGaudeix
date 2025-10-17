@@ -15,6 +15,12 @@ export default defineConfig({
         main: path.resolve(__dirname, "frontend/js/main.js"),
         styles: path.resolve(__dirname, "frontend/css/main.css"),
       },
+      output: {
+        // Asegurar que los chunks tienen nombres consistentes
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
     },
   },
   server: {

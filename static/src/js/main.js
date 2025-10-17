@@ -5,6 +5,9 @@
  * Vite lo procesará y creará un bundle optimizado.
  */
 
+// Importar el sistema de preload PRIMERO (antes que cualquier otra cosa)
+import "./preload.js";
+
 // Importar Tailwind CSS
 import "../css/main.css";
 
